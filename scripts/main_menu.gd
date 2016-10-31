@@ -2,6 +2,7 @@
 extends Sprite
 
 var PROJECT_NAME = "HotelManager"
+var PROJECT_REVISION = "Alpha 0.0.1"
 
 func _ready():
 	# Launch scene in full screen mode
@@ -18,3 +19,17 @@ func _input(event):
 
 func quit():
 	get_tree().quit()
+
+func _on_QuitButton_released():
+	get_tree().quit()
+
+
+func _on_ProjectNameLabel_draw():
+	get_node("ProjectInfos/ProjectNameLabel").set_text(PROJECT_NAME)
+
+func _on_ProjectVersion_draw():
+	get_node("ProjectInfos/ProjectVersion").set_text(PROJECT_REVISION)
+
+
+func _on_PlayButton_released():
+	get_tree().change_scene("res://scenes/play_menu.tscn")
