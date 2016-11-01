@@ -59,51 +59,15 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 481.0
+margin/left = 370.0
 margin/top = 0.0
-margin/right = 523.0
+margin/right = 392.0
 margin/bottom = 20.0
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
 shortcut = null
 text = "Back"
-flat = false
-
-[node name="Load game" type="Button" parent="MainPanel/PlayPanel/NewGameButton"]
-
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 250.0
-margin/top = 0.0
-margin/right = 100.0
-margin/bottom = 0.0
-disabled = true
-toggle_mode = false
-click_on_press = true
-enabled_focus_mode = 2
-shortcut = null
-text = "Load game"
-flat = false
-
-[node name="RemoveGame" type="Button" parent="MainPanel/PlayPanel/NewGameButton/Load game"]
-
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 100.0
-margin/top = 0.0
-margin/right = 100.0
-margin/bottom = 20.0
-disabled = true
-toggle_mode = false
-click_on_press = true
-enabled_focus_mode = 2
-shortcut = null
-text = "Remove"
 flat = false
 
 [node name="SaveList" type="ItemList" parent="MainPanel/PlayPanel"]
@@ -130,6 +94,43 @@ margin/left = 650.0
 margin/top = 50.0
 margin/right = 50.0
 margin/bottom = 450.0
+
+[node name="Load game" type="Button" parent="MainPanel/PlayPanel/SaveDetails"]
+
+rect/scale = Vector2( 3, 3 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 220.0
+margin/top = 650.0
+margin/right = 301.0
+margin/bottom = 670.0
+disabled = true
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Load game"
+flat = false
+
+[node name="RemoveGame" type="Button" parent="MainPanel/PlayPanel/SaveDetails/Load game"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 100.0
+margin/top = 0.0
+margin/right = 100.0
+margin/bottom = 20.0
+disabled = true
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Remove"
+flat = false
 
 [connection signal="released" from="MainPanel/PlayPanel/NewGameButton/BackButton" to="MainPanel" method="_on_BackButton_released"]
 
