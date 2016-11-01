@@ -61,12 +61,48 @@ size_flags/vertical = 2
 margin/left = 481.0
 margin/top = 0.0
 margin/right = 523.0
-margin/bottom = 0.0
+margin/bottom = 20.0
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
 shortcut = null
 text = "Back"
+flat = false
+
+[node name="Load game" type="Button" parent="MainPanel/Panel/NewGameButton"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 100.0
+margin/top = 0.0
+margin/right = 100.0
+margin/bottom = 0.0
+disabled = true
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Load game"
+flat = false
+
+[node name="Load game1" type="Button" parent="MainPanel/Panel/NewGameButton/Load game"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 100.0
+margin/top = 0.0
+margin/right = 100.0
+margin/bottom = 20.0
+disabled = true
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Remove"
 flat = false
 
 [connection signal="released" from="MainPanel/Panel/NewGameButton/BackButton" to="MainPanel" method="_on_BackButton_released"]
