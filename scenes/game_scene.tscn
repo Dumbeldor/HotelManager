@@ -11,7 +11,7 @@ region = true
 region_rect = Rect2( 0, 0, 1920, 1080 )
 script/script = ExtResource( 2 )
 
-[node name="Control" type="Control" parent="."]
+[node name="ControlPane_Top" type="Control" parent="."]
 
 anchor/right = 1
 focus/ignore_mouse = false
@@ -23,7 +23,7 @@ margin/top = 0.0
 margin/right = 0.0
 margin/bottom = 60.0
 
-[node name="DayLabel" type="Label" parent="Control"]
+[node name="DayLabel" type="Label" parent="ControlPane_Top"]
 
 anchor/left = 3
 anchor/right = 3
@@ -31,9 +31,9 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 0.0
+margin/left = 10.0
 margin/top = 20.0
-margin/right = -24.0
+margin/right = -10.0
 margin/bottom = 34.0
 text = "[DayLabelText]"
 align = 1
@@ -41,20 +41,49 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="DayPanel" type="Panel" parent="Control/DayLabel"]
+[node name="DayPanel" type="Panel" parent="ControlPane_Top/DayLabel"]
 
 visibility/behind_parent = true
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 50.0
-margin/top = 20.0
-margin/right = -50.0
-margin/bottom = -20.0
+margin/left = -30.0
+margin/top = -13.0
+margin/right = -30.0
+margin/bottom = 27.0
+
+[node name="MoneyLabel" type="Label" parent="ControlPane_Top/DayLabel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -119.5
+margin/top = 0.0
+margin/right = -231.5
+margin/bottom = 0.0
+text = "[MoneyLabelText]"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="MoneyPanel" type="Panel" parent="ControlPane_Top/DayLabel/MoneyLabel"]
+
+visibility/behind_parent = true
+material/use_parent = true
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -20.0
+margin/top = -13.0
+margin/right = -20.0
+margin/bottom = 27.0
 
 
