@@ -28,7 +28,7 @@ func _on_ProjectNameLabel_draw():
 	get_node("ProjectInfos/ProjectNameLabel").set_text(PROJECT_NAME)
 
 func _on_ProjectVersion_draw():
-	get_node("ProjectInfos/ProjectVersion").set_text(PROJECT_REVISION)
+	get_node("ProjectInfos/ProjectNameLabel/ProjectVersion").set_text(PROJECT_REVISION)
 
 
 func _on_PlayButton_released():

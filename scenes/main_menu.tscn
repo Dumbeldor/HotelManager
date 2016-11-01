@@ -5,7 +5,7 @@
 
 [node name="Root" type="Sprite"]
 
-transform/pos = Vector2( 959.445, 540.061 )
+transform/pos = Vector2( 963.526, 541.421 )
 transform/scale = Vector2( 0.999807, 0.844672 )
 texture = ExtResource( 1 )
 script/script = ExtResource( 2 )
@@ -23,6 +23,7 @@ margin/bottom = 500.0
 
 [node name="PlayButton" type="Button" parent="MainMenu"]
 
+rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -30,8 +31,8 @@ size_flags/vertical = 2
 size_flags/stretch_ratio = 0.0
 margin/left = 0.0
 margin/top = 50.0
-margin/right = 500.0
-margin/bottom = 150.0
+margin/right = 100.0
+margin/bottom = 70.0
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -40,16 +41,17 @@ text = "Play"
 flat = false
 align = 0
 
-[node name="OptionsButton" type="Button" parent="MainMenu"]
+[node name="OptionsButton" type="Button" parent="MainMenu/PlayButton"]
 
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 750.0
-margin/right = 500.0
-margin/bottom = 850.0
+margin/top = 233.333
+margin/right = 0.0
+margin/bottom = 253.333
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -58,16 +60,17 @@ text = "Options"
 flat = false
 align = 0
 
-[node name="QuitButton" type="Button" parent="MainMenu"]
+[node name="QuitButton" type="Button" parent="MainMenu/PlayButton"]
 
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 900.0
-margin/right = 500.0
-margin/bottom = 1000.0
+margin/top = 283.333
+margin/right = 0.0
+margin/bottom = 303.333
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -104,18 +107,16 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="ProjectVersion" type="Label" parent="ProjectInfos"]
+[node name="ProjectVersion" type="Label" parent="ProjectInfos/ProjectNameLabel"]
 
-anchor/left = 1
-anchor/top = 1
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = -800.0
-margin/top = -540.0
-margin/right = 909.0
-margin/bottom = 594.0
+margin/left = 120.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
 text = "[REVISION]"
 percent_visible = 1.0
 lines_skipped = 0
@@ -123,10 +124,10 @@ max_lines_visible = -1
 
 [connection signal="released" from="MainMenu/PlayButton" to="." method="_on_PlayButton_released"]
 
-[connection signal="released" from="MainMenu/QuitButton" to="." method="_on_QuitButton_released"]
+[connection signal="released" from="MainMenu/PlayButton/QuitButton" to="." method="_on_QuitButton_released"]
 
 [connection signal="draw" from="ProjectInfos/ProjectNameLabel" to="." method="_on_ProjectNameLabel_draw" flags=3]
 
-[connection signal="draw" from="ProjectInfos/ProjectVersion" to="." method="_on_ProjectVersion_draw" flags=3]
+[connection signal="draw" from="ProjectInfos/ProjectNameLabel/ProjectVersion" to="." method="_on_ProjectVersion_draw" flags=3]
 
 
