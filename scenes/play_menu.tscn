@@ -21,8 +21,9 @@ margin/right = 872.0
 margin/bottom = 540.0
 script/script = ExtResource( 2 )
 
-[node name="Panel" type="Panel" parent="MainPanel"]
+[node name="PlayPanel" type="Panel" parent="MainPanel"]
 
+visibility/opacity = 0.777562
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -34,7 +35,7 @@ margin/top = 0.0
 margin/right = 200.0
 margin/bottom = 0.0
 
-[node name="NewGameButton" type="Button" parent="MainPanel/Panel"]
+[node name="NewGameButton" type="Button" parent="MainPanel/PlayPanel"]
 
 anchor/top = 1
 rect/scale = Vector2( 3, 3 )
@@ -42,7 +43,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 50.0
+margin/left = 100.0
 margin/top = 100.0
 margin/right = 129.0
 margin/bottom = 0.0
@@ -52,7 +53,7 @@ shortcut = null
 text = "New game"
 flat = false
 
-[node name="BackButton" type="Button" parent="MainPanel/Panel/NewGameButton"]
+[node name="BackButton" type="Button" parent="MainPanel/PlayPanel/NewGameButton"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -69,13 +70,13 @@ shortcut = null
 text = "Back"
 flat = false
 
-[node name="Load game" type="Button" parent="MainPanel/Panel/NewGameButton"]
+[node name="Load game" type="Button" parent="MainPanel/PlayPanel/NewGameButton"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 100.0
+margin/left = 250.0
 margin/top = 0.0
 margin/right = 100.0
 margin/bottom = 0.0
@@ -87,7 +88,7 @@ shortcut = null
 text = "Load game"
 flat = false
 
-[node name="Load game1" type="Button" parent="MainPanel/Panel/NewGameButton/Load game"]
+[node name="RemoveGame" type="Button" parent="MainPanel/PlayPanel/NewGameButton/Load game"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -105,6 +106,31 @@ shortcut = null
 text = "Remove"
 flat = false
 
-[connection signal="released" from="MainPanel/Panel/NewGameButton/BackButton" to="MainPanel" method="_on_BackButton_released"]
+[node name="SaveList" type="ItemList" parent="MainPanel/PlayPanel"]
+
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 50.0
+margin/top = 50.0
+margin/right = 844.0
+margin/bottom = 950.0
+
+[node name="SaveDetails" type="Panel" parent="MainPanel/PlayPanel"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 650.0
+margin/top = 50.0
+margin/right = 50.0
+margin/bottom = 450.0
+
+[connection signal="released" from="MainPanel/PlayPanel/NewGameButton/BackButton" to="MainPanel" method="_on_BackButton_released"]
 
 
