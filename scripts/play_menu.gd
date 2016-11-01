@@ -15,3 +15,7 @@ func _on_BackButton_released():
 
 func goToMainMenu():
 	get_tree().change_scene("res://scenes/main_menu.tscn")
+
+func _on_NewGameButton_released():
+	# @TODO load screen
+	get_tree().change_scene("res://scenes/game_scene.tscn")

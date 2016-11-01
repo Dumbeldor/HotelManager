@@ -45,9 +45,10 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 100.0
 margin/top = 100.0
-margin/right = 129.0
-margin/bottom = 0.0
+margin/right = 179.0
+margin/bottom = 1004.0
 toggle_mode = false
+click_on_press = true
 enabled_focus_mode = 2
 shortcut = null
 text = "New game"
@@ -61,7 +62,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 370.0
 margin/top = 0.0
-margin/right = 392.0
+margin/right = 412.0
 margin/bottom = 20.0
 toggle_mode = false
 click_on_press = true
@@ -122,7 +123,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 100.0
 margin/top = 0.0
-margin/right = 100.0
+margin/right = 164.0
 margin/bottom = 20.0
 disabled = true
 toggle_mode = false
@@ -131,6 +132,8 @@ enabled_focus_mode = 2
 shortcut = null
 text = "Remove"
 flat = false
+
+[connection signal="released" from="MainPanel/PlayPanel/NewGameButton" to="MainPanel" method="_on_NewGameButton_released"]
 
 [connection signal="released" from="MainPanel/PlayPanel/NewGameButton/BackButton" to="MainPanel" method="_on_BackButton_released"]
 
