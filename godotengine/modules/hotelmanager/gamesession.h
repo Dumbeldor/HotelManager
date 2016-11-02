@@ -13,18 +13,24 @@
  * All rights reserved
  */
 
-#include "register_types.h"
-#include "object_type_db.h"
-#include "hotelmanagerproject.h"
-#include "gamesession.h"
+#pragma once
 
-void register_hotelmanager_types()
+#include "reference.h"
+
+class GameSession: public Reference
 {
-	ObjectTypeDB::register_type<HotelManagerProject>();
-	ObjectTypeDB::register_type<GameSession>();
-}
+	OBJ_TYPE(GameSession, Reference);
+public:
+	GameSession() {}
 
-void unregister_hotelmanager_types()
-{
+	int64_t get_money() const { return m_money; }
+	void set_money(int64_t money);
+	void add_money(int64_t money);
+	void remove_money(int64_t money);
 
-}
+protected:
+	static void _bind_methods();
+
+private:
+	int64_t m_money = 0;
+};

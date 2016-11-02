@@ -47,7 +47,6 @@
 #include "script_language.h"
 #include "io/resource_loader.h"
 
-#include "bin/tests/test_main.h"
 #include "os/dir_access.h"
 #include "core/io/ip.h"
 #include "scene/resources/packed_scene.h"
@@ -135,18 +134,6 @@ void Main::print_help(const char* p_binary) {
 #ifdef TOOLS_ENABLED
 	OS::get_singleton()->print("\t-e,-editor : Bring up the editor instead of running the scene.\n");
 #endif
-	OS::get_singleton()->print("\t-test [test] : Run a test.\n");
-	OS::get_singleton()->print("\t\t(");
-	const char **test_names=tests_get_names();
-	const char* coma = "";
-	while(*test_names) {
-
-		OS::get_singleton()->print("%s%s", coma, *test_names);
-		test_names++;
-		coma = ", ";
-	}
-	OS::get_singleton()->print(")\n");
-
 	OS::get_singleton()->print("\t-r WIDTHxHEIGHT\t : Request Window Resolution\n");
 	OS::get_singleton()->print("\t-p XxY\t : Request Window Position\n");
 	OS::get_singleton()->print("\t-f\t\t : Request Fullscreen\n");
@@ -1158,16 +1145,7 @@ bool Main::start() {
 		main_loop = memnew(SceneTree);
 	};
 
-	if (test!="") {
-#ifdef DEBUG_ENABLED
-		main_loop = test_main(test,args);
-
-		if (!main_loop)
-			return false;
-
-#endif
-
-	} else if (script!="") {
+	if (script!="") {
 
 		Ref<Script> script_res = ResourceLoader::load(script);
 		ERR_EXPLAIN("Can't load script: "+script);

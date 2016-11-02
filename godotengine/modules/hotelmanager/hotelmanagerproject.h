@@ -28,6 +28,7 @@ public:
 	String get_version() const { return m_version; }
 	String get_release() const { return m_release; }
 	String get_project_name() const { return m_project_name; }
+
 protected:
 	static void _bind_methods();
 
