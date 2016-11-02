@@ -13,20 +13,14 @@
  * All rights reserved
  */
 
-#include "register_types.h"
-#include "object_type_db.h"
-#include "hotelmanagerproject.h"
-#include "gamesession.h"
 #include "character.h"
 
-void register_hotelmanager_types()
+Character::Character(CharacterType type): m_character_type(type)
 {
-	ObjectTypeDB::register_type<HotelManagerProject>();
-	ObjectTypeDB::register_type<GameSession>();
-	ObjectTypeDB::register_type<Character>();
+	// @ TODO generate random name
 }
 
-void unregister_hotelmanager_types()
+void Character::_bind_methods()
 {
 
 }

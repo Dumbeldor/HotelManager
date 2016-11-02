@@ -7,6 +7,7 @@ cmake_minimum_required(VERSION 3.6)
 
 project(HotelManager)
 include_directories(godotengine/core)
+include_directories(godotengine)
 
 set(SOURCE_FILES
 	godotengine/core/reference.cpp)

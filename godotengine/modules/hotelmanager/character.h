@@ -13,20 +13,25 @@
  * All rights reserved
  */
 
-#include "register_types.h"
-#include "object_type_db.h"
-#include "hotelmanagerproject.h"
-#include "gamesession.h"
-#include "character.h"
+#pragma once
 
-void register_hotelmanager_types()
+#include "scene/main/node.h"
+
+enum CharacterType
 {
-	ObjectTypeDB::register_type<HotelManagerProject>();
-	ObjectTypeDB::register_type<GameSession>();
-	ObjectTypeDB::register_type<Character>();
-}
-
-void unregister_hotelmanager_types()
+	CHARACTER_TYPE_NONE,
+};
+class Character: public Node
 {
+	OBJ_TYPE(Character, Node);
+public:
+	Character(): m_character_name(""), m_character_type(CHARACTER_TYPE_NONE) {}
+	Character(CharacterType type);
 
-}
+protected:
+	static void _bind_methods();
+
+private:
+	String m_character_name;
+	CharacterType m_character_type;
+};
