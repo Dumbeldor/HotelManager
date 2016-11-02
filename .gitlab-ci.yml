@@ -1,0 +1,19 @@
+---
+image: docker.io/nerzhul/archlinux:2016.10.01
+before_script:
+  - pacman --noconfirm -Sy scons libxcursor libxinerama libxrandr mesa glu alsa-lib pulseaudio freetype2
+# These are already included in image
+# - pacman --noconfirm -S libxml2 jsoncpp curl
+
+gcc5:
+  stage: build
+  script:
+    - cd godotengine
+    - scons platform=x11
+
+clang:
+  stage: build
+  script:
+    - cd godotengine
+    - scons platform=x11 use_llvm=yes
+
