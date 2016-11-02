@@ -9,11 +9,13 @@ gcc5:
   stage: build
   script:
     - cd godotengine
+    - find . -name test_main.h
     - scons platform=x11 openssl=builtin
 
 clang:
   stage: build
   script:
     - cd godotengine
+    - find . -name test_main.h
     - scons platform=x11 use_llvm=yes openssl=builtin
 
