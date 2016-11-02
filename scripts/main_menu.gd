@@ -1,13 +1,12 @@
 
 extends Sprite
 
-var PROJECT_NAME = "HotelManager"
-var PROJECT_REVISION = "Alpha 0.0.1"
+var PROJECT = HotelManagerProject.new()
 
 func _ready():
 	# Launch scene in full screen mode
 	OS.set_window_fullscreen(true)
-	OS.set_window_title(PROJECT_NAME)
+	OS.set_window_title(PROJECT.get_project_name())
 
 	# Tell we accept input key
 	set_process_input(true)
@@ -25,10 +24,10 @@ func _on_QuitButton_released():
 
 
 func _on_ProjectNameLabel_draw():
-	get_node("ProjectInfos/ProjectNameLabel").set_text(PROJECT_NAME)
+	get_node("ProjectInfos/ProjectNameLabel").set_text(PROJECT.get_project_name())
 
 func _on_ProjectVersion_draw():
-	get_node("ProjectInfos/ProjectNameLabel/ProjectVersion").set_text(PROJECT_REVISION)
+	get_node("ProjectInfos/ProjectNameLabel/ProjectVersion").set_text(PROJECT.get_full_version())
 
 
 func _on_PlayButton_released():

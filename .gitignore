@@ -1,1 +1,6 @@
 export.cfg
+*.o
+*.pyc
+*.a
+.idea/dbnavigator.xml
+.idea/workspace.xml
