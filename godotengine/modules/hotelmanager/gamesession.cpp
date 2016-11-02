@@ -19,10 +19,15 @@
 
 void GameSession::_bind_methods()
 {
+	// m_money
 	ObjectTypeDB::bind_method("get_money",&GameSession::get_money);
 	ObjectTypeDB::bind_method("set_money",&GameSession::set_money);
 	ObjectTypeDB::bind_method("add_money",&GameSession::add_money);
 	ObjectTypeDB::bind_method("remove_money",&GameSession::remove_money);
+
+	// m_current_day
+	ObjectTypeDB::bind_method("get_current_day",&GameSession::get_current_day);
+	ObjectTypeDB::bind_method("set_next_day",&GameSession::set_next_day);
 }
 
 void GameSession::set_money(int64_t money)

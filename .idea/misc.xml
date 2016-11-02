@@ -10,6 +10,7 @@
       <file path="$PROJECT_DIR$/godotengine/servers" />
     </sourceRoots>
     <excludeRoots>
+      <file path="$PROJECT_DIR$/godotengine/bin" />
       <file path="$PROJECT_DIR$/res" />
       <file path="$PROJECT_DIR$/scenes" />
       <file path="$PROJECT_DIR$/scripts" />

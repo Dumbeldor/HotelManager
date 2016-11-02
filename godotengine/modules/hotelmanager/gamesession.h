@@ -23,14 +23,20 @@ class GameSession: public Reference
 public:
 	GameSession() {}
 
+	// m_money
 	int64_t get_money() const { return m_money; }
 	void set_money(int64_t money);
 	void add_money(int64_t money);
 	void remove_money(int64_t money);
+
+	// m_current_day
+	uint32_t get_current_day() const { return m_current_day; }
+	void set_next_day() { m_current_day++; }
 
 protected:
 	static void _bind_methods();
 
 private:
 	int64_t m_money = 0;
+	uint32_t m_current_day = 1;
 };

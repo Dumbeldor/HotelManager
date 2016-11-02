@@ -18,11 +18,19 @@ For Linux platform:
 ```
 cd godotengine
 scons platform=x11 \
-        tools=yes \
+	tools=yes \
 	target=release_debug \
 	use_llvm=yes \
 	builtin_zlib=yes \
 	openssl=yes \
 	colored=yes \
 	pulseaudio=no bits=64
+```
+
+## Launch editor
+
+Just run the compiled editor from godotengine folder
+
+```
+./godotengine/bin/godot.x11.opt.tools.64 -e
 ```
