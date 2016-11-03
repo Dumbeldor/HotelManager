@@ -25,6 +25,10 @@ void GameSession::_bind_methods()
 	ObjectTypeDB::bind_method("add_money",&GameSession::add_money);
 	ObjectTypeDB::bind_method("remove_money",&GameSession::remove_money);
 
+	// m_game_speed
+	ObjectTypeDB::bind_method("get_game_speed",&GameSession::get_game_speed);
+	ObjectTypeDB::bind_method("set_game_speed",&GameSession::set_game_speed__api);
+
 	// m_current_day
 	ObjectTypeDB::bind_method("get_current_day",&GameSession::get_current_day);
 	ObjectTypeDB::bind_method("set_next_day",&GameSession::set_next_day);

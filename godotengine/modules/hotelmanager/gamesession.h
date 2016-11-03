@@ -17,6 +17,14 @@
 
 #include "reference.h"
 
+enum GameSpeed
+{
+	GAMESPEED_NORMAL,
+	GAMESPEED_X2,
+	GAMESPEED_X3,
+	GAMESPEED_X5,
+};
+
 class GameSession: public Reference
 {
 	OBJ_TYPE(GameSession, Reference);
@@ -29,6 +37,11 @@ public:
 	void add_money(int64_t money);
 	void remove_money(int64_t money);
 
+	// m_game_speed
+	GameSpeed get_game_speed() const { return m_game_speed; }
+	void set_game_speed(const GameSpeed speed) { m_game_speed = speed; }
+	void set_game_speed__api(const uint8_t speed) { m_game_speed = (GameSpeed) speed; }
+
 	// m_current_day
 	uint32_t get_current_day() const { return m_current_day; }
 	void set_next_day() { m_current_day++; }
@@ -39,4 +52,5 @@ protected:
 private:
 	int64_t m_money = 0;
 	uint32_t m_current_day = 1;
+	GameSpeed m_game_speed = GAMESPEED_NORMAL;
 };
