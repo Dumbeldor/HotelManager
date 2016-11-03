@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=1]
+[gd_scene load_steps=4 format=1]
 
 [ext_resource path="res://res/images/black-1x1.png" type="Texture" id=1]
 [ext_resource path="res://scripts/game_scene.gd" type="Script" id=2]
+[ext_resource path="res://res/test-tileset.xml" type="TileSet" id=3]
 
 [node name="Sprite" type="Sprite"]
 
@@ -89,9 +90,9 @@ margin/bottom = 27.0
 [node name="GameTileMap" type="TileMap" parent="."]
 
 mode = 0
-tile_set = null
-cell/size = Vector2( 64, 64 )
-cell/quadrant_size = 16
+tile_set = ExtResource( 3 )
+cell/size = Vector2( 32, 32 )
+cell/quadrant_size = 32
 cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 cell/half_offset = 2
 cell/tile_origin = 0
@@ -102,6 +103,6 @@ collision/bounce = 0.0
 collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
-tile_data = IntArray(  )
+tile_data = IntArray( 131075, 0, 196613, 0, 393223, 0, 393234, 0, 524298, 0, 524310, 0, 589843, 0, 589844, 0, 589846, 0, 589848, 0, 589849, 0, 589850, 0, 589851, 0, 589852, 0, 720908, 0, 720926, 0, 786449, 0, 786463, 0, 851999, 0, 917515, 0, 917535, 0, 983052, 0, 983070, 0, 1048589, 0, 1048591, 0, 1048604, 0, 1048605, 0, 1114128, 0, 1114131, 0, 1114133, 0, 1114136, 0, 1114138, 0, 1114139, 0 )
 
 
