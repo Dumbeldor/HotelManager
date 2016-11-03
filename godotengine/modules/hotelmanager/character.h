@@ -50,12 +50,7 @@ class Character: public Node
 {
 	OBJ_TYPE(Character, Node);
 public:
-	Character():
-		m_character_name(""),
-		m_character_type(CHARACTER_TYPE_NONE),
-		m_character_role(CHARARACTER_ROLE_NONE),
-		m_sex(MALE) {}
-
+	Character() {}
 	Character(CharacterType type, CharacterSex sex);
 
 	CharacterSex get_sex() const { return m_sex; }
@@ -69,9 +64,9 @@ protected:
 	static void _bind_methods();
 
 private:
-	String m_character_name;
+	String m_character_name = "";
 
-	CharacterType m_character_type;
-	CharacterRole m_character_role;
-	CharacterSex m_sex;
+	CharacterType m_character_type = CHARACTER_TYPE_NONE;
+	CharacterRole m_character_role = CHARARACTER_ROLE_NONE;
+	CharacterSex m_sex = MALE;
 };
