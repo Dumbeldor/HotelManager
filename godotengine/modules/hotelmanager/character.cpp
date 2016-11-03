@@ -15,12 +15,15 @@
 
 #include "character.h"
 
-Character::Character(CharacterType type): m_character_type(type)
+Character::Character(CharacterType type, CharacterSex sex):
+	m_character_type(type),
+	m_sex(sex)
 {
 	// @ TODO generate random name
 }
 
 void Character::_bind_methods()
 {
-
+	ObjectTypeDB::bind_method("get_sex",&Character::get_sex);
+	ObjectTypeDB::bind_method("set_sex",&Character::set_sex__api);
 }

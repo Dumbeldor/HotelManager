@@ -9,6 +9,13 @@ in LICENSE.md
 
 To see the changelog, please look at CHANGELOG.md
 
+## Development
+
+### C++
+
+If methods should be bound to GodotEngine API and are not bindable (example: enums),
+you should add a wrapper function suffixed with \_\_api name
+
 ## Build
 
 To build this project, please first compile the embedded Godot engine

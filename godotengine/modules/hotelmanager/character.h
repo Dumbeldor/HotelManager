@@ -21,17 +21,33 @@ enum CharacterType
 {
 	CHARACTER_TYPE_NONE,
 };
+
+enum CharacterSex
+{
+	MALE,
+	FEMALE,
+};
+
 class Character: public Node
 {
 	OBJ_TYPE(Character, Node);
 public:
-	Character(): m_character_name(""), m_character_type(CHARACTER_TYPE_NONE) {}
-	Character(CharacterType type);
+	Character():
+		m_character_name(""),
+		m_character_type(CHARACTER_TYPE_NONE),
+		m_sex(MALE) {}
 
+	Character(CharacterType type, CharacterSex sex);
+
+	CharacterSex get_sex() const { return m_sex; }
+	void set_sex(const CharacterSex sex) { m_sex = sex; }
+	void set_sex__api(const uint8_t sex) { m_sex = (CharacterSex) sex; }
 protected:
 	static void _bind_methods();
 
 private:
 	String m_character_name;
+
 	CharacterType m_character_type;
+	CharacterSex m_sex;
 };
