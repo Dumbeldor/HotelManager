@@ -26,4 +26,7 @@ void Character::_bind_methods()
 {
 	ObjectTypeDB::bind_method("get_sex",&Character::get_sex);
 	ObjectTypeDB::bind_method("set_sex",&Character::set_sex__api);
+
+	ObjectTypeDB::bind_method("get_role",&Character::get_role);
+	ObjectTypeDB::bind_method("set_role",&Character::set_role__api);
 }
