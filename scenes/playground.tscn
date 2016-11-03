@@ -8,6 +8,6 @@
 
 texture = ExtResource( 1 )
 region = true
-region_rect = Rect2( 0, 0, 32, 32 )
+region_rect = Rect2( 0, 0, 96, 96 )
 
 

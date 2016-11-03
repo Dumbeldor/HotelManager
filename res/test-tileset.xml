@@ -5,9 +5,9 @@
 		<string name="0/name"> "Node1" </string>
 		<resource name="0/texture" external="0">  </resource>
 		<vector2 name="0/tex_offset"> 0, 0 </vector2>
-		<resource name="0/material"></resource>		<rect2 name="0/region"> 0, 0, 32, 32 </rect2>
-		<vector2 name="0/occluder_offset"> 16, 16 </vector2>
-		<resource name="0/occluder"></resource>		<vector2 name="0/navigation_offset"> 16, 16 </vector2>
+		<resource name="0/material"></resource>		<rect2 name="0/region"> 0, 0, 96, 96 </rect2>
+		<vector2 name="0/occluder_offset"> 48, 48 </vector2>
+		<resource name="0/occluder"></resource>		<vector2 name="0/navigation_offset"> 48, 48 </vector2>
 		<resource name="0/navigation"></resource>		<vector2 name="0/shape_offset"> 0, 0 </vector2>
 		<array name="0/shapes" len="0" shared="false">
 		</array>
