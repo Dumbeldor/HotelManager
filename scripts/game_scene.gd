@@ -9,15 +9,23 @@ const GAMEMENU = {
 	MAIN = 1,
 }
 
+const ZOOMOUT_LIMIT = 8
+const ZOOMIN_LIMIT = 0.55
+
 func _input(event):
-	if (event.type == InputEvent.KEY and event.pressed):
-		if (event.is_action("ui_cancel")):
+	if event.type == InputEvent.KEY and event.pressed:
+		if event.is_action("ui_cancel"):
 			if current_shown_menu == 0:
 				# Show game menu
 				get_node("Hud/GameMainMenu").show()
 				current_shown_menu = GAMEMENU.MAIN
 			elif current_shown_menu == GAMEMENU.MAIN:
 				_hide_game_menu()
+	elif event.type == InputEvent.MOUSE_BUTTON:
+		if event.is_action("ui_zoomin"):
+			zoom_camera(0.9)
+		elif event.is_action("ui_zoomout"):
+			zoom_camera(1.11)
 
 func _ready():
 	var day_label = get_node("Hud/ControlPane_Top/DayLabel")
@@ -53,6 +61,13 @@ func _process(delta):
 func move_camera(v):
 	var cam = get_node("GameTileMap/Camera2D")
 	cam.global_translate(v)
+
+func zoom_camera(multiplier):
+	var cam = get_node("GameTileMap/Camera2D")
+	var new_zoom = cam.get_zoom() * multiplier
+	if new_zoom.x >= ZOOMOUT_LIMIT or new_zoom.y >= ZOOMOUT_LIMIT or new_zoom.x <= ZOOMIN_LIMIT or new_zoom.y <= ZOOMIN_LIMIT:
+		return
+	cam.set_zoom(new_zoom)
 
 func _on_LeaveGameButton_released():
 	get_tree().change_scene("res://scenes/main_menu.tscn")
