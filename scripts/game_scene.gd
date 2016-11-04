@@ -3,6 +3,22 @@ extends Sprite
 
 var game_session = GameSession.new()
 
+var current_shown_menu = 0
+
+const GAMEMENU = {
+	MAIN = 1,
+}
+
+func _input(event):
+	if (event.type == InputEvent.KEY and event.pressed):
+		if (event.is_action("ui_cancel")):
+			if current_shown_menu == 0:
+				# Show game menu
+				get_node("GameTileMap/Camera2D/GameMainMenu").show()
+				current_shown_menu = GAMEMENU.MAIN
+			elif current_shown_menu == GAMEMENU.MAIN:
+				_hide_game_menu()
+
 func _ready():
 	var day_label = get_node("GameTileMap/Camera2D/ControlPane_Top/DayLabel")
 	if day_label:
@@ -12,15 +28,17 @@ func _ready():
 	if money_label:
 		money_label.set_text(str(game_session.get_money()) + " $")
 
+	set_process_input(true)
 	set_process(true)
 
 func _process(delta):
 	var cam = get_node("GameTileMap/Camera2D")
 	cam.global_translate(Vector2(delta * 100, 0))
 
-func _on_ResumeButton_released():
-	get_node("GameTileMap/Camera2D/GameMainMenu").hide()
-
-
 func _on_LeaveGameButton_released():
 	get_tree().change_scene("res://scenes/main_menu.tscn")
+
+
+func _hide_game_menu():
+	get_node("GameTileMap/Camera2D/GameMainMenu").hide()
+	current_shown_menu = 0

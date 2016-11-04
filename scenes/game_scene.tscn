@@ -53,6 +53,7 @@ drag_margin/bottom = 0.0
 
 [node name="GameMainMenu" type="Panel" parent="GameTileMap/Camera2D"]
 
+visibility/visible = false
 visibility/opacity = 0.9
 material/use_parent = true
 anchor/left = 3
@@ -201,6 +202,8 @@ margin/right = -20.0
 margin/bottom = 27.0
 
 [connection signal="released" from="GameTileMap/Camera2D/GameMainMenu/ResumeButton" to="." method="_on_ResumeButton_released"]
+
+[connection signal="released" from="GameTileMap/Camera2D/GameMainMenu/ResumeButton" to="." method="_hide_game_menu"]
 
 [connection signal="released" from="GameTileMap/Camera2D/GameMainMenu/ResumeButton/LeaveGameButton" to="." method="_on_LeaveGameButton_released"]
 
