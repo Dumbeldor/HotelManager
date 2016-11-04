@@ -15,4 +15,5 @@ func _ready():
 	set_process(true)
 
 func _process(delta):
-	pass
+	var cam = get_node("GameTileMap/Camera2D")
+	cam.global_translate(Vector2(delta * 100, 0))
