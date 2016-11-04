@@ -18,14 +18,6 @@ func _input(event):
 				current_shown_menu = GAMEMENU.MAIN
 			elif current_shown_menu == GAMEMENU.MAIN:
 				_hide_game_menu()
-		elif (event.is_action("ui_up")):
-			move_camera(Vector2(0, -100))
-		elif (event.is_action("ui_down")):
-			move_camera(Vector2(0, 100))
-		elif (event.is_action("ui_left")):
-			move_camera(Vector2(-100, 0))
-		elif (event.is_action("ui_right")):
-			move_camera(Vector2(100, 0))
 
 func _ready():
 	var day_label = get_node("Hud/ControlPane_Top/DayLabel")
@@ -40,7 +32,23 @@ func _ready():
 	set_process(true)
 
 func _process(delta):
-	pass
+	var should_move_camera = false
+	var camera_movement = Vector2(0, 0)
+	if Input.is_action_pressed("ui_up"):
+		camera_movement.y -= 10
+		should_move_camera = true
+	if Input.is_action_pressed("ui_down"):
+		camera_movement.y += 10
+		should_move_camera = true
+	if Input.is_action_pressed("ui_left"):
+		camera_movement.x -= 10
+		should_move_camera = true
+	if Input.is_action_pressed("ui_right"):
+		camera_movement.x += 10
+		should_move_camera = true
+
+	if should_move_camera:
+		move_camera(camera_movement)
 
 func move_camera(v):
 	var cam = get_node("GameTileMap/Camera2D")
