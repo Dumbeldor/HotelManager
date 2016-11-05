@@ -13,9 +13,8 @@ const ZOOMOUT_LIMIT = 8
 const ZOOMIN_LIMIT = 0.55
 const CAMERA_LIMIT_X = 18000
 const CAMERA_LIMIT_Y = CAMERA_LIMIT_X * 1080 / 1920
-const WORLD_LIMIT_X = 180
-const WORLD_LIMIT_Y = WORLD_LIMIT_X * 1080 / 1920
-const WORLD_CELL_SIZE = 96
+
+var WORLD_LIMITS = Vector2(0, 0)
 
 const TILES = {
 	EMPTY = 0,
@@ -46,6 +45,8 @@ func _ready():
 	cam.set_limit(MARGIN_LEFT, -CAMERA_LIMIT_X)
 	cam.set_limit(MARGIN_RIGHT, CAMERA_LIMIT_X)
 
+	init_map()
+
 	var day_label = get_node("Hud/ControlPane_Top/DayLabel")
 	if day_label:
 		day_label.set_text("Day: " + str(game_session.get_current_day()))
@@ -54,7 +55,6 @@ func _ready():
 	if money_label:
 		money_label.set_text(str(game_session.get_money()) + " $")
 
-	init_map()
 	set_process_input(true)
 	set_process(true)
 
@@ -118,29 +118,7 @@ func get_tilemap():
 
 func init_map():
 	var tilemap = get_tilemap();
-	tilemap.set_cell_size(Vector2(WORLD_CELL_SIZE, WORLD_CELL_SIZE))
-	for x in range(WORLD_LIMIT_X + 1, WORLD_LIMIT_X + 10):
-		for y in range(0, WORLD_LIMIT_Y + 10):
-			tilemap.set_cell(x, y, TILES.EMPTY)
-			tilemap.set_cell(x, -y, TILES.EMPTY)
-			tilemap.set_cell(-x, y, TILES.EMPTY)
-			tilemap.set_cell(-x, -y, TILES.EMPTY)
+	tilemap.init()
+	# Load some informations from cpp
+	WORLD_LIMITS = tilemap.get_world_limits()
 
-	for x in range(0, WORLD_LIMIT_X + 10):
-		for y in range(WORLD_LIMIT_Y + 1, WORLD_LIMIT_Y + 10):
-			tilemap.set_cell(x, y, TILES.EMPTY)
-			tilemap.set_cell(x, -y, TILES.EMPTY)
-			tilemap.set_cell(-x, y, TILES.EMPTY)
-			tilemap.set_cell(-x, -y, TILES.EMPTY)
-
-	for x in range(0, WORLD_LIMIT_X + 1):
-		tilemap.set_cell(x, WORLD_LIMIT_Y, TILES.GRASS)
-		tilemap.set_cell(x, -WORLD_LIMIT_Y, TILES.GRASS)
-		tilemap.set_cell(-x, WORLD_LIMIT_Y, TILES.GRASS)
-		tilemap.set_cell(-x, -WORLD_LIMIT_Y, TILES.GRASS)
-
-	for y in range(0, WORLD_LIMIT_Y + 1):
-		tilemap.set_cell(WORLD_LIMIT_X, y, TILES.GRASS)
-		tilemap.set_cell(-WORLD_LIMIT_X, y, TILES.GRASS)
-		tilemap.set_cell(WORLD_LIMIT_X, -y, TILES.GRASS)
-		tilemap.set_cell(-WORLD_LIMIT_X, -y, TILES.GRASS)

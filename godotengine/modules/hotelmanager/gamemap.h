@@ -16,8 +16,12 @@
 #pragma once
 
 #include "scene/2d/tile_map.h"
+#include <math.h>
+#include <math/math_2d.h>
 
-#define GAME_CELL_SIZE 96
+constexpr uint16_t GAME_CELL_SIZE = 96;
+constexpr uint16_t WORLD_LIMIT_X = 180;
+constexpr uint16_t WORLD_LIMIT_Y = (uint16_t) floor(WORLD_LIMIT_X * 1080 / 1920);
 
 class GameMap: public TileMap
 {
@@ -29,5 +33,6 @@ public:
 protected:
 	static void _bind_methods();
 private:
-	uint16_t get_game_cell_size() { return GAME_CELL_SIZE; }
+	uint16_t get_game_cell_size() const { return GAME_CELL_SIZE; }
+	Vector2 get_world_limits() const { return Vector2(WORLD_LIMIT_X, WORLD_LIMIT_Y); }
 };
