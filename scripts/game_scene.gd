@@ -17,6 +17,11 @@ const WORLD_LIMIT_X = 180
 const WORLD_LIMIT_Y = WORLD_LIMIT_X * 1080 / 1920
 const WORLD_CELL_SIZE = 96
 
+const TILES = {
+	EMPTY = 0,
+	GRASS = 1,
+}
+
 func _input(event):
 	if event.type == InputEvent.KEY and event.pressed:
 		if event.is_action("ui_cancel"):
@@ -94,7 +99,7 @@ func move_camera(v):
 	var cam = get_cam()
 	var zoom = cam.get_zoom()
 	v.x *= zoom.x * 0.65
-	v.y *= zoom.y * 0.65
+	v.y *= zoom.y * 0.5
 	cam.global_translate(v)
 
 func zoom_camera(multiplier):
@@ -114,10 +119,28 @@ func get_tilemap():
 func init_map():
 	var tilemap = get_tilemap();
 	tilemap.set_cell_size(Vector2(WORLD_CELL_SIZE, WORLD_CELL_SIZE))
-	for i in range(-WORLD_LIMIT_X, WORLD_LIMIT_X):
-		tilemap.set_cell(i, WORLD_LIMIT_Y, 0)
-		tilemap.set_cell(i, -WORLD_LIMIT_Y, 0)
+	for x in range(WORLD_LIMIT_X + 1, WORLD_LIMIT_X + 10):
+		for y in range(0, WORLD_LIMIT_Y + 10):
+			tilemap.set_cell(x, y, TILES.EMPTY)
+			tilemap.set_cell(x, -y, TILES.EMPTY)
+			tilemap.set_cell(-x, y, TILES.EMPTY)
+			tilemap.set_cell(-x, -y, TILES.EMPTY)
 
-	for i in range(-WORLD_LIMIT_Y, WORLD_LIMIT_Y):
-		tilemap.set_cell(WORLD_LIMIT_X, i, 0)
-		tilemap.set_cell(-WORLD_LIMIT_X, i, 0)
+	for x in range(0, WORLD_LIMIT_X + 10):
+		for y in range(WORLD_LIMIT_Y + 1, WORLD_LIMIT_Y + 10):
+			tilemap.set_cell(x, y, TILES.EMPTY)
+			tilemap.set_cell(x, -y, TILES.EMPTY)
+			tilemap.set_cell(-x, y, TILES.EMPTY)
+			tilemap.set_cell(-x, -y, TILES.EMPTY)
+
+	for x in range(0, WORLD_LIMIT_X + 1):
+		tilemap.set_cell(x, WORLD_LIMIT_Y, TILES.GRASS)
+		tilemap.set_cell(x, -WORLD_LIMIT_Y, TILES.GRASS)
+		tilemap.set_cell(-x, WORLD_LIMIT_Y, TILES.GRASS)
+		tilemap.set_cell(-x, -WORLD_LIMIT_Y, TILES.GRASS)
+
+	for y in range(0, WORLD_LIMIT_Y + 1):
+		tilemap.set_cell(WORLD_LIMIT_X, y, TILES.GRASS)
+		tilemap.set_cell(-WORLD_LIMIT_X, y, TILES.GRASS)
+		tilemap.set_cell(WORLD_LIMIT_X, -y, TILES.GRASS)
+		tilemap.set_cell(-WORLD_LIMIT_X, -y, TILES.GRASS)
