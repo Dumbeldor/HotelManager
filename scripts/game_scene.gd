@@ -92,6 +92,9 @@ func get_cam():
 
 func move_camera(v):
 	var cam = get_cam()
+	var zoom = cam.get_zoom()
+	v.x *= zoom.x * 0.65
+	v.y *= zoom.y * 0.65
 	cam.global_translate(v)
 
 func zoom_camera(multiplier):
