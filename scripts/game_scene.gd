@@ -31,8 +31,6 @@ func _input(event):
 			elif current_shown_menu == GAMEMENU.MAIN:
 				_hide_game_menu()
 	elif event.type == InputEvent.MOUSE_BUTTON:
-		print(get_local_mouse_pos().x, ",", get_local_mouse_pos().y)
-		print(get_global_mouse_pos().x, ",", get_global_mouse_pos().y)
 		if event.is_action("ui_zoomin"):
 			zoom_camera(0.9)
 		elif event.is_action("ui_zoomout"):

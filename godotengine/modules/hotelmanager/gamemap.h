@@ -35,4 +35,5 @@ protected:
 private:
 	uint16_t get_game_cell_size() const { return GAME_CELL_SIZE; }
 	Vector2 get_world_limits() const { return Vector2(WORLD_LIMIT_X, WORLD_LIMIT_Y); }
+	void handle_event_mouse_click(Vector2 pos);
 };
