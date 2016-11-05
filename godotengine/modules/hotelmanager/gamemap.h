@@ -19,9 +19,9 @@
 #include <math.h>
 #include <math/math_2d.h>
 
-constexpr uint16_t GAME_CELL_SIZE = 96;
-constexpr uint16_t WORLD_LIMIT_X = 180;
-constexpr uint16_t WORLD_LIMIT_Y = (uint16_t) floor(WORLD_LIMIT_X * 1080 / 1920);
+static constexpr uint16_t GAME_CELL_SIZE = 96;
+static constexpr uint16_t WORLD_LIMIT_X = 180;
+static const uint16_t WORLD_LIMIT_Y = (uint16_t) floor(WORLD_LIMIT_X * 1080 / 1920);
 
 class GameMap: public TileMap
 {
