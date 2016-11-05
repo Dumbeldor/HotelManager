@@ -15,6 +15,7 @@ const CAMERA_LIMIT_X = 18000
 const CAMERA_LIMIT_Y = CAMERA_LIMIT_X * 1080 / 1920
 const WORLD_LIMIT_X = 180
 const WORLD_LIMIT_Y = WORLD_LIMIT_X * 1080 / 1920
+const WORLD_CELL_SIZE = 96
 
 func _input(event):
 	if event.type == InputEvent.KEY and event.pressed:
@@ -26,6 +27,8 @@ func _input(event):
 			elif current_shown_menu == GAMEMENU.MAIN:
 				_hide_game_menu()
 	elif event.type == InputEvent.MOUSE_BUTTON:
+		print(get_local_mouse_pos().x, ",", get_local_mouse_pos().y)
+		print(get_global_mouse_pos().x, ",", get_global_mouse_pos().y)
 		if event.is_action("ui_zoomin"):
 			zoom_camera(0.9)
 		elif event.is_action("ui_zoomout"):
@@ -46,14 +49,7 @@ func _ready():
 	if money_label:
 		money_label.set_text(str(game_session.get_money()) + " $")
 
-	var tilemap = get_node("GameTileMap");
-	for i in range(-WORLD_LIMIT_X, WORLD_LIMIT_X):
-		tilemap.set_cell(i, WORLD_LIMIT_Y, 0)
-		tilemap.set_cell(i, -WORLD_LIMIT_Y, 0)
-
-	for i in range(-WORLD_LIMIT_Y, WORLD_LIMIT_Y):
-		tilemap.set_cell(WORLD_LIMIT_X, i, 0)
-		tilemap.set_cell(-WORLD_LIMIT_X, i, 0)
+	init_map()
 	set_process_input(true)
 	set_process(true)
 
@@ -76,6 +72,24 @@ func _process(delta):
 	if should_move_camera:
 		move_camera(camera_movement)
 
+##
+## Button handlers
+##
+
+func _on_LeaveGameButton_released():
+	get_tree().change_scene("res://scenes/main_menu.tscn")
+
+func _hide_game_menu():
+	get_node("Hud/MainMenuLayer/GameMainMenu").hide()
+	current_shown_menu = 0
+
+##
+## CAMERA
+##
+
+func get_cam():
+	return get_node("GameTileMap/Camera2D")
+
 func move_camera(v):
 	var cam = get_cam()
 	cam.global_translate(v)
@@ -87,13 +101,20 @@ func zoom_camera(multiplier):
 		return
 	cam.set_zoom(new_zoom)
 
-func _on_LeaveGameButton_released():
-	get_tree().change_scene("res://scenes/main_menu.tscn")
+##
+## MAP
+##
 
-func _hide_game_menu():
-	get_node("Hud/MainMenuLayer/GameMainMenu").hide()
-	current_shown_menu = 0
+func get_tilemap():
+	return get_node("GameTileMap")
 
-# node getters
-func get_cam():
-	return get_node("GameTileMap/Camera2D")
+func init_map():
+	var tilemap = get_tilemap();
+	tilemap.set_cell_size(Vector2(WORLD_CELL_SIZE, WORLD_CELL_SIZE))
+	for i in range(-WORLD_LIMIT_X, WORLD_LIMIT_X):
+		tilemap.set_cell(i, WORLD_LIMIT_Y, 0)
+		tilemap.set_cell(i, -WORLD_LIMIT_Y, 0)
+
+	for i in range(-WORLD_LIMIT_Y, WORLD_LIMIT_Y):
+		tilemap.set_cell(WORLD_LIMIT_X, i, 0)
+		tilemap.set_cell(-WORLD_LIMIT_X, i, 0)
