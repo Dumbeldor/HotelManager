@@ -13,22 +13,22 @@
  * All rights reserved
  */
 
-#include "register_types.h"
-#include "object_type_db.h"
-#include "hotelmanagerproject.h"
-#include "gamesession.h"
-#include "character.h"
+#include <math/math_2d.h>
 #include "gamemap.h"
 
-void register_hotelmanager_types()
+enum GameMapTiles
 {
-	ObjectTypeDB::register_type<HotelManagerProject>();
-	ObjectTypeDB::register_type<GameSession>();
-	ObjectTypeDB::register_type<Character>();
-	ObjectTypeDB::register_type<GameMap>();
+	TILE_NONE = 0,
+	TILE_GRASS,
+};
+
+void GameMap::_bind_methods()
+{
+	ObjectTypeDB::bind_method("init",&GameMap::init);
+	ObjectTypeDB::bind_method("get_game_cell_size",&GameMap::get_game_cell_size);
 }
 
-void unregister_hotelmanager_types()
+void GameMap::init()
 {
-
+	set_cell_size(Size2(GAME_CELL_SIZE, GAME_CELL_SIZE));
 }

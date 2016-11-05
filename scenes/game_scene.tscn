@@ -178,7 +178,7 @@ margin/top = 192.0
 margin/right = 0.0
 margin/bottom = 0.0
 
-[node name="GameTileMap" type="TileMap" parent="."]
+[node name="GameTileMap" type="GameMap" parent="."]
 
 transform/pos = Vector2( 0, -2 )
 z/z = 10
