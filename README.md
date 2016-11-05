@@ -27,14 +27,7 @@ For Linux platform:
 
 ```
 cd godotengine
-scons platform=x11 \
-	tools=yes \
-	target=release_debug \
-	use_llvm=yes \
-	builtin_zlib=yes \
-	openssl=yes \
-	colored=yes \
-	pulseaudio=no bits=64
+scons platform=x11 tools=yes target=release_debug openssl=yes colored=yes pulseaudio=no
 ```
 
 ## Launch editor
