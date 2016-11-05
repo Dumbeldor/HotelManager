@@ -53,80 +53,6 @@ offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
 
-[node name="GameMainMenu" type="Panel" parent="Hud"]
-
-visibility/visible = false
-visibility/opacity = 0.9
-material/use_parent = true
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 224.0
-margin/top = 352.0
-margin/right = -288.0
-margin/bottom = -288.0
-
-[node name="ResumeButton" type="Button" parent="Hud/GameMainMenu"]
-
-rect/scale = Vector2( 3, 3 )
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 64.0
-margin/top = 64.0
-margin/right = 192.0
-margin/bottom = 64.0
-toggle_mode = false
-click_on_press = true
-enabled_focus_mode = 2
-shortcut = null
-text = "Resume"
-flat = false
-
-[node name="OptionsButton" type="Button" parent="Hud/GameMainMenu/ResumeButton"]
-
-anchor/left = 3
-anchor/right = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 64.0
-margin/top = 128.0
-margin/right = -64.0
-margin/bottom = 20.0
-toggle_mode = false
-click_on_press = true
-enabled_focus_mode = 2
-shortcut = null
-text = "Options"
-flat = false
-
-[node name="LeaveGameButton" type="Button" parent="Hud/GameMainMenu/ResumeButton"]
-
-anchor/left = 3
-anchor/right = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 64.0
-margin/top = 156.0
-margin/right = -64.0
-margin/bottom = 176.0
-toggle_mode = false
-click_on_press = true
-enabled_focus_mode = 2
-shortcut = null
-text = "Leave game"
-flat = false
-
 [node name="ControlPane_Top" type="Control" parent="Hud"]
 
 anchor/left = 3
@@ -203,8 +129,89 @@ margin/top = -13.0
 margin/right = -20.0
 margin/bottom = 27.0
 
-[connection signal="released" from="Hud/GameMainMenu/ResumeButton" to="." method="_hide_game_menu"]
+[node name="MainMenuLayer" type="CanvasLayer" parent="Hud"]
 
-[connection signal="released" from="Hud/GameMainMenu/ResumeButton/LeaveGameButton" to="." method="_on_LeaveGameButton_released"]
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+
+[node name="GameMainMenu" type="Panel" parent="Hud/MainMenuLayer"]
+
+visibility/visible = false
+visibility/opacity = 0.9
+material/use_parent = true
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 224.0
+margin/top = 352.0
+margin/right = -288.0
+margin/bottom = -288.0
+
+[node name="ResumeButton" type="Button" parent="Hud/MainMenuLayer/GameMainMenu"]
+
+rect/scale = Vector2( 3, 3 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 64.0
+margin/top = 64.0
+margin/right = 192.0
+margin/bottom = 64.0
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Resume"
+flat = false
+
+[node name="OptionsButton" type="Button" parent="Hud/MainMenuLayer/GameMainMenu/ResumeButton"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 64.0
+margin/top = 128.0
+margin/right = -64.0
+margin/bottom = 20.0
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Options"
+flat = false
+
+[node name="LeaveGameButton" type="Button" parent="Hud/MainMenuLayer/GameMainMenu/ResumeButton"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 64.0
+margin/top = 156.0
+margin/right = -64.0
+margin/bottom = 176.0
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Leave game"
+flat = false
+
+[connection signal="released" from="Hud/MainMenuLayer/GameMainMenu/ResumeButton" to="." method="_hide_game_menu"]
+
+[connection signal="released" from="Hud/MainMenuLayer/GameMainMenu/ResumeButton/LeaveGameButton" to="." method="_on_LeaveGameButton_released"]
 
 

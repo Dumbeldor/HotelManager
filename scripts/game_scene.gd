@@ -17,7 +17,7 @@ func _input(event):
 		if event.is_action("ui_cancel"):
 			if current_shown_menu == 0:
 				# Show game menu
-				get_node("Hud/GameMainMenu").show()
+				get_node("Hud/MainMenuLayer/GameMainMenu").show()
 				current_shown_menu = GAMEMENU.MAIN
 			elif current_shown_menu == GAMEMENU.MAIN:
 				_hide_game_menu()
@@ -74,5 +74,5 @@ func _on_LeaveGameButton_released():
 
 
 func _hide_game_menu():
-	get_node("Hud/GameMainMenu").hide()
+	get_node("Hud/MainMenuLayer/GameMainMenu").hide()
 	current_shown_menu = 0
