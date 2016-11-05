@@ -20,6 +20,9 @@ you should add a wrapper function suffixed with \_\_api name
 
 To build this project, please first compile the embedded Godot engine
 
+Before compile, read this link for packages:
+https://godot.readthedocs.io/en/stable/reference/compiling_for_x11.html
+
 For Linux platform:
 
 ```
