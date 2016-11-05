@@ -50,3 +50,7 @@ func _on_PlayBackButton_released():
 
 func _on_NewGameButton_released():
 	get_tree().change_scene("res://scenes/game_scene.tscn")
+
+
+func _on_OptionsButton_released():
+	get_tree().change_scene("res://scenes/options_scene.tscn")

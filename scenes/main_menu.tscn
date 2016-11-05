@@ -49,9 +49,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 233.333
+margin/top = 233.0
 margin/right = 0.0
-margin/bottom = 253.333
+margin/bottom = 253.0
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -68,9 +68,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 283.333
+margin/top = 283.0
 margin/right = 0.0
-margin/bottom = 303.333
+margin/bottom = 303.0
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -245,6 +245,10 @@ text = "Remove"
 flat = false
 
 [connection signal="released" from="MainMenu/PlayButton" to="." method="_on_PlayButton_released"]
+
+[connection signal="pressed" from="MainMenu/PlayButton/OptionsButton" to="." method="_on_OptionsButton_pressed"]
+
+[connection signal="released" from="MainMenu/PlayButton/OptionsButton" to="." method="_on_OptionsButton_released"]
 
 [connection signal="released" from="MainMenu/PlayButton/QuitButton" to="." method="_on_QuitButton_released"]
 
