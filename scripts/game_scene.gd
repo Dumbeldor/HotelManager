@@ -1,5 +1,5 @@
 
-extends Sprite
+extends Node2D
 
 var game_session = GameSession.new()
 

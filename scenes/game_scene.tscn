@@ -3,7 +3,7 @@
 [ext_resource path="res://scripts/game_scene.gd" type="Script" id=1]
 [ext_resource path="res://res/test-tileset.xml" type="TileSet" id=2]
 
-[node name="Root" type="Sprite"]
+[node name="Root" type="Node2D"]
 
 script/script = ExtResource( 1 )
 
@@ -53,18 +53,9 @@ offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
 
-[node name="ControlPane_Top" type="Control" parent="Hud"]
+[node name="ControlPane_Top" type="Node2D" parent="Hud"]
 
-anchor/left = 3
-anchor/right = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -32.0
-margin/top = 0.0
-margin/right = -32.0
-margin/bottom = 60.0
+transform/pos = Vector2( 960, 0 )
 
 [node name="DayLabel" type="Label" parent="Hud/ControlPane_Top"]
 
@@ -131,7 +122,7 @@ margin/bottom = 27.0
 
 [node name="MainMenuLayer" type="CanvasLayer" parent="Hud"]
 
-layer = 1
+layer = 100
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
@@ -209,6 +200,21 @@ enabled_focus_mode = 2
 shortcut = null
 text = "Leave game"
 flat = false
+
+[node name="ControlPane_Bottom" type="Panel" parent="Hud"]
+
+visibility/opacity = 0.9
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 192.0
+margin/right = 0.0
+margin/bottom = 0.0
 
 [connection signal="released" from="Hud/MainMenuLayer/GameMainMenu/ResumeButton" to="." method="_hide_game_menu"]
 
