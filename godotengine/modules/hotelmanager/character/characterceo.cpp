@@ -16,7 +16,3 @@
 
 #include "characterceo.h"
 
-CharacterCEO::CharacterCEO():
-	Character(CHARARACTER_ROLE_CEO)
-{
-}

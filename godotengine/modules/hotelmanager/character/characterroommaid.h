@@ -16,12 +16,13 @@
 
 #pragma once
 
-#include "character.h"
+#include "../character.h"
 
-class CharacterCeo: public Character
+class CharacterRoomMaid: public Character
 {
-	OBJ_TYPE(CharacterCeo, Character);
+	OBJ_TYPE(CharacterRoomMaid, Character);
 public:
-	CharacterCeo() { m_character_role = CHARARACTER_ROLE_CEO; }
+	CharacterRoomMaid(): Character(CHARARACTER_ROLE_ROOM_MADE) {}
+protected:
 	static void _bind_methods() {}
 };

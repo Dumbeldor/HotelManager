@@ -21,14 +21,6 @@ Character::Character(CharacterRole role):
 	// @ TODO generate random name
 }
 
-Character::Character(CharacterType type, CharacterSex sex):
-	Node(),
-	m_character_type(type),
-	m_sex(sex)
-{
-	// @ TODO generate random name
-}
-
 void Character::_bind_methods()
 {
 	ObjectTypeDB::bind_method("get_sex",&Character::get_sex);

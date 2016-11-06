@@ -17,11 +17,6 @@
 
 #include "scene/main/node.h"
 
-enum CharacterType
-{
-	CHARACTER_TYPE_NONE,
-};
-
 enum CharacterSex
 {
 	MALE,
@@ -52,7 +47,6 @@ class Character: public Node
 public:
 	Character(): Node() {}
 	Character(CharacterRole role);
-	Character(CharacterType type, CharacterSex sex);
 
 	CharacterSex get_sex() const { return m_sex; }
 	void set_sex(const CharacterSex sex) { m_sex = sex; }
@@ -68,6 +62,5 @@ protected:
 private:
 	String m_character_name = "";
 
-	CharacterType m_character_type = CHARACTER_TYPE_NONE;
 	CharacterSex m_sex = MALE;
 };
