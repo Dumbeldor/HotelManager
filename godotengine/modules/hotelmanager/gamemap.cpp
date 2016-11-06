@@ -36,6 +36,9 @@ void GameMap::_bind_methods()
 
 void GameMap::init()
 {
+	m_sound_player = dynamic_cast<SamplePlayer *>(get_node(SOUND_PLAYER_NODE));
+	assert(m_sound_player);
+
 	set_cell_size(Size2(GAME_CELL_SIZE, GAME_CELL_SIZE));
 
 	// Init map borders
@@ -77,9 +80,6 @@ void GameMap::handle_event_mouse_click(Vector2 pos)
 	Vector2 tile_pos = world_to_map(get_local_mouse_pos());
 	if (get_cellv(tile_pos) != TILE_GRASS) {
 		set_cellv(tile_pos, TILE_GRASS);
-		SamplePlayer *sound_player = dynamic_cast<SamplePlayer *>(get_node(
-			SOUND_PLAYER_NODE));
-		assert(sound_player);
-		sound_player->play(SOUND_POP6);
+		m_sound_player->play(SOUND_POP6);
 	}
 }
