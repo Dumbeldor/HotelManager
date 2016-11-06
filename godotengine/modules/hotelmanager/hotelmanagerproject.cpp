@@ -16,7 +16,7 @@
 #include "hotelmanagerproject.h"
 
 HotelManagerProject::HotelManagerProject():
-	m_version("0.0.1"), m_release("alpha"), m_project_name("HotelManager")
+	m_version("0.0.2"), m_release("alpha"), m_project_name("HotelManager")
 {
 
 }
