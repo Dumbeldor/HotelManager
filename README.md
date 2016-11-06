@@ -20,7 +20,7 @@ you should add a wrapper function suffixed with \_\_api name
 
 To build this project, please first compile the embedded Godot engine
 
-Before compile, read this link for packages:
+To perform engine compilation, please read the following link:
 https://godot.readthedocs.io/en/stable/reference/compiling_for_x11.html
 
 For Linux platform:
@@ -32,8 +32,8 @@ scons platform=x11 tools=yes target=release_debug openssl=yes colored=yes pulsea
 
 ## Launch editor
 
-Just run the compiled editor from godotengine folder
+Launch _./game/launch\_editor.sh_
 
-```
-./godotengine/bin/godot.x11.opt.tools.64 -e
-```
+## Launch game
+
+Launch _./game/launch\_game.sh_

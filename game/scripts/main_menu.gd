@@ -16,7 +16,7 @@ func _ready():
 	var err = configFile.load("user://settings.cfg")
 
 	var fullscreen = configFile.get_value("Config", "fullscreen", false)
-	
+
 	OS.set_window_fullscreen(fullscreen)
 	OS.set_window_title(PROJECT.get_project_name())
 
