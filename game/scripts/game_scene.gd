@@ -25,9 +25,7 @@ func _input(event):
 	if event.type == InputEvent.KEY and event.pressed:
 		if event.is_action("ui_cancel"):
 			if current_shown_menu == 0:
-				# Show game menu
-				get_node("Hud/MainMenuLayer/GameMainMenu").show()
-				current_shown_menu = GAMEMENU.MAIN
+				_show_game_menu()
 			elif current_shown_menu == GAMEMENU.MAIN:
 				_hide_game_menu()
 	elif event.type == InputEvent.MOUSE_BUTTON:
@@ -81,9 +79,16 @@ func _process(delta):
 
 func _on_LeaveGameButton_released():
 	get_tree().change_scene("res://scenes/main_menu.tscn")
+	get_tree().set_pause(false)
+
+func _show_game_menu():
+	get_node("Hud/MainMenuLayer/GameMainMenu").show()
+	get_tree().set_pause(true)
+	current_shown_menu = GAMEMENU.MAIN
 
 func _hide_game_menu():
 	get_node("Hud/MainMenuLayer/GameMainMenu").hide()
+	get_tree().set_pause(false)
 	current_shown_menu = 0
 
 ##
