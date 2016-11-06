@@ -246,8 +246,6 @@ flat = false
 
 [connection signal="released" from="MainMenu/PlayButton" to="." method="_on_PlayButton_released"]
 
-[connection signal="pressed" from="MainMenu/PlayButton/OptionsButton" to="." method="_on_OptionsButton_pressed"]
-
 [connection signal="released" from="MainMenu/PlayButton/OptionsButton" to="." method="_on_OptionsButton_released"]
 
 [connection signal="released" from="MainMenu/PlayButton/QuitButton" to="." method="_on_QuitButton_released"]
