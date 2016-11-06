@@ -82,7 +82,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.289683
-margin/right = 0.333333
+margin/right = 0.332564
 margin/bottom = 0.316138
 toggle_mode = false
 click_on_press = true
@@ -103,9 +103,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 0.579365
-margin/right = 0.333333
-margin/bottom = 0.60582
+margin/top = 0.578042
+margin/right = 0.332564
+margin/bottom = 0.604497
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -126,7 +126,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
-margin/right = 0.333333
+margin/right = 0.332564
 margin/bottom = 0.026455
 toggle_mode = false
 click_on_press = true
@@ -302,8 +302,122 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.199446
 margin/top = 0.0999075
-margin/right = 0.799861
+margin/right = 0.799169
 margin/bottom = 0.79926
+
+[node name="MasterSoundSlider" type="HSlider" parent="SoundMenu/Panel/Container"]
+
+rect/scale = Vector2( 3, 3 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 100.0
+margin/right = 288.0
+margin/bottom = 116.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 1.0
+range/exp_edit = false
+range/rounded = false
+tick_count = 0
+ticks_on_borders = false
+focus_mode = 2
+
+[node name="MusicSlider" type="HSlider" parent="SoundMenu/Panel/Container"]
+
+rect/scale = Vector2( 3, 3 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 291.0
+margin/right = 288.0
+margin/bottom = 307.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 1.0
+range/exp_edit = false
+range/rounded = false
+tick_count = 0
+ticks_on_borders = false
+focus_mode = 2
+
+[node name="EnvironmentSoundSlider" type="HSlider" parent="SoundMenu/Panel/Container"]
+
+rect/scale = Vector2( 3, 3 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 482.0
+margin/right = 288.0
+margin/bottom = 498.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 1.0
+range/exp_edit = false
+range/rounded = false
+tick_count = 0
+ticks_on_borders = false
+focus_mode = 2
+
+[node name="MasterSoundLabel" type="Label" parent="SoundMenu/Panel/Container"]
+
+rect/scale = Vector2( 3, 3 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 59.0
+margin/right = 107.0
+margin/bottom = 73.0
+text = "Sound Master"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="MusicLabel" type="Label" parent="SoundMenu/Panel/Container"]
+
+rect/scale = Vector2( 3, 3 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 250.0
+margin/right = 107.0
+margin/bottom = 264.0
+text = "Music"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="EnvironmentSoundLabel" type="Label" parent="SoundMenu/Panel/Container"]
+
+rect/scale = Vector2( 3, 3 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 441.0
+margin/right = 107.0
+margin/bottom = 455.0
+text = "Music"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 [node name="Title" type="Label" parent="SoundMenu/Panel"]
 
@@ -457,6 +571,12 @@ max_lines_visible = -1
 [connection signal="toggled" from="GraphicsMenu/Panel/Container/FullScreenCheck" to="." method="_on_CheckBox_toggled"]
 
 [connection signal="released" from="SoundMenu/Panel/BackSoundButton" to="." method="_on_BackSoundButton_released"]
+
+[connection signal="value_changed" from="SoundMenu/Panel/Container/MasterSoundSlider" to="." method="_on_MasterSoundSlider_value_changed"]
+
+[connection signal="value_changed" from="SoundMenu/Panel/Container/MusicSlider" to="." method="_on_MusicSlider_value_changed"]
+
+[connection signal="value_changed" from="SoundMenu/Panel/Container/EnvironmentSoundSlider" to="." method="_on_EnvironmentSoundSlider_value_changed"]
 
 [connection signal="released" from="InputMenu/Panel/BackInputButton" to="." method="_on_BackInputButton_released"]
 
