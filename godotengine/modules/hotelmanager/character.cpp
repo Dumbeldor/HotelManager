@@ -16,6 +16,7 @@
 #include "character.h"
 
 Character::Character(CharacterType type, CharacterSex sex):
+	Node(),
 	m_character_type(type),
 	m_sex(sex)
 {

@@ -50,7 +50,7 @@ class Character: public Node
 {
 	OBJ_TYPE(Character, Node);
 public:
-	Character() {}
+	Character(): Node() {}
 	Character(CharacterType type, CharacterSex sex);
 
 	CharacterSex get_sex() const { return m_sex; }
