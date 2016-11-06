@@ -15,12 +15,17 @@ var option_config = {
 	sound = false,
 }
 
+var PROJECT = HotelManagerProject.new()
+
 var current_menu = OPTIONMENU.MAIN
 
 func _ready():
+	get_node("ProjectInfos/ProjectNameLabel").set_text(PROJECT.get_project_name())
+	get_node("ProjectInfos/ProjectNameLabel/ProjectVersion").set_text(PROJECT.get_full_version())
+
 	var err = configFile.load("user://settings.cfg")
 
-	option_config.fullscreen = configFile.get_value("Config", "fullscreen", false)
+	option_config.fullscreen = configFile.get_value("Config", "fullscreen", true)
 	set_process_input(true)
 
 func _input(event):
@@ -72,18 +77,13 @@ func _on_BackInputButton_released():
 	get_node("OptionsMenu").show()
 	current_menu = OPTIONMENU.MAIN
 
-
-
 func _on_CheckBox_toggled( pressed ):
-	var is_fullscreen_pressed = get_node("GraphicsMenu/Panel/Container/FullScreenCheck").is_pressed()
-	if (is_fullscreen_pressed):
-		OS.set_window_fullscreen(true)
-		option_config.fullscreen = true
-		configFile.set_value("Config", "fullscreen", true)
-	else:
-		OS.set_window_fullscreen(false)
-		option_config.fullscreen = false
-		configFile.set_value("Config", "fullscreen", false)
-
-func _on_SaveButton_released():
+	option_config.fullscreen = get_node("GraphicsMenu/Panel/Container/FullScreenCheck").is_pressed()
+	OS.set_window_fullscreen(option_config.fullscreen)
+	configFile.set_value("Config", "fullscreen", option_config.fullscreen)
 	configFile.save("user://settings.cfg")
+
+
+
+
+

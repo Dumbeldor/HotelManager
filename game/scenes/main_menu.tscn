@@ -252,10 +252,6 @@ flat = false
 
 [connection signal="released" from="MainMenu/PlayButton/QuitButton" to="." method="_on_QuitButton_released"]
 
-[connection signal="draw" from="ProjectInfos/ProjectNameLabel" to="." method="_on_ProjectNameLabel_draw" flags=3]
-
-[connection signal="draw" from="ProjectInfos/ProjectNameLabel/ProjectVersion" to="." method="_on_ProjectVersion_draw" flags=3]
-
 [connection signal="released" from="PlayMenu/PlayPanel/NewGameButton" to="." method="_on_NewGameButton_released"]
 
 [connection signal="released" from="PlayMenu/PlayPanel/NewGameButton/PlayBackButton" to="." method="_on_PlayBackButton_released"]

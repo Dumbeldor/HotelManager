@@ -11,11 +11,14 @@ const MAINMENU = {
 var current_menu = MAINMENU.MAIN
 
 func _ready():
+	get_node("ProjectInfos/ProjectNameLabel").set_text(PROJECT.get_project_name())
+	get_node("ProjectInfos/ProjectNameLabel/ProjectVersion").set_text(PROJECT.get_full_version())
+
 	# Launch scene in full screen mode
 	var configFile = ConfigFile.new()
 	var err = configFile.load("user://settings.cfg")
 
-	var fullscreen = configFile.get_value("Config", "fullscreen", false)
+	var fullscreen = configFile.get_value("Config", "fullscreen", true)
 
 	OS.set_window_fullscreen(fullscreen)
 	OS.set_window_title(PROJECT.get_project_name())
@@ -36,12 +39,6 @@ func quit():
 
 func _on_QuitButton_released():
 	get_tree().quit()
-
-func _on_ProjectNameLabel_draw():
-	get_node("ProjectInfos/ProjectNameLabel").set_text(PROJECT.get_project_name())
-
-func _on_ProjectVersion_draw():
-	get_node("ProjectInfos/ProjectNameLabel/ProjectVersion").set_text(PROJECT.get_full_version())
 
 func _on_PlayButton_released():
 	get_node("MainMenu").hide()
