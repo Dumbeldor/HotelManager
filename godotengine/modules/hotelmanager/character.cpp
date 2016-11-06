@@ -15,6 +15,12 @@
 
 #include "character.h"
 
+Character::Character(CharacterRole role):
+	m_character_role(role)
+{
+	// @ TODO generate random name
+}
+
 Character::Character(CharacterType type, CharacterSex sex):
 	Node(),
 	m_character_type(type),

@@ -51,6 +51,7 @@ class Character: public Node
 	OBJ_TYPE(Character, Node);
 public:
 	Character(): Node() {}
+	Character(CharacterRole role);
 	Character(CharacterType type, CharacterSex sex);
 
 	CharacterSex get_sex() const { return m_sex; }
@@ -62,11 +63,11 @@ public:
 	void set_role__api(const uint8_t role) { m_character_role = (CharacterRole) role; }
 protected:
 	static void _bind_methods();
+	CharacterRole m_character_role = CHARARACTER_ROLE_NONE;
 
 private:
 	String m_character_name = "";
 
 	CharacterType m_character_type = CHARACTER_TYPE_NONE;
-	CharacterRole m_character_role = CHARARACTER_ROLE_NONE;
 	CharacterSex m_sex = MALE;
 };

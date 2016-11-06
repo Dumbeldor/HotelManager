@@ -18,6 +18,7 @@
 #include "hotelmanagerproject.h"
 #include "gamesession.h"
 #include "character.h"
+#include "character/characterceo.h"
 #include "gamemap.h"
 
 void register_hotelmanager_types()
@@ -25,6 +26,7 @@ void register_hotelmanager_types()
 	ObjectTypeDB::register_type<HotelManagerProject>();
 	ObjectTypeDB::register_type<GameSession>();
 	ObjectTypeDB::register_type<Character>();
+	ObjectTypeDB::register_type<CharacterCEO>();
 	ObjectTypeDB::register_type<GameMap>();
 }
 

@@ -4,3 +4,11 @@ export.cfg
 *.a
 .idea/dbnavigator.xml
 .idea/workspace.xml
+
+## QT Creator
+HotelManager.config
+HotelManager.creator
+HotelManager.files
+HotelManager.includes
+HotelManager.creator.user
+
