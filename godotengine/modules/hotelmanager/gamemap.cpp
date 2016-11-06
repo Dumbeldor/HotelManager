@@ -74,8 +74,12 @@ void GameMap::init()
 
 void GameMap::handle_event_mouse_click(Vector2 pos)
 {
-	set_cellv(world_to_map(get_local_mouse_pos()), TILE_GRASS);
-	SamplePlayer *sound_player = dynamic_cast<SamplePlayer *>(get_node(SOUND_PLAYER_NODE));
-	assert(sound_player);
-	sound_player->play(SOUND_POP6);
+	Vector2 tile_pos = world_to_map(get_local_mouse_pos());
+	if (get_cellv(tile_pos) != TILE_GRASS) {
+		set_cellv(tile_pos, TILE_GRASS);
+		SamplePlayer *sound_player = dynamic_cast<SamplePlayer *>(get_node(
+			SOUND_PLAYER_NODE));
+		assert(sound_player);
+		sound_player->play(SOUND_POP6);
+	}
 }
