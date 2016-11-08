@@ -79,7 +79,7 @@ func _on_BackSoundButton_released():
 	get_node("OptionsMenu").show()
 	current_menu = OPTIONMENU.MAIN
 	configFile.save("user://settings.cfg")
-	
+
 
 func _on_BackInputButton_released():
 	get_node("InputMenu").hide()
@@ -91,7 +91,7 @@ func _on_CheckBox_toggled( pressed ):
 	OS.set_window_fullscreen(option_config.fullscreen)
 	configFile.set_value("Graphics", "fullscreen", option_config.fullscreen)
 	configFile.save("user://settings.cfg")
-	
+
 #--------------
 #Sound Option
 #--------------
