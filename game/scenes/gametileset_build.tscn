@@ -4,17 +4,64 @@
 
 [node name="Node2D" type="Node2D"]
 
+[node name="Grass" type="Sprite" parent="."]
+
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 0, 0, 96, 96 )
+
 [node name="Empty" type="Sprite" parent="."]
 
 texture = ExtResource( 1 )
 region = true
 region_rect = Rect2( 96, 0, 96, 96 )
 
-[node name="Grass" type="Sprite" parent="."]
+[node name="Stone" type="Sprite" parent="."]
 
-visibility/visible = false
 texture = ExtResource( 1 )
 region = true
-region_rect = Rect2( 0, 0, 96, 96 )
+region_rect = Rect2( 192, 0, 96, 96 )
+
+[node name="Forest" type="Sprite" parent="."]
+
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 288, 0, 96, 96 )
+
+[node name="SeaWater" type="Sprite" parent="."]
+
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 394, 0, 96, 96 )
+
+[node name="SwimmingpoolWater" type="Sprite" parent="."]
+
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 0, 96, 96, 96 )
+
+[node name="FloorTile" type="Sprite" parent="."]
+
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 96, 96, 96, 96 )
+
+[node name="Linoleum" type="Sprite" parent="."]
+
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 192, 96, 96, 96 )
+
+[node name="Mosaic" type="Sprite" parent="."]
+
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 288, 96, 96, 96 )
+
+[node name="Parquet" type="Sprite" parent="."]
+
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 394, 96, 96, 96 )
 
 
