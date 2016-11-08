@@ -25,6 +25,21 @@ static constexpr uint16_t GAME_CELL_SIZE = 96;
 static constexpr uint16_t WORLD_LIMIT_X = 180;
 static const uint16_t WORLD_LIMIT_Y = (uint16_t) floor(WORLD_LIMIT_X * 1080 / 1920);
 
+enum FloorTiles
+{
+	TILE_NONE = 0,
+	TILE_GRASS,
+	TILE_STONE,
+	TILE_FOREST,
+	TILE_SEAWATER,
+	TILE_SWIMMINGPOOLWATER,
+	TILE_FLOORTILE,
+	TILE_LINOLEUM,
+	TILE_MOSAIC,
+	TILE_PARQUET,
+	TILE_CARPET,
+};
+
 class GameMap: public TileMap
 {
 	OBJ_TYPE(GameMap, TileMap);

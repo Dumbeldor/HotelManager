@@ -20,12 +20,6 @@
 #define SOUND_PLAYER_NODE String("GameMapSoundPlayer")
 #define SOUND_POP6 String("pop-6")
 
-enum GameMapTiles
-{
-	TILE_NONE = 0,
-	TILE_GRASS,
-};
-
 void GameMap::_bind_methods()
 {
 	ObjectTypeDB::bind_method("init",&GameMap::init);
