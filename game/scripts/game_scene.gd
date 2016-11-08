@@ -82,12 +82,12 @@ func _on_LeaveGameButton_released():
 	get_tree().set_pause(false)
 
 func _show_game_menu():
-	get_node("Hud/MainMenuLayer/GameMainMenu").show()
+	get_node("MainMenuLayer/GameMainMenu").show()
 	get_tree().set_pause(true)
 	current_shown_menu = GAMEMENU.MAIN
 
 func _hide_game_menu():
-	get_node("Hud/MainMenuLayer/GameMainMenu").hide()
+	get_node("MainMenuLayer/GameMainMenu").hide()
 	get_tree().set_pause(false)
 	current_shown_menu = 0
 
@@ -124,4 +124,3 @@ func init_map():
 	tilemap.init()
 	# Load some informations from cpp
 	WORLD_LIMITS = tilemap.get_world_limits()
-
