@@ -169,20 +169,45 @@ shortcut = null
 text = "Leave game"
 flat = false
 
-[node name="ControlPane_Bottom" type="Panel" parent="Hud"]
+[node name="ControlPane_Bottom" type="TabContainer" parent="Hud"]
 
-visibility/opacity = 0.9
-anchor/top = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 888.0
+margin/right = 1920.0
+margin/bottom = 1082.0
+tab_align = 0
+tabs_visible = true
+
+[node name="Grounds" type="Tabs" parent="Hud/ControlPane_Bottom"]
+
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 192.0
-margin/right = 0.0
-margin/bottom = 0.0
+margin/left = 4.0
+margin/top = 32.0
+margin/right = 4.0
+margin/bottom = 12.0
+
+[node name="Rooms" type="Tabs" parent="Hud/ControlPane_Bottom"]
+
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 4.0
+margin/top = 32.0
+margin/right = 4.0
+margin/bottom = 4.0
 
 [node name="GameTileMap" type="GameMap" parent="."]
 
@@ -201,7 +226,7 @@ collision/bounce = 0.0
 collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
-tile_data = IntArray( -131069, 8, -65532, 1, 65537, 7, 131076, 1, 131079, 0, 131083, 0, 196612, 1, 262145, 6, 262152, 1, 262153, 1, 262154, 1, 262155, 1, 327686, 9, 327688, 1, 327689, 1, 327690, 1, 327691, 1, 393219, 4, 393224, 1, 393225, 1, 393226, 1, 393227, 1, 458765, 0, 458766, 0, 458767, 0, 655373, 0, 983051, 0 )
+tile_data = IntArray( -131069, 8, -65532, 1, 65537, 7, 131076, 1, 131079, 0, 131083, 0, 196612, 1, 262145, 6, 262152, 1, 262153, 1, 262154, 1, 262155, 1, 327686, 9, 327688, 1, 327689, 1, 327690, 1, 327691, 1, 393219, 4, 393224, 1, 393225, 1, 393226, 1, 393227, 1, 458765, 0, 458766, 0, 458767, 0, 655371, 9, 655373, 0, 983051, 0 )
 script/script = ExtResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="GameTileMap"]
