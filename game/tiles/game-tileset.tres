@@ -84,4 +84,12 @@
 9/navigation_offset = Vector2( 48, 48 )
 9/shape_offset = Vector2( 0, 0 )
 9/shapes = [  ]
+10/name = "Carpet"
+10/texture = ExtResource( 1 )
+10/tex_offset = Vector2( 0, 0 )
+10/region = Rect2( 0, 192, 96, 96 )
+10/occluder_offset = Vector2( 48, 48 )
+10/navigation_offset = Vector2( 48, 48 )
+10/shape_offset = Vector2( 0, 0 )
+10/shapes = [  ]
 

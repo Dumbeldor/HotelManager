@@ -64,4 +64,10 @@ texture = ExtResource( 1 )
 region = true
 region_rect = Rect2( 394, 96, 96, 96 )
 
+[node name="Carpet" type="Sprite" parent="."]
+
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 0, 192, 96, 96 )
+
 
