@@ -15,6 +15,7 @@
 
 #include <cassert>
 #include "gamemap.h"
+#include "game_tiles.h"
 #include "scene/audio/sample_player.h"
 
 #define SOUND_PLAYER_NODE String("GameMapSoundPlayer")
@@ -22,10 +23,10 @@
 
 void GameMap::_bind_methods()
 {
-	ObjectTypeDB::bind_method("init",&GameMap::init);
-	ObjectTypeDB::bind_method("get_game_cell_size",&GameMap::get_game_cell_size);
-	ObjectTypeDB::bind_method("get_world_limits",&GameMap::get_world_limits);
-	ObjectTypeDB::bind_method("handle_event_mouse_click",&GameMap::handle_event_mouse_click);
+	ObjectTypeDB::bind_method("init", &GameMap::init);
+	ObjectTypeDB::bind_method("get_game_cell_size", &GameMap::get_game_cell_size);
+	ObjectTypeDB::bind_method("get_world_limits", &GameMap::get_world_limits);
+	ObjectTypeDB::bind_method("handle_event_mouse_click", &GameMap::handle_event_mouse_click);
 }
 
 void GameMap::init()

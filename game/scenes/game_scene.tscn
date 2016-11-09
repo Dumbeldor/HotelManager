@@ -248,7 +248,7 @@ margin/bottom = 1082.0
 tab_align = 0
 tabs_visible = true
 
-[node name="Grounds" type="Tabs" parent="Hud/TileMapControl/ControlPane_Bottom"]
+[node name="Grounds" type="GroundTab" parent="Hud/TileMapControl/ControlPane_Bottom"]
 
 anchor/right = 1
 anchor/bottom = 1
@@ -263,7 +263,6 @@ margin/bottom = 4.0
 
 [node name="Rooms" type="Tabs" parent="Hud/TileMapControl/ControlPane_Bottom"]
 
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
