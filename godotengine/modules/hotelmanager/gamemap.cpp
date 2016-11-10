@@ -34,7 +34,7 @@ void GameMap::init()
 	m_sound_player = dynamic_cast<SamplePlayer *>(get_node(SOUND_PLAYER_NODE));
 	assert(m_sound_player);
 
-	set_cell_size(Size2(GAME_CELL_SIZE, GAME_CELL_SIZE));
+	set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
 
 	// Init map borders
 	for (uint16_t x = WORLD_LIMIT_X + 1; x < WORLD_LIMIT_X + 10; x++) {
@@ -56,25 +56,25 @@ void GameMap::init()
 	}
 
 	for (uint16_t x = 0; x < WORLD_LIMIT_X + 1; x++) {
-		set_cell(x, WORLD_LIMIT_Y, TILE_GRASS);
-		set_cell(-x, WORLD_LIMIT_Y, TILE_GRASS);
-		set_cell(x, -WORLD_LIMIT_Y, TILE_GRASS);
-		set_cell(-x, -WORLD_LIMIT_Y, TILE_GRASS);
+		set_cell(x, WORLD_LIMIT_Y, TILE_GROUND_GRASS);
+		set_cell(-x, WORLD_LIMIT_Y, TILE_GROUND_GRASS);
+		set_cell(x, -WORLD_LIMIT_Y, TILE_GROUND_GRASS);
+		set_cell(-x, -WORLD_LIMIT_Y, TILE_GROUND_GRASS);
 	}
 
 	for (uint16_t y = 0; y < WORLD_LIMIT_Y + 1; y++) {
-		set_cell(WORLD_LIMIT_X, y, TILE_GRASS);
-		set_cell(-WORLD_LIMIT_X, y, TILE_GRASS);
-		set_cell(WORLD_LIMIT_X, -y, TILE_GRASS);
-		set_cell(-WORLD_LIMIT_X, -y, TILE_GRASS);
+		set_cell(WORLD_LIMIT_X, y, TILE_GROUND_GRASS);
+		set_cell(-WORLD_LIMIT_X, y, TILE_GROUND_GRASS);
+		set_cell(WORLD_LIMIT_X, -y, TILE_GROUND_GRASS);
+		set_cell(-WORLD_LIMIT_X, -y, TILE_GROUND_GRASS);
 	}
 }
 
 void GameMap::handle_event_mouse_click(Vector2 pos)
 {
 	Vector2 tile_pos = world_to_map(get_local_mouse_pos());
-	if (get_cellv(tile_pos) != TILE_GRASS) {
-		set_cellv(tile_pos, TILE_GRASS);
+	if (get_cellv(tile_pos) != TILE_GROUND_GRASS) {
+		set_cellv(tile_pos, TILE_GROUND_GRASS);
 		m_sound_player->play(SOUND_POP6);
 	}
 }

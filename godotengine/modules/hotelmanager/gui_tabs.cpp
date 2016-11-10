@@ -28,10 +28,14 @@ void GroundTab::init()
 {
 	TextureButton *tb = nullptr;
 	for (uint16_t i = 0; i < TILE_MAX; i++) {
+		if (game_tile_defs[i].type != TILE_TYPE_GROUND) {
+			continue;
+		}
+
 		TextureButton *tmp = memnew(TextureButton);
 		if (tb) {
 			tb->add_child(tmp);
-			tmp->set_margin(MARGIN_LEFT, FLOOR_TILE_SIZE + 20);
+			tmp->set_margin(MARGIN_LEFT, GAME_TILE_SIZE + 20);
 		}
 		else {
 			add_child(tmp);
@@ -41,17 +45,17 @@ void GroundTab::init()
 
 		tb = tmp;
 
-		tb->set_size(Size2(FLOOR_TILE_SIZE, FLOOR_TILE_SIZE));
+		tb->set_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
 
 		ImageTexture *texture = memnew(ImageTexture);
-		texture->load(String("res://tiles/") + floor_tile_defs[i].texture_name);
+		texture->load(String("res://tiles/") + game_tile_defs[i].texture_name);
 		tb->set_normal_texture(texture);
 
 		Label *label = memnew(Label);
-		label->set_text(floor_tile_defs[i].label);
+		label->set_text(game_tile_defs[i].label);
 		label->set_align(Label::ALIGN_CENTER);
-		label->set_margin(MARGIN_RIGHT, FLOOR_TILE_SIZE);
-		label->set_margin(MARGIN_TOP, FLOOR_TILE_SIZE + 5);
+		label->set_margin(MARGIN_RIGHT, GAME_TILE_SIZE);
+		label->set_margin(MARGIN_TOP, GAME_TILE_SIZE + 5);
 		tb->add_child(label);
 	}
 }

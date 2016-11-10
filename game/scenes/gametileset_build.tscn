@@ -17,66 +17,66 @@
 [node name="Grass" type="Sprite" parent="."]
 
 texture = ExtResource( 1 )
-region_rect = Rect2( 0, 0, 96, 96 )
+region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Empty" type="Sprite" parent="."]
 
 texture = ExtResource( 2 )
 region = true
-region_rect = Rect2( 96, 0, 96, 96 )
+region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Stone" type="Sprite" parent="."]
 
 texture = ExtResource( 3 )
 region = true
-region_rect = Rect2( 192, 0, 96, 96 )
+region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Forest" type="Sprite" parent="."]
 
 texture = ExtResource( 4 )
 region = true
-region_rect = Rect2( 288, 0, 96, 96 )
+region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="SeaWater" type="Sprite" parent="."]
 
 texture = ExtResource( 5 )
 region = true
-region_rect = Rect2( 394, 0, 96, 96 )
+region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="SwimmingpoolWater" type="Sprite" parent="."]
 
 texture = ExtResource( 6 )
 region = true
-region_rect = Rect2( 0, 96, 96, 96 )
+region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="FloorTile" type="Sprite" parent="."]
 
 texture = ExtResource( 7 )
 region = true
-region_rect = Rect2( 96, 96, 96, 96 )
+region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Linoleum" type="Sprite" parent="."]
 
 texture = ExtResource( 8 )
 region = true
-region_rect = Rect2( 192, 96, 96, 96 )
+region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Mosaic" type="Sprite" parent="."]
 
 texture = ExtResource( 9 )
 region = true
-region_rect = Rect2( 288, 96, 96, 96 )
+region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Parquet" type="Sprite" parent="."]
 
 texture = ExtResource( 10 )
 region = true
-region_rect = Rect2( 394, 96, 96, 96 )
+region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Carpet" type="Sprite" parent="."]
 
 texture = ExtResource( 11 )
 region = true
-region_rect = Rect2( 0, 192, 96, 96 )
+region_rect = Rect2( 0, 0, 48, 48 )
 
 

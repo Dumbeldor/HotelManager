@@ -17,41 +17,49 @@
 
 #include <cstdint>
 
-static constexpr uint16_t FLOOR_TILE_SIZE = 96;
-enum FloorTile
+static constexpr uint16_t GAME_TILE_SIZE = 48;
+enum GameMapTile
 {
 	TILE_NONE = 0,
-	TILE_GRASS,
-	TILE_STONE,
-	TILE_FOREST,
-	TILE_SEAWATER,
-	TILE_SWIMMINGPOOLWATER,
-	TILE_FLOORTILE,
-	TILE_LINOLEUM,
-	TILE_MOSAIC,
-	TILE_PARQUET,
-	TILE_CARPET,
+	TILE_GROUND_GRASS,
+	TILE_GROUND_STONE,
+	TILE_GROUND_FOREST,
+	TILE_GROUND_SEAWATER,
+	TILE_GROUND_SWIMMINGPOOLWATER,
+	TILE_GROUND_FLOORTILE,
+	TILE_GROUND_LINOLEUM,
+	TILE_GROUND_MOSAIC,
+	TILE_GROUND_PARQUET,
+	TILE_GROUND_CARPET,
 	TILE_MAX,
 };
 
-struct FloorTileDef
+enum TileType
 {
-	FloorTile id;
+	TILE_TYPE_GENERIC,
+	TILE_TYPE_GROUND,
+	TILE_TYPE_WALL,
+};
+
+struct GameTileDef
+{
+	GameMapTile id;
+	TileType type;
 	const char* name;
 	const char* texture_name;
 	const char* label;
 };
 
-static const FloorTileDef floor_tile_defs[TILE_MAX] = {
-	{TILE_NONE, 				"none", 				"tile_empty.png", 				"Empty"},
-	{TILE_GRASS,				"grass", 				"tile_grass.png", 				"Grass"},
-	{TILE_STONE,				"stone", 				"tile_stone.png", 				"Stone"},
-	{TILE_FOREST,				"forest", 				"tile_forest.png",				"Forest"},
-	{TILE_SEAWATER, 			"seawater", 			"tile_seawater.png", 			"Sea water"},
-	{TILE_SWIMMINGPOOLWATER,	"swimmingpoolwater", 	"tile_swimmingpoolwater.png", 	"Swimming pool"},
-	{TILE_FLOORTILE,			"floortile", 			"tile_floortile.png", 			"Floor tile"},
-	{TILE_LINOLEUM,				"linoleum", 			"tile_linoleum.png", 			"Linoleum"},
-	{TILE_MOSAIC,				"mosaic", 				"tile_mosaic.png", 				"Mosaic"},
-	{TILE_PARQUET,				"parquet", 			"tile_parquet.png", 			"Parquet"},
-	{TILE_CARPET,				"carpet", 				"tile_carpet.png", 				"Carpet"},
+static const GameTileDef game_tile_defs[TILE_MAX] = {
+	{TILE_NONE, TILE_TYPE_GENERIC, "none", "tile_empty.png", "Empty"},
+	{TILE_GROUND_GRASS,	TILE_TYPE_GROUND, "grass", "tile_grass.png", "Grass"},
+	{TILE_GROUND_STONE, TILE_TYPE_GROUND, "stone", "tile_stone.png", "Stone"},
+	{TILE_GROUND_FOREST, TILE_TYPE_GROUND, "forest", "tile_forest.png",	"Forest"},
+	{TILE_GROUND_SEAWATER, TILE_TYPE_GROUND, "seawater", "tile_seawater.png", "Sea water"},
+	{TILE_GROUND_SWIMMINGPOOLWATER,	TILE_TYPE_GROUND, "swimmingpoolwater", "tile_swimmingpoolwater.png", "Swimming pool"},
+	{TILE_GROUND_FLOORTILE,	TILE_TYPE_GROUND, "floortile", "tile_floortile.png", "Floor tile"},
+	{TILE_GROUND_LINOLEUM, TILE_TYPE_GROUND, "linoleum", "tile_linoleum.png", "Linoleum"},
+	{TILE_GROUND_MOSAIC, TILE_TYPE_GROUND, "mosaic", "tile_mosaic.png", "Mosaic"},
+	{TILE_GROUND_PARQUET, TILE_TYPE_GROUND, "parquet", "tile_parquet.png", "Parquet"},
+	{TILE_GROUND_CARPET, TILE_TYPE_GROUND, "carpet", "tile_carpet.png", "Carpet"},
 };

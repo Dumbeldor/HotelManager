@@ -17,8 +17,8 @@ script/script = ExtResource( 1 )
 z/z = 10
 mode = 0
 tile_set = ExtResource( 2 )
-cell/size = Vector2( 96, 96 )
-cell/quadrant_size = 32
+cell/size = Vector2( 48, 48 )
+cell/quadrant_size = 16
 cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 cell/half_offset = 2
 cell/tile_origin = 0
@@ -261,8 +261,9 @@ margin/top = 32.0
 margin/right = 4.0
 margin/bottom = 4.0
 
-[node name="Rooms" type="Tabs" parent="Hud/TileMapControl/ControlPane_Bottom"]
+[node name="Walls" type="Tabs" parent="Hud/TileMapControl/ControlPane_Bottom"]
 
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
