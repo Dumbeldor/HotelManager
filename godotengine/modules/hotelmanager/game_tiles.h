@@ -18,6 +18,7 @@
 #include <cstdint>
 
 static constexpr uint16_t GAME_TILE_SIZE = 48;
+
 enum GameMapTile
 {
 	TILE_NONE = 0,
@@ -52,6 +53,7 @@ struct GameTileDef
 
 static const GameTileDef game_tile_defs[TILE_MAX] = {
 	{TILE_NONE, TILE_TYPE_GENERIC, "none", "tile_empty.png", "Empty"},
+
 	{TILE_GROUND_GRASS,	TILE_TYPE_GROUND, "grass", "tile_grass.png", "Grass"},
 	{TILE_GROUND_STONE, TILE_TYPE_GROUND, "stone", "tile_stone.png", "Stone"},
 	{TILE_GROUND_FOREST, TILE_TYPE_GROUND, "forest", "tile_forest.png",	"Forest"},

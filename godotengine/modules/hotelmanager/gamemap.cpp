@@ -17,6 +17,7 @@
 #include "gamemap.h"
 #include "game_tiles.h"
 #include "scene/audio/sample_player.h"
+#include "objectselectorbutton.h"
 
 #define SOUND_PLAYER_NODE String("GameMapSoundPlayer")
 #define SOUND_POP6 String("pop-6")
@@ -73,8 +74,10 @@ void GameMap::init()
 void GameMap::handle_event_mouse_click(Vector2 pos)
 {
 	Vector2 tile_pos = world_to_map(get_local_mouse_pos());
-	if (get_cellv(tile_pos) != TILE_GROUND_GRASS) {
-		set_cellv(tile_pos, TILE_GROUND_GRASS);
+	GameMapTile s_tile = ObjectSelectorButton::get_selected_object();
+
+	if (get_cellv(tile_pos) != s_tile) {
+		set_cellv(tile_pos, s_tile);
 		m_sound_player->play(SOUND_POP6);
 	}
 }

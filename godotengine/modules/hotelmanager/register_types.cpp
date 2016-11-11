@@ -22,6 +22,7 @@
 #include "character/characterroommaid.h"
 #include "gamemap.h"
 #include "gui_tabs.h"
+#include "objectselectorbutton.h"
 
 void register_hotelmanager_types()
 {
@@ -32,6 +33,7 @@ void register_hotelmanager_types()
 	ObjectTypeDB::register_type<CharacterRoomMaid>();
 	ObjectTypeDB::register_type<GameMap>();
 	ObjectTypeDB::register_type<GroundTab>();
+	ObjectTypeDB::register_type<ObjectSelectorButton>();
 }
 
 void unregister_hotelmanager_types()
