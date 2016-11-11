@@ -13,9 +13,7 @@
  * All rights reserved
  */
 
-#include <cassert>
 #include "gamemap.h"
-#include "game_tiles.h"
 #include "scene/audio/sample_player.h"
 #include "objectselectorbutton.h"
 
