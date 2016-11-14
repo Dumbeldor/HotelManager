@@ -45,13 +45,13 @@ func _ready():
 
 	init_map()
 
-	get_node("Hud/TileMapControl/ControlPane_Bottom/Grounds").init()
+	get_node("GameMap/Hud/ControlPane_Bottom/Grounds").init()
 
-	var day_label = get_node("Hud/TileMapControl/ControlPane_Top/DayLabel")
+	var day_label = get_node("GameMap/Hud/ControlPane_Top/DayLabel")
 	if day_label:
 		day_label.set_text("Day: " + str(game_session.get_current_day()))
 
-	var money_label = get_node("Hud/TileMapControl/ControlPane_Top/DayLabel/MoneyLabel")
+	var money_label = get_node("GameMap/Hud/ControlPane_Top/DayLabel/MoneyLabel")
 	if money_label:
 		money_label.set_text(str(game_session.get_money()) + " $")
 
@@ -100,7 +100,7 @@ func _hide_game_menu():
 ##
 
 func get_cam():
-	return get_node("GameTileMap/Camera2D")
+	return get_node("GameMap/TileMap/Camera2D")
 
 func move_camera(v):
 	var cam = get_cam()
@@ -120,21 +120,23 @@ func zoom_camera(multiplier):
 ## MAP
 ##
 
-func get_tilemap():
-	return get_node("GameTileMap")
+func get_map():
+	return get_node("GameMap")
 
 func init_map():
-	var tilemap = get_tilemap();
-	tilemap.init()
+	var map = get_map();
+	map.init()
 	# Load some informations from cpp
-	WORLD_LIMITS = tilemap.get_world_limits()
+	WORLD_LIMITS = map.get_world_limits()
 
 func _on_TileMap_input_event(event):
 	if event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT:
 		if event.is_pressed():
 			input_mouse_pressed_on_gamemap = true
-			get_tilemap().handle_event_mouse_click(event.pos)
+			#get_map().handle_event_mouse_click(event.pos)
 		else:
 			input_mouse_pressed_on_gamemap = false
 	elif event.type == InputEvent.MOUSE_MOTION and input_mouse_pressed_on_gamemap:
-		get_tilemap().handle_event_mouse_click(event.pos)
+		pass
+		#get_map().handle_event_mouse_click(event.pos)
+
