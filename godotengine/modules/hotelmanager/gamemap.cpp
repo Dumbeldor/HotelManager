@@ -164,10 +164,10 @@ void GameMap::_on_input_event(const InputEvent &p_event)
 		}
 		break;
 		case InputEvent::MOUSE_BUTTON: {
-			const InputEventMouseButton &mb=p_event.mouse_button;
+			const InputEventMouseButton &mb = p_event.mouse_button;
 
-			if (mb.button_index==BUTTON_LEFT) {
-				if (!m_mouse_pressed_on_map && p_event.is_pressed()) {
+			if (mb.button_index == BUTTON_LEFT && p_event.is_pressed()) {
+				if (!m_mouse_pressed_on_map) {
 					m_mouse_pressed_on_map = true;
 				}
 
@@ -181,9 +181,13 @@ void GameMap::_on_input_event(const InputEvent &p_event)
 
 void GameMap::place_selected_tile()
 {
-	Vector2 tile_pos = m_tile_map->world_to_map(get_local_mouse_pos());
 	GameMapTile s_tile = ObjectSelectorButton::get_selected_object();
+	// Ignore none tiles
+	if (s_tile == TILE_NONE) {
+		return;
+	}
 
+	Vector2 tile_pos = m_tile_map->world_to_map(get_local_mouse_pos());
 	if (m_tile_map->get_cellv(tile_pos) != s_tile) {
 		m_tile_map->set_cellv(tile_pos, s_tile);
 		m_sound_player->play(SOUND_POP6);
