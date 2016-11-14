@@ -126,16 +126,13 @@ void GameMap::_canvas_draw()
 			}
 
 			// Hovering lines
+			Vector<Vector2> points;
 			for (uint8_t i = 0; i < 4; i++) {
 				m_control->draw_line(endpoints[i], endpoints[(i + 1) % 4], col, 2);
+				points.push_back(endpoints[i]);
 			}
 
 			// Hovering rectangle
-			Vector<Vector2> points;
-			points.push_back(endpoints[0]);
-			points.push_back(endpoints[1]);
-			points.push_back(endpoints[2]);
-			points.push_back(endpoints[3]);
 			m_control->draw_colored_polygon(points, Color(0.2, 1, 0.4, 0.4));
 		}
 	}
