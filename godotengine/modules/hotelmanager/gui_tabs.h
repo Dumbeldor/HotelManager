@@ -24,5 +24,4 @@ public:
 	GroundTab();
 protected:
 	static void _bind_methods();
-	void init();
 };

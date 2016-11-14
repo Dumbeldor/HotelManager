@@ -43,5 +43,4 @@ private:
 	static GameMapTile s_selected_object;
 
 	GameMapTile m_tile = TILE_NONE;
-	Label *m_label = nullptr;
 };
