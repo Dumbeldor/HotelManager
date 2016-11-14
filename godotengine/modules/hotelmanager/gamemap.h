@@ -39,13 +39,17 @@ protected:
 	void _canvas_draw();
 	void _canvas_mouse_enter();
 	void _canvas_mouse_exit();
+	void _on_input_event(const InputEvent &p_event);
 private:
 	uint16_t get_game_cell_size() const { return GAME_TILE_SIZE; }
 	Vector2 get_world_limits() const { return Vector2(WORLD_LIMIT_X, WORLD_LIMIT_Y); }
-	void handle_event_mouse_click(Vector2 pos);
+	void place_selected_tile();
 
 	Control *m_control = nullptr;
 	bool m_mouse_over = false;
+	bool m_mouse_pressed_on_map = false;
+	Point2i m_over_tile;
+
 	TileMap *m_tile_map = nullptr;
 	Camera2D *m_camera = nullptr;
 	SamplePlayer *m_sound_player = nullptr;

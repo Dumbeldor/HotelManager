@@ -275,6 +275,8 @@ default/reverb_room = 2
 default/reverb_send = 0.0
 default/chorus_send = 0.0
 
+[connection signal="input_event" from="GameMap" to="GameMap" method="_on_input_event"]
+
 [connection signal="mouse_enter" from="GameMap" to="GameMap" method="_canvas_mouse_enter"]
 
 [connection signal="mouse_exit" from="GameMap" to="GameMap" method="_canvas_mouse_exit"]

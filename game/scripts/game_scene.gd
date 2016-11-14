@@ -127,14 +127,3 @@ func init_map():
 	# Load some informations from cpp
 	WORLD_LIMITS = map.get_world_limits()
 
-func _on_TileMap_input_event(event):
-	if event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT:
-		if event.is_pressed():
-			input_mouse_pressed_on_gamemap = true
-			#get_map().handle_event_mouse_click(event.pos)
-		else:
-			input_mouse_pressed_on_gamemap = false
-	elif event.type == InputEvent.MOUSE_MOTION and input_mouse_pressed_on_gamemap:
-		pass
-		#get_map().handle_event_mouse_click(event.pos)
-

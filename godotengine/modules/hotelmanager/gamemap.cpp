@@ -47,10 +47,10 @@ void GameMap::_bind_methods()
 	ObjectTypeDB::bind_method("init", &GameMap::init);
 	ObjectTypeDB::bind_method("get_game_cell_size", &GameMap::get_game_cell_size);
 	ObjectTypeDB::bind_method("get_world_limits", &GameMap::get_world_limits);
-	ObjectTypeDB::bind_method("handle_event_mouse_click", &GameMap::handle_event_mouse_click);
 	ObjectTypeDB::bind_method(_MD("_canvas_draw"),&GameMap::_canvas_draw);
 	ObjectTypeDB::bind_method(_MD("_canvas_mouse_enter"),&GameMap::_canvas_mouse_enter);
 	ObjectTypeDB::bind_method(_MD("_canvas_mouse_exit"),&GameMap::_canvas_mouse_exit);
+	ObjectTypeDB::bind_method(_MD("_on_input_event"),&GameMap::_on_input_event);
 }
 
 void GameMap::init()
@@ -105,6 +105,35 @@ void GameMap::init()
 
 void GameMap::_canvas_draw()
 {
+	// If mouse is over a node
+	if (m_mouse_over) {
+		int tile_id = m_tile_map->get_cell(m_over_tile.x, m_over_tile.y);
+		// We have an object selected and current tile is valid
+		if (tile_id != TileMap::INVALID_CELL &&
+			ObjectSelectorButton::get_selected_object() != TILE_NONE) {
+			Vector2 endpoints[4] = {
+				m_tile_map->map_to_world(m_over_tile, true),
+				m_tile_map->map_to_world((m_over_tile + Point2(1, 0)), true),
+				m_tile_map->map_to_world((m_over_tile + Point2(1, 1)), true),
+				m_tile_map->map_to_world((m_over_tile + Point2(0, 1)), true)
+			};
+
+			Matrix32 cell_xf = m_tile_map->get_cell_transform();
+			Matrix32 xform = m_control->get_canvas_transform() * m_tile_map->get_global_transform();
+
+			for (int i = 0; i < 4; i++) {
+				if (m_tile_map->get_half_offset()==TileMap::HALF_OFFSET_X && ABS(m_over_tile.y)&1)
+					endpoints[i]+=cell_xf[0]*0.5;
+				if (m_tile_map->get_half_offset()==TileMap::HALF_OFFSET_Y && ABS(m_over_tile.x)&1)
+					endpoints[i]+=cell_xf[1]*0.5;
+				endpoints[i]=xform.xform(endpoints[i]);
+			}
+			Color col = Color(0.2, 0.8, 1.0, 0.8);
+
+			for (int i = 0; i < 4; i++)
+				m_control->draw_line(endpoints[i], endpoints[(i + 1) % 4], col, 2);
+		}
+	}
 }
 
 void GameMap::_canvas_mouse_enter()
@@ -119,7 +148,38 @@ void GameMap::_canvas_mouse_exit()
 	m_control->update();
 }
 
-void GameMap::handle_event_mouse_click(Vector2 pos)
+void GameMap::_on_input_event(const InputEvent &p_event)
+{
+	if (!m_tile_map || !m_tile_map->get_tileset().is_valid() || !m_tile_map->is_visible()) {
+		return;
+	}
+
+	switch(p_event.type) {
+		case InputEvent::MOUSE_MOTION: {
+			Point2i new_over_tile = m_tile_map->world_to_map(get_local_mouse_pos());
+			if (new_over_tile != m_over_tile) {
+				m_over_tile = new_over_tile;
+				m_control->update();
+			}
+		}
+		break;
+		case InputEvent::MOUSE_BUTTON: {
+			const InputEventMouseButton &mb=p_event.mouse_button;
+
+			if (mb.button_index==BUTTON_LEFT) {
+				if (!m_mouse_pressed_on_map && p_event.is_pressed()) {
+					m_mouse_pressed_on_map = true;
+				}
+
+				place_selected_tile();
+			}
+		}
+		break;
+		default: break;
+	}
+}
+
+void GameMap::place_selected_tile()
 {
 	Vector2 tile_pos = m_tile_map->world_to_map(get_local_mouse_pos());
 	GameMapTile s_tile = ObjectSelectorButton::get_selected_object();
