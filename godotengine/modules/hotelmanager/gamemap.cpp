@@ -62,7 +62,7 @@ void GameMap::init()
 
 	m_camera->set_limit(MARGIN_LEFT, -(WORLD_LIMIT_X + 3) * GAME_TILE_SIZE);
 	m_camera->set_limit(MARGIN_RIGHT, (WORLD_LIMIT_X + 3) * GAME_TILE_SIZE);
-	m_camera->set_limit(MARGIN_BOTTOM, (WORLD_LIMIT_Y + 3) * GAME_TILE_SIZE);
+	m_camera->set_limit(MARGIN_BOTTOM, (WORLD_LIMIT_Y + 3 + 4) * GAME_TILE_SIZE);
 	m_camera->set_limit(MARGIN_TOP, -(WORLD_LIMIT_Y + 3) * GAME_TILE_SIZE);
 	m_camera->set_enable_follow_smoothing(true);
 	m_camera->set_pos(Point2(960, 540));
