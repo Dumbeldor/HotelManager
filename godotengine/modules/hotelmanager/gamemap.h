@@ -20,6 +20,7 @@
 #include <math.h>
 #include <math/math_2d.h>
 #include <scene/gui/box_container.h>
+#include <scene/2d/camera_2d.h>
 
 class SamplePlayer;
 
@@ -46,6 +47,6 @@ private:
 	Control *m_control = nullptr;
 	bool m_mouse_over = false;
 	TileMap *m_tile_map = nullptr;
-	Camera *m_camera = nullptr;
+	Camera2D *m_camera = nullptr;
 	SamplePlayer *m_sound_player = nullptr;
 };

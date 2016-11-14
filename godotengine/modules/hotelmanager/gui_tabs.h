@@ -21,7 +21,7 @@ class GroundTab: public Tabs
 {
 	OBJ_TYPE(GroundTab, Tabs);
 public:
-	GroundTab() {}
+	GroundTab();
 protected:
 	static void _bind_methods();
 	void init();

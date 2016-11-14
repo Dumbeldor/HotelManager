@@ -20,6 +20,7 @@
 #include "objectselectorbutton.h"
 
 #define TILEMAP_NODE String("TileMap")
+#define CAMERA_NODE String("TileMap/Camera2D")
 #define SOUND_PLAYER_NODE String("MapSoundPlayer")
 #define SOUND_POP6 String("pop-6")
 
@@ -56,7 +57,15 @@ void GameMap::init()
 {
 	m_sound_player = get_parent()->get_node(SOUND_PLAYER_NODE)->cast_to<SamplePlayer>();
 	m_tile_map = get_node(TILEMAP_NODE)->cast_to<TileMap>();
-	assert(m_sound_player && m_tile_map);
+	m_camera = get_node(CAMERA_NODE)->cast_to<Camera2D>();
+	assert(m_sound_player && m_tile_map && m_camera);
+
+	m_camera->set_limit(MARGIN_LEFT, -(WORLD_LIMIT_X + 3) * GAME_TILE_SIZE);
+	m_camera->set_limit(MARGIN_RIGHT, (WORLD_LIMIT_X + 3) * GAME_TILE_SIZE);
+	m_camera->set_limit(MARGIN_BOTTOM, (WORLD_LIMIT_Y + 3) * GAME_TILE_SIZE);
+	m_camera->set_limit(MARGIN_TOP, -(WORLD_LIMIT_Y + 3) * GAME_TILE_SIZE);
+	m_camera->set_enable_follow_smoothing(true);
+	m_camera->set_pos(Point2(960, 540));
 
 	m_tile_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
 
@@ -70,8 +79,8 @@ void GameMap::init()
 		}
 	}
 
-	for (uint16_t x = 0; x < WORLD_LIMIT_X + 10; x++) {
-		for (uint16_t y = WORLD_LIMIT_Y + 1; y < WORLD_LIMIT_Y + 10; y++) {
+	for (uint16_t x = 0; x < WORLD_LIMIT_X + 5; x++) {
+		for (uint16_t y = WORLD_LIMIT_Y + 1; y < WORLD_LIMIT_Y + 5; y++) {
 			m_tile_map->set_cell(x, y, TILE_NONE);
 			m_tile_map->set_cell(-x, y, TILE_NONE);
 			m_tile_map->set_cell(x, -y, TILE_NONE);

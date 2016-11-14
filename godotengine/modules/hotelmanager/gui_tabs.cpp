@@ -18,12 +18,7 @@
 #include "gui_tabs.h"
 #include "objectselectorbutton.h"
 
-void GroundTab::_bind_methods()
-{
-	ObjectTypeDB::bind_method("init", &GroundTab::init);
-}
-
-void GroundTab::init()
+GroundTab::GroundTab()
 {
 	ObjectSelectorButton *tb = nullptr;
 	for (uint16_t i = 0; i < TILE_MAX; i++) {
@@ -47,4 +42,8 @@ void GroundTab::init()
 		tb->set_map_tile((GameMapTile) i);
 		tb->init();
 	}
+}
+
+void GroundTab::_bind_methods()
+{
 }

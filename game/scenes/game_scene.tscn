@@ -45,15 +45,14 @@ tile_data = IntArray( -131069, 8, -65532, 1, 65537, 7, 65542, 10, 131076, 1, 131
 
 [node name="Camera2D" type="Camera2D" parent="GameMap/TileMap"]
 
-transform/pos = Vector2( 960, 540 )
 anchor_mode = 1
 rotating = false
 current = true
 zoom = Vector2( 1, 1 )
-limit/left = -20000
-limit/top = -20000
-limit/right = 20000
-limit/bottom = 20000
+limit/left = 0
+limit/top = 0
+limit/right = 0
+limit/bottom = 0
 drag_margin/h_enabled = true
 drag_margin/v_enabled = true
 smoothing/enable = true

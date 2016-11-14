@@ -45,8 +45,6 @@ func _ready():
 
 	init_map()
 
-	get_node("GameMap/Hud/ControlPane_Bottom/Grounds").init()
-
 	var day_label = get_node("GameMap/Hud/ControlPane_Top/DayLabel")
 	if day_label:
 		day_label.set_text("Day: " + str(game_session.get_current_day()))
