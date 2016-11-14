@@ -109,8 +109,7 @@ void GameMap::_canvas_draw()
 	if (m_mouse_over) {
 		int tile_id = m_tile_map->get_cell(m_over_tile.x, m_over_tile.y);
 		// We have an object selected and current tile is valid
-		if (tile_id != TileMap::INVALID_CELL &&
-			ObjectSelectorButton::get_selected_object() != TILE_NONE) {
+		if (ObjectSelectorButton::get_selected_object() != TILE_NONE) {
 			Vector2 endpoints[4] = {
 				m_tile_map->map_to_world(m_over_tile, true),
 				m_tile_map->map_to_world((m_over_tile + Point2(1, 0)), true),
@@ -118,20 +117,17 @@ void GameMap::_canvas_draw()
 				m_tile_map->map_to_world((m_over_tile + Point2(0, 1)), true)
 			};
 
-			Matrix32 cell_xf = m_tile_map->get_cell_transform();
-			Matrix32 xform = m_control->get_canvas_transform() * m_tile_map->get_global_transform();
-
-			for (int i = 0; i < 4; i++) {
-				if (m_tile_map->get_half_offset()==TileMap::HALF_OFFSET_X && ABS(m_over_tile.y)&1)
-					endpoints[i]+=cell_xf[0]*0.5;
-				if (m_tile_map->get_half_offset()==TileMap::HALF_OFFSET_Y && ABS(m_over_tile.x)&1)
-					endpoints[i]+=cell_xf[1]*0.5;
-				endpoints[i]=xform.xform(endpoints[i]);
+			Color col;
+			if (tile_id != TileMap::INVALID_CELL) {
+				col = Color(0.2, 1.0, 0.8, 0.9);
 			}
-			Color col = Color(0.2, 0.8, 1.0, 0.8);
+			else {
+				col = Color(1.0, 0.4, 0.2, 0.9);
+			}
 
-			for (int i = 0; i < 4; i++)
+			for (uint8_t i = 0; i < 4; i++) {
 				m_control->draw_line(endpoints[i], endpoints[(i + 1) % 4], col, 2);
+			}
 		}
 	}
 }
@@ -156,7 +152,7 @@ void GameMap::_on_input_event(const InputEvent &p_event)
 
 	switch(p_event.type) {
 		case InputEvent::MOUSE_MOTION: {
-			Point2i new_over_tile = m_tile_map->world_to_map(get_local_mouse_pos());
+			Vector2 new_over_tile = m_tile_map->world_to_map(get_local_mouse_pos());
 			if (new_over_tile != m_over_tile) {
 				m_over_tile = new_over_tile;
 				m_control->update();
