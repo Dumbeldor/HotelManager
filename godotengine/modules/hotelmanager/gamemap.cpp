@@ -54,8 +54,7 @@ void GameMap::init()
 	m_tile_map = get_node(TILEMAP_NODE)->cast_to<TileMap>();
 	m_camera = get_node(CAMERA_NODE)->cast_to<Camera2D>();
 	m_control = get_node(MAPCONTROL_NODE)->cast_to<Control>();
-	CanvasLayer *hud = get_node(HUD_NODE)->cast_to<CanvasLayer>();
-	assert(m_sound_player && m_tile_map && m_camera && m_control && hud);
+	assert(m_sound_player && m_tile_map && m_camera && m_control);
 
 	if (!m_control->is_connected("draw", this, "_canvas_draw")) {
 		m_control->connect("draw", this, "_canvas_draw");
@@ -68,8 +67,6 @@ void GameMap::init()
 	if (!m_control->is_connected("mouse_exit", this, "_canvas_mouse_exit")) {
 		m_control->connect("mouse_exit", this, "_canvas_mouse_exit");
 	}
-
-	hud->add_child(m_control);
 
 	m_camera->set_limit(MARGIN_LEFT, -(WORLD_LIMIT_X + 3) * GAME_TILE_SIZE);
 	m_camera->set_limit(MARGIN_RIGHT, (WORLD_LIMIT_X + 3) * GAME_TILE_SIZE);
@@ -150,15 +147,26 @@ void GameMap::_canvas_draw()
 {
 	// If mouse is over a node
 	if (m_mouse_over) {
-		int tile_id = m_tile_map->get_cell(m_over_tile.x, m_over_tile.y);
+		int tile_id = m_tile_map->get_cellv(m_over_tile);
 		// We have an object selected and current tile is valid
 		if (ObjectSelectorButton::get_selected_object() != TILE_NONE) {
+			Matrix32 cell_xf = m_tile_map->get_cell_transform();
+			Matrix32 xform = m_tile_map->get_global_transform() * m_camera->get_canvas_transform();
+
 			Vector2 endpoints[4] = {
-				m_tile_map->map_to_world(m_over_tile, true),
-				m_tile_map->map_to_world((m_over_tile + Point2(1, 0)), true),
-				m_tile_map->map_to_world((m_over_tile + Point2(1, 1)), true),
-				m_tile_map->map_to_world((m_over_tile + Point2(0, 1)), true)
+				m_tile_map->map_to_world(m_over_tile, true),// / m_camera->get_zoom(),
+				m_tile_map->map_to_world((m_over_tile + Point2(1, 0)), true),// / m_camera->get_zoom(),
+				m_tile_map->map_to_world((m_over_tile + Point2(1, 1)), true),// / m_camera->get_zoom(),
+				m_tile_map->map_to_world((m_over_tile + Point2(0, 1)), true)// / m_camera->get_zoom()
 			};
+
+			for (uint8_t i = 0; i < 4;i++) {
+				if (m_tile_map->get_half_offset()==TileMap::HALF_OFFSET_X && ABS(m_over_tile.y)&1)
+					endpoints[i] += cell_xf[0]*0.5;
+				if (m_tile_map->get_half_offset()==TileMap::HALF_OFFSET_Y && ABS(m_over_tile.x)&1)
+					endpoints[i] += cell_xf[1]*0.5;
+				endpoints[i]=xform.xform(endpoints[i]);
+			}
 
 			Color col;
 			if (tile_id != TileMap::INVALID_CELL) {
@@ -237,6 +245,9 @@ void GameMap::zoom_camera(const float multiplier)
 		return;
 	}
 	m_camera->set_zoom(new_zoom);
+
+	// This update permits to refresh hovering
+	m_control->update();
 }
 
 void GameMap::move_camera(Vector2 movement)
@@ -271,6 +282,7 @@ void GameMap::place_selected_tile()
 		return;
 	}
 
+	std::cout << "place: " << get_local_mouse_pos().x << "/ " << get_local_mouse_pos().y << std::endl;
 	Vector2 tile_pos = m_tile_map->world_to_map(get_local_mouse_pos());
 	if (m_tile_map->get_cellv(tile_pos) != s_tile) {
 		m_tile_map->set_cellv(tile_pos, s_tile);
