@@ -15,6 +15,7 @@
 
 #include <scene/main/viewport.h>
 #include <iostream>
+#include <os/input.h>
 #include "gamemap.h"
 #include "scene/audio/sample_player.h"
 #include "objectselectorbutton.h"
@@ -110,7 +111,33 @@ void GameMap::init()
 
 void GameMap::_process(float delta)
 {
+	{
+		bool should_move_camera = false;
+		Vector2 camera_movement(0, 0);
+		if (Input::get_singleton()->is_action_pressed("ui_up")) {
+			should_move_camera = true;
+			camera_movement.y -= 10;
+		}
 
+		if (Input::get_singleton()->is_action_pressed("ui_down")) {
+			should_move_camera = true;
+			camera_movement.y += 10;
+		}
+
+		if (Input::get_singleton()->is_action_pressed("ui_left")) {
+			should_move_camera = true;
+			camera_movement.x -= 10;
+		}
+
+		if (Input::get_singleton()->is_action_pressed("ui_right")) {
+			should_move_camera = true;
+			camera_movement.x += 10;
+		}
+
+		if (should_move_camera) {
+			move_camera(camera_movement);
+		}
+	}
 }
 
 void GameMap::_canvas_draw()
@@ -204,6 +231,14 @@ void GameMap::zoom_camera(const float multiplier)
 		return;
 	}
 	m_camera->set_zoom(new_zoom);
+}
+
+void GameMap::move_camera(Vector2 movement)
+{
+	movement *= m_camera->get_zoom();
+	movement.x *= 0.65;
+	movement.y *= 0.5;
+	m_camera->global_translate(movement);
 }
 
 void GameMap::place_selected_tile()

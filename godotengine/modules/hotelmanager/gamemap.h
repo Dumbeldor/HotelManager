@@ -48,6 +48,7 @@ private:
 	Vector2 get_world_limits() const { return Vector2(WORLD_LIMIT_X, WORLD_LIMIT_Y); }
 	void place_selected_tile();
 	void zoom_camera(const float multiplier);
+	void move_camera(Vector2 movement);
 
 	Control *m_control = nullptr;
 	bool m_mouse_over = false;
