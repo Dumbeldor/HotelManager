@@ -243,6 +243,23 @@ void GameMap::move_camera(Vector2 movement)
 {
 	movement.x *= 0.65;
 	movement.y *= 0.5;
+	movement *= m_camera->get_zoom();
+
+	// Limit camera movement to borders
+	// @ TODO take account the zoom value because when zooming we are not in map borders
+	if (ABS(m_camera->get_pos().x + movement.x - BASE_RESOLUTION.x) > WORLD_LIMIT_X * GAME_TILE_SIZE) {
+		movement.x = 0;
+	}
+
+	if (ABS(m_camera->get_pos().y + movement.y - BASE_RESOLUTION.y) > WORLD_LIMIT_Y * GAME_TILE_SIZE) {
+		movement.y = 0;
+	}
+
+	// If there is no movement, abort
+	if (movement == Vector2(0, 0)) {
+		return;
+	}
+
 	m_camera->global_translate(movement * m_camera->get_zoom());
 }
 
