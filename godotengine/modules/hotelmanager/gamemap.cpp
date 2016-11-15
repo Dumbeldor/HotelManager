@@ -43,6 +43,7 @@ GameMap::GameMap()
 	}
 
 	add_child(m_control);
+	set_process(true);
 }
 
 void GameMap::_bind_methods()
@@ -54,6 +55,7 @@ void GameMap::_bind_methods()
 	ObjectTypeDB::bind_method(_MD("_canvas_mouse_enter"),&GameMap::_canvas_mouse_enter);
 	ObjectTypeDB::bind_method(_MD("_canvas_mouse_exit"),&GameMap::_canvas_mouse_exit);
 	ObjectTypeDB::bind_method(_MD("_on_input_event"),&GameMap::_on_input_event);
+	ObjectTypeDB::bind_method(_MD("_process"),&GameMap::_process);
 }
 
 void GameMap::init()
@@ -104,6 +106,11 @@ void GameMap::init()
 		m_tile_map->set_cell(WORLD_LIMIT_X, -y, TILE_GROUND_GRASS);
 		m_tile_map->set_cell(-WORLD_LIMIT_X, -y, TILE_GROUND_GRASS);
 	}
+}
+
+void GameMap::_process(float delta)
+{
+
 }
 
 void GameMap::_canvas_draw()

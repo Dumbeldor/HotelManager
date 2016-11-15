@@ -9,9 +9,6 @@ const GAMEMENU = {
 	MAIN = 1,
 }
 
-const CAMERA_LIMIT_X = 18000
-const CAMERA_LIMIT_Y = CAMERA_LIMIT_X * 1080 / 1920
-
 var WORLD_LIMITS = Vector2(0, 0)
 
 const TILES = {
@@ -30,12 +27,6 @@ func _input(event):
 				_hide_game_menu()
 
 func _ready():
-	var cam = get_cam()
-	cam.set_limit(MARGIN_BOTTOM, CAMERA_LIMIT_Y)
-	cam.set_limit(MARGIN_TOP, -CAMERA_LIMIT_Y)
-	cam.set_limit(MARGIN_LEFT, -CAMERA_LIMIT_X)
-	cam.set_limit(MARGIN_RIGHT, CAMERA_LIMIT_X)
-
 	init_map()
 
 	var day_label = get_node("GameMap/Hud/ControlPane_Top/DayLabel")
@@ -50,6 +41,7 @@ func _ready():
 	set_process(true)
 
 func _process(delta):
+	get_map()._process(delta)
 	var should_move_camera = false
 	var camera_movement = Vector2(0, 0)
 	if Input.is_action_pressed("ui_up"):

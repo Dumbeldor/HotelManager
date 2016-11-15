@@ -42,6 +42,7 @@ protected:
 	void _canvas_mouse_enter();
 	void _canvas_mouse_exit();
 	void _on_input_event(const InputEvent &p_event);
+	void _process(float delta);
 private:
 	uint16_t get_game_cell_size() const { return GAME_TILE_SIZE; }
 	Vector2 get_world_limits() const { return Vector2(WORLD_LIMIT_X, WORLD_LIMIT_Y); }
