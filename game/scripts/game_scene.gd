@@ -9,8 +9,6 @@ const GAMEMENU = {
 	MAIN = 1,
 }
 
-const ZOOMOUT_LIMIT = 8
-const ZOOMIN_LIMIT = 0.55
 const CAMERA_LIMIT_X = 18000
 const CAMERA_LIMIT_Y = CAMERA_LIMIT_X * 1080 / 1920
 
@@ -30,11 +28,6 @@ func _input(event):
 				_show_game_menu()
 			elif current_shown_menu == GAMEMENU.MAIN:
 				_hide_game_menu()
-	elif event.type == InputEvent.MOUSE_BUTTON:
-		if event.is_action("ui_zoomin"):
-			zoom_camera(0.9)
-		elif event.is_action("ui_zoomout"):
-			zoom_camera(1.11)
 
 func _ready():
 	var cam = get_cam()
@@ -106,13 +99,6 @@ func move_camera(v):
 	v.x *= zoom.x * 0.65
 	v.y *= zoom.y * 0.5
 	cam.global_translate(v)
-
-func zoom_camera(multiplier):
-	var cam = get_cam()
-	var new_zoom = cam.get_zoom() * multiplier
-	if new_zoom.x >= ZOOMOUT_LIMIT or new_zoom.y >= ZOOMOUT_LIMIT or new_zoom.x <= ZOOMIN_LIMIT or new_zoom.y <= ZOOMIN_LIMIT:
-		return
-	cam.set_zoom(new_zoom)
 
 ##
 ## MAP

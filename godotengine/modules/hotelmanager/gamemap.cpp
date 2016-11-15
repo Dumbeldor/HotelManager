@@ -24,6 +24,9 @@
 #define SOUND_PLAYER_NODE String("MapSoundPlayer")
 #define SOUND_POP6 String("pop-6")
 
+constexpr float ZOOMOUT_LIMIT = 8;
+constexpr float ZOOMIN_LIMIT = 0.55;
+
 GameMap::GameMap()
 {
 	m_control = memnew(Control);
@@ -167,8 +170,13 @@ void GameMap::_on_input_event(const InputEvent &p_event)
 		break;
 		case InputEvent::MOUSE_BUTTON: {
 			const InputEventMouseButton &mb = p_event.mouse_button;
-
-			if (mb.button_index == BUTTON_LEFT && p_event.is_pressed()) {
+			if (p_event.is_action("ui_zoomin")) {
+				zoom_camera(0.9);
+			}
+			else if (p_event.is_action("ui_zoomout")) {
+				zoom_camera(1.11);
+			}
+			else if (mb.button_index == BUTTON_LEFT && p_event.is_pressed()) {
 				if (!m_mouse_pressed_on_map) {
 					m_mouse_pressed_on_map = true;
 				}
@@ -179,6 +187,16 @@ void GameMap::_on_input_event(const InputEvent &p_event)
 		break;
 		default: break;
 	}
+}
+
+void GameMap::zoom_camera(const float multiplier)
+{
+	Vector2 new_zoom = m_camera->get_zoom() * multiplier;
+	if (new_zoom.x > ZOOMOUT_LIMIT || new_zoom.y >= ZOOMOUT_LIMIT
+		|| new_zoom.x < ZOOMIN_LIMIT || new_zoom.y < ZOOMIN_LIMIT) {
+		return;
+	}
+	m_camera->set_zoom(new_zoom);
 }
 
 void GameMap::place_selected_tile()

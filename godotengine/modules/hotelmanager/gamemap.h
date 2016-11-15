@@ -46,6 +46,7 @@ private:
 	uint16_t get_game_cell_size() const { return GAME_TILE_SIZE; }
 	Vector2 get_world_limits() const { return Vector2(WORLD_LIMIT_X, WORLD_LIMIT_Y); }
 	void place_selected_tile();
+	void zoom_camera(const float multiplier);
 
 	Control *m_control = nullptr;
 	bool m_mouse_over = false;
