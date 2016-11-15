@@ -154,10 +154,10 @@ void GameMap::_canvas_draw()
 			Matrix32 xform = m_tile_map->get_global_transform() * m_camera->get_canvas_transform();
 
 			Vector2 endpoints[4] = {
-				m_tile_map->map_to_world(m_over_tile, true),// / m_camera->get_zoom(),
-				m_tile_map->map_to_world((m_over_tile + Point2(1, 0)), true),// / m_camera->get_zoom(),
-				m_tile_map->map_to_world((m_over_tile + Point2(1, 1)), true),// / m_camera->get_zoom(),
-				m_tile_map->map_to_world((m_over_tile + Point2(0, 1)), true)// / m_camera->get_zoom()
+				m_tile_map->map_to_world(m_over_tile, true),
+				m_tile_map->map_to_world((m_over_tile + Point2(1, 0)), true),
+				m_tile_map->map_to_world((m_over_tile + Point2(1, 1)), true),
+				m_tile_map->map_to_world((m_over_tile + Point2(0, 1)), true)
 			};
 
 			for (uint8_t i = 0; i < 4;i++) {
@@ -165,7 +165,7 @@ void GameMap::_canvas_draw()
 					endpoints[i] += cell_xf[0]*0.5;
 				if (m_tile_map->get_half_offset()==TileMap::HALF_OFFSET_Y && ABS(m_over_tile.x)&1)
 					endpoints[i] += cell_xf[1]*0.5;
-				endpoints[i]=xform.xform(endpoints[i]);
+				endpoints[i] = xform.xform(endpoints[i]);
 			}
 
 			Color col;
