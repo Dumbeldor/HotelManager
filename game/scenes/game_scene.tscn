@@ -73,6 +73,20 @@ scale = Vector2( 1, 1 )
 
 transform/pos = Vector2( 960, 0 )
 
+[node name="MapControl" type="Control" parent="GameMap/Hud/ControlPane_Top"]
+
+anchor/right = 1
+anchor/bottom = 1
+rect/min_size = Vector2( 1920, 910 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -960.0
+margin/top = 0.0
+margin/right = -896.0
+margin/bottom = -846.0
+
 [node name="DayLabel" type="Label" parent="GameMap/Hud/ControlPane_Top"]
 
 anchor/left = 3
@@ -280,6 +294,8 @@ default/chorus_send = 0.0
 [connection signal="mouse_enter" from="GameMap" to="GameMap" method="_canvas_mouse_enter"]
 
 [connection signal="mouse_exit" from="GameMap" to="GameMap" method="_canvas_mouse_exit"]
+
+[connection signal="input_event" from="GameMap/Hud/ControlPane_Top/MapControl" to="GameMap" method="_on_input_event"]
 
 [connection signal="released" from="MainMenuLayer/GameMainMenu/ResumeButton" to="." method="_hide_game_menu"]
 

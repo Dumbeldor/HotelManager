@@ -13,6 +13,7 @@
  * All rights reserved
  */
 
+#include <scene/main/canvas_layer.h>
 #include <scene/main/viewport.h>
 #include <iostream>
 #include <os/input.h>
@@ -22,6 +23,8 @@
 
 #define TILEMAP_NODE String("TileMap")
 #define CAMERA_NODE String("TileMap/Camera2D")
+#define HUD_NODE String("Hud")
+#define MAPCONTROL_NODE String("Hud/ControlPane_Top/MapControl")
 #define SOUND_PLAYER_NODE String("MapSoundPlayer")
 #define SOUND_POP6 String("pop-6")
 
@@ -30,20 +33,6 @@ constexpr float ZOOMIN_LIMIT = 0.55;
 
 GameMap::GameMap()
 {
-	m_control = memnew(Control);
-	if (!m_control->is_connected("draw", this, "_canvas_draw")) {
-		m_control->connect("draw", this, "_canvas_draw");
-	}
-
-	if (!m_control->is_connected("mouse_enter", this, "_canvas_mouse_enter")) {
-		m_control->connect("mouse_enter", this, "_canvas_mouse_enter");
-	}
-
-	if (!m_control->is_connected("mouse_exit", this, "_canvas_mouse_exit")) {
-		m_control->connect("mouse_exit", this, "_canvas_mouse_exit");
-	}
-
-	add_child(m_control);
 	set_process(true);
 }
 
@@ -64,7 +53,23 @@ void GameMap::init()
 	m_sound_player = get_parent()->get_node(SOUND_PLAYER_NODE)->cast_to<SamplePlayer>();
 	m_tile_map = get_node(TILEMAP_NODE)->cast_to<TileMap>();
 	m_camera = get_node(CAMERA_NODE)->cast_to<Camera2D>();
-	assert(m_sound_player && m_tile_map && m_camera);
+	m_control = get_node(MAPCONTROL_NODE)->cast_to<Control>();
+	CanvasLayer *hud = get_node(HUD_NODE)->cast_to<CanvasLayer>();
+	assert(m_sound_player && m_tile_map && m_camera && m_control && hud);
+
+	if (!m_control->is_connected("draw", this, "_canvas_draw")) {
+		m_control->connect("draw", this, "_canvas_draw");
+	}
+
+	if (!m_control->is_connected("mouse_enter", this, "_canvas_mouse_enter")) {
+		m_control->connect("mouse_enter", this, "_canvas_mouse_enter");
+	}
+
+	if (!m_control->is_connected("mouse_exit", this, "_canvas_mouse_exit")) {
+		m_control->connect("mouse_exit", this, "_canvas_mouse_exit");
+	}
+
+	hud->add_child(m_control);
 
 	m_camera->set_limit(MARGIN_LEFT, -(WORLD_LIMIT_X + 3) * GAME_TILE_SIZE);
 	m_camera->set_limit(MARGIN_RIGHT, (WORLD_LIMIT_X + 3) * GAME_TILE_SIZE);
@@ -72,6 +77,7 @@ void GameMap::init()
 	m_camera->set_limit(MARGIN_TOP, -(WORLD_LIMIT_Y + 3) * GAME_TILE_SIZE);
 	m_camera->set_enable_follow_smoothing(true);
 	m_camera->set_pos(BASE_RESOLUTION / 2);
+
 
 	m_tile_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
 
@@ -235,10 +241,9 @@ void GameMap::zoom_camera(const float multiplier)
 
 void GameMap::move_camera(Vector2 movement)
 {
-	movement *= m_camera->get_zoom();
 	movement.x *= 0.65;
 	movement.y *= 0.5;
-	m_camera->global_translate(movement);
+	m_camera->global_translate(movement * m_camera->get_zoom());
 }
 
 void GameMap::place_selected_tile()
