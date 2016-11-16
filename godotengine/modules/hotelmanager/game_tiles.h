@@ -56,7 +56,7 @@ struct GameTileDef
 	const char* name;
 	const char* texture_name;
 	const char* label;
-	TileFlags flags;
+	int flags;
 };
 
 // Order is very important here
