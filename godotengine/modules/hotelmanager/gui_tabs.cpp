@@ -26,6 +26,7 @@ GroundTab::GroundTab()
 			continue;
 		}
 
+		ObjectSelectorButton::set_tile_to_init((GameMapTile) i);
 		ObjectSelectorButton *tmp = memnew(ObjectSelectorButton);
 		if (tb) {
 			tb->add_child(tmp);
@@ -38,8 +39,6 @@ GroundTab::GroundTab()
 		}
 
 		tb = tmp;
-
-		tb->set_map_tile((GameMapTile) i);
 		tb->init();
 	}
 }

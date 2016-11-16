@@ -149,7 +149,7 @@ void GameMap::_canvas_draw()
 	if (m_mouse_over) {
 		int tile_id = m_tile_map->get_cellv(m_over_tile);
 		// We have an object selected and current tile is valid
-		if (ObjectSelectorButton::get_selected_object() != TILE_NONE) {
+		if (ObjectSelectorButton::get_selected_tile_id() != TILE_NONE) {
 			Matrix32 cell_xf = m_tile_map->get_cell_transform();
 			Matrix32 xform = m_tile_map->get_global_transform() * m_camera->get_canvas_transform();
 
@@ -161,15 +161,20 @@ void GameMap::_canvas_draw()
 			};
 
 			for (uint8_t i = 0; i < 4;i++) {
-				if (m_tile_map->get_half_offset()==TileMap::HALF_OFFSET_X && ABS(m_over_tile.y)&1)
-					endpoints[i] += cell_xf[0]*0.5;
-				if (m_tile_map->get_half_offset()==TileMap::HALF_OFFSET_Y && ABS(m_over_tile.x)&1)
-					endpoints[i] += cell_xf[1]*0.5;
+				if (m_tile_map->get_half_offset() == TileMap::HALF_OFFSET_X
+					&& ABS(m_over_tile.y) & 1) {
+					endpoints[i] += cell_xf[0] * 0.5;
+				}
+				if (m_tile_map->get_half_offset() == TileMap::HALF_OFFSET_Y
+					&& ABS(m_over_tile.x) & 1) {
+					endpoints[i] += cell_xf[1] * 0.5;
+				}
 				endpoints[i] = xform.xform(endpoints[i]);
 			}
 
 			Color col;
-			if (tile_id != TileMap::INVALID_CELL) {
+			if (tile_id != TileMap::INVALID_CELL &&
+				tile_id != ObjectSelectorButton::get_selected_tile_id()) {
 				col = Color(0.2, 1.0, 0.8, 0.9);
 			}
 			else {
@@ -177,14 +182,19 @@ void GameMap::_canvas_draw()
 			}
 
 			// Hovering lines
-			Vector<Vector2> points;
 			for (uint8_t i = 0; i < 4; i++) {
 				m_control->draw_line(endpoints[i], endpoints[(i + 1) % 4], col, 2);
-				points.push_back(endpoints[i]);
 			}
 
 			// Hovering rectangle
-			m_control->draw_colored_polygon(points, Color(0.2, 1, 0.4, 0.4));
+			if (ObjectSelectorButton::get_selected_tile_id() != tile_id) {
+				Vector<Vector2> points;
+				for (uint8_t i = 0; i < 4; i++) {
+					points.push_back(endpoints[i]);
+				}
+
+				m_control->draw_colored_polygon(points, Color(0.2, 1, 0.4, 0.4));
+			}
 		}
 	}
 }
@@ -276,7 +286,7 @@ void GameMap::move_camera(Vector2 movement)
 
 void GameMap::place_selected_tile()
 {
-	GameMapTile s_tile = ObjectSelectorButton::get_selected_object();
+	GameMapTile s_tile = ObjectSelectorButton::get_selected_tile_id();
 	// Ignore none tiles
 	if (s_tile == TILE_NONE) {
 		return;

@@ -26,26 +26,24 @@ public:
 	ObjectSelectorButton();
 	void init();
 
-	void set_map_tile(const GameMapTile t)
-	{
-		assert(m_tile < TILE_MAX);
-		m_tile = t;
-	}
-
-	GameMapTile get_map_tile() const { return m_tile; }
+	GameMapTile get_map_tile() const { return m_tiledef.id; }
 
 	void _change_selected_tile();
 
-	static const GameMapTile get_selected_object()
+	static const GameMapTile get_selected_tile_id()
 	{
 		return s_selected ? s_selected->get_map_tile() : TILE_NONE;
 	}
 
+	static void set_tile_to_init(const GameMapTile t) { s_tile_to_init = t; }
+
+	void _on_draw();
 protected:
 	static void _bind_methods();
 
 private:
 	static ObjectSelectorButton *s_selected;
 
-	GameMapTile m_tile = TILE_NONE;
+	static GameMapTile s_tile_to_init;
+	const GameTileDef &m_tiledef;
 };

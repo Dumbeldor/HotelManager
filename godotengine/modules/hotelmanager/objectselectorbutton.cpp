@@ -19,39 +19,67 @@
 #include <iostream>
 
 ObjectSelectorButton *ObjectSelectorButton::s_selected = nullptr;
+GameMapTile ObjectSelectorButton::s_tile_to_init = TILE_NONE;
 
-ObjectSelectorButton::ObjectSelectorButton()
+ObjectSelectorButton::ObjectSelectorButton():
+	m_tiledef(game_tile_defs[s_tile_to_init])
 {
-	assert(m_tile < TILE_MAX);
 	set_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
 }
 
 void ObjectSelectorButton::_bind_methods()
 {
-	ObjectTypeDB::bind_method( _MD("_change_selected_tile"),
+	ObjectTypeDB::bind_method(_MD("_change_selected_tile"),
 			&ObjectSelectorButton::_change_selected_tile);
+	ObjectTypeDB::bind_method(_MD("_on_draw"),
+			&ObjectSelectorButton::_on_draw);
 
 }
 
 void ObjectSelectorButton::init()
 {
 	ImageTexture *texture = memnew(ImageTexture);
-	texture->load(String("res://tiles/") + game_tile_defs[m_tile].texture_name);
+	texture->load(String("res://tiles/") + m_tiledef.texture_name);
 	set_normal_texture(texture);
 
 	Label *label = memnew(Label);
-	label->set_text(game_tile_defs[m_tile].label);
+	label->set_text(m_tiledef.label);
 	label->set_align(Label::ALIGN_CENTER);
 	label->set_margin(MARGIN_RIGHT, GAME_TILE_SIZE);
 	label->set_margin(MARGIN_TOP, GAME_TILE_SIZE + 5);
 	add_child(label);
 
 	connect("pressed",this,"_change_selected_tile");
+	connect("draw", this, "_on_draw");
 }
 
 
 // When player select the button it changes the selected tile for this
 void ObjectSelectorButton::_change_selected_tile()
 {
+	ObjectSelectorButton *prev_selected = ObjectSelectorButton::s_selected;
 	ObjectSelectorButton::s_selected = this;
+
+	// Redraw previous selected tile to clear hovering, etc...
+	if (prev_selected) {
+		prev_selected->update();
+	}
+}
+
+void ObjectSelectorButton::_on_draw()
+{
+	if (s_selected == this) {
+		Color col(0.2, 1.0, 0.8, 0.9);
+		const Size2 size = get_size();
+		Vector2 endpoints[4] = {
+			get_pos() + Vector2(0, 0),
+			get_pos() + Vector2(size.x, 0),
+			get_pos() + Vector2(size.x, size.y),
+			get_pos() + Vector2(0, size.y)
+		};
+
+		for (uint8_t i = 0; i < 4; i++) {
+			draw_line(endpoints[i], endpoints[(i + 1) % 4], col, 2);
+		}
+	}
 }
