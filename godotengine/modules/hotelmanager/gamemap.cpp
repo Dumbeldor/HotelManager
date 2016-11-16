@@ -282,7 +282,6 @@ void GameMap::place_selected_tile()
 		return;
 	}
 
-	std::cout << "place: " << get_local_mouse_pos().x << "/ " << get_local_mouse_pos().y << std::endl;
 	Vector2 tile_pos = m_tile_map->world_to_map(get_local_mouse_pos());
 	if (m_tile_map->get_cellv(tile_pos) != s_tile) {
 		m_tile_map->set_cellv(tile_pos, s_tile);

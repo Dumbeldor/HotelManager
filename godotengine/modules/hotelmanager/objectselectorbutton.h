@@ -32,15 +32,20 @@ public:
 		m_tile = t;
 	}
 
+	GameMapTile get_map_tile() const { return m_tile; }
+
 	void _change_selected_tile();
 
-	static const GameMapTile get_selected_object() { return s_selected_object; }
+	static const GameMapTile get_selected_object()
+	{
+		return s_selected ? s_selected->get_map_tile() : TILE_NONE;
+	}
 
 protected:
 	static void _bind_methods();
 
 private:
-	static GameMapTile s_selected_object;
+	static ObjectSelectorButton *s_selected;
 
 	GameMapTile m_tile = TILE_NONE;
 };

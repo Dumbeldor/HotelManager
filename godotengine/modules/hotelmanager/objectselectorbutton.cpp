@@ -18,7 +18,7 @@
 #include <scene/gui/label.h>
 #include <iostream>
 
-GameMapTile ObjectSelectorButton::s_selected_object = TILE_NONE;
+ObjectSelectorButton *ObjectSelectorButton::s_selected = nullptr;
 
 ObjectSelectorButton::ObjectSelectorButton()
 {
@@ -53,5 +53,5 @@ void ObjectSelectorButton::init()
 // When player select the button it changes the selected tile for this
 void ObjectSelectorButton::_change_selected_tile()
 {
-	ObjectSelectorButton::s_selected_object = m_tile;
+	ObjectSelectorButton::s_selected = this;
 }

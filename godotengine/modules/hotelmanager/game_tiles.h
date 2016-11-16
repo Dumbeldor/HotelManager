@@ -51,6 +51,7 @@ struct GameTileDef
 	const char* label;
 };
 
+// Order is very important here
 static const GameTileDef game_tile_defs[TILE_MAX] = {
 	{TILE_NONE, TILE_TYPE_GENERIC, "none", "tile_empty.png", "Empty"},
 
