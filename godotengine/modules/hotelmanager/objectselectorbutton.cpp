@@ -18,6 +18,8 @@
 #include <scene/gui/label.h>
 #include <iostream>
 
+#define OBJECTSELECTOR_MASK Color(1.0, 1.0, 1.0, 0.2)
+
 ObjectSelectorButton *ObjectSelectorButton::s_selected = nullptr;
 GameMapTile ObjectSelectorButton::s_tile_to_init = TILE_NONE;
 
@@ -69,17 +71,21 @@ void ObjectSelectorButton::_change_selected_tile()
 void ObjectSelectorButton::_on_draw()
 {
 	if (s_selected == this) {
-		Color col(0.2, 1.0, 0.8, 0.9);
+		static const Color col(0.2, 1.0, 0.8, 0.4);
 		const Size2 size = get_size();
-		Vector2 endpoints[4] = {
-			get_pos() + Vector2(0, 0),
-			get_pos() + Vector2(size.x, 0),
-			get_pos() + Vector2(size.x, size.y),
-			get_pos() + Vector2(0, size.y)
+		const Vector2 endpoints[4] = {
+			get_pos() + Vector2(-2 - get_margin(MARGIN_LEFT), -2 - get_margin(MARGIN_TOP)),
+			get_pos() + Vector2(size.x + 2 - get_margin(MARGIN_LEFT), -2 -get_margin(MARGIN_TOP)),
+			get_pos() + Vector2(size.x + 2 - get_margin(MARGIN_LEFT), size.y + 2 - get_margin(MARGIN_TOP)),
+			get_pos() + Vector2(-2 - get_margin(MARGIN_LEFT), size.y + 2 - get_margin(MARGIN_TOP))
 		};
 
+		Vector<Vector2> points;
 		for (uint8_t i = 0; i < 4; i++) {
 			draw_line(endpoints[i], endpoints[(i + 1) % 4], col, 2);
+			points.push_back(endpoints[i]);
 		}
+
+		draw_colored_polygon(points, OBJECTSELECTOR_MASK);
 	}
 }

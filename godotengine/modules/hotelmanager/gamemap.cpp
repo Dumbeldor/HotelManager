@@ -28,8 +28,12 @@
 #define SOUND_PLAYER_NODE String("MapSoundPlayer")
 #define SOUND_POP6 String("pop-6")
 
-constexpr float ZOOMOUT_LIMIT = 8;
-constexpr float ZOOMIN_LIMIT = 0.55;
+#define SELECTOR_BORDER_NEWTILE Color(0.2, 1.0, 0.8, 0.9)
+#define SELECTOR_BORDER_OLDTILE Color(1.0, 0.4, 0.2, 0.9)
+#define SELECTOR_RECT_COLOR Color(0.2, 1, 0.4, 0.4)
+
+static constexpr float ZOOMOUT_LIMIT = 8;
+static constexpr float ZOOMIN_LIMIT = 0.55;
 
 GameMap::GameMap()
 {
@@ -175,10 +179,10 @@ void GameMap::_canvas_draw()
 			Color col;
 			if (tile_id != TileMap::INVALID_CELL &&
 				tile_id != ObjectSelectorButton::get_selected_tile_id()) {
-				col = Color(0.2, 1.0, 0.8, 0.9);
+				col = SELECTOR_BORDER_NEWTILE;
 			}
 			else {
-				col = Color(1.0, 0.4, 0.2, 0.9);
+				col = SELECTOR_BORDER_OLDTILE;
 			}
 
 			// Hovering lines
@@ -193,7 +197,7 @@ void GameMap::_canvas_draw()
 					points.push_back(endpoints[i]);
 				}
 
-				m_control->draw_colored_polygon(points, Color(0.2, 1, 0.4, 0.4));
+				m_control->draw_colored_polygon(points, SELECTOR_RECT_COLOR);
 			}
 		}
 	}
