@@ -329,8 +329,8 @@ void GameMap::init_selection()
 void GameMap::place_tiles_in_selected_area()
 {
 	GameMapTile s_tile = ObjectSelectorButton::get_selected_tile_id();
-	// Ignore none tiles
-	if (s_tile == TILE_NONE) {
+	// Ignore none tiles & tile unavailable to players
+	if (s_tile == TILE_NONE || game_tile_defs[s_tile].flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
 		return;
 	}
 
