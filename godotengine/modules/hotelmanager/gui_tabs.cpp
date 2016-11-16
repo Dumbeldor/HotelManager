@@ -22,7 +22,8 @@ GroundTab::GroundTab()
 {
 	ObjectSelectorButton *tb = nullptr;
 	for (uint16_t i = 0; i < TILE_MAX; i++) {
-		if (game_tile_defs[i].type != TILE_TYPE_GROUND) {
+		if (game_tile_defs[i].type != TILE_TYPE_GROUND
+				|| game_tile_defs[i].flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
 			continue;
 		}
 
