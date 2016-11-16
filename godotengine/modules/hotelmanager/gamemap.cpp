@@ -30,7 +30,7 @@
 
 #define SELECTOR_BORDER_NEWTILE Color(0.2, 1.0, 0.8, 0.9)
 #define SELECTOR_BORDER_OLDTILE Color(1.0, 0.4, 0.2, 0.9)
-#define SELECTOR_RECT_COLOR Color(0.2, 1, 0.4, 0.4)
+#define SELECTOR_RECT_COLOR_VALID Color(0.2, 1, 0.4, 0.4)
 
 static constexpr float ZOOMOUT_LIMIT = 8;
 static constexpr float ZOOMIN_LIMIT = 0.55;
@@ -43,7 +43,6 @@ GameMap::GameMap()
 void GameMap::_bind_methods()
 {
 	ObjectTypeDB::bind_method("init", &GameMap::init);
-	ObjectTypeDB::bind_method("get_game_cell_size", &GameMap::get_game_cell_size);
 	ObjectTypeDB::bind_method("get_world_limits", &GameMap::get_world_limits);
 	ObjectTypeDB::bind_method(_MD("_canvas_draw"),&GameMap::_canvas_draw);
 	ObjectTypeDB::bind_method(_MD("_canvas_mouse_enter"),&GameMap::_canvas_mouse_enter);
@@ -151,18 +150,33 @@ void GameMap::_canvas_draw()
 {
 	// If mouse is over a node
 	if (m_mouse_over) {
-		int tile_id = m_tile_map->get_cellv(m_over_tile);
 		// We have an object selected and current tile is valid
 		if (ObjectSelectorButton::get_selected_tile_id() != TILE_NONE) {
 			Matrix32 cell_xf = m_tile_map->get_cell_transform();
 			Matrix32 xform = m_tile_map->get_global_transform() * m_camera->get_canvas_transform();
 
-			Vector2 endpoints[4] = {
-				m_tile_map->map_to_world(m_over_tile, true),
-				m_tile_map->map_to_world((m_over_tile + Point2(1, 0)), true),
-				m_tile_map->map_to_world((m_over_tile + Point2(1, 1)), true),
-				m_tile_map->map_to_world((m_over_tile + Point2(0, 1)), true)
-			};
+			Vector2 endpoints[4];
+
+			if (m_selection_in_progress) {
+				endpoints[0] = m_tile_map->map_to_world(Vector2(
+					MIN(m_over_tile.x, m_selection_init_pos.x),
+					MIN(m_over_tile.y, m_selection_init_pos.y)), true);
+				endpoints[1] = m_tile_map->map_to_world(Vector2(
+					MAX(m_over_tile.x, m_selection_init_pos.x),
+					MIN(m_over_tile.y, m_selection_init_pos.y)) + Point2(1, 0), true);
+				endpoints[2] = m_tile_map->map_to_world(Vector2(
+					MAX(m_over_tile.x, m_selection_init_pos.x),
+					MAX(m_over_tile.y, m_selection_init_pos.y)) + Point2(1, 1), true);
+				endpoints[3] = m_tile_map->map_to_world(Vector2(
+					MIN(m_over_tile.x, m_selection_init_pos.x),
+					MAX(m_over_tile.y, m_selection_init_pos.y)) + Point2(0, 1), true);
+			}
+			else {
+				endpoints[0] = m_tile_map->map_to_world(m_over_tile, true);
+				endpoints[1] = m_tile_map->map_to_world((m_over_tile + Point2(1, 0)), true);
+				endpoints[2] = m_tile_map->map_to_world((m_over_tile + Point2(1, 1)), true);
+				endpoints[3] = m_tile_map->map_to_world((m_over_tile + Point2(0, 1)), true);
+			}
 
 			for (uint8_t i = 0; i < 4;i++) {
 				if (m_tile_map->get_half_offset() == TileMap::HALF_OFFSET_X
@@ -175,6 +189,8 @@ void GameMap::_canvas_draw()
 				}
 				endpoints[i] = xform.xform(endpoints[i]);
 			}
+
+			int tile_id = m_tile_map->get_cellv(m_over_tile);
 
 			Color col;
 			if (tile_id != TileMap::INVALID_CELL &&
@@ -197,7 +213,7 @@ void GameMap::_canvas_draw()
 					points.push_back(endpoints[i]);
 				}
 
-				m_control->draw_colored_polygon(points, SELECTOR_RECT_COLOR);
+				m_control->draw_colored_polygon(points, SELECTOR_RECT_COLOR_VALID);
 			}
 		}
 	}
@@ -238,8 +254,13 @@ void GameMap::_on_input_event(const InputEvent &p_event)
 			else if (p_event.is_action("ui_zoomout")) {
 				zoom_camera(1.11);
 			}
-			else if (mb.button_index == BUTTON_LEFT && p_event.is_action_released("ui_mouseclick_left")) {
-				place_selected_tile();
+			else if (mb.button_index == BUTTON_LEFT) {
+				if (p_event.is_action_pressed("ui_mouseclick_left")) {
+					init_selection();
+				}
+				else if (p_event.is_action_released("ui_mouseclick_left")) {
+					place_tiles_in_selected_area();
+				}
 			}
 		}
 		break;
@@ -284,17 +305,53 @@ void GameMap::move_camera(Vector2 movement)
 	m_camera->global_translate(movement * m_camera->get_zoom());
 }
 
-void GameMap::place_selected_tile()
+void GameMap::init_selection()
 {
+	m_selection_in_progress = true;
+	m_selection_init_pos = m_tile_map->world_to_map(get_local_mouse_pos());
+}
+
+// @TODO checks for money, tile validity, etc will be added to this function
+void GameMap::place_tiles_in_selected_area()
+{
+	m_selection_in_progress = false;
 	GameMapTile s_tile = ObjectSelectorButton::get_selected_tile_id();
 	// Ignore none tiles
 	if (s_tile == TILE_NONE) {
 		return;
 	}
 
-	Vector2 tile_pos = m_tile_map->world_to_map(get_local_mouse_pos());
-	if (m_tile_map->get_cellv(tile_pos) != s_tile) {
-		m_tile_map->set_cellv(tile_pos, s_tile);
-		m_sound_player->play(SOUND_POP6);
+	Vector2 cur_pos = m_tile_map->world_to_map(get_local_mouse_pos());
+	if (cur_pos == m_selection_init_pos) {
+		if (m_tile_map->get_cellv(cur_pos) != s_tile) {
+			m_tile_map->set_cellv(cur_pos, s_tile);
+			m_sound_player->play(SOUND_POP6);
+		}
+	}
+	else {
+		Vector2 start_tile = Vector2(
+			MIN(cur_pos.x, m_selection_init_pos.x),
+			MIN(cur_pos.y, m_selection_init_pos.y)
+		),
+		end_tile = Vector2(
+			MAX(cur_pos.x, m_selection_init_pos.x),
+			MAX(cur_pos.y, m_selection_init_pos.y)
+		);
+
+		bool tile_changed = false;
+
+		for (float x = start_tile.x; x <= end_tile.x; x++) {
+			for (float y = start_tile.y; y <= end_tile.y; y++) {
+				Vector2 tile_pos(x, y);
+				if (m_tile_map->get_cellv(tile_pos) != s_tile) {
+					tile_changed = true;
+					m_tile_map->set_cellv(tile_pos, s_tile);
+				}
+			}
+		}
+
+		if (tile_changed) {
+			m_sound_player->play(SOUND_POP6);
+		}
 	}
 }

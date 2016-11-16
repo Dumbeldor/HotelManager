@@ -44,9 +44,15 @@ protected:
 	void _on_input_event(const InputEvent &p_event);
 	void _process(float delta);
 private:
-	uint16_t get_game_cell_size() const { return GAME_TILE_SIZE; }
 	Vector2 get_world_limits() const { return Vector2(WORLD_LIMIT_X, WORLD_LIMIT_Y); }
-	void place_selected_tile();
+
+	// Selection & Placement
+	void init_selection();
+	void place_tiles_in_selected_area();
+	Vector2 m_selection_init_pos = Vector2(0, 0);
+	bool m_selection_in_progress = false;
+
+	// Camera
 	void zoom_camera(const float multiplier);
 	void move_camera(Vector2 movement);
 
