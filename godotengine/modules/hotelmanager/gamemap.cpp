@@ -238,11 +238,7 @@ void GameMap::_on_input_event(const InputEvent &p_event)
 			else if (p_event.is_action("ui_zoomout")) {
 				zoom_camera(1.11);
 			}
-			else if (mb.button_index == BUTTON_LEFT && p_event.is_pressed()) {
-				if (!m_mouse_pressed_on_map) {
-					m_mouse_pressed_on_map = true;
-				}
-
+			else if (mb.button_index == BUTTON_LEFT && p_event.is_action_released("ui_mouseclick_left")) {
 				place_selected_tile();
 			}
 		}

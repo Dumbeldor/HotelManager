@@ -52,7 +52,6 @@ private:
 
 	Control *m_control = nullptr;
 	bool m_mouse_over = false;
-	bool m_mouse_pressed_on_map = false;
 	Point2i m_over_tile;
 
 	TileMap *m_tile_map = nullptr;
