@@ -30,7 +30,9 @@
 
 #define SELECTOR_BORDER_NEWTILE Color(0.2, 1.0, 0.8, 0.9)
 #define SELECTOR_BORDER_OLDTILE Color(1.0, 0.4, 0.2, 0.9)
+#define SELECTOR_BORDER_INVALID Color(1, 0, 0, 0.4)
 #define SELECTOR_RECT_COLOR_VALID Color(0.2, 1, 0.4, 0.4)
+#define SELECTOR_RECT_COLOR_INVALID Color(1, 0.2, 0.3, 0.4)
 
 static constexpr float ZOOMOUT_LIMIT = 8;
 static constexpr float ZOOMIN_LIMIT = 0.55;
@@ -156,17 +158,18 @@ void GameMap::_canvas_draw()
 			Matrix32 xform = m_tile_map->get_global_transform() * m_camera->get_canvas_transform();
 
 			Vector2 endpoints[4];
+			Vector2 start_tile = Vector2(MIN(m_over_tile.x, m_selection_init_pos.x),
+					MIN(m_over_tile.y, m_selection_init_pos.y)),
+			end_tile = Vector2(MAX(m_over_tile.x, m_selection_init_pos.x),
+					MAX(m_over_tile.y, m_selection_init_pos.y));
 
 			if (m_selection_in_progress) {
-				endpoints[0] = m_tile_map->map_to_world(Vector2(
-					MIN(m_over_tile.x, m_selection_init_pos.x),
-					MIN(m_over_tile.y, m_selection_init_pos.y)), true);
+				// If a selection is in progress, points define area rectangle
+				endpoints[0] = m_tile_map->map_to_world(start_tile, true);
 				endpoints[1] = m_tile_map->map_to_world(Vector2(
 					MAX(m_over_tile.x, m_selection_init_pos.x),
 					MIN(m_over_tile.y, m_selection_init_pos.y)) + Point2(1, 0), true);
-				endpoints[2] = m_tile_map->map_to_world(Vector2(
-					MAX(m_over_tile.x, m_selection_init_pos.x),
-					MAX(m_over_tile.y, m_selection_init_pos.y)) + Point2(1, 1), true);
+				endpoints[2] = m_tile_map->map_to_world(end_tile + Point2(1, 1), true);
 				endpoints[3] = m_tile_map->map_to_world(Vector2(
 					MIN(m_over_tile.x, m_selection_init_pos.x),
 					MAX(m_over_tile.y, m_selection_init_pos.y)) + Point2(0, 1), true);
@@ -192,19 +195,30 @@ void GameMap::_canvas_draw()
 
 			int tile_id = m_tile_map->get_cellv(m_over_tile);
 
-			Color col;
+			Color border_color;
 			if (tile_id != TileMap::INVALID_CELL &&
 				tile_id != ObjectSelectorButton::get_selected_tile_id()) {
-				col = SELECTOR_BORDER_NEWTILE;
+				border_color = SELECTOR_BORDER_NEWTILE;
 			}
 			else {
-				col = SELECTOR_BORDER_OLDTILE;
+				border_color = SELECTOR_BORDER_OLDTILE;
+			}
+
+			Color selection_color;
+			if (is_out_of_bounds(start_tile) || is_out_of_bounds(end_tile)) {
+				selection_color = SELECTOR_RECT_COLOR_INVALID;
+				border_color = SELECTOR_BORDER_INVALID;
+			}
+			else {
+				selection_color = SELECTOR_RECT_COLOR_VALID;
 			}
 
 			// Hovering lines
 			for (uint8_t i = 0; i < 4; i++) {
-				m_control->draw_line(endpoints[i], endpoints[(i + 1) % 4], col, 2);
+				m_control->draw_line(endpoints[i], endpoints[(i + 1) % 4], border_color, 2);
 			}
+
+
 
 			// Hovering rectangle
 			if (ObjectSelectorButton::get_selected_tile_id() != tile_id) {
@@ -213,7 +227,7 @@ void GameMap::_canvas_draw()
 					points.push_back(endpoints[i]);
 				}
 
-				m_control->draw_colored_polygon(points, SELECTOR_RECT_COLOR_VALID);
+				m_control->draw_colored_polygon(points, selection_color);
 			}
 		}
 	}
@@ -314,14 +328,25 @@ void GameMap::init_selection()
 // @TODO checks for money, tile validity, etc will be added to this function
 void GameMap::place_tiles_in_selected_area()
 {
-	m_selection_in_progress = false;
 	GameMapTile s_tile = ObjectSelectorButton::get_selected_tile_id();
 	// Ignore none tiles
 	if (s_tile == TILE_NONE) {
 		return;
 	}
 
+	// If we try to place tiles but no selection in progress, abort
+	if (!m_selection_in_progress || !m_selection_is_valid) {
+		reset_selection();
+		return;
+	}
+
 	Vector2 cur_pos = m_tile_map->world_to_map(get_local_mouse_pos());
+	// Don't place nodes if cur_pos is out of bounds
+	if (is_out_of_bounds(cur_pos)) {
+		reset_selection();
+		return;
+	}
+
 	if (cur_pos == m_selection_init_pos) {
 		if (m_tile_map->get_cellv(cur_pos) != s_tile) {
 			m_tile_map->set_cellv(cur_pos, s_tile);
@@ -337,6 +362,12 @@ void GameMap::place_tiles_in_selected_area()
 			MAX(cur_pos.x, m_selection_init_pos.x),
 			MAX(cur_pos.y, m_selection_init_pos.y)
 		);
+
+		// Don't place anything if start or end is out of bounds
+		if (is_out_of_bounds(start_tile) || is_out_of_bounds(end_tile)) {
+			reset_selection();
+			return;
+		}
 
 		bool tile_changed = false;
 
@@ -354,4 +385,12 @@ void GameMap::place_tiles_in_selected_area()
 			m_sound_player->play(SOUND_POP6);
 		}
 	}
+
+	reset_selection();
+}
+
+bool GameMap::is_out_of_bounds(const Vector2 &pos)
+{
+	return (pos.x > WORLD_LIMIT_X || pos.x < -WORLD_LIMIT_X ||
+		pos.y > WORLD_LIMIT_Y || pos.y < -WORLD_LIMIT_Y);
 }

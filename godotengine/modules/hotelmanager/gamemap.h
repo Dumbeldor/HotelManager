@@ -45,12 +45,20 @@ protected:
 	void _process(float delta);
 private:
 	Vector2 get_world_limits() const { return Vector2(WORLD_LIMIT_X, WORLD_LIMIT_Y); }
+	static bool is_out_of_bounds(const Vector2 &pos);
 
 	// Selection & Placement
 	void init_selection();
 	void place_tiles_in_selected_area();
+	void reset_selection()
+	{
+		m_selection_in_progress = false;
+		m_selection_init_pos = Vector2(0, 0);
+	}
+	
 	Vector2 m_selection_init_pos = Vector2(0, 0);
 	bool m_selection_in_progress = false;
+	bool m_selection_is_valid = true;
 
 	// Camera
 	void zoom_camera(const float multiplier);
