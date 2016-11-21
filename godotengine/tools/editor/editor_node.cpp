@@ -276,10 +276,12 @@ void EditorNode::_notification(int p_what) {
 				circle_step=0;
 
 			circle_step_msec=tick;
-		circle_step_frame=frame+1;
+		    circle_step_frame=frame+1;
 
-			update_menu->set_icon(gui_base->get_icon("Progress"+itos(circle_step+1),"EditorIcons"));
-
+            // update the circle itself only when its enabled
+            if (!update_menu->get_popup()->is_item_checked(3)){
+                update_menu->set_icon(gui_base->get_icon("Progress"+itos(circle_step+1),"EditorIcons"));
+            }
 		}
 
 		scene_root->set_size_override(true,Size2(Globals::get_singleton()->get("display/width"),Globals::get_singleton()->get("display/height")));
@@ -2684,7 +2686,7 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 
 		} break;
 		case RUN_PLAY_NATIVE: {
-			
+
 			bool autosave = EDITOR_DEF("run/auto_save_before_running",true);
 			if (autosave) {
 				_menu_option_confirm(FILE_SAVE_ALL_SCENES, false);
@@ -2802,6 +2804,10 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 			update_menu->get_popup()->set_item_checked(1,true);
 			OS::get_singleton()->set_low_processor_usage_mode(true);
 		} break;
+        case SETTINGS_UPDATE_SPINNER_HIDE: {
+			update_menu->set_icon(gui_base->get_icon("Collapse","EditorIcons"));
+            update_menu->get_popup()->toggle_item_checked(3);
+        } break;
 		case SETTINGS_PREFERENCES: {
 
 			settings_config_dialog->popup_edit_settings();
@@ -3013,7 +3019,11 @@ void EditorNode::remove_editor_plugin(EditorPlugin *p_editor) {
 
 		for(int i=0;i<singleton->main_editor_buttons.size();i++) {
 
-			if (p_editor->get_name()==singleton->main_editor_buttons[i]->get_name()) {
+			if (p_editor->get_name()==singleton->main_editor_buttons[i]->get_text()) {
+
+				if (singleton->main_editor_buttons[i]->is_pressed()) {
+					singleton->_editor_select(EDITOR_SCRIPT);
+				}
 
 				memdelete( singleton->main_editor_buttons[i] );
 				singleton->main_editor_buttons.remove(i);
@@ -5996,6 +6006,8 @@ EditorNode::EditorNode() {
 	p=update_menu->get_popup();
 	p->add_check_item(TTR("Update Always"),SETTINGS_UPDATE_ALWAYS);
 	p->add_check_item(TTR("Update Changes"),SETTINGS_UPDATE_CHANGES);
+    p->add_separator();
+    p->add_check_item(TTR("Disable Update Spinner"),SETTINGS_UPDATE_SPINNER_HIDE);
 	p->set_item_checked(1,true);
 
 	//sources_button->connect();
@@ -6168,7 +6180,7 @@ EditorNode::EditorNode() {
 
 	scenes_dock = memnew( FileSystemDock(this) );
 	scenes_dock->set_name(TTR("FileSystem"));
-	scenes_dock->set_use_thumbnails(int(EditorSettings::get_singleton()->get("file_dialog/display_mode"))==EditorFileDialog::DISPLAY_THUMBNAILS);
+	scenes_dock->set_display_mode(int(EditorSettings::get_singleton()->get("filesystem_dock/display_mode")));
 	dock_slot[DOCK_SLOT_LEFT_UR]->add_child(scenes_dock);
 	//prop_pallete->add_child(scenes_dock);
 	scenes_dock->connect("open",this,"open_request");
@@ -6178,9 +6190,9 @@ EditorNode::EditorNode() {
 
 	overridden_default_layout=-1;
 	default_layout.instance();
-	default_layout->set_value(docks_section, "dock_3", TTR("Scene"));
-	default_layout->set_value(docks_section, "dock_4", TTR("FileSystem"));
-	default_layout->set_value(docks_section, "dock_5", TTR("Inspector"));
+	default_layout->set_value(docks_section, "dock_3", TTR("FileSystem"));
+	default_layout->set_value(docks_section, "dock_5", TTR("Scene"));
+	default_layout->set_value(docks_section, "dock_6", TTR("Inspector")+","+TTR("Node"));
 
 	for(int i=0;i<DOCK_SLOT_MAX/2;i++)
 		default_layout->set_value(docks_section, "dock_hsplit_"+itos(i+1), 0);
@@ -6524,11 +6536,6 @@ EditorNode::EditorNode() {
 
 	Globals::get_singleton()->set("debug/indicators_enabled",true);
 	Globals::get_singleton()->set("render/room_cull_enabled",false);
-	theme->set_color("prop_category","Editor",Color::hex(0x3f3a44ff));
-	theme->set_color("prop_section","Editor",Color::hex(0x35313aff));
-	theme->set_color("prop_subsection","Editor",Color::hex(0x312e37ff));
-	theme->set_color("fg_selected","Editor",Color::html("ffbd8e8e"));
-	theme->set_color("fg_error","Editor",Color::html("ffbd8e8e"));
 
 	reference_resource_mem=true;
 	save_external_resources_mem=true;

@@ -70,6 +70,11 @@ void EditorPlugin::remove_control_from_bottom_panel(Control *p_control) {
 
 }
 
+Control * EditorPlugin::get_editor_viewport() {
+
+	return EditorNode::get_singleton()->get_viewport();
+}
+
 void EditorPlugin::add_control_to_container(CustomControlContainer p_location,Control *p_control) {
 
 	switch(p_location) {
@@ -211,15 +216,22 @@ void EditorPlugin::clear() {
 
 }
 
-void EditorPlugin::save_external_data() {} // if editor references external resources/scenes, save them
+// if editor references external resources/scenes, save them
+void EditorPlugin::save_external_data() {
+
+	if (get_script_instance() && get_script_instance()->has_method("save_external_data")) {
+		get_script_instance()->call("save_external_data");
+	}
+}
+
+// if changes are pending in editor, apply them
 void EditorPlugin::apply_changes() {
 
 	if (get_script_instance() && get_script_instance()->has_method("apply_changes")) {
 		get_script_instance()->call("apply_changes");
 	}
+}
 
-
-} // if changes are pending in editor, apply them
 void EditorPlugin::get_breakpoints(List<String> *p_breakpoints) {
 
 	if (get_script_instance() && get_script_instance()->has_method("get_breakpoints")) {
@@ -239,10 +251,21 @@ void EditorPlugin::save_global_state() {}
 
 void EditorPlugin::set_window_layout(Ref<ConfigFile> p_layout) {
 
+	if (get_script_instance() && get_script_instance()->has_method("set_window_layout")) {
+		get_script_instance()->call("set_window_layout", p_layout);
+	}
 }
 
 void EditorPlugin::get_window_layout(Ref<ConfigFile> p_layout){
 
+	if (get_script_instance() && get_script_instance()->has_method("get_window_layout")) {
+		get_script_instance()->call("get_window_layout", p_layout);
+	}
+}
+
+void EditorPlugin::queue_save_layout() const {
+
+	EditorNode::get_singleton()->save_layout();
 }
 
 EditorSelection* EditorPlugin::get_selection() {
@@ -290,6 +313,7 @@ void EditorPlugin::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("remove_control_from_bottom_panel","control:Control"),&EditorPlugin::remove_control_from_bottom_panel);
 	ObjectTypeDB::bind_method(_MD("add_custom_type","type","base","script:Script","icon:Texture"),&EditorPlugin::add_custom_type);
 	ObjectTypeDB::bind_method(_MD("remove_custom_type","type"),&EditorPlugin::remove_custom_type);
+	ObjectTypeDB::bind_method(_MD("get_editor_viewport:Control"), &EditorPlugin::get_editor_viewport);
 
 	ObjectTypeDB::bind_method(_MD("add_import_plugin","plugin:EditorImportPlugin"),&EditorPlugin::add_import_plugin);
 	ObjectTypeDB::bind_method(_MD("remove_import_plugin","plugin:EditorImportPlugin"),&EditorPlugin::remove_import_plugin);
@@ -302,6 +326,7 @@ void EditorPlugin::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("get_undo_redo:UndoRedo"),&EditorPlugin::_get_undo_redo);
 	ObjectTypeDB::bind_method(_MD("get_selection:EditorSelection"),&EditorPlugin::get_selection);
 	ObjectTypeDB::bind_method(_MD("get_editor_settings:EditorSettings"),&EditorPlugin::get_editor_settings);
+	ObjectTypeDB::bind_method(_MD("queue_save_layout"),&EditorPlugin::queue_save_layout);
 
 	ObjectTypeDB::add_virtual_method(get_type_static(),MethodInfo(Variant::BOOL,"forward_input_event",PropertyInfo(Variant::INPUT_EVENT,"event")));
 	ObjectTypeDB::add_virtual_method(get_type_static(),MethodInfo(Variant::BOOL,"forward_spatial_input_event",PropertyInfo(Variant::OBJECT,"camera",PROPERTY_HINT_RESOURCE_TYPE,"Camera"),PropertyInfo(Variant::INPUT_EVENT,"event")));
@@ -317,8 +342,11 @@ void EditorPlugin::_bind_methods() {
 	ObjectTypeDB::add_virtual_method(get_type_static(),MethodInfo(Variant::DICTIONARY,"get_state"));
 	ObjectTypeDB::add_virtual_method(get_type_static(),MethodInfo("set_state",PropertyInfo(Variant::DICTIONARY,"state")));
 	ObjectTypeDB::add_virtual_method(get_type_static(),MethodInfo("clear"));
+	ObjectTypeDB::add_virtual_method(get_type_static(),MethodInfo("save_external_data"));
 	ObjectTypeDB::add_virtual_method(get_type_static(),MethodInfo("apply_changes"));
 	ObjectTypeDB::add_virtual_method(get_type_static(),MethodInfo(Variant::STRING_ARRAY,"get_breakpoints"));
+	ObjectTypeDB::add_virtual_method(get_type_static(),MethodInfo("set_window_layout",PropertyInfo(Variant::OBJECT,"layout",PROPERTY_HINT_RESOURCE_TYPE,"ConfigFile")));
+	ObjectTypeDB::add_virtual_method(get_type_static(),MethodInfo("get_window_layout",PropertyInfo(Variant::OBJECT,"layout",PROPERTY_HINT_RESOURCE_TYPE,"ConfigFile")));
 
 	BIND_CONSTANT( CONTAINER_TOOLBAR );
 	BIND_CONSTANT( CONTAINER_SPATIAL_EDITOR_MENU );

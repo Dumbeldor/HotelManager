@@ -1665,7 +1665,7 @@ void ScriptEditor::_menu_option(int p_option) {
 		}
 	}
 
-	EditorHelp *help = tab_container->get_child(selected)->cast_to<EditorHelp>();
+	EditorHelp *help = tab_container->get_current_tab_control()->cast_to<EditorHelp>();
 	if (help) {
 
 		switch(p_option) {
@@ -2046,9 +2046,8 @@ struct _ScriptEditorItemData {
 
 void ScriptEditor::_update_script_colors() {
 
-	bool enabled = EditorSettings::get_singleton()->get("text_editor/script_temperature_enabled");
-	if (!enabled)
-		return;
+	bool script_temperature_enabled = EditorSettings::get_singleton()->get("text_editor/script_temperature_enabled");
+	bool highlight_current = EditorSettings::get_singleton()->get("text_editor/highlight_current_script");
 
 	int hist_size = EditorSettings::get_singleton()->get("text_editor/script_temperature_history_size");
 	Color hot_color=EditorSettings::get_singleton()->get("text_editor/script_temperature_hot_color");
@@ -2062,20 +2061,27 @@ void ScriptEditor::_update_script_colors() {
 			continue;
 
 		script_list->set_item_custom_bg_color(i,Color(0,0,0,0));
-		if (!n->has_meta("__editor_pass")) {
-			continue;
+
+		bool current = tab_container->get_current_tab() == c;
+		if (current && highlight_current) {
+			script_list->set_item_custom_bg_color(i, EditorSettings::get_singleton()->get("text_editor/current_script_background_color"));
+
+		} else if (script_temperature_enabled) {
+
+			if (!n->has_meta("__editor_pass")) {
+				continue;
+			}
+
+			int pass=n->get_meta("__editor_pass");
+			int h = edit_pass - pass;
+			if (h>hist_size) {
+				continue;
+			}
+			int non_zero_hist_size = ( hist_size == 0 ) ? 1 : hist_size;
+			float v = Math::ease((edit_pass-pass)/float(non_zero_hist_size),0.4);
+
+			script_list->set_item_custom_bg_color(i,hot_color.linear_interpolate(cold_color,v));
 		}
-
-		int pass=n->get_meta("__editor_pass");
-		int h = edit_pass - pass;
-		if (h>hist_size) {
-			continue;
-		}
-		int non_zero_hist_size = ( hist_size == 0 ) ? 1 : hist_size;
-		float v = Math::ease((edit_pass-pass)/float(non_zero_hist_size),0.4);
-
-
-		script_list->set_item_custom_bg_color(i,hot_color.linear_interpolate(cold_color,v));
 	}
 }
 
@@ -2304,6 +2310,7 @@ void ScriptEditor::apply_scripts() const {
 void ScriptEditor::_editor_play() {
 
 	debugger->start();
+	debug_menu->get_popup()->grab_focus();
 	debug_menu->get_popup()->set_item_disabled( debug_menu->get_popup()->get_item_index(DEBUG_NEXT), true );
 	debug_menu->get_popup()->set_item_disabled( debug_menu->get_popup()->get_item_index(DEBUG_STEP), true );
 	debug_menu->get_popup()->set_item_disabled( debug_menu->get_popup()->get_item_index(DEBUG_BREAK), false );
@@ -2413,6 +2420,7 @@ void ScriptEditor::_editor_settings_changed() {
 		ste->get_text_edit()->set_draw_breakpoint_gutter(EditorSettings::get_singleton()->get("text_editor/show_breakpoint_gutter"));
 		ste->get_text_edit()->cursor_set_block_mode(EditorSettings::get_singleton()->get("text_editor/block_caret"));
 	}
+	_update_script_colors();
 
 	ScriptServer::set_reload_scripts_on_save(EDITOR_DEF("text_editor/auto_reload_and_parse_scripts_on_save",true));
 
@@ -3146,9 +3154,11 @@ ScriptEditorPlugin::ScriptEditorPlugin(EditorNode *p_node) {
 	EDITOR_DEF("external_editor/use_external_editor",false);
 	EDITOR_DEF("external_editor/exec_path","");
 	EDITOR_DEF("text_editor/script_temperature_enabled",true);
+	EDITOR_DEF("text_editor/highlight_current_script", true);
 	EDITOR_DEF("text_editor/script_temperature_history_size",15);
 	EDITOR_DEF("text_editor/script_temperature_hot_color",Color(1,0,0,0.3));
 	EDITOR_DEF("text_editor/script_temperature_cold_color",Color(0,0,1,0.3));
+	EDITOR_DEF("text_editor/current_script_background_color",Color(0.81,0.81,0.14,0.63));
 	EDITOR_DEF("text_editor/group_help_pages",true);
 	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::STRING,"external_editor/exec_path",PROPERTY_HINT_GLOBAL_FILE));
 	EDITOR_DEF("external_editor/exec_flags","");

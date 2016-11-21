@@ -221,6 +221,34 @@ void SceneTreeDock::_perform_instance_scenes(const Vector<String>& p_files,Node*
 
 }
 
+void SceneTreeDock::_replace_with_branch_scene(const String& p_file,Node* base) {
+	Ref<PackedScene> sdata = ResourceLoader::load(p_file);
+	if (!sdata.is_valid()) {
+		accept->get_ok()->set_text(TTR("Ugh"));
+		accept->set_text(vformat(TTR("Error loading scene from %s"),p_file));
+		accept->popup_centered_minsize();
+		return;
+	}
+
+	Node *instanced_scene=sdata->instance(true);
+	if (!instanced_scene) {
+		accept->get_ok()->set_text(TTR("Ugh"));
+		accept->set_text(vformat(TTR("Error instancing scene from %s"),p_file));
+		accept->popup_centered_minsize();
+		return;
+	}
+
+	Node *parent = base->get_parent();
+	int pos = base->get_index();
+	memdelete(base);
+	parent->add_child(instanced_scene);
+	parent->move_child(instanced_scene, pos);
+	instanced_scene->set_owner(edited_scene);
+	editor_selection->clear();
+	editor_selection->add_node(instanced_scene);
+	scene_tree->set_selected(instanced_scene);
+}
+
 bool SceneTreeDock::_cyclical_dependency_exists(const String& p_target_scene_path, Node* p_desired_node) {
 	int childCount = p_desired_node->get_child_count();
 
@@ -432,6 +460,8 @@ void SceneTreeDock::_tool_selected(int p_tool, bool p_confirm_override) {
 				break;
 
 			List<Node*> selection = editor_selection->get_selected_node_list();
+			if (selection.size()==0)
+				break;
 
 			List<Node*> reselect;
 
@@ -1084,6 +1114,7 @@ void SceneTreeDock::_do_reparent(Node* p_new_parent,int p_position_in_parent,Vec
 	editor_data->get_undo_redo().create_action(TTR("Reparent Node"));
 
 	List<Pair<NodePath,NodePath> > path_renames;
+	Vector<StringName> former_names;
 
 	int inc=0;
 
@@ -1093,6 +1124,7 @@ void SceneTreeDock::_do_reparent(Node* p_new_parent,int p_position_in_parent,Vec
 		Node *node = p_nodes[ni];
 
 		fill_path_renames(node,new_parent,&path_renames);
+		former_names.push_back(node->get_name());
 
 		List<Node*> owned;
 		node->get_owned_by(node->get_owner(),&owned);
@@ -1134,6 +1166,7 @@ void SceneTreeDock::_do_reparent(Node* p_new_parent,int p_position_in_parent,Vec
 			editor_data->get_undo_redo().add_do_method(AnimationPlayerEditor::singleton->get_key_editor(),"set_root",node);
 
 		editor_data->get_undo_redo().add_undo_method(new_parent,"remove_child",node);
+		editor_data->get_undo_redo().add_undo_method(node,"set_name",former_names[ni]);
 
 		inc++;
 
@@ -1519,7 +1552,7 @@ void SceneTreeDock::_new_scene_from(String p_file) {
 			accept->popup_centered_minsize();
 			return;
 		}
-
+		_replace_with_branch_scene(p_file, base);
 	} else {
 		accept->get_ok()->set_text(TTR("I see.."));
 		accept->set_text(TTR("Error duplicating scene to save it."));
@@ -1542,7 +1575,7 @@ static bool _is_node_visible(Node* p_node) {
 
 static bool _has_visible_children(Node* p_node) {
 
-	bool collapsed = p_node->has_meta("_editor_collapsed") ? (bool)p_node->get_meta("_editor_collapsed") : false;
+	bool collapsed = p_node->is_displayed_folded();
 	if (collapsed)
 		return false;
 
@@ -1565,7 +1598,7 @@ static Node* _find_last_visible(Node* p_node) {
 
 	Node* last=NULL;
 
-	bool collapsed = p_node->has_meta("_editor_collapsed") ? (bool)p_node->get_meta("_editor_collapsed") : false;
+	bool collapsed = p_node->is_displayed_folded();
 
 	if (!collapsed)	{
 		for(int i=0;i<p_node->get_child_count();i++) {
@@ -1600,36 +1633,9 @@ void SceneTreeDock::_normalize_drop(Node*& to_node, int &to_pos, int p_type) {
 			ERR_EXPLAIN("Cannot perform drop above the root node!");
 			ERR_FAIL();
 		}
-		Node* upper_sibling=NULL;
 
-		for(int i=0;i<to_node->get_index();i++) {
-			Node *c =to_node->get_parent()->get_child(i);
-			if (_is_node_visible(c)) {
-				upper_sibling=c;
-			}
-		}
-
-
-		if (upper_sibling) {
-			//quite complicated, look for next visible in tree
-			upper_sibling=_find_last_visible(upper_sibling);
-
-			if (upper_sibling->get_parent()==to_node->get_parent()) {
-				//just insert over this node because nothing is above at an upper level
-				to_pos=to_node->get_index();
-				to_node=to_node->get_parent();
-			} else {
-				to_pos=-1; //insert last in whathever is up
-				to_node=upper_sibling->get_parent(); //insert at a parent of whathever is up
-			}
-
-
-		} else {
-			//just insert over this node because nothing is above at the same level
-			to_pos=to_node->get_index();
-			to_node=to_node->get_parent();
-
-		}
+		to_pos=to_node->get_index();
+		to_node=to_node->get_parent();
 
 	} else if (p_type==1) {
 			//drop at below selected node
@@ -1697,6 +1703,15 @@ void SceneTreeDock::_files_dropped(Vector<String> p_files,NodePath p_to,int p_ty
 	int to_pos=-1;
 	_normalize_drop(node,to_pos,p_type);
 	_perform_instance_scenes(p_files,node,to_pos);
+}
+
+void SceneTreeDock::_script_dropped(String p_file, NodePath p_to) {
+	Ref<Script> scr = ResourceLoader::load(p_file);
+	ERR_FAIL_COND(!scr.is_valid());
+	Node *n = get_node(p_to);
+	if (n) {
+		n->set_script(scr.get_ref_ptr());
+	}
 }
 
 void SceneTreeDock::_nodes_dragged(Array p_nodes,NodePath p_to,int p_type) {
@@ -1814,6 +1829,7 @@ void SceneTreeDock::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("_new_scene_from"),&SceneTreeDock::_new_scene_from);
 	ObjectTypeDB::bind_method(_MD("_nodes_dragged"),&SceneTreeDock::_nodes_dragged);
 	ObjectTypeDB::bind_method(_MD("_files_dropped"),&SceneTreeDock::_files_dropped);
+	ObjectTypeDB::bind_method(_MD("_script_dropped"),&SceneTreeDock::_script_dropped);
 	ObjectTypeDB::bind_method(_MD("_tree_rmb"),&SceneTreeDock::_tree_rmb);
 	ObjectTypeDB::bind_method(_MD("_filter_changed"),&SceneTreeDock::_filter_changed);
 
@@ -1889,6 +1905,7 @@ SceneTreeDock::SceneTreeDock(EditorNode *p_editor,Node *p_scene_root,EditorSelec
 	scene_tree->connect("open_script",this,"_script_open_request");
 	scene_tree->connect("nodes_rearranged",this,"_nodes_dragged");
 	scene_tree->connect("files_dropped",this,"_files_dropped");
+	scene_tree->connect("script_dropped",this,"_script_dropped");
 
 	scene_tree->set_undo_redo(&editor_data->get_undo_redo());
 	scene_tree->set_editor_selection(editor_selection);

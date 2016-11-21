@@ -35,7 +35,7 @@ void HTTPRequest::_redirect_request(const String& p_new_url) {
 
 Error HTTPRequest::_request() {
 
-	print_line("Requesting:\n\tURL: "+url+"\n\tString: "+request_string+"\n\tPort: "+itos(port)+"\n\tSSL: "+itos(use_ssl)+"\n\tValidate SSL: "+itos(validate_ssl));
+	//print_line("Requesting:\n\tURL: "+url+"\n\tString: "+request_string+"\n\tPort: "+itos(port)+"\n\tSSL: "+itos(use_ssl)+"\n\tValidate SSL: "+itos(validate_ssl));
 	return client->connect(url,port,use_ssl,validate_ssl);
 }
 
@@ -53,36 +53,36 @@ Error HTTPRequest::_parse_url(const String& p_url) {
 	downloaded=0;
 	redirections=0;
 
-	print_line("1 url: "+url);
+	//print_line("1 url: "+url);
 	if (url.begins_with("http://")) {
 
 		url=url.substr(7,url.length()-7);
-		print_line("no SSL");
+		//print_line("no SSL");
 
 	} else if (url.begins_with("https://")) {
 		url=url.substr(8,url.length()-8);
 		use_ssl=true;
 		port=443;
-		print_line("yes SSL");
+		//print_line("yes SSL");
 	} else {
 		ERR_EXPLAIN("Malformed URL");
 		ERR_FAIL_V(ERR_INVALID_PARAMETER);
 	}
 
-	print_line("2 url: "+url);
+	//print_line("2 url: "+url);
 
 	int slash_pos = url.find("/");
 
 	if (slash_pos!=-1) {
 		request_string=url.substr(slash_pos,url.length());
 		url=url.substr(0,slash_pos);
-		print_line("request string: "+request_string);
+		//print_line("request string: "+request_string);
 	} else {
 		request_string="/";
-		print_line("no request");
+		//print_line("no request");
 	}
 
-	print_line("3 url: "+url);
+	//print_line("3 url: "+url);
 
 	int colon_pos = url.find(":");
 	if (colon_pos!=-1) {
@@ -91,18 +91,20 @@ Error HTTPRequest::_parse_url(const String& p_url) {
 		ERR_FAIL_COND_V(port<1 || port > 65535,ERR_INVALID_PARAMETER);
 	}
 
-	print_line("4 url: "+url);
+	//print_line("4 url: "+url);
 
 	return OK;
 }
 
-Error HTTPRequest::request(const String& p_url, const Vector<String>& p_custom_headers, bool p_ssl_validate_domain) {
+Error HTTPRequest::request(const String& p_url, const Vector<String>& p_custom_headers, bool p_ssl_validate_domain, HTTPClient::Method p_method, const String& p_request_data) {
 
 	ERR_FAIL_COND_V(!is_inside_tree(),ERR_UNCONFIGURED);
 	if ( requesting ) {
 		ERR_EXPLAIN("HTTPRequest is processing a request. Wait for completion or cancel it before attempting a new one.");
 		ERR_FAIL_V(ERR_BUSY);
 	}
+
+	method=p_method;
 
 	Error err = _parse_url(p_url);
 	if (err)
@@ -113,6 +115,8 @@ Error HTTPRequest::request(const String& p_url, const Vector<String>& p_custom_h
 	bool has_user_agent=false;
 	bool has_accept=false;
 	headers=p_custom_headers;
+
+	request_data = p_request_data;
 
 	for(int i=0;i<headers.size();i++) {
 
@@ -220,7 +224,7 @@ bool HTTPRequest::_handle_response(bool *ret_value) {
 	response_headers.resize(0);
 	downloaded=0;
 	for (List<String>::Element *E=rheaders.front();E;E=E->next()) {
-		print_line("HEADER: "+E->get());
+		//print_line("HEADER: "+E->get());
 		response_headers.push_back(E->get());
 	}
 
@@ -241,7 +245,7 @@ bool HTTPRequest::_handle_response(bool *ret_value) {
 			}
 		}
 
-		print_line("NEW LOCATION: "+new_request);
+		//print_line("NEW LOCATION: "+new_request);
 
 		if (new_request!="") {
 			//process redirect
@@ -257,7 +261,7 @@ bool HTTPRequest::_handle_response(bool *ret_value) {
 
 			err = _request();
 
-			print_line("new connection: "+itos(err));
+			//print_line("new connection: "+itos(err));
 			if (err==OK) {
 				request_sent=false;
 				got_response=false;
@@ -281,7 +285,7 @@ bool HTTPRequest::_update_connection() {
 	switch( client->get_status() ) {
 		case HTTPClient::STATUS_DISCONNECTED: {
 			call_deferred("_request_done",RESULT_CANT_CONNECT,0,StringArray(),ByteArray());
-			return true; //end it, since it's doing something			
+			return true; //end it, since it's doing something
 		} break;
 		case HTTPClient::STATUS_RESOLVING: {
 			client->poll();
@@ -334,7 +338,7 @@ bool HTTPRequest::_update_connection() {
 			} else {
 				//did not request yet, do request
 
-				Error err = client->request(HTTPClient::METHOD_GET,request_string,headers);
+				Error err = client->request(method,request_string,headers,request_data);
 				if (err!=OK) {
 					call_deferred("_request_done",RESULT_CONNECTION_ERROR,0,StringArray(),ByteArray());
 					return true;
@@ -531,7 +535,7 @@ int HTTPRequest::get_body_size() const{
 
 void HTTPRequest::_bind_methods() {
 
-	ObjectTypeDB::bind_method(_MD("request","url","custom_headers","ssl_validate_domain"),&HTTPRequest::request,DEFVAL(StringArray()),DEFVAL(true));
+	ObjectTypeDB::bind_method(_MD("request","url","custom_headers","ssl_validate_domain","method","request_data"),&HTTPRequest::request,DEFVAL(StringArray()),DEFVAL(true),DEFVAL(HTTPClient::METHOD_GET),DEFVAL(String()));
 	ObjectTypeDB::bind_method(_MD("cancel_request"),&HTTPRequest::cancel_request);
 
 	ObjectTypeDB::bind_method(_MD("get_http_client_status"),&HTTPRequest::get_http_client_status);

@@ -32,6 +32,7 @@
 #include "os/keyboard.h"
 #include "globals.h"
 #include "os/input.h"
+#include "scene/main/viewport.h"
 
 
 
@@ -814,6 +815,8 @@ void Tree::update_cache() {
 	cache.guide_width=get_constant("guide_width");
 	cache.draw_relationship_lines=get_constant("draw_relationship_lines");
 	cache.relationship_line_color=get_color("relationship_line_color");
+	cache.scroll_border=get_constant("scroll_border");
+	cache.scroll_speed=get_constant("scroll_speed");
 
 	cache.title_button = get_stylebox("title_button_normal");
 	cache.title_button_pressed = get_stylebox("title_button_pressed");
@@ -1072,11 +1075,21 @@ int Tree::draw_item(const Point2i& p_pos,const Point2& p_draw_ofs, const Size2& 
 			if (p_item->cells[i].selected && select_mode!=SELECT_ROW) {
 
 				Rect2i r(item_rect.pos,item_rect.size);
+				if (p_item->cells[i].text.size() > 0){
+					float icon_width = p_item->cells[i].get_icon_size().width;
+					r.pos.x += icon_width;
+					r.size.x -= icon_width;
+				}
 				//r.grow(cache.selected->get_margin(MARGIN_LEFT));
-				if (has_focus())
+				if (has_focus()){
 					cache.selected_focus->draw(ci,r );
-				else
+					p_item->set_meta("__focus_rect", Rect2(r.pos,r.size));
+				} else {
 					cache.selected->draw(ci,r );
+				}
+				if (text_editor->is_visible()){
+					text_editor->set_pos(get_global_pos() + r.pos);
+				}
 			}
 
 			if (p_item->cells[i].custom_bg_color) {
@@ -1292,7 +1305,7 @@ int Tree::draw_item(const Point2i& p_pos,const Point2& p_draw_ofs, const Size2& 
 				int root_ofs = children_pos.x + (hide_folding?cache.hseparation:cache.item_margin);
 				int parent_ofs = p_pos.x + (hide_folding?cache.hseparation:cache.item_margin);
 				Point2i root_pos = Point2i(root_ofs, children_pos.y + label_h/2)-cache.offset+p_draw_ofs;
-				if (c->get_children() > 0)
+				if (c->get_children() != NULL)
 					root_pos -= Point2i(cache.arrow->get_width(),0);
 
 				Point2i parent_pos = Point2i(parent_ofs - cache.arrow->get_width()/2, p_pos.y + label_h/2 + cache.arrow->get_height()/2)-cache.offset+p_draw_ofs;
@@ -2468,16 +2481,7 @@ bool Tree::edit_selected() {
 	if (!s->cells[col].editable)
 		return false;
 
-	Rect2 rect;
-	rect.pos.y = get_item_offset(s) - get_scroll().y;
-
-	for(int i=0;i<col;i++) {
-
-		rect.pos.x+=get_column_width(i);
-	}
-
-	rect.size.width=get_column_width(col);
-	rect.size.height=compute_item_height(s)+cache.vseparation;
+	Rect2 rect = s->get_meta("__focus_rect");
 
 	popup_edited_item=s;
 	popup_edited_item_col=col;
@@ -2641,11 +2645,17 @@ void Tree::_notification(int p_what) {
 	if (p_what==NOTIFICATION_DRAG_END) {
 
 		drop_mode_flags=0;
+		scrolling = false;
+		set_fixed_process(false);
 		update();
 	}
 	if (p_what==NOTIFICATION_DRAG_BEGIN) {
 
 		single_select_defer=NULL;
+		if (cache.scroll_speed > 0 && get_rect().has_point(get_viewport()->get_mouse_pos() - get_global_pos())) {
+			scrolling = true;
+			set_fixed_process(true);
+		}
 	}
 	if (p_what==NOTIFICATION_FIXED_PROCESS) {
 
@@ -2690,6 +2700,28 @@ void Tree::_notification(int p_what) {
 			} else {
 
 			}
+		}
+		
+		if (scrolling) {
+			Point2 point = get_viewport()->get_mouse_pos() - get_global_pos();
+			if (point.x < cache.scroll_border) {
+				point.x -= cache.scroll_border;
+			} else if (point.x > get_size().width - cache.scroll_border) {
+				point.x -= get_size().width - cache.scroll_border;
+			} else {
+				point.x = 0;
+			}
+			if (point.y < cache.scroll_border) {
+				point.y -= cache.scroll_border;
+			} else if (point.y > get_size().height - cache.scroll_border) {
+				point.y -= get_size().height - cache.scroll_border;
+			} else {
+				point.y = 0;
+			}
+			point *= cache.scroll_speed * get_fixed_process_delta_time();
+			point += get_scroll();
+			h_scroll->set_val(point.x);
+			v_scroll->set_val(point.y);
 		}
 	}
 
@@ -3128,7 +3160,7 @@ void Tree::ensure_cursor_is_visible() {
 	int screenh=get_size().height-h_scroll->get_combined_minimum_size().height;
 
 	if (ofs+h>v_scroll->get_val()+screenh)
-		v_scroll->set_val(ofs-screenh+h);
+		v_scroll->call_deferred("set_val", ofs-screenh+h);
 	else if (ofs < v_scroll->get_val())
 		v_scroll->set_val(ofs);
 }

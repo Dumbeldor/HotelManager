@@ -346,6 +346,7 @@ static void _call_##m_type##_##m_method(Variant& r_ret,Variant& p_self,const Var
 	VCALL_LOCALMEM0R(Vector2,angle);
 //	VCALL_LOCALMEM1R(Vector2,cross);
 	VCALL_LOCALMEM0R(Vector2,abs);
+	VCALL_LOCALMEM1R(Vector2,clamped);
 
 	VCALL_LOCALMEM0R(Rect2,get_area);
 	VCALL_LOCALMEM1R(Rect2,intersects);
@@ -374,6 +375,7 @@ static void _call_##m_type##_##m_method(Variant& r_ret,Variant& p_self,const Var
 	VCALL_LOCALMEM0R(Vector3, ceil);
 	VCALL_LOCALMEM1R(Vector3, distance_to);
 	VCALL_LOCALMEM1R(Vector3, distance_squared_to);
+	VCALL_LOCALMEM1R(Vector3, angle_to);
 	VCALL_LOCALMEM1R(Vector3, slide);
 	VCALL_LOCALMEM1R(Vector3, reflect);
 
@@ -1398,6 +1400,7 @@ _VariantCall::addfunc(Variant::m_vtype,Variant::m_ret,_SCS(#m_method),VCALL(m_cl
 	ADDFUNC1(VECTOR2,VECTOR2,Vector2,reflect,VECTOR2,"vec",varray());
 	//ADDFUNC1(VECTOR2,REAL,Vector2,cross,VECTOR2,"with",varray());
 	ADDFUNC0(VECTOR2,VECTOR2,Vector2,abs,varray());
+	ADDFUNC1(VECTOR2,VECTOR2,Vector2,clamped,REAL,"length",varray());
 
 	ADDFUNC0(RECT2,REAL,Rect2,get_area,varray());
 	ADDFUNC1(RECT2,BOOL,Rect2,intersects,RECT2,"b",varray());
@@ -1426,6 +1429,7 @@ _VariantCall::addfunc(Variant::m_vtype,Variant::m_ret,_SCS(#m_method),VCALL(m_cl
 	ADDFUNC0(VECTOR3,VECTOR3,Vector3,ceil,varray());
 	ADDFUNC1(VECTOR3,REAL,Vector3,distance_to,VECTOR3,"b",varray());
 	ADDFUNC1(VECTOR3,REAL,Vector3,distance_squared_to,VECTOR3,"b",varray());
+	ADDFUNC1(VECTOR3,REAL,Vector3,angle_to,VECTOR3,"to",varray());
 	ADDFUNC1(VECTOR3,VECTOR3,Vector3,slide,VECTOR3,"by",varray());
 	ADDFUNC1(VECTOR3,VECTOR3,Vector3,reflect,VECTOR3,"by",varray());
 

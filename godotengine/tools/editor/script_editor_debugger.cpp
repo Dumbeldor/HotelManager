@@ -216,6 +216,8 @@ void ScriptEditorDebugger::debug_continue() {
 	ERR_FAIL_COND(connection.is_null());
 	ERR_FAIL_COND(!connection->is_connected());
 
+	OS::get_singleton()->enable_for_stealing_focus(EditorNode::get_singleton()->get_child_process_id());
+
 	Array msg;
 	msg.push_back("continue");
 	ppeer->put_var(msg);
@@ -1086,6 +1088,9 @@ void ScriptEditorDebugger::start() {
 
 	stop();
 
+	if (!EditorNode::get_log()->is_visible()) {
+		EditorNode::get_singleton()->make_bottom_panel_item_visible(EditorNode::get_log());
+	}
 
 	uint16_t port = GLOBAL_DEF("debug/remote_port",6007);
 	perf_history.clear();

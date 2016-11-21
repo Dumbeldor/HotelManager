@@ -269,6 +269,7 @@ public:
 	virtual String get_locale() const;
 	virtual LatinKeyboardVariant get_latin_keyboard_variant() const; 
 
+	virtual void enable_for_stealing_focus(ProcessID pid);
 	virtual void move_window_to_foreground();
 	virtual String get_data_dir() const;
 	virtual String get_system_dir(SystemDir p_dir) const;
@@ -288,7 +289,7 @@ public:
 	virtual String get_joy_guid(int p_device) const;
 
 	virtual void set_use_vsync(bool p_enable);
-	virtual bool is_vsnc_enabled() const;
+	virtual bool is_vsync_enabled() const;
 
 	OS_Windows(HINSTANCE _hInstance);
 	~OS_Windows();

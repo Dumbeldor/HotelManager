@@ -127,10 +127,10 @@ void OS_X11::initialize(const VideoMode& p_desired,int p_video_driver,int p_audi
 	int xrandr_minor = 0;
 	int event_base, error_base;
 	xrandr_ext_ok = XRRQueryExtension(x11_display,&event_base, &error_base);
-	xrandr_handle = dlopen("libXrandr.so", RTLD_LAZY);
-	err = dlerror();
+	xrandr_handle = dlopen("libXrandr.so.2", RTLD_LAZY);
 	if (!xrandr_handle) {
-		fprintf(stderr, "could not load libXrandr.so, Error: %s\n", err);
+		err = dlerror();
+		fprintf(stderr, "could not load libXrandr.so.2, Error: %s\n", err);
 	}
 	else {
 		XRRQueryVersion(x11_display, &xrandr_major, &xrandr_minor);
@@ -1176,6 +1176,19 @@ void OS_X11::handle_key_event(XKeyEvent *p_event, bool p_echo) {
 		event.key.mod.shift=true;
 	}
 
+	//don't set mod state if modifier keys are released by themselves
+	//else event.is_action() will not work correctly here
+	if (!event.key.pressed) {
+		if (event.key.scancode == KEY_SHIFT)
+			event.key.mod.shift = false;
+		else if (event.key.scancode == KEY_CONTROL)
+			event.key.mod.control = false;
+		else if (event.key.scancode == KEY_ALT)
+			event.key.mod.alt = false;
+		else if (event.key.scancode == KEY_META)
+			event.key.mod.meta = false;
+	}
+
 	//printf("key: %x\n",event.key.scancode);
 	input->parse_input_event( event);
 }
@@ -1938,7 +1951,7 @@ void OS_X11::set_use_vsync(bool p_enable) {
 		return context_gl->set_use_vsync(p_enable);
 }
 
-bool OS_X11::is_vsnc_enabled() const {
+bool OS_X11::is_vsync_enabled() const {
 
 	if (context_gl)
 		return context_gl->is_using_vsync();

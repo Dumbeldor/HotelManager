@@ -292,26 +292,26 @@ bool CustomPropertyEditor::edit(Object* p_owner,const String& p_name,Variant::Ty
 				if (c>=2) {
 
 					if (!hint_text.get_slice(",",1).empty())
-					max=hint_text.get_slice(",",1).to_double();
+						max=hint_text.get_slice(",",1).to_double();
 				}
 
-				if (type==Variant::REAL && c>=3) {
+				if (c>=3) {
 
 					if (!hint_text.get_slice(",",2).empty())
-					step= hint_text.get_slice(",",2).to_double();
+						step= hint_text.get_slice(",",2).to_double();
 				}
 
 				if (c>=4 && hint_text.get_slice(",",3)=="slider") {
 					slider->set_min(min);
 					slider->set_max(max);
-					slider->set_step((type==Variant::REAL) ? step : 1);
+					slider->set_step(step);
 					slider->set_val(v);
 					slider->show();
 					set_size(Size2(110,30)*EDSCALE);
 				} else {
 					spinbox->set_min(min);
 					spinbox->set_max(max);
-					spinbox->set_step((type==Variant::REAL) ? step : 1);
+					spinbox->set_step(step);
 					spinbox->set_val(v);
 					spinbox->show();
 					set_size(Size2(70,35)*EDSCALE);
@@ -2785,7 +2785,7 @@ void PropertyEditor::update_tree() {
 					if (E) {
 						descr=E->get().brief_description;
 					}
-					class_descr_cache[type]=descr.world_wrap(80);
+					class_descr_cache[type]=descr.word_wrap(80);
 
 				}
 
@@ -2878,7 +2878,7 @@ void PropertyEditor::update_tree() {
 					if (E) {
 						for(int i=0;i<E->get().methods.size();i++) {
 							if (E->get().methods[i].name==setter.operator String()) {
-								descr=E->get().methods[i].description.strip_edges().world_wrap(80);
+								descr=E->get().methods[i].description.strip_edges().word_wrap(80);
 							}
 						}
 					}
@@ -2918,6 +2918,7 @@ void PropertyEditor::update_tree() {
 
 				item->set_cell_mode( 1, TreeItem::CELL_MODE_CHECK );
 				item->set_text(1,TTR("On"));
+				item->set_tooltip(1, obj->get(p.name) ? "True" : "False");
 				item->set_checked( 1, obj->get( p.name ) );
 				if (show_type_icons)
 					item->set_icon( 0, get_icon("Bool","EditorIcons") );
@@ -2993,7 +2994,7 @@ void PropertyEditor::update_tree() {
 						max=p.hint_string.get_slice(",",1).to_double();
 					}
 
-					if (p.type==Variant::REAL && c>=3) {
+					if (p.type!=PROPERTY_HINT_SPRITE_FRAME && c>=3) {
 
 						step= p.hint_string.get_slice(",",2).to_double();
 					}
@@ -3330,9 +3331,10 @@ void PropertyEditor::update_tree() {
 			} break;
 			case Variant::NODE_PATH: {
 
-				item->set_cell_mode( 1, TreeItem::CELL_MODE_CUSTOM );
+				item->set_cell_mode(1, TreeItem::CELL_MODE_STRING);
 				item->set_editable( 1, !read_only );
 				item->set_text(1,obj->get(p.name));
+				item->add_button(1, get_icon("Collapse", "EditorIcons"));
 
 			} break;
 			case Variant::OBJECT: {
@@ -3482,7 +3484,7 @@ void PropertyEditor::_edit_set(const String& p_name, const Variant& p_value) {
 	} else {
 
 
-		undo_redo->create_action(TTR("Set")+" "+p_name,true);
+		undo_redo->create_action(TTR("Set")+" "+p_name,UndoRedo::MERGE_ENDS);
 		undo_redo->add_do_property(obj,p_name,p_value);
 		undo_redo->add_undo_property(obj,p_name,obj->get(p_name));
 		undo_redo->add_do_method(this,"_changed_callback",obj,p_name);
@@ -3546,6 +3548,7 @@ void PropertyEditor::_item_edited() {
 		case Variant::BOOL: {
 
 			_edit_set(name,item->is_checked(1));
+			item->set_tooltip(1, item->is_checked(1) ? "True" : "False");
 		} break;
 		case Variant::INT:
 		case Variant::REAL: {
@@ -3608,6 +3611,7 @@ void PropertyEditor::_item_edited() {
 
 		} break;
 		case Variant::NODE_PATH: {
+			_edit_set(name, NodePath(item->get_text(1)));
 
 		} break;
 
@@ -3783,7 +3787,17 @@ void PropertyEditor::_edit_button(Object *p_item, int p_column, int p_button) {
 		String n = d["name"];
 		String ht = d["hint_text"];
 
-		if (t==Variant::STRING) {
+		if(t == Variant::NODE_PATH) {
+
+			Variant v = obj->get(n);
+			custom_editor->edit(obj, n, (Variant::Type)t, v, h, ht);
+			Rect2 where = tree->get_item_rect(ti, 1);
+			where.pos -= tree->get_scroll();
+			where.pos += tree->get_global_pos();
+			custom_editor->set_pos(where.pos);
+			custom_editor->popup();
+
+		} else if (t==Variant::STRING) {
 
 
 			Variant v = obj->get(n);
@@ -4283,7 +4297,7 @@ void SectionedPropertyEditor::update_category_list() {
 		else if ( !(pi.usage&PROPERTY_USAGE_EDITOR) )
 			continue;
 
-		if (pi.name.find(":")!=-1 || pi.name=="script/script")
+		if (pi.name.find(":")!=-1 || pi.name=="script/script" || pi.name.begins_with("resource/"))
 			continue;
 		int sp = pi.name.find("/");
 		if (sp!=-1) {

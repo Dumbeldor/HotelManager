@@ -1768,7 +1768,7 @@ void TextEdit::_input_event(const InputEvent& p_input_event) {
 							return;
 						}
 
-						if (k.scancode==KEY_RETURN || k.scancode==KEY_TAB) {
+						if (k.scancode==KEY_ENTER || k.scancode==KEY_RETURN || k.scancode==KEY_TAB) {
 
 							_confirm_completion();
 							accept_event();
@@ -2481,7 +2481,9 @@ void TextEdit::_input_event(const InputEvent& p_input_event) {
 
 				} break;
 				case KEY_X: {
-
+					if (readonly) {
+						break;
+					}
 					if (!k.mod.command || k.mod.shift || k.mod.alt) {
 						scancode_handled=false;
 						break;
@@ -2513,7 +2515,9 @@ void TextEdit::_input_event(const InputEvent& p_input_event) {
 						undo();
 				} break;
 				case KEY_V: {
-
+					if (readonly) {
+						break;
+					}
 					if (!k.mod.command || k.mod.shift || k.mod.alt) {
 						scancode_handled=false;
 						break;
@@ -3346,7 +3350,7 @@ void TextEdit::_reset_caret_blink_timer() {
 
 void TextEdit::_toggle_draw_caret() {
 	draw_caret = !draw_caret;
-	if (is_visible()) {
+	if (is_visible() && has_focus() && window_has_focus) {
 		update();
 	}
 }
@@ -4099,12 +4103,15 @@ void TextEdit::_confirm_completion() {
 
 
 void TextEdit::_cancel_code_hint() {
+
+	VisualServer::get_singleton()->canvas_item_set_z(get_canvas_item(), 0);
 	completion_hint="";
 	update();
 }
 
 void TextEdit::_cancel_completion() {
 
+	VisualServer::get_singleton()->canvas_item_set_z(get_canvas_item(), 0);
 	if (!completion_active)
 		return;
 
@@ -4284,6 +4291,7 @@ void TextEdit::query_code_comple() {
 
 void TextEdit::set_code_hint(const String& p_hint) {
 
+	VisualServer::get_singleton()->canvas_item_set_z(get_canvas_item(), 1);
 	completion_hint=p_hint;
 	completion_hint_offset=-0xFFFF;
 	update();
@@ -4291,7 +4299,7 @@ void TextEdit::set_code_hint(const String& p_hint) {
 
 void TextEdit::code_complete(const Vector<String> &p_strings) {
 
-
+	VisualServer::get_singleton()->canvas_item_set_z(get_canvas_item(), 1);
 	completion_strings=p_strings;
 	completion_active=true;
 	completion_current="";
@@ -4401,18 +4409,22 @@ void TextEdit::menu_option(int p_option) {
 
 	switch( p_option ) {
 		case MENU_CUT: {
-
-			cut();
+			if (!readonly) {
+				cut();
+			}
 		} break;
 		case MENU_COPY: {
 			copy();
 		} break;
 		case MENU_PASTE: {
-
-			paste();
+			if (!readonly) {
+				paste();
+			}
 		} break;
 		case MENU_CLEAR: {
-			clear();
+			if (!readonly) {
+				clear();
+			}
 		} break;
 		case MENU_SELECT_ALL: {
 			select_all();

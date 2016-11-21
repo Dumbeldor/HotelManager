@@ -47,16 +47,14 @@ void GDScriptLanguage::get_string_delimiters(List<String> *p_delimiters) const {
 String GDScriptLanguage::get_template(const String& p_class_name, const String& p_base_class_name) const {
 
 	String _template = String()+
-	"\nextends %BASE%\n\n"+
-	"# member variables here, example:\n"+
-	"# var a=2\n"+
-	"# var b=\"textvar\"\n\n"+
+	"extends %BASE%\n\n"+
+	"# class member variables go here, for example:\n"+
+	"# var a = 2\n"+
+	"# var b = \"textvar\"\n\n"+
 	"func _ready():\n"+
 	"\t# Called every time the node is added to the scene.\n"+
 	"\t# Initialization here\n"+
-	"\tpass\n"+
-	"\n"+
-	"\n";
+	"\tpass\n";
 
 	return _template.replace("%BASE%",p_base_class_name);
 }
@@ -2114,7 +2112,18 @@ Error GDScriptLanguage::complete_code(const String& p_code, const String& p_base
 			GDCompletionIdentifier t;
 			if (_guess_expression_type(context,static_cast<const GDParser::OperatorNode *>(node)->arguments[0],p.get_completion_line(),t)) {
 
-				if (t.type==Variant::OBJECT && t.obj_type!=StringName()) {
+				if (t.type==Variant::OBJECT && t.obj_type=="GDNativeClass") {
+					//native enum
+					Ref<GDNativeClass> gdn = t.value;
+					if (gdn.is_valid()) {
+						StringName cn = gdn->get_name();
+						List<String> cnames;
+						ObjectTypeDB::get_integer_constant_list(cn,&cnames);
+						for (List<String>::Element *E=cnames.front();E;E=E->next()) {
+							options.insert(E->get());
+						}
+					}
+				} else if (t.type==Variant::OBJECT && t.obj_type!=StringName()) {
 
 					Ref<GDScript> on_script;
 

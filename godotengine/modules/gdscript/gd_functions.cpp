@@ -840,8 +840,9 @@ void GDFunctions::call(Function p_func,const Variant **p_args,int p_arg_count,Va
 				r_error.error=Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 				r_error.argument=0;
 				r_ret=Variant();
+			} else {
+				r_ret=ResourceLoader::load(*p_args[0]);
 			}
-			r_ret=ResourceLoader::load(*p_args[0]);
 
 		} break;
 		case INST2DICT: {

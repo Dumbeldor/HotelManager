@@ -36,6 +36,7 @@
 #include "scene/gui/line_edit.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/menu_button.h"
+#include "scene/gui/label.h"
 
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
@@ -81,6 +82,7 @@ class TileMapEditor : public VBoxContainer {
 
 	HBoxContainer *toolbar;
 
+	Label *tile_info;
 	MenuButton *options;
 	ToolButton *transp;
 	ToolButton *mirror_x;
@@ -127,7 +129,7 @@ class TileMapEditor : public VBoxContainer {
 
 	void _pick_tile(const Point2& p_pos);
 
-	DVector<Vector2> _bucket_fill(const Point2i& p_start);
+	DVector<Vector2> _bucket_fill(const Point2i& p_start, bool erase=false);
 
 	void _fill_points(const DVector<Vector2> p_points, const Dictionary& p_op);
 	void _erase_points(const DVector<Vector2> p_points);

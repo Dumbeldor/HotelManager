@@ -642,6 +642,7 @@ void LineEdit::_notification(int p_what) {
 			if(text.empty())
 				font_color.a *= placeholder_alpha;
 
+			int caret_height = font->get_height() > y_area ? y_area : font->get_height();
 			while(true) {
 
 		//end of string, break!
@@ -660,14 +661,14 @@ void LineEdit::_notification(int p_what) {
 				bool selected=selection.enabled && char_ofs>=selection.begin && char_ofs<selection.end;
 
 				if (selected)
-					VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs, y_ofs), Size2(char_width, y_area)), selection_color);
+					VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs, y_ofs), Size2(char_width, caret_height)), selection_color);
 
 
 				font->draw_char(ci, Point2(x_ofs, y_ofs + font_ascent), cchar, next, selected ? font_color_selected : font_color);
 
 				if (char_ofs==cursor_pos && draw_caret) {
 					VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(
-						Point2( x_ofs , y_ofs ), Size2( 1, y_area ) ), cursor_color );
+						Point2( x_ofs , y_ofs ), Size2( 1, caret_height ) ), cursor_color );
 				}
 
 				x_ofs+=char_width;
@@ -676,7 +677,7 @@ void LineEdit::_notification(int p_what) {
 
 			if (char_ofs==cursor_pos && draw_caret) {//may be at the end
 				VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(
-					Point2( x_ofs , y_ofs ), Size2( 1, y_area ) ), cursor_color );
+					Point2( x_ofs , y_ofs ), Size2( 1, caret_height ) ), cursor_color );
 			}
 		} break;
 		case NOTIFICATION_FOCUS_ENTER: {
@@ -806,16 +807,6 @@ void LineEdit::set_cursor_at_pixel_pos(int p_x) {
 		pixel_ofs+=char_w;
 
 		if (pixel_ofs > p_x) { //found what we look for
-
-
-			if ( (pixel_ofs-p_x) < (char_w >> 1 ) ) {
-
-				ofs+=1;
-			} else if ( (pixel_ofs-p_x) > (char_w >> 1 ) ) {
-
-				ofs-=1;
-			}
-
 			break;
 		}
 
@@ -868,7 +859,7 @@ void LineEdit::_reset_caret_blink_timer() {
 
 void LineEdit::_toggle_draw_caret() {
 	draw_caret = !draw_caret;
-	if (is_visible()) {
+	if (is_visible() && has_focus() && window_has_focus) {
 		update();
 	}
 }
@@ -1200,24 +1191,28 @@ void LineEdit::menu_option(int p_option) {
 
 	switch(p_option) {
 		case MENU_CUT: {
-			cut_text();
+			if (editable) {
+				cut_text();
+			}
 		} break;
 		case MENU_COPY: {
 
 			copy_text();
 		} break;
 		case MENU_PASTE: {
-
-			paste_text();
+			if (editable) {
+				paste_text();
+			}
 		} break;
 		case MENU_CLEAR: {
-			clear();
+			if (editable) {
+				clear();
+			}
 		} break;
 		case MENU_SELECT_ALL: {
 			select_all();
 		} break;
 		case MENU_UNDO: {
-
 			undo();
 		} break;
 

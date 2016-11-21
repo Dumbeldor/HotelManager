@@ -97,6 +97,7 @@ public:
 	void add_control_to_dock(DockSlot p_slot,Control *p_control);
 	void remove_control_from_docks(Control *p_control);
 	void remove_control_from_bottom_panel(Control *p_control);
+	Control* get_editor_viewport();
 
 	virtual Ref<SpatialEditorGizmo> create_spatial_gizmo(Spatial* p_spatial);
 	virtual bool forward_input_event(const InputEvent& p_event);
@@ -118,6 +119,7 @@ public:
 	virtual void get_window_layout(Ref<ConfigFile> p_layout);
 	virtual void edited_scene_changed(){}; // if changes are pending in editor, apply them
 
+	void queue_save_layout() const;
 
 	Control *get_base_control();
 

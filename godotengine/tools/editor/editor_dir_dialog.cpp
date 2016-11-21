@@ -143,9 +143,9 @@ void EditorDirDialog::set_current_path(const String& p_path) {
 	reload();
 	String p = p_path;
 	if (p.begins_with("res://"))
-		p.replace_first("res://","");
+		p = p.replace_first("res://","");
 
-	Vector<String> dirs = p.split("/");
+	Vector<String> dirs = p.split("/",false);
 
 	TreeItem *r=tree->get_root();
 	for(int i=0;i<dirs.size();i++) {
@@ -162,13 +162,13 @@ void EditorDirDialog::set_current_path(const String& p_path) {
 		ERR_FAIL_COND(!p);
 		String pp = p->get_metadata(0);
 		if (pp=="") {
+			p->set_metadata(0,String(r->get_metadata(0)).plus_file(d));
 			_update_dir(p);
-			updating=true;
-			p->set_collapsed(false);
-			updating=false;
-			_item_collapsed(p);
-
 		}
+		updating=true;
+		p->set_collapsed(false);
+		updating=false;
+		_item_collapsed(p);
 		r=p;
 	}
 
@@ -216,7 +216,7 @@ void EditorDirDialog::_make_dir_confirm() {
 	if (err!=OK) {
 		mkdirerr->popup_centered_minsize(Size2(250,80));
 	} else {
-		reload();
+		set_current_path(dir.plus_file(makedirname->get_text()));
 	}
 	makedirname->set_text(""); // reset label
 }

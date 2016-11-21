@@ -155,6 +155,10 @@ msgid ""
 "as parent."
 msgstr ""
 
+#: scene/3d/baked_light_instance.cpp
+msgid "BakedLightInstance does not contain a BakedLight resource."
+msgstr ""
+
 #: scene/3d/body_shape.cpp
 msgid ""
 "CollisionShape only serves to provide a collision shape to a CollisionObject "
@@ -210,7 +214,8 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: scene/gui/dialogs.cpp
+#: scene/gui/dialogs.cpp tools/editor/plugins/canvas_item_editor_plugin.cpp
+#: tools/editor/scene_tree_dock.cpp
 msgid "OK"
 msgstr ""
 
@@ -236,8 +241,8 @@ msgstr ""
 
 #: scene/gui/file_dialog.cpp tools/editor/editor_file_dialog.cpp
 #: tools/editor/editor_help.cpp tools/editor/editor_node.cpp
+#: tools/editor/filesystem_dock.cpp
 #: tools/editor/plugins/script_editor_plugin.cpp tools/editor/quick_open.cpp
-#: tools/editor/scenes_dock.cpp
 msgid "Open"
 msgstr ""
 
@@ -720,6 +725,10 @@ msgid "Optimize"
 msgstr ""
 
 #: tools/editor/animation_editor.cpp
+msgid "Select an AnimationPlayer from the Scene Tree to edit animations."
+msgstr ""
+
+#: tools/editor/animation_editor.cpp
 msgid "Key"
 msgstr ""
 
@@ -926,6 +935,20 @@ msgstr ""
 msgid "Skip"
 msgstr ""
 
+#: tools/editor/code_editor.cpp
+#: tools/editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Zoom In"
+msgstr ""
+
+#: tools/editor/code_editor.cpp
+#: tools/editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Zoom Out"
+msgstr ""
+
+#: tools/editor/code_editor.cpp
+msgid "Reset Zoom"
+msgstr ""
+
 #: tools/editor/code_editor.cpp tools/editor/script_editor_debugger.cpp
 msgid "Line:"
 msgstr ""
@@ -936,6 +959,12 @@ msgstr ""
 
 #: tools/editor/connections_dialog.cpp
 msgid "Method in target Node must be specified!"
+msgstr ""
+
+#: tools/editor/connections_dialog.cpp
+msgid ""
+"Target method not found! Specify a valid method or attach a script to target "
+"Node."
 msgstr ""
 
 #: tools/editor/connections_dialog.cpp
@@ -1128,8 +1157,9 @@ msgid "Delete selected files?"
 msgstr ""
 
 #: tools/editor/dependency_editor.cpp tools/editor/editor_node.cpp
+#: tools/editor/filesystem_dock.cpp
 #: tools/editor/plugins/item_list_editor_plugin.cpp
-#: tools/editor/scenes_dock.cpp
+#: tools/editor/scene_tree_dock.cpp
 msgid "Delete"
 msgstr ""
 
@@ -1276,7 +1306,7 @@ msgstr ""
 msgid "Move Favorite Down"
 msgstr ""
 
-#: tools/editor/editor_file_dialog.cpp tools/editor/scenes_dock.cpp
+#: tools/editor/editor_file_dialog.cpp tools/editor/filesystem_dock.cpp
 msgid "Favorites:"
 msgstr ""
 
@@ -1286,10 +1316,6 @@ msgstr ""
 
 #: tools/editor/editor_file_dialog.cpp
 msgid "Preview:"
-msgstr ""
-
-#: tools/editor/editor_file_system.cpp
-msgid "Cannot go into subdir:"
 msgstr ""
 
 #: tools/editor/editor_file_system.cpp
@@ -1417,7 +1443,9 @@ msgstr ""
 msgid "Save Resource As.."
 msgstr ""
 
-#: tools/editor/editor_node.cpp tools/editor/scene_tree_dock.cpp
+#: tools/editor/editor_node.cpp
+#: tools/editor/plugins/canvas_item_editor_plugin.cpp
+#: tools/editor/scene_tree_dock.cpp
 msgid "I see.."
 msgstr ""
 
@@ -1642,7 +1670,9 @@ msgstr ""
 msgid "Pick a Main Scene"
 msgstr ""
 
-#: tools/editor/editor_node.cpp tools/editor/scene_tree_dock.cpp
+#: tools/editor/editor_node.cpp
+#: tools/editor/plugins/canvas_item_editor_plugin.cpp
+#: tools/editor/scene_tree_dock.cpp
 msgid "Ugh"
 msgstr ""
 
@@ -1969,6 +1999,10 @@ msgid "Update Changes"
 msgstr ""
 
 #: tools/editor/editor_node.cpp
+msgid "Disable Update Spinner"
+msgstr ""
+
+#: tools/editor/editor_node.cpp
 msgid "Inspector"
 msgstr ""
 
@@ -2006,6 +2040,10 @@ msgstr ""
 
 #: tools/editor/editor_node.cpp
 msgid "FileSystem"
+msgstr ""
+
+#: tools/editor/editor_node.cpp tools/editor/node_dock.cpp
+msgid "Node"
 msgstr ""
 
 #: tools/editor/editor_node.cpp
@@ -2174,6 +2212,90 @@ msgstr ""
 
 #: tools/editor/file_type_cache.cpp
 msgid "Can't open file_type_cache.cch for writing, not saving file type cache!"
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Same source and destination files, doing nothing."
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Same source and destination paths, doing nothing."
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Can't move directories to within themselves."
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Can't operate on '..'"
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Pick New Name and Location For:"
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "No files selected!"
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Instance"
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Edit Dependencies.."
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "View Owners.."
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Copy Path"
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Rename or Move.."
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Move To.."
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Info"
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Show In File Manager"
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Re-Import.."
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Previous Directory"
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Next Directory"
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Re-Scan Filesystem"
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Toggle folder status as Favorite"
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Instance the selected scene(s) as child of the selected node."
+msgstr ""
+
+#: tools/editor/filesystem_dock.cpp
+msgid "Move"
 msgstr ""
 
 #: tools/editor/groups_editor.cpp
@@ -2454,6 +2576,10 @@ msgstr ""
 
 #: tools/editor/io_plugins/editor_scene_import_plugin.cpp
 msgid "Auto"
+msgstr ""
+
+#: tools/editor/io_plugins/editor_scene_import_plugin.cpp
+msgid "Root Node Name:"
 msgstr ""
 
 #: tools/editor/io_plugins/editor_scene_import_plugin.cpp
@@ -2750,10 +2876,6 @@ msgstr ""
 
 #: tools/editor/multi_node_edit.cpp
 msgid "MultiNode Set"
-msgstr ""
-
-#: tools/editor/node_dock.cpp
-msgid "Node"
 msgstr ""
 
 #: tools/editor/node_dock.cpp
@@ -3131,10 +3253,6 @@ msgid "Post-Processing Texture #"
 msgstr ""
 
 #: tools/editor/plugins/baked_light_editor_plugin.cpp
-msgid "BakedLightInstance does not contain a BakedLight resource."
-msgstr ""
-
-#: tools/editor/plugins/baked_light_editor_plugin.cpp
 msgid "Bake!"
 msgstr ""
 
@@ -3198,7 +3316,7 @@ msgid "Paste Pose"
 msgstr ""
 
 #: tools/editor/plugins/canvas_item_editor_plugin.cpp
-msgid "Select Mode (Q)"
+msgid "Select Mode"
 msgstr ""
 
 #: tools/editor/plugins/canvas_item_editor_plugin.cpp
@@ -3218,13 +3336,11 @@ msgid "Alt+RMB: Depth list selection"
 msgstr ""
 
 #: tools/editor/plugins/canvas_item_editor_plugin.cpp
-#: tools/editor/plugins/spatial_editor_plugin.cpp
-msgid "Move Mode (W)"
+msgid "Move Mode"
 msgstr ""
 
 #: tools/editor/plugins/canvas_item_editor_plugin.cpp
-#: tools/editor/plugins/spatial_editor_plugin.cpp
-msgid "Rotate Mode (E)"
+msgid "Rotate Mode"
 msgstr ""
 
 #: tools/editor/plugins/canvas_item_editor_plugin.cpp
@@ -3323,14 +3439,6 @@ msgid "View"
 msgstr ""
 
 #: tools/editor/plugins/canvas_item_editor_plugin.cpp
-msgid "Zoom In"
-msgstr ""
-
-#: tools/editor/plugins/canvas_item_editor_plugin.cpp
-msgid "Zoom Out"
-msgstr ""
-
-#: tools/editor/plugins/canvas_item_editor_plugin.cpp
 msgid "Zoom Reset"
 msgstr ""
 
@@ -3376,6 +3484,49 @@ msgstr ""
 
 #: tools/editor/plugins/canvas_item_editor_plugin.cpp
 msgid "Snap (Pixels):"
+msgstr ""
+
+#: tools/editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Add %s"
+msgstr ""
+
+#: tools/editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Adding %s..."
+msgstr ""
+
+#: tools/editor/plugins/canvas_item_editor_plugin.cpp
+#: tools/editor/scene_tree_dock.cpp
+msgid "Create Node"
+msgstr ""
+
+#: tools/editor/plugins/canvas_item_editor_plugin.cpp
+#: tools/editor/scene_tree_dock.cpp
+msgid "Error instancing scene from %s"
+msgstr ""
+
+#: tools/editor/plugins/canvas_item_editor_plugin.cpp
+#: tools/editor/scene_tree_dock.cpp
+msgid "OK :("
+msgstr ""
+
+#: tools/editor/plugins/canvas_item_editor_plugin.cpp
+#: tools/editor/scene_tree_dock.cpp
+msgid "No parent to instance a child at."
+msgstr ""
+
+#: tools/editor/plugins/canvas_item_editor_plugin.cpp
+#: tools/editor/scene_tree_dock.cpp
+msgid "This operation requires a single selected node."
+msgstr ""
+
+#: tools/editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Change default type"
+msgstr ""
+
+#: tools/editor/plugins/canvas_item_editor_plugin.cpp
+msgid ""
+"Drag & drop + Shift : Add node as sibling\n"
+"Drag & drop + Alt : Change node type"
 msgstr ""
 
 #: tools/editor/plugins/collision_polygon_2d_editor_plugin.cpp
@@ -4048,6 +4199,10 @@ msgid "Save Theme As"
 msgstr ""
 
 #: tools/editor/plugins/script_editor_plugin.cpp
+msgid "Close Docs"
+msgstr ""
+
+#: tools/editor/plugins/script_editor_plugin.cpp
 #: tools/editor/scene_tree_dock.cpp
 msgid "Move Up"
 msgstr ""
@@ -4499,6 +4654,14 @@ msgid "Could not instance scene!"
 msgstr ""
 
 #: tools/editor/plugins/spatial_editor_plugin.cpp
+msgid "Move Mode (W)"
+msgstr ""
+
+#: tools/editor/plugins/spatial_editor_plugin.cpp
+msgid "Rotate Mode (E)"
+msgstr ""
+
+#: tools/editor/plugins/spatial_editor_plugin.cpp
 msgid "Scale Mode (R)"
 msgstr ""
 
@@ -4532,6 +4695,10 @@ msgstr ""
 
 #: tools/editor/plugins/spatial_editor_plugin.cpp
 msgid "Insert Animation Key"
+msgstr ""
+
+#: tools/editor/plugins/spatial_editor_plugin.cpp
+msgid "Focus Origin"
 msgstr ""
 
 #: tools/editor/plugins/spatial_editor_plugin.cpp
@@ -5313,15 +5480,21 @@ msgid "Unnamed Project"
 msgstr ""
 
 #: tools/editor/project_manager.cpp
-msgid "Are you sure to open more than one projects?"
+msgid "Are you sure to open more than one project?"
 msgstr ""
 
 #: tools/editor/project_manager.cpp
-msgid "Are you sure to run more than one projects?"
+msgid "Are you sure to run more than one project?"
 msgstr ""
 
 #: tools/editor/project_manager.cpp
 msgid "Remove project from the list? (Folder contents will not be modified)"
+msgstr ""
+
+#: tools/editor/project_manager.cpp
+msgid ""
+"You are about the scan %s folders for existing Godot projects. Do you "
+"confirm?"
 msgstr ""
 
 #: tools/editor/project_manager.cpp
@@ -5338,6 +5511,10 @@ msgstr ""
 
 #: tools/editor/project_manager.cpp
 msgid "Scan"
+msgstr ""
+
+#: tools/editor/project_manager.cpp
+msgid "Select a Folder to Scan"
 msgstr ""
 
 #: tools/editor/project_manager.cpp
@@ -5697,19 +5874,11 @@ msgid "Scene Run Settings"
 msgstr ""
 
 #: tools/editor/scene_tree_dock.cpp
-msgid "OK :("
-msgstr ""
-
-#: tools/editor/scene_tree_dock.cpp
-msgid "No parent to instance a child at."
+msgid "No parent to instance the scenes at."
 msgstr ""
 
 #: tools/editor/scene_tree_dock.cpp
 msgid "Error loading scene from %s"
-msgstr ""
-
-#: tools/editor/scene_tree_dock.cpp
-msgid "Error instancing scene from %s"
 msgstr ""
 
 #: tools/editor/scene_tree_dock.cpp
@@ -5751,10 +5920,6 @@ msgid "This operation can't be done without a scene."
 msgstr ""
 
 #: tools/editor/scene_tree_dock.cpp
-msgid "This operation requires a single selected node."
-msgstr ""
-
-#: tools/editor/scene_tree_dock.cpp
 msgid "This operation can't be done on instanced scenes."
 msgstr ""
 
@@ -5776,10 +5941,6 @@ msgstr ""
 
 #: tools/editor/scene_tree_dock.cpp
 msgid "Remove Node(s)"
-msgstr ""
-
-#: tools/editor/scene_tree_dock.cpp
-msgid "Create Node"
 msgstr ""
 
 #: tools/editor/scene_tree_dock.cpp
@@ -5830,6 +5991,10 @@ msgstr ""
 
 #: tools/editor/scene_tree_dock.cpp
 msgid "Save Branch as Scene"
+msgstr ""
+
+#: tools/editor/scene_tree_dock.cpp
+msgid "Delete (No Confirm)"
 msgstr ""
 
 #: tools/editor/scene_tree_dock.cpp
@@ -5902,90 +6067,6 @@ msgstr ""
 
 #: tools/editor/scene_tree_editor.cpp
 msgid "Select a Node"
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Same source and destination files, doing nothing."
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Same source and destination paths, doing nothing."
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Can't move directories to within themselves."
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Can't operate on '..'"
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Pick New Name and Location For:"
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "No files selected!"
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Instance"
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Edit Dependencies.."
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "View Owners.."
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Copy Path"
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Rename or Move.."
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Move To.."
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Info"
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Show In File Manager"
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Re-Import.."
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Previous Directory"
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Next Directory"
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Re-Scan Filesystem"
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Toggle folder status as Favorite"
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Instance the selected scene(s) as child of the selected node."
-msgstr ""
-
-#: tools/editor/scenes_dock.cpp
-msgid "Move"
 msgstr ""
 
 #: tools/editor/script_create_dialog.cpp
