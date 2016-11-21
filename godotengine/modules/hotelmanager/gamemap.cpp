@@ -21,8 +21,8 @@
 #include "scene/audio/sample_player.h"
 #include "objectselectorbutton.h"
 
-#define TILEMAP_NODE String("TileMap")
-#define CAMERA_NODE String("TileMap/Camera2D")
+#define TILEMAP_NODE String("GroundMap")
+#define CAMERA_NODE String("GroundMap/Camera2D")
 #define HUD_NODE String("Hud")
 #define MAPCONTROL_NODE String("Hud/ControlPane_Top/MapControl")
 #define SOUND_PLAYER_NODE String("MapSoundPlayer")

@@ -24,7 +24,7 @@ margin/right = 1920.0
 margin/bottom = 1080.0
 alignment = 0
 
-[node name="TileMap" type="TileMap" parent="GameMap"]
+[node name="GroundMap" type="TileMap" parent="GameMap"]
 
 z/z = 10
 mode = 0
@@ -43,7 +43,7 @@ collision/mask = 1
 occluder/light_mask = 1
 tile_data = IntArray( -131069, 8, -65532, 1, 65537, 7, 65542, 10, 131076, 1, 131079, 0, 131083, 0, 196612, 1, 196614, 10, 196623, 10, 262145, 6, 262147, 2, 262152, 1, 262153, 1, 262154, 1, 262155, 1, 327686, 9, 327688, 1, 327689, 1, 327690, 1, 327691, 1, 393219, 4, 393224, 1, 393225, 1, 393226, 1, 393227, 1, 458765, 0, 458766, 0, 458767, 0, 524293, 9, 524296, 2, 655371, 9, 655373, 0, 983051, 0 )
 
-[node name="Camera2D" type="Camera2D" parent="GameMap/TileMap"]
+[node name="Camera2D" type="Camera2D" parent="GameMap/GroundMap"]
 
 anchor_mode = 1
 rotating = false
