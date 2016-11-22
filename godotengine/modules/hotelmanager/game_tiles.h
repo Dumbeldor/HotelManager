@@ -16,6 +16,7 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 
 static constexpr uint16_t GAME_TILE_SIZE = 48;
 
@@ -57,6 +58,10 @@ struct GameTileDef
 	const char* label;
 	int flags;
 };
+static const uint8_t GAMETILEDEF_SIZE = 6;
+typedef std::shared_ptr<GameTileDef> GameTileDefPtr;
+
+typedef std::shared_ptr<GameTileDef> GameTileDefPtr;
 
 // Order is very important here
 static const GameTileDef game_tile_defs[TILE_MAX] = {
