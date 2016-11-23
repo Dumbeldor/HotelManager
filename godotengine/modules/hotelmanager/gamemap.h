@@ -55,7 +55,7 @@ private:
 		m_selection_in_progress = false;
 		m_selection_init_pos = Vector2(0, 0);
 	}
-	
+
 	Vector2 m_selection_init_pos = Vector2(0, 0);
 	bool m_selection_in_progress = false;
 	bool m_selection_is_valid = true;
@@ -68,7 +68,8 @@ private:
 	bool m_mouse_over = false;
 	Point2i m_over_tile;
 
-	TileMap *m_tile_map = nullptr;
+	TileMap *m_ground_map = nullptr;
+	TileMap *m_floor_map = nullptr;
 	Camera2D *m_camera = nullptr;
 	SamplePlayer *m_sound_player = nullptr;
 };
