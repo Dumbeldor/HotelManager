@@ -39,8 +39,7 @@ enum TileType
 {
 	TILE_TYPE_GENERIC,
 	TILE_TYPE_GROUND,
-	TILE_TYPE_WALL,
-	TILE_TYPE_GAMEOBJECT,
+	TILE_TYPE_FLOOR,
 };
 
 enum TileFlags
@@ -68,9 +67,9 @@ static const GameTileDef game_tile_defs[TILE_MAX] = {
 	{TILE_GROUND_FOREST, TILE_TYPE_GROUND, "forest", "tile_forest.png",	"Forest", TILE_FLAG_NONE},
 	{TILE_GROUND_SEAWATER, TILE_TYPE_GROUND, "seawater", "tile_seawater.png", "Sea water", TILE_FLAG_NONE},
 	{TILE_GROUND_SWIMMINGPOOLWATER,	TILE_TYPE_GROUND, "swimmingpoolwater", "tile_swimmingpoolwater.png", "Swimming pool", TILE_FLAG_NONE},
-	{TILE_GROUND_FLOORTILE,	TILE_TYPE_GROUND, "floortile", "tile_floortile.png", "Floor tile", TILE_FLAG_NONE},
-	{TILE_GROUND_LINOLEUM, TILE_TYPE_GROUND, "linoleum", "tile_linoleum.png", "Linoleum", TILE_FLAG_NONE},
-	{TILE_GROUND_MOSAIC, TILE_TYPE_GROUND, "mosaic", "tile_mosaic.png", "Mosaic", TILE_FLAG_NONE},
-	{TILE_GROUND_PARQUET, TILE_TYPE_GROUND, "parquet", "tile_parquet.png", "Parquet", TILE_FLAG_NONE},
-	{TILE_GROUND_CARPET, TILE_TYPE_GROUND, "carpet", "tile_carpet.png", "Carpet", TILE_FLAG_NONE},
+	{TILE_GROUND_FLOORTILE,	TILE_TYPE_FLOOR, "floortile", "tile_floortile.png", "Floor tile", TILE_FLAG_NONE},
+	{TILE_GROUND_LINOLEUM, TILE_TYPE_FLOOR, "linoleum", "tile_linoleum.png", "Linoleum", TILE_FLAG_NONE},
+	{TILE_GROUND_MOSAIC, TILE_TYPE_FLOOR, "mosaic", "tile_mosaic.png", "Mosaic", TILE_FLAG_NONE},
+	{TILE_GROUND_PARQUET, TILE_TYPE_FLOOR, "parquet", "tile_parquet.png", "Parquet", TILE_FLAG_NONE},
+	{TILE_GROUND_CARPET, TILE_TYPE_FLOOR, "carpet", "tile_carpet.png", "Carpet", TILE_FLAG_NONE},
 };

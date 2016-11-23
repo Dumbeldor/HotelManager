@@ -342,7 +342,14 @@ void GameMap::place_tiles_in_selected_area()
 		return;
 	}
 
-	Vector2 cur_pos = m_ground_map->world_to_map(get_local_mouse_pos());
+	TileMap *interact_tilemap = nullptr;
+	switch (game_tile_defs[s_tile].type) {
+		case TILE_TYPE_GROUND: interact_tilemap = m_ground_map; break;
+		case TILE_TYPE_FLOOR: interact_tilemap = m_floor_map; break;
+		default: return;
+	}
+
+	Vector2 cur_pos = interact_tilemap->world_to_map(get_local_mouse_pos());
 	// Don't place nodes if cur_pos is out of bounds
 	if (is_out_of_bounds(cur_pos)) {
 		reset_selection();
@@ -350,8 +357,8 @@ void GameMap::place_tiles_in_selected_area()
 	}
 
 	if (cur_pos == m_selection_init_pos) {
-		if (m_ground_map->get_cellv(cur_pos) != s_tile) {
-			m_ground_map->set_cellv(cur_pos, s_tile);
+		if (interact_tilemap->get_cellv(cur_pos) != s_tile) {
+			interact_tilemap->set_cellv(cur_pos, s_tile);
 			m_sound_player->play(SOUND_POP6);
 		}
 	}
@@ -376,9 +383,9 @@ void GameMap::place_tiles_in_selected_area()
 		for (float x = start_tile.x; x <= end_tile.x; x++) {
 			for (float y = start_tile.y; y <= end_tile.y; y++) {
 				Vector2 tile_pos(x, y);
-				if (m_ground_map->get_cellv(tile_pos) != s_tile) {
+				if (interact_tilemap->get_cellv(tile_pos) != s_tile) {
 					tile_changed = true;
-					m_ground_map->set_cellv(tile_pos, s_tile);
+					interact_tilemap->set_cellv(tile_pos, s_tile);
 				}
 			}
 		}
