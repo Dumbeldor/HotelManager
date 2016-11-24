@@ -1166,13 +1166,6 @@ bool Main::start() {
 	};
 
 	if (test!="") {
-#ifdef DEBUG_ENABLED
-		main_loop = test_main(test,args);
-
-		if (!main_loop)
-			return false;
-
-#endif
 
 	} else if (script!="") {
 
