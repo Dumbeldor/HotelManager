@@ -20,6 +20,7 @@
 #include "gamemap.h"
 #include "scene/audio/sample_player.h"
 #include "objectselectorbutton.h"
+#include "objectdefmgr.h"
 
 #define GROUNDMAP_NODE String("GroundMap")
 #define FLOORMAP_NODE String("FloorMap")
@@ -334,8 +335,9 @@ void GameMap::init_selection()
 void GameMap::place_tiles_in_selected_area()
 {
 	GameMapTile s_tile = ObjectSelectorButton::get_selected_tile_id();
+	const GameTileDef &tile_def = ObjectDefMgr::get_tiledef(s_tile);
 	// Ignore none tiles & tile unavailable to players
-	if (s_tile == TILE_NONE || game_tile_defs[s_tile].flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
+	if (s_tile == TILE_NONE || tile_def.flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
 		return;
 	}
 
@@ -346,7 +348,7 @@ void GameMap::place_tiles_in_selected_area()
 	}
 
 	TileMap *interact_tilemap = nullptr;
-	switch (game_tile_defs[s_tile].type) {
+	switch (tile_def.type) {
 		case TILE_TYPE_GROUND: interact_tilemap = m_ground_map; break;
 		case TILE_TYPE_FLOOR: interact_tilemap = m_floor_map; break;
 		default: return;

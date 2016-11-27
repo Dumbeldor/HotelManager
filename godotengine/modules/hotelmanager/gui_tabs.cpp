@@ -17,13 +17,16 @@
 #include <math/math_2d.h>
 #include "gui_tabs.h"
 #include "objectselectorbutton.h"
+#include "objectdefmgr.h"
 
 GroundTab::GroundTab()
 {
+	set_name("Grounds");
 	ObjectSelectorButton *tb = nullptr;
 	for (uint16_t i = 0; i < TILE_MAX; i++) {
-		if (game_tile_defs[i].type != TILE_TYPE_GROUND
-				|| game_tile_defs[i].flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
+		const GameTileDef &tile_def = ObjectDefMgr::get_tiledef((GameMapTile) i);
+		if (tile_def.type != TILE_TYPE_GROUND
+				|| tile_def.flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
 			continue;
 		}
 

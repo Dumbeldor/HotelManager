@@ -109,6 +109,7 @@ scale = Vector2( 1, 1 )
 
 [node name="ControlPane_Top" type="Node2D" parent="GameSession/GameMap/Hud"]
 
+editor/display_folded = true
 transform/pos = Vector2( 960, 0 )
 
 [node name="MapControl" type="Control" parent="GameSession/GameMap/Hud/ControlPane_Top"]
@@ -200,33 +201,6 @@ margin/right = 1920.0
 margin/bottom = 1082.0
 tab_align = 0
 tabs_visible = true
-
-[node name="Grounds" type="GroundTab" parent="GameSession/GameMap/Hud/ControlPane_Bottom"]
-
-anchor/right = 1
-anchor/bottom = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 4.0
-margin/top = 32.0
-margin/right = 4.0
-margin/bottom = 4.0
-
-[node name="Walls" type="Tabs" parent="GameSession/GameMap/Hud/ControlPane_Bottom"]
-
-visibility/visible = false
-anchor/right = 1
-anchor/bottom = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 4.0
-margin/top = 32.0
-margin/right = 4.0
-margin/bottom = 4.0
 
 [node name="MapSoundPlayer" type="SamplePlayer" parent="GameSession"]
 

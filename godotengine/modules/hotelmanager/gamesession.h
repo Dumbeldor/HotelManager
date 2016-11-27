@@ -18,6 +18,7 @@
 #include <scene/main/node.h>
 
 class GameMap;
+class ObjectDefMgr;
 
 enum GameSpeed
 {
@@ -32,6 +33,7 @@ class GameSession: public Node
 	OBJ_TYPE(GameSession, Node);
 public:
 	GameSession() {}
+	~GameSession();
 
 protected:
 	static void _bind_methods();
@@ -58,5 +60,6 @@ private:
 	uint32_t m_current_day = 1;
 	GameSpeed m_game_speed = GAMESPEED_NORMAL;
 
-	GameMap *m_map;
+	GameMap *m_map = nullptr;
+	ObjectDefMgr *m_objdef_mgr = nullptr;
 };

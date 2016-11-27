@@ -17,6 +17,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <ustring.h>
 
 static constexpr uint16_t GAME_TILE_SIZE = 48;
 
@@ -38,41 +39,27 @@ enum GameMapTile
 
 enum TileType
 {
-	TILE_TYPE_GENERIC,
-	TILE_TYPE_GROUND,
-	TILE_TYPE_FLOOR,
+	TILE_TYPE_GENERIC = 1,
+	TILE_TYPE_GROUND = 2,
+	TILE_TYPE_FLOOR = 3,
+	TILE_TYPE_MAX,
 };
 
 enum TileFlags
 {
 	TILE_FLAG_NONE = 0x00,
 	TILE_FLAG_UNAVAILABLE_FOR_PLAYERS = 0x01,
+	TILE_FLAG_MAX = 0x02,
 };
 
 struct GameTileDef
 {
 	GameMapTile id;
 	TileType type;
-	const char* name;
-	const char* texture_name;
-	const char* label;
+	String name;
+	String texture_name;
+	String label;
 	int flags;
 };
 static const uint8_t GAMETILEDEF_SIZE = 6;
 typedef std::shared_ptr<GameTileDef> GameTileDefPtr;
-
-// Order is very important here
-static const GameTileDef game_tile_defs[TILE_MAX] = {
-	{TILE_NONE, TILE_TYPE_GENERIC, "none", "tile_empty.png", "Empty", TILE_FLAG_UNAVAILABLE_FOR_PLAYERS},
-
-	{TILE_GROUND_GRASS,	TILE_TYPE_GROUND, "grass", "tile_grass.png", "Grass", TILE_FLAG_NONE},
-	{TILE_GROUND_STONE, TILE_TYPE_GROUND, "stone", "tile_stone.png", "Stone", TILE_FLAG_NONE},
-	{TILE_GROUND_FOREST, TILE_TYPE_GROUND, "forest", "tile_forest.png",	"Forest", TILE_FLAG_NONE},
-	{TILE_GROUND_SEAWATER, TILE_TYPE_GROUND, "seawater", "tile_seawater.png", "Sea water", TILE_FLAG_NONE},
-	{TILE_GROUND_SWIMMINGPOOLWATER,	TILE_TYPE_GROUND, "swimmingpoolwater", "tile_swimmingpoolwater.png", "Swimming pool", TILE_FLAG_NONE},
-	{TILE_GROUND_FLOORTILE,	TILE_TYPE_FLOOR, "floortile", "tile_floortile.png", "Floor tile", TILE_FLAG_NONE},
-	{TILE_GROUND_LINOLEUM, TILE_TYPE_FLOOR, "linoleum", "tile_linoleum.png", "Linoleum", TILE_FLAG_NONE},
-	{TILE_GROUND_MOSAIC, TILE_TYPE_FLOOR, "mosaic", "tile_mosaic.png", "Mosaic", TILE_FLAG_NONE},
-	{TILE_GROUND_PARQUET, TILE_TYPE_FLOOR, "parquet", "tile_parquet.png", "Parquet", TILE_FLAG_NONE},
-	{TILE_GROUND_CARPET, TILE_TYPE_FLOOR, "carpet", "tile_carpet.png", "Carpet", TILE_FLAG_NONE},
-};

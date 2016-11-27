@@ -23,7 +23,7 @@
 struct RoomDef
 {
 	uint16_t id;
-	std::string name;
+	String name;
 	uint8_t min_size;
 	uint8_t max_size;
 };
@@ -39,10 +39,18 @@ public:
 	void load_roomdefs();
 	void load_characterdefs();
 	void load_tilesdefs();
+
+	static const GameTileDef &get_tiledef(GameMapTile t)
+	{
+		return s_singleton->get_tiledef_priv(t);
+	}
+
 private:
-	FileAccess *m_file = NULL;
+	const GameTileDef &get_tiledef_priv(GameMapTile t);
+	// Singleton
+	static ObjectDefMgr *s_singleton;
+
 	std::unordered_map<uint16_t, RoomDefPtr> m_roomdefs;
 	std::unordered_map<uint16_t, CharacterDefPtr> m_characterdefs;
-	std::unordered_map<uint16_t, GameTileDefPtr> m_game_tiledefs;
-	//std::unordered_map m_room_defs;
+	std::unordered_map<GameMapTile, GameTileDefPtr> m_game_tiledefs;
 };

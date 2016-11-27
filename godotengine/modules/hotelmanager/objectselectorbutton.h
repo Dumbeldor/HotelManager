@@ -26,7 +26,7 @@ public:
 	ObjectSelectorButton();
 	void init();
 
-	GameMapTile get_map_tile() const { return m_tiledef.id; }
+	GameMapTile get_map_tile() const { return m_tile_id; }
 
 	void _change_selected_tile();
 
@@ -45,5 +45,5 @@ private:
 	static ObjectSelectorButton *s_selected;
 
 	static GameMapTile s_tile_to_init;
-	const GameTileDef &m_tiledef;
+	const GameMapTile m_tile_id;
 };

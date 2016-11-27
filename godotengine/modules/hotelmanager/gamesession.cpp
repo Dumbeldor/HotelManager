@@ -13,11 +13,18 @@
  * All rights reserved
  */
 
-#include <cassert>
+#include <scene/gui/tab_container.h>
 #include "gamesession.h"
 #include "gamemap.h"
+#include "objectdefmgr.h"
+#include "gui_tabs.h"
 
 #define MONEY_LIMIT 1000000000000
+
+GameSession::~GameSession()
+{
+	delete m_objdef_mgr;
+}
 
 void GameSession::_bind_methods()
 {
@@ -43,6 +50,19 @@ void GameSession::init()
 {
 	m_map = get_node(String("GameMap"))->cast_to<GameMap>();
 	assert(m_map);
+	assert(!m_objdef_mgr);
+
+	TabContainer *bottom_pane = get_node(String("GameMap/Hud/ControlPane_Bottom"))->cast_to<TabContainer>();
+	assert(bottom_pane);
+
+	m_objdef_mgr = new ObjectDefMgr();
+	m_objdef_mgr->load_characterdefs();
+	m_objdef_mgr->load_roomdefs();
+	m_objdef_mgr->load_tilesdefs();
+
+	// Init some HUD elements: note this should be done using a Hud element (see issue #17)
+	GroundTab *ground_tab = memnew(GroundTab);
+	bottom_pane->add_child(ground_tab);
 
 	// Map should be inited quickly
 	m_map->init();

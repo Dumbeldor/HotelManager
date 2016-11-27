@@ -13,16 +13,19 @@
  * All rights reserved
  */
 
-#include "ObjectDefMgr.h"
+#include "objectdefmgr.h"
 
 #define GAMEDATA_PATH String("res://gamedata/")
 #define ROOMDEF_FILE String("room.csv")
 #define CHARACTER_FILE String("character.csv")
 #define TILES_FILE String("tiles.csv")
 
+ObjectDefMgr *ObjectDefMgr::s_singleton = nullptr;
+
 ObjectDefMgr::ObjectDefMgr()
 {
-
+	assert(ObjectDefMgr::s_singleton == nullptr); // Should be null here
+	ObjectDefMgr::s_singleton = this;
 }
 
 ObjectDefMgr::~ObjectDefMgr() {
@@ -33,10 +36,8 @@ void ObjectDefMgr::load_roomdefs()
 {
 	Error err;
 	FileAccess *file = FileAccess::open(GAMEDATA_PATH + ROOMDEF_FILE, FileAccess::READ, &err);
-	if (err != OK) {
-		file = NULL;
-		ERR_FAIL_COND(err!=OK);
-	}
+	ERR_FAIL_COND(err != OK || file == NULL);
+
 	m_roomdefs.clear();
 
 	Vector<String> csv_line = file->get_csv_line();
@@ -68,10 +69,8 @@ void ObjectDefMgr::load_characterdefs()
 {
 	Error err;
 	FileAccess *file = FileAccess::open(GAMEDATA_PATH + CHARACTER_FILE, FileAccess::READ, &err);
-	if (err != OK) {
-		file = NULL;
-		ERR_FAIL_COND(err!=OK);
-	}
+	ERR_FAIL_COND(err != OK || file == NULL);
+
 	m_characterdefs.clear();
 
 	Vector<String> csv_line = file->get_csv_line();
@@ -103,10 +102,8 @@ void ObjectDefMgr::load_tilesdefs()
 {
 	Error err;
 	FileAccess *file = FileAccess::open(GAMEDATA_PATH + TILES_FILE, FileAccess::READ, &err);
-	if (err != OK) {
-		file = NULL;
-		ERR_FAIL_COND(err!=OK);
-	}
+	ERR_FAIL_COND(err != OK || file == NULL);
+
 	m_game_tiledefs.clear();
 
 	Vector<String> csv_line = file->get_csv_line();
@@ -117,21 +114,48 @@ void ObjectDefMgr::load_tilesdefs()
 			csv_line = file->get_csv_line();
 			continue;
 		}
-		GameTileDefPtr tiles(new GameTileDef());
-		uint16_t tiles_id = (uint16_t) csv_line.get(0).to_int();
+		GameTileDefPtr tiledef(new GameTileDef());
+		uint16_t tile_id = (uint16_t) csv_line.get(0).to_int();
 
-		if (m_game_tiledefs.find(tiles_id) != m_game_tiledefs.end()) {
-			WARN_PRINT(String("ID "+ String::num(tiles_id) +" was already registered, overriding it").ascii().get_data());
+		if (m_game_tiledefs.find((GameMapTile) tile_id) != m_game_tiledefs.end()) {
+			WARN_PRINT(String("ID " + String::num(tile_id) + " was already registered, overriding it").ascii().get_data());
 		}
 
-		tiles->id = (GameMapTile) tiles_id;
-		tiles->type = (TileType) csv_line.get(1).to_int();
-		tiles->name = csv_line.get(2).utf8();
-		tiles->texture_name = csv_line.get(3).utf8();
-		tiles->label = csv_line.get(4).utf8();
-		tiles->flags = csv_line.get(5).to_int();
+		if (tile_id >= TILE_MAX) {
+			WARN_PRINT(String("Tile ID " + String::num(tile_id) + " was invalid, ignoring").ascii().get_data());
+			csv_line = file->get_csv_line();
+			continue;
+		}
 
-		m_game_tiledefs[tiles_id] = tiles;
+		uint16_t tile_type = (uint16_t) csv_line.get(1).to_int();
+		if (tile_type >= TILE_TYPE_MAX) {
+			WARN_PRINT(String("ID " + String::num(tile_id) + " invalid tile type, ignoring").ascii().get_data());
+			csv_line = file->get_csv_line();
+			continue;
+		}
+
+		int tile_flags = csv_line.get(5).to_int();
+		if (tile_flags >= TILE_FLAG_MAX) {
+			WARN_PRINT(String("ID " + String::num(tile_id) + " invalid tile flags ("
+				+ String::num(tile_flags) + "), ignoring").ascii().get_data());
+			csv_line = file->get_csv_line();
+			continue;
+		}
+
+		tiledef->id = (GameMapTile) tile_id;
+		tiledef->type = (TileType) tile_type;
+		tiledef->name = csv_line.get(2).utf8();
+		tiledef->texture_name = csv_line.get(3).utf8();
+		tiledef->label = csv_line.get(4).utf8();
+		tiledef->flags = tile_flags;
+
+		m_game_tiledefs[tiledef->id] = tiledef;
 		csv_line = file->get_csv_line();
 	}
+}
+
+const GameTileDef &ObjectDefMgr::get_tiledef_priv(GameMapTile t)
+{
+	assert(t < TILE_MAX);
+	return *m_game_tiledefs[t];
 }

@@ -14,6 +14,7 @@
  */
 
 #include "objectselectorbutton.h"
+#include "objectdefmgr.h"
 #include <math/math_2d.h>
 #include <scene/gui/label.h>
 #include <iostream>
@@ -24,7 +25,7 @@ ObjectSelectorButton *ObjectSelectorButton::s_selected = nullptr;
 GameMapTile ObjectSelectorButton::s_tile_to_init = TILE_NONE;
 
 ObjectSelectorButton::ObjectSelectorButton():
-	m_tiledef(game_tile_defs[s_tile_to_init])
+	m_tile_id(s_tile_to_init)
 {
 	set_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
 }
@@ -40,12 +41,14 @@ void ObjectSelectorButton::_bind_methods()
 
 void ObjectSelectorButton::init()
 {
+	const GameTileDef &tile_def = ObjectDefMgr::get_tiledef(m_tile_id);
+
 	ImageTexture *texture = memnew(ImageTexture);
-	texture->load(String("res://tiles/") + m_tiledef.texture_name);
+	texture->load(String("res://tiles/") + tile_def.texture_name);
 	set_normal_texture(texture);
 
 	Label *label = memnew(Label);
-	label->set_text(m_tiledef.label);
+	label->set_text(tile_def.label);
 	label->set_align(Label::ALIGN_CENTER);
 	label->set_margin(MARGIN_RIGHT, GAME_TILE_SIZE);
 	label->set_margin(MARGIN_TOP, GAME_TILE_SIZE + 5);
