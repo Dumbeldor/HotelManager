@@ -46,12 +46,10 @@ GameMap::GameMap()
 
 void GameMap::_bind_methods()
 {
-	ObjectTypeDB::bind_method("init", &GameMap::init);
 	ObjectTypeDB::bind_method(_MD("_canvas_draw"),&GameMap::_canvas_draw);
 	ObjectTypeDB::bind_method(_MD("_canvas_mouse_enter"),&GameMap::_canvas_mouse_enter);
 	ObjectTypeDB::bind_method(_MD("_canvas_mouse_exit"),&GameMap::_canvas_mouse_exit);
 	ObjectTypeDB::bind_method(_MD("_on_input_event"),&GameMap::_on_input_event);
-	ObjectTypeDB::bind_method(_MD("_process"),&GameMap::_process);
 }
 
 void GameMap::init()
@@ -124,7 +122,7 @@ void GameMap::init()
 	}
 }
 
-void GameMap::_process(float delta)
+void GameMap::on_process(float delta)
 {
 	{
 		bool should_move_camera = false;

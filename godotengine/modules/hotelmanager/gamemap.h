@@ -36,15 +36,14 @@ public:
 	GameMap();
 
 	void init();
+	void on_process(float delta);
 protected:
 	static void _bind_methods();
 	void _canvas_draw();
 	void _canvas_mouse_enter();
 	void _canvas_mouse_exit();
 	void _on_input_event(const InputEvent &p_event);
-	void _process(float delta);
 private:
-	Vector2 get_world_limits() const { return Vector2(WORLD_LIMIT_X, WORLD_LIMIT_Y); }
 	static bool is_out_of_bounds(const Vector2 &pos);
 
 	// Selection & Placement

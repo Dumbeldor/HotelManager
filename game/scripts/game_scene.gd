@@ -1,15 +1,13 @@
 
 extends Node2D
 
-var game_session = GameSession.new()
+onready var game_session = get_node("GameSession")
 
 var current_shown_menu = 0
 
 const GAMEMENU = {
 	MAIN = 1,
 }
-
-var input_mouse_pressed_on_gamemap = false
 
 func _input(event):
 	if event.type == InputEvent.KEY and event.pressed:
@@ -20,13 +18,13 @@ func _input(event):
 				_hide_game_menu()
 
 func _ready():
-	get_map().init()
+	game_session.init()
 
-	var day_label = get_node("GameMap/Hud/ControlPane_Top/DayLabel")
+	var day_label = get_node("GameSession/GameMap/Hud/ControlPane_Top/DayLabel")
 	if day_label:
 		day_label.set_text("Day: " + str(game_session.get_current_day()))
 
-	var money_label = get_node("GameMap/Hud/ControlPane_Top/DayLabel/MoneyLabel")
+	var money_label = get_node("GameSession/GameMap/Hud/ControlPane_Top/DayLabel/MoneyLabel")
 	if money_label:
 		money_label.set_text(str(game_session.get_money()) + " $")
 
@@ -34,7 +32,7 @@ func _ready():
 	set_process(true)
 
 func _process(delta):
-	get_map()._process(delta)
+	game_session._process(delta)
 
 ##
 ## Button handlers
@@ -53,11 +51,3 @@ func _hide_game_menu():
 	get_node("MainMenuLayer/GameMainMenu").hide()
 	get_tree().set_pause(false)
 	current_shown_menu = 0
-
-##
-## MAP
-##
-
-func get_map():
-	return get_node("GameMap")
-

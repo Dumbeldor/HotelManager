@@ -13,12 +13,17 @@
  * All rights reserved
  */
 
+#include <cassert>
 #include "gamesession.h"
+#include "gamemap.h"
 
 #define MONEY_LIMIT 1000000000000
 
 void GameSession::_bind_methods()
 {
+	ObjectTypeDB::bind_method("init", &GameSession::init);
+	ObjectTypeDB::bind_method(_MD("_process"),&GameSession::_process);
+
 	// m_money
 	ObjectTypeDB::bind_method("get_money",&GameSession::get_money);
 	ObjectTypeDB::bind_method("set_money",&GameSession::set_money);
@@ -32,6 +37,21 @@ void GameSession::_bind_methods()
 	// m_current_day
 	ObjectTypeDB::bind_method("get_current_day",&GameSession::get_current_day);
 	ObjectTypeDB::bind_method("set_next_day",&GameSession::set_next_day);
+}
+
+void GameSession::init()
+{
+	m_map = get_node(String("GameMap"))->cast_to<GameMap>();
+	assert(m_map);
+
+	// Map should be inited quickly
+	m_map->init();
+}
+
+void GameSession::_process(float delta)
+{
+	// Map processing
+	m_map->on_process(delta);
 }
 
 void GameSession::set_money(int64_t money)
