@@ -34,6 +34,7 @@
  * @author Juan Linietsky
  * Vector container. Regular Vector Container. Use with care and for smaller arrays when possible. Use DVector for large arrays.
 */
+#include <cassert>
 #include "os/memory.h"
 #include "error_macros.h"
 #include "safe_refcount.h"
@@ -126,11 +127,7 @@ public:
 	T get(int p_index) const;
 
 	inline T& operator[](int p_index) {
-
-		if (p_index<0 || p_index>=size()) {
-			T& aux=*((T*)0); //nullreturn
-			ERR_FAIL_COND_V(p_index<0 || p_index>=size(),aux);
-		}
+		assert(p_index >= 0 && p_index < size());
 
 		_copy_on_write(); // wants to write, so copy on write.
 
@@ -138,11 +135,7 @@ public:
 	}
 
 	inline const T& operator[](int p_index) const {
-
-		if (p_index<0 || p_index>=size()) {
-			const T& aux=*((T*)0); //nullreturn
-			ERR_FAIL_COND_V(p_index<0 || p_index>=size(),aux);
-		}
+		assert(p_index >= 0 && p_index < size());
 		// no cow needed, since it's reading
 		return _get_data()[p_index];
 	}

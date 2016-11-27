@@ -33,6 +33,7 @@
 #include "error_macros.h"
 #include "ustring.h"
 #include "os/memory.h"
+#include <cassert>
 #include "list.h"
 
 
@@ -487,8 +488,7 @@ public:
 		if (!e) {
 
 			e=create_entry(p_key);
-			if (!e)
-				return *(TData*)NULL; /* panic! */
+			assert(e); /* panic! */
 			check_hash_table(); // perform mantenience routine
 		}
 

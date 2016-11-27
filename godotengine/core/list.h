@@ -29,6 +29,7 @@
 #ifndef GLOBALS_LIST_H
 #define GLOBALS_LIST_H
 
+#include <cassert>
 #include "os/memory.h"
 #include "sort.h"
 
@@ -404,11 +405,7 @@ public:
 	}
 
 	T& operator[](int p_index) {
-
-		if (p_index<0 || p_index>=size()) {
-			T& aux=*((T*)0); //nullreturn
-			ERR_FAIL_COND_V(p_index<0 || p_index>=size(),aux);
-		}
+		assert(p_index >= 0 && p_index < size());
 
 		Element *I=front();
 		int c=0;
@@ -422,15 +419,11 @@ public:
 			c++;
 		}
 
-		ERR_FAIL_V( *((T*)0) );	// bug!!
+		assert(false);	// bug!!
 	}
 
 	const T& operator[](int p_index) const {
-
-		if (p_index<0 || p_index>=size()) {
-			T& aux=*((T*)0); //nullreturn
-			ERR_FAIL_COND_V(p_index<0 || p_index>=size(),aux);
-		}
+		assert(p_index >= 0 && p_index < size());
 
 		const Element *I=front();
 		int c=0;
@@ -444,7 +437,7 @@ public:
 			c++;
 		}
 
-		ERR_FAIL_V( *((T*)0) );	 // bug!
+		assert(false);	 // bug!
 	}
 
 

@@ -30,6 +30,7 @@
 #define DVECTOR_H
 
 #include "os/memory.h"
+#include <cassert>
 
 
 /**
@@ -326,11 +327,7 @@ void DVector<T>::push_back(const T& p_val) {
 
 template<class T>
 const T DVector<T>::operator[](int p_index) const {
-
-	if (p_index<0 || p_index>=size()) {
-		T& aux=*((T*)0); //nullreturn
-		ERR_FAIL_COND_V(p_index<0 || p_index>=size(),aux);
-	}
+	assert(p_index >= 0 && p_index < size());
 
 	Read r = read();
 

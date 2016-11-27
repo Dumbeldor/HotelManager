@@ -30,6 +30,7 @@
 #define MAP_H
 
 #include "set.h"
+#include <cassert>
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
@@ -614,9 +615,9 @@ public:
 
 	const V& operator[](const K& p_key) const {
 
-		ERR_FAIL_COND_V(!_data._root, *(V*)NULL); // crash on purpose
+		assert(_data._root);
 		const Element *e=find(p_key);
-		ERR_FAIL_COND_V(!e, *(V*)NULL); // crash on purpose
+		assert(e);
 		return e->_value;
 	}
 	V& operator[](const K& p_key) {
@@ -628,7 +629,7 @@ public:
 		if (!e)
 			e=insert(p_key,V());
 
-		ERR_FAIL_COND_V(!e, *(V*)NULL); // crash on purpose
+		assert(e);
 		return e->_value;
 	}
 
