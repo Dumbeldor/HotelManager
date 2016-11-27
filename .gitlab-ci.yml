@@ -27,7 +27,7 @@ build:gcc6:
       - godotengine/bin/godot.x11.tools.64
   script:
     - cd godotengine
-    - scons platform=x11 openssl=builtin
+    - scons platform=x11 openssl=builtin -j2
 
 build:clang:
   stage: build
@@ -40,7 +40,7 @@ build:clang:
       - godotengine/bin/godot.x11.tools.64.llvm
   script:
     - cd godotengine
-    - scons platform=x11 use_llvm=yes openssl=builtin
+    - scons platform=x11 use_llvm=yes openssl=builtin -j2
 
 package:gcc6:
   stage: package
