@@ -4,6 +4,7 @@ export.cfg
 *.a
 .idea/dbnavigator.xml
 .idea/workspace.xml
+cmake-build-*
 
 ## QT Creator
 HotelManager.config

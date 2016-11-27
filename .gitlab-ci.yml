@@ -1,21 +1,67 @@
 ---
 image: docker.io/nerzhul/archlinux:2016.10.01
 before_script:
-  - pacman --noconfirm -Sy scons libxcursor libxinerama libxrandr mesa glu alsa-lib pulseaudio freetype2
+  - pacman --noconfirm -Sy scons libxcursor libxinerama libxrandr mesa glu alsa-lib pulseaudio freetype2 > /dev/null
 # These are already included in image
 # - pacman --noconfirm -S libxml2 jsoncpp curl
 
-gcc5:
+stages:
+  - build
+  - package
+
+build:gcc6:
   stage: build
+  environment: staging
+  artifacts:
+    when: on_success
+    expire_in: 1 day
+    paths:
+      - game/
+      - godotengine/bin/godot.x11.tools.64
   script:
     - cd godotengine
-    - find . -name test_main.h
     - scons platform=x11 openssl=builtin
 
-clang:
+build:clang:
   stage: build
+  environment: staging
+  artifacts:
+    when: on_success
+    expire_in: 1 day
+    paths:
+      - game/
+      - godotengine/bin/godot.x11.tools.64.llvm
   script:
     - cd godotengine
-    - find . -name test_main.h
     - scons platform=x11 use_llvm=yes openssl=builtin
+
+package:gcc6:
+  stage: package
+  environment: staging
+  dependencies:
+    - build:gcc6
+  artifacts:
+    when: on_success
+    expire_in: 1 week
+    paths:
+      - package_gcc6/
+  script:
+    - mkdir package_gcc6
+    - cp godotengine/bin/godot.x11.tools.64 package_gcc6/
+    - cp -R game/* package_gcc6/
+
+package:clang:
+  stage: package
+  environment: staging
+  dependencies:
+    - build:clang
+  artifacts:
+    when: on_success
+    expire_in: 1 week
+    paths:
+      - package_gcc6/
+  script:
+    - mkdir package_clang
+    - cp godotengine/bin/godot.x11.tools.64 package_clang/
+    - cp -R game/* package_clang/
 
