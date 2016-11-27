@@ -1,7 +1,5 @@
 ---
 image: docker.io/nerzhul/archlinux:2016.10.01
-before_script:
-  - pacman --noconfirm -Sy scons libxcursor libxinerama libxrandr mesa glu alsa-lib pulseaudio freetype2 > /dev/null
 # These are already included in image
 # - pacman --noconfirm -S libxml2 jsoncpp curl
 
@@ -25,6 +23,8 @@ build:gcc6:
     paths:
       - game/
       - godotengine/bin/godot.x11.tools.64
+  before_script:
+    - pacman --noconfirm -Sy scons libxcursor libxinerama libxrandr mesa glu alsa-lib pulseaudio freetype2 > /dev/null
   script:
     - cd godotengine
     - scons platform=x11 openssl=builtin -j2
@@ -38,6 +38,8 @@ build:clang:
     paths:
       - game/
       - godotengine/bin/godot.x11.tools.64.llvm
+  before_script:
+    - pacman --noconfirm -Sy scons libxcursor libxinerama libxrandr mesa glu alsa-lib pulseaudio freetype2 > /dev/null
   script:
     - cd godotengine
     - scons platform=x11 use_llvm=yes openssl=builtin -j2
