@@ -47,7 +47,6 @@ GameMap::GameMap()
 void GameMap::_bind_methods()
 {
 	ObjectTypeDB::bind_method("init", &GameMap::init);
-	ObjectTypeDB::bind_method("get_world_limits", &GameMap::get_world_limits);
 	ObjectTypeDB::bind_method(_MD("_canvas_draw"),&GameMap::_canvas_draw);
 	ObjectTypeDB::bind_method(_MD("_canvas_mouse_enter"),&GameMap::_canvas_mouse_enter);
 	ObjectTypeDB::bind_method(_MD("_canvas_mouse_exit"),&GameMap::_canvas_mouse_exit);

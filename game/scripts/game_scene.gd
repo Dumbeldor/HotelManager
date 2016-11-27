@@ -9,13 +9,6 @@ const GAMEMENU = {
 	MAIN = 1,
 }
 
-var WORLD_LIMITS = Vector2(0, 0)
-
-const TILES = {
-	EMPTY = 0,
-	GRASS = 1,
-}
-
 var input_mouse_pressed_on_gamemap = false
 
 func _input(event):
@@ -27,7 +20,7 @@ func _input(event):
 				_hide_game_menu()
 
 func _ready():
-	init_map()
+	get_map().init()
 
 	var day_label = get_node("GameMap/Hud/ControlPane_Top/DayLabel")
 	if day_label:
@@ -67,10 +60,4 @@ func _hide_game_menu():
 
 func get_map():
 	return get_node("GameMap")
-
-func init_map():
-	var map = get_map();
-	map.init()
-	# Load some informations from cpp
-	WORLD_LIMITS = map.get_world_limits()
 
