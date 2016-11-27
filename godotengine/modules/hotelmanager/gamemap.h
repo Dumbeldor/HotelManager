@@ -70,6 +70,7 @@ private:
 
 	TileMap *m_ground_map = nullptr;
 	TileMap *m_floor_map = nullptr;
+	TileMap *m_object_map = nullptr;
 	Camera2D *m_camera = nullptr;
 	SamplePlayer *m_sound_player = nullptr;
 };

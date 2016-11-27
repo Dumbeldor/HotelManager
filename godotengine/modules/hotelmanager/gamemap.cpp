@@ -23,6 +23,7 @@
 
 #define GROUNDMAP_NODE String("GroundMap")
 #define FLOORMAP_NODE String("FloorMap")
+#define OBJECTMAP_NODE String("ObjectMap")
 #define CAMERA_NODE String("GroundMap/Camera2D")
 #define HUD_NODE String("Hud")
 #define MAPCONTROL_NODE String("Hud/ControlPane_Top/MapControl")
@@ -59,9 +60,12 @@ void GameMap::init()
 	m_sound_player = get_parent()->get_node(SOUND_PLAYER_NODE)->cast_to<SamplePlayer>();
 	m_ground_map = get_node(GROUNDMAP_NODE)->cast_to<TileMap>();
 	m_floor_map = get_node(FLOORMAP_NODE)->cast_to<TileMap>();
+	m_object_map = get_node(OBJECTMAP_NODE)->cast_to<TileMap>();
 	m_camera = get_node(CAMERA_NODE)->cast_to<Camera2D>();
 	m_control = get_node(MAPCONTROL_NODE)->cast_to<Control>();
-	assert(m_sound_player && m_ground_map && m_floor_map && m_camera && m_control);
+	assert(m_sound_player &&
+		m_ground_map && m_floor_map && m_object_map &&
+		m_camera && m_control);
 
 	if (!m_control->is_connected("draw", this, "_canvas_draw")) {
 		m_control->connect("draw", this, "_canvas_draw");
@@ -84,6 +88,8 @@ void GameMap::init()
 
 
 	m_ground_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
+	m_floor_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
+	m_object_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
 
 	// Init map borders
 	for (uint16_t x = WORLD_LIMIT_X + 1; x < WORLD_LIMIT_X + 10; x++) {
