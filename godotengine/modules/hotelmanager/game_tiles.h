@@ -61,8 +61,6 @@ struct GameTileDef
 static const uint8_t GAMETILEDEF_SIZE = 6;
 typedef std::shared_ptr<GameTileDef> GameTileDefPtr;
 
-typedef std::shared_ptr<GameTileDef> GameTileDefPtr;
-
 // Order is very important here
 static const GameTileDef game_tile_defs[TILE_MAX] = {
 	{TILE_NONE, TILE_TYPE_GENERIC, "none", "tile_empty.png", "Empty", TILE_FLAG_UNAVAILABLE_FOR_PLAYERS},
