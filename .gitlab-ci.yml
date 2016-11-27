@@ -6,8 +6,15 @@ before_script:
 # - pacman --noconfirm -S libxml2 jsoncpp curl
 
 stages:
+  - codestyle
   - build
   - package
+
+check:codestyle:
+  stage: codestyle
+  environment: staging
+  script:
+    - .gitlab-ci/codestyle_check.sh
 
 build:gcc6:
   stage: build
@@ -47,7 +54,7 @@ package:gcc6:
       - package_gcc6/
   script:
     - mkdir package_gcc6
-    - cp godotengine/bin/godot.x11.tools.64 package_gcc6/
+    - cp godotengine/bin/godot.x11.tools.64 package_gcc6/HotelManager
     - cp -R game/* package_gcc6/
 
 package:clang:
@@ -62,6 +69,6 @@ package:clang:
       - package_gcc6/
   script:
     - mkdir package_clang
-    - cp godotengine/bin/godot.x11.tools.64 package_clang/
+    - cp godotengine/bin/godot.x11.tools.64.llvm package_clang/HotelManager
     - cp -R game/* package_clang/
 
