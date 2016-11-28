@@ -18,6 +18,7 @@
 #include "gamemap.h"
 #include "objectdefmgr.h"
 #include "gui_tabs.h"
+#include "hud.h"
 
 #define MONEY_LIMIT 1000000000000
 
@@ -50,11 +51,14 @@ void GameSession::init()
 {
 	m_map = get_node(String("GameMap"))->cast_to<GameMap>();
 	assert(m_map);
-	assert(!m_objdef_mgr);
+
+	m_hud = get_node(String("GameMap/Hud"))->cast_to<Hud>();
+	assert(m_hud);
 
 	TabContainer *bottom_pane = get_node(String("GameMap/Hud/ControlPane_Bottom"))->cast_to<TabContainer>();
 	assert(bottom_pane);
 
+	assert(!m_objdef_mgr);
 	m_objdef_mgr = new ObjectDefMgr();
 	m_objdef_mgr->load_characterdefs();
 	m_objdef_mgr->load_roomdefs();

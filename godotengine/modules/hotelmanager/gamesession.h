@@ -18,6 +18,7 @@
 #include <scene/main/node.h>
 
 class GameMap;
+class Hud;
 class ObjectDefMgr;
 
 enum GameSpeed
@@ -61,5 +62,6 @@ private:
 	GameSpeed m_game_speed = GAMESPEED_NORMAL;
 
 	GameMap *m_map = nullptr;
+	Hud *m_hud = nullptr;
 	ObjectDefMgr *m_objdef_mgr = nullptr;
 };
