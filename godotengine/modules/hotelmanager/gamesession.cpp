@@ -18,6 +18,7 @@
 #include "gamemap.h"
 #include "objectdefmgr.h"
 #include "gui_tabs.h"
+#include "hud.h"
 
 #define MONEY_LIMIT 1000000000000
 
@@ -50,11 +51,18 @@ void GameSession::init()
 {
 	m_map = get_node(String("GameMap"))->cast_to<GameMap>();
 	assert(m_map);
-	assert(!m_objdef_mgr);
+
+	// Init hud
+	m_hud = get_node(String("GameMap/Hud"))->cast_to<Hud>();
+	assert(m_hud);
+
+	m_hud->set_money_label(m_money);
+	m_hud->set_day_label(m_current_day);
 
 	TabContainer *bottom_pane = get_node(String("GameMap/Hud/ControlPane_Bottom"))->cast_to<TabContainer>();
 	assert(bottom_pane);
 
+	assert(!m_objdef_mgr);
 	m_objdef_mgr = new ObjectDefMgr();
 	m_objdef_mgr->load_characterdefs();
 	m_objdef_mgr->load_roomdefs();
@@ -81,6 +89,8 @@ void GameSession::set_money(int64_t money)
 	}
 
 	m_money = money;
+
+	m_hud->set_money_label(m_money);
 }
 
 void GameSession::add_money(int64_t money)
@@ -96,6 +106,8 @@ void GameSession::add_money(int64_t money)
 	if (m_money > MONEY_LIMIT) {
 		m_money = MONEY_LIMIT;
 	}
+
+	m_hud->set_money_label(m_money);
 }
 
 void GameSession::remove_money(int64_t money)
@@ -111,4 +123,6 @@ void GameSession::remove_money(int64_t money)
 	if (m_money < -MONEY_LIMIT) {
 		m_money = -MONEY_LIMIT;
 	}
+
+	m_hud->set_money_label(m_money);
 }

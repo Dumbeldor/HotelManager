@@ -100,7 +100,7 @@ collision/mask = 1
 occluder/light_mask = 1
 tile_data = IntArray(  )
 
-[node name="Hud" type="CanvasLayer" parent="GameSession/GameMap"]
+[node name="Hud" type="Hud" parent="GameSession/GameMap"]
 
 layer = 20
 offset = Vector2( 0, 0 )

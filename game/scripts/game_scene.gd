@@ -19,15 +19,6 @@ func _input(event):
 
 func _ready():
 	game_session.init()
-
-	var day_label = get_node("GameSession/GameMap/Hud/ControlPane_Top/DayLabel")
-	if day_label:
-		day_label.set_text("Day: " + str(game_session.get_current_day()))
-
-	var money_label = get_node("GameSession/GameMap/Hud/ControlPane_Top/DayLabel/MoneyLabel")
-	if money_label:
-		money_label.set_text(str(game_session.get_money()) + " $")
-
 	set_process_input(true)
 	set_process(true)
 

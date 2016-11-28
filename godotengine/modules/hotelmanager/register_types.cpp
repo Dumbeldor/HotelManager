@@ -23,6 +23,7 @@
 #include "gamemap.h"
 #include "gui_tabs.h"
 #include "objectselectorbutton.h"
+#include "hud.h"
 
 void register_hotelmanager_types()
 {
@@ -34,6 +35,7 @@ void register_hotelmanager_types()
 	ObjectTypeDB::register_type<GameMap>();
 	ObjectTypeDB::register_type<GroundTab>();
 	ObjectTypeDB::register_type<ObjectSelectorButton>();
+	ObjectTypeDB::register_type<Hud>();
 }
 
 void unregister_hotelmanager_types()
