@@ -43,6 +43,13 @@ public:
 	 * @return true if money >= how
 	 */
 	bool has_money(int64_t how) const { return m_money >= how; }
+	/**
+	 * @return m_money value
+	 */
+	int64_t get_money() const { return m_money; };
+	GameSpeed get_game_speed() const { return m_game_speed; };
+	double get_game_time() const { return m_game_time; };
+
 	void remove_money(int64_t money);
 
 protected:
@@ -50,17 +57,13 @@ protected:
 
 	void init();
 	void _process(float delta);
+	void save(const String &name);
+	void load(const String &name);
 
 	// m_money
-	/**
-	 * @return m_money value
-	 */
-	int64_t get_money() const { return m_money; }
 	void set_money(int64_t money);
 	void add_money(int64_t money);
 
-	// m_game_speed
-	GameSpeed get_game_speed() const { return m_game_speed; }
 	void set_game_speed(const GameSpeed speed) { m_game_speed = speed; }
 	void set_game_speed__api(const uint8_t speed) { m_game_speed = (GameSpeed) speed; }
 
@@ -78,6 +81,7 @@ private:
 	int64_t m_money = 2000;
 	GameSpeed m_game_speed = GAMESPEED_NORMAL;
 	double m_game_time = 0;
+	float m_autosave_timer = 10.0f;
 
 	GameMap *m_map = nullptr;
 	Hud *m_hud = nullptr;

@@ -38,6 +38,10 @@ public:
 
 	void init(GameSession *game_session);
 	void on_process(float delta);
+	void serialize(Dictionary &result) const;
+	TileMap *get_ground_map() const { return m_ground_map; };
+	TileMap *get_floor_map() const { return m_floor_map; };
+	Camera2D *get_camera() const { return m_camera; };
 protected:
 	static void _bind_methods();
 	void _canvas_draw();
