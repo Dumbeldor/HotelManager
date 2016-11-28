@@ -32,8 +32,8 @@ scons platform=x11 tools=yes target=debug openssl=yes colored=yes pulseaudio=no 
 
 ## Launch editor
 
-Launch _./game/launch\_editor.sh_
+Launch _./launch\_editor.sh_
 
 ## Launch game
 
-Launch _./game/launch\_game.sh_
+Launch _./launch\_game.sh_
