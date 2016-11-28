@@ -57,7 +57,7 @@ protected:
 	uint32_t get_current_day() const { return m_current_day; }
 	void set_next_day() { m_current_day++; }
 private:
-	int64_t m_money = 0;
+	int64_t m_money = 2000;
 	uint32_t m_current_day = 1;
 	GameSpeed m_game_speed = GAMESPEED_NORMAL;
 

@@ -23,4 +23,7 @@ class Hud: public CanvasLayer
 public:
 	Hud();
 	~Hud() {}
+
+	void set_money_label(const int64_t &money);
+	void set_day_label(const uint32_t day);
 };
