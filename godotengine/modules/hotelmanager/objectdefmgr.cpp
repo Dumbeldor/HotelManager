@@ -63,6 +63,8 @@ void ObjectDefMgr::load_roomdefs()
 		m_roomdefs[room_id] = room;
 		csv_line = file->get_csv_line();
 	}
+
+	file->close();
 }
 
 void ObjectDefMgr::load_characterdefs()
@@ -96,6 +98,8 @@ void ObjectDefMgr::load_characterdefs()
 		m_characterdefs[character_id] = character;
 		csv_line = file->get_csv_line();
 	}
+
+	file->close();
 }
 
 void ObjectDefMgr::load_tilesdefs()
@@ -152,6 +156,8 @@ void ObjectDefMgr::load_tilesdefs()
 		m_game_tiledefs[tiledef->id] = tiledef;
 		csv_line = file->get_csv_line();
 	}
+
+	file->close();
 }
 
 const GameTileDef &ObjectDefMgr::get_tiledef_priv(GameMapTile t)
