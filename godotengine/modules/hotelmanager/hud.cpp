@@ -1,4 +1,4 @@
-/**
+/*
  * This game is under its authors' proprietary license and is property of:
  *
  * No commercial usage of this program could be done without its authors
@@ -21,6 +21,10 @@ Hud::Hud(): CanvasLayer()
 
 }
 
+/**
+ *
+ * @param money
+ */
 void Hud::set_money_label(const int64_t &money)
 {
 	Label *money_label = get_node(String("ControlPane_Top/DayLabel/MoneyLabel"))->
@@ -29,6 +33,10 @@ void Hud::set_money_label(const int64_t &money)
 	money_label->set_text(String::num_int64(money) + " $");
 }
 
+/**
+ *
+ * @param day
+ */
 void Hud::set_day_label(const uint32_t day)
 {
 	Label *day_label = get_node(String("ControlPane_Top/DayLabel"))->cast_to<Label>();

@@ -1,4 +1,4 @@
-/**
+/*
  * This game is under its authors' proprietary license and is property of:
  *
  * No commercial usage of this program could be done without its authors
@@ -12,6 +12,5 @@
  *
  * All rights reserved
  */
-
 
 #include "characterclient.h"

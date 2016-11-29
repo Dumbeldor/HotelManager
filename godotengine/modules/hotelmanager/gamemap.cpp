@@ -1,4 +1,4 @@
-/**
+/*
  * This game is under its authors' proprietary license and is property of:
  *
  * No commercial usage of this program could be done without its authors
@@ -84,7 +84,6 @@ void GameMap::init()
 	m_camera->set_enable_follow_smoothing(true);
 	m_camera->set_pos(BASE_RESOLUTION / 2);
 
-
 	m_ground_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
 	m_floor_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
 	m_object_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
@@ -123,6 +122,10 @@ void GameMap::init()
 	}
 }
 
+/**
+ *
+ * @param delta
+ */
 void GameMap::on_process(float delta)
 {
 	{
@@ -225,7 +228,6 @@ void GameMap::_canvas_draw()
 			}
 
 
-
 			// Hovering rectangle
 			if (ObjectSelectorButton::get_selected_tile_id() != tile_id) {
 				Vector<Vector2> points;
@@ -251,6 +253,10 @@ void GameMap::_canvas_mouse_exit()
 	m_control->update();
 }
 
+/**
+ *
+ * @param p_event
+ */
 void GameMap::_on_input_event(const InputEvent &p_event)
 {
 	if (!m_ground_map || !m_ground_map->get_tileset().is_valid() || !m_ground_map->is_visible()) {
@@ -288,6 +294,10 @@ void GameMap::_on_input_event(const InputEvent &p_event)
 	}
 }
 
+/**
+ *
+ * @param multiplier
+ */
 void GameMap::zoom_camera(const float multiplier)
 {
 	Vector2 new_zoom = m_camera->get_zoom() * multiplier;
@@ -301,6 +311,10 @@ void GameMap::zoom_camera(const float multiplier)
 	m_control->update();
 }
 
+/**
+ *
+ * @param movement
+ */
 void GameMap::move_camera(Vector2 movement)
 {
 	movement.x *= 0.65;
@@ -332,6 +346,7 @@ void GameMap::init_selection()
 }
 
 // @TODO checks for money, tile validity, etc will be added to this function
+
 void GameMap::place_tiles_in_selected_area()
 {
 	GameMapTile s_tile = ObjectSelectorButton::get_selected_tile_id();
@@ -403,6 +418,11 @@ void GameMap::place_tiles_in_selected_area()
 	reset_selection();
 }
 
+/**
+ *
+ * @param pos
+ * @return
+ */
 bool GameMap::is_out_of_bounds(const Vector2 &pos)
 {
 	return (pos.x > WORLD_LIMIT_X || pos.x < -WORLD_LIMIT_X ||

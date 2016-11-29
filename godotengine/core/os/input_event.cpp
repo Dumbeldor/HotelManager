@@ -29,9 +29,7 @@
 #include "input_event.h"
 #include "input_map.h"
 #include "os/keyboard.h"
-/**
- *
- */
+
 
 bool InputEvent::operator==(const InputEvent &p_event) const {
 	if (type != p_event.type){

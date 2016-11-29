@@ -1,4 +1,4 @@
-/**
+/*
  * This game is under its authors' proprietary license and is property of:
  *
  * No commercial usage of this program could be done without its authors
@@ -76,12 +76,20 @@ void GameSession::init()
 	m_map->init();
 }
 
+/**
+ *
+ * @param delta
+ */
 void GameSession::_process(float delta)
 {
 	// Map processing
 	m_map->on_process(delta);
 }
 
+/**
+ *
+ * @param money
+ */
 void GameSession::set_money(int64_t money)
 {
 	if (money > MONEY_LIMIT) {
@@ -93,6 +101,10 @@ void GameSession::set_money(int64_t money)
 	m_hud->set_money_label(m_money);
 }
 
+/**
+ *
+ * @param money
+ */
 void GameSession::add_money(int64_t money)
 {
 	// Limit money to add to limit
@@ -110,6 +122,10 @@ void GameSession::add_money(int64_t money)
 	m_hud->set_money_label(m_money);
 }
 
+/**
+ *
+ * @param money
+ */
 void GameSession::remove_money(int64_t money)
 {
 	// Limit money to add to limit
