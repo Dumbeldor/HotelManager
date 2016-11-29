@@ -7,6 +7,7 @@ stages:
   - codestyle
   - build
   - package
+  - pages
 
 check:codestyle:
   stage: codestyle
@@ -74,3 +75,17 @@ package:clang:
     - cp godotengine/bin/godot.x11.tools.64.llvm package_clang/HotelManager
     - cp -R game/* package_clang/
 
+pages:
+  before_script:
+    - pacman --noconfirm -S doxygen
+  stage: pages
+  script:
+    - cd doc && doxygen && cd ..
+    - mkdir -p public/devdoc/
+    - cp -R doc/html/* public/devdoc/
+  artifacts:
+    when: on_success
+    paths:
+      - public
+  only:
+    - master
