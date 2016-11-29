@@ -59,7 +59,8 @@ struct GameTileDef
 	String name;
 	String texture_name;
 	String label;
-	int flags;
+	int32_t flags;
+	uint32_t cost;
 };
-static const uint8_t GAMETILEDEF_SIZE = 6;
+static const uint8_t GAMETILEDEF_CSV_COLS = 7;
 typedef std::shared_ptr<GameTileDef> GameTileDefPtr;

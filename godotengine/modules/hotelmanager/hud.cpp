@@ -22,6 +22,8 @@ Hud::Hud(): CanvasLayer()
 }
 
 /**
+ * Change money label in the player's HUD
+ * \attention This function triggers an assert if the HUD element doesn't exists
  *
  * @param money
  */
@@ -34,6 +36,8 @@ void Hud::set_money_label(const int64_t &money)
 }
 
 /**
+ * Change the day label in the player's HUD
+ * \attention This function triggers an assert if the HUD element doesn't exists
  *
  * @param day
  */

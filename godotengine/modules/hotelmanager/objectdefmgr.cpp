@@ -32,6 +32,9 @@ ObjectDefMgr::~ObjectDefMgr() {
 
 }
 
+/**
+ * Load game data for rooms
+ */
 void ObjectDefMgr::load_roomdefs()
 {
 	Error err;
@@ -43,7 +46,7 @@ void ObjectDefMgr::load_roomdefs()
 	Vector<String> csv_line = file->get_csv_line();
 
 	while (csv_line.size() > 1) {
-		if (csv_line.size() != ROOMDEF_SIZE) {
+		if (csv_line.size() != ROOMDEF_CSV_COLS) {
 			ERR_PRINT("invalid CSV line (gametiledef), ignoring.");
 			csv_line = file->get_csv_line();
 			continue;
@@ -67,6 +70,9 @@ void ObjectDefMgr::load_roomdefs()
 	file->close();
 }
 
+/**
+ * Load game data for characters
+ */
 void ObjectDefMgr::load_characterdefs()
 {
 	Error err;
@@ -78,7 +84,7 @@ void ObjectDefMgr::load_characterdefs()
 	Vector<String> csv_line = file->get_csv_line();
 
 	while (csv_line.size() > 1) {
-		if (csv_line.size() != CHARACTERDEF_SIZE) {
+		if (csv_line.size() != CHARACTERDEF_CSV_COLS) {
 			ERR_PRINT("invalid CSV line (gametiledef), ignoring.");
 			csv_line = file->get_csv_line();
 			continue;
@@ -102,6 +108,9 @@ void ObjectDefMgr::load_characterdefs()
 	file->close();
 }
 
+/**
+ * Load game data for tiles
+ */
 void ObjectDefMgr::load_tilesdefs()
 {
 	Error err;
@@ -113,7 +122,7 @@ void ObjectDefMgr::load_tilesdefs()
 	Vector<String> csv_line = file->get_csv_line();
 
 	while (csv_line.size() > 1) {
-		if (csv_line.size() != GAMETILEDEF_SIZE) {
+		if (csv_line.size() != GAMETILEDEF_CSV_COLS) {
 			ERR_PRINT("invalid CSV line (gametiledef), ignoring.");
 			csv_line = file->get_csv_line();
 			continue;
@@ -152,6 +161,7 @@ void ObjectDefMgr::load_tilesdefs()
 		tiledef->texture_name = csv_line.get(3).utf8();
 		tiledef->label = csv_line.get(4).utf8();
 		tiledef->flags = tile_flags;
+		tiledef->cost = (uint32_t) csv_line.get(6).to_int();
 
 		m_game_tiledefs[tiledef->id] = tiledef;
 		csv_line = file->get_csv_line();
@@ -161,9 +171,11 @@ void ObjectDefMgr::load_tilesdefs()
 }
 
 /**
+ * Returns the tiledef associated with t
+ * \attention tile id should be a real tile id, else an assertion is triggered
  *
- * @param t
- * @return
+ * @param t tiledef_id
+ * @return GameTileDef for tiledef_id
  */
 const GameTileDef &ObjectDefMgr::get_tiledef_priv(GameMapTile t)
 {

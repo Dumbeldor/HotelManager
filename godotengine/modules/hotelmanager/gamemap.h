@@ -17,11 +17,13 @@
 
 #include "scene/2d/tile_map.h"
 #include "game_tiles.h"
+#include "gamesession.h"
 #include <math.h>
 #include <math/math_2d.h>
 #include <scene/gui/box_container.h>
 #include <scene/2d/camera_2d.h>
 
+class GameSession;
 class SamplePlayer;
 
 static constexpr uint16_t WORLD_LIMIT_X = 180;
@@ -34,7 +36,7 @@ class GameMap: public VBoxContainer
 public:
 	GameMap();
 
-	void init();
+	void init(GameSession *game_session);
 	void on_process(float delta);
 protected:
 	static void _bind_methods();
@@ -66,6 +68,7 @@ private:
 	bool m_mouse_over = false;
 	Point2i m_over_tile;
 
+	GameSession *m_game_session = nullptr;
 	TileMap *m_ground_map = nullptr;
 	TileMap *m_floor_map = nullptr;
 	TileMap *m_object_map = nullptr;

@@ -73,7 +73,7 @@ void GameSession::init()
 	bottom_pane->add_child(ground_tab);
 
 	// Map should be inited quickly
-	m_map->init();
+	m_map->init(this);
 }
 
 /**

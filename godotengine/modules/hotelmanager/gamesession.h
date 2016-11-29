@@ -36,6 +36,13 @@ public:
 	GameSession() {}
 	~GameSession();
 
+	/**
+	 * @param how
+	 * @return true if money >= how
+	 */
+	bool has_money(int64_t how) const { return m_money >= how; }
+	void remove_money(int64_t money);
+
 protected:
 	static void _bind_methods();
 
@@ -43,10 +50,12 @@ protected:
 	void _process(float delta);
 
 	// m_money
+	/**
+	 * @return m_money value
+	 */
 	int64_t get_money() const { return m_money; }
 	void set_money(int64_t money);
 	void add_money(int64_t money);
-	void remove_money(int64_t money);
 
 	// m_game_speed
 	GameSpeed get_game_speed() const { return m_game_speed; }
