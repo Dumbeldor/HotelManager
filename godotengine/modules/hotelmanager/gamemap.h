@@ -1,4 +1,4 @@
-/**
+/*
  * This game is under its authors' proprietary license and is property of:
  *
  * No commercial usage of this program could be done without its authors
@@ -27,7 +27,6 @@ class SamplePlayer;
 static constexpr uint16_t WORLD_LIMIT_X = 180;
 static const Vector2 BASE_RESOLUTION(1920, 1080);
 static const uint16_t WORLD_LIMIT_Y = (uint16_t) floor(WORLD_LIMIT_X * BASE_RESOLUTION.y / BASE_RESOLUTION.x);
-
 
 class GameMap: public VBoxContainer
 {

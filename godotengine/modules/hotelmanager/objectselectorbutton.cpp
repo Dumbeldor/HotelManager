@@ -1,4 +1,4 @@
-/**
+/*
  * This game is under its authors' proprietary license and is property of:
  *
  * No commercial usage of this program could be done without its authors
@@ -58,8 +58,9 @@ void ObjectSelectorButton::init()
 	connect("draw", this, "_on_draw");
 }
 
-
-// When player select the button it changes the selected tile for this
+/**
+ * When player select the button it changes the selected tile
+ */
 void ObjectSelectorButton::_change_selected_tile()
 {
 	ObjectSelectorButton *prev_selected = ObjectSelectorButton::s_selected;

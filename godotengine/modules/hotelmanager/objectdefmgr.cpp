@@ -1,4 +1,4 @@
-/**
+/*
  * This game is under its authors' proprietary license and is property of:
  *
  * No commercial usage of this program could be done without its authors
@@ -160,6 +160,11 @@ void ObjectDefMgr::load_tilesdefs()
 	file->close();
 }
 
+/**
+ *
+ * @param t
+ * @return
+ */
 const GameTileDef &ObjectDefMgr::get_tiledef_priv(GameMapTile t)
 {
 	assert(t < TILE_MAX);

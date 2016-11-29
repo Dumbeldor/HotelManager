@@ -1,4 +1,4 @@
-/**
+/*
  * This game is under its authors' proprietary license and is property of:
  *
  * No commercial usage of this program could be done without its authors
@@ -29,6 +29,10 @@ void HotelManagerProject::_bind_methods()
 	ObjectTypeDB::bind_method("get_project_name",&HotelManagerProject::get_project_name);
 }
 
+/**
+ *
+ * @return
+ */
 String HotelManagerProject::get_full_version() const
 {
 	return m_version + " " + m_release;
