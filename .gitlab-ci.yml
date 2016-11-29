@@ -69,7 +69,7 @@ package:clang:
     when: on_success
     expire_in: 1 week
     paths:
-      - package_gcc6/
+      - package_clang/
   script:
     - mkdir package_clang
     - cp godotengine/bin/godot.x11.tools.64.llvm package_clang/HotelManager
