@@ -21,6 +21,7 @@
 #include "scene/audio/sample_player.h"
 #include "objectselectorbutton.h"
 #include "objectdefmgr.h"
+#include "gamesession.h"
 
 #define GROUNDMAP_NODE String("GroundMap")
 #define FLOORMAP_NODE String("FloorMap")
@@ -53,8 +54,14 @@ void GameMap::_bind_methods()
 	ObjectTypeDB::bind_method(_MD("_on_input_event"),&GameMap::_on_input_event);
 }
 
-void GameMap::init()
+/**
+ * Initialize game map
+ *
+ * @param game_session
+ */
+void GameMap::init(GameSession *game_session)
 {
+	m_game_session = game_session;
 	m_sound_player = get_parent()->get_node(SOUND_PLAYER_NODE)->cast_to<SamplePlayer>();
 	m_ground_map = get_node(GROUNDMAP_NODE)->cast_to<TileMap>();
 	m_floor_map = get_node(FLOORMAP_NODE)->cast_to<TileMap>();
@@ -204,17 +211,27 @@ void GameMap::_canvas_draw()
 
 			int tile_id = m_ground_map->get_cellv(m_over_tile);
 
+			GameMapTile selected_tile_id = ObjectSelectorButton::get_selected_tile_id();
 			Color border_color;
-			if (tile_id != TileMap::INVALID_CELL &&
-				tile_id != ObjectSelectorButton::get_selected_tile_id()) {
+			if (tile_id != TileMap::INVALID_CELL && tile_id != selected_tile_id) {
 				border_color = SELECTOR_BORDER_NEWTILE;
 			}
 			else {
 				border_color = SELECTOR_BORDER_OLDTILE;
 			}
 
+			const GameTileDef &tiledef = ObjectDefMgr::get_tiledef(selected_tile_id);
+			int32_t cost = tiledef.cost;
+			if (m_selection_in_progress) {
+				cost *= (ABS(end_tile.x) - ABS(start_tile.x) + 1)
+					* (ABS(end_tile.y) - ABS(start_tile.y) + 1);
+			}
+
+			// @TODO we should check if tile under selection is already correct to reduce cost
+
 			Color selection_color;
-			if (is_out_of_bounds(start_tile) || is_out_of_bounds(end_tile)) {
+			if (is_out_of_bounds(start_tile) || is_out_of_bounds(end_tile) ||
+				!m_game_session->has_money(cost)) {
 				selection_color = SELECTOR_RECT_COLOR_INVALID;
 				border_color = SELECTOR_BORDER_INVALID;
 			}
@@ -226,7 +243,6 @@ void GameMap::_canvas_draw()
 			for (uint8_t i = 0; i < 4; i++) {
 				m_control->draw_line(endpoints[i], endpoints[(i + 1) % 4], border_color, 2);
 			}
-
 
 			// Hovering rectangle
 			if (ObjectSelectorButton::get_selected_tile_id() != tile_id) {
@@ -376,10 +392,16 @@ void GameMap::place_tiles_in_selected_area()
 		return;
 	}
 
+	const GameTileDef &tiledef = ObjectDefMgr::get_tiledef(s_tile);
+
 	if (cur_pos == m_selection_init_pos) {
+		if (!m_game_session->has_money(tiledef.cost)) {
+			// m_sound_player->play(SOUND_ERROR);
+		}
 		if (interact_tilemap->get_cellv(cur_pos) != s_tile) {
 			interact_tilemap->set_cellv(cur_pos, s_tile);
 			m_sound_player->play(SOUND_POP6);
+			m_game_session->remove_money(tiledef.cost);
 		}
 	}
 	else {
@@ -392,8 +414,13 @@ void GameMap::place_tiles_in_selected_area()
 			MAX(cur_pos.y, m_selection_init_pos.y)
 		);
 
-		// Don't place anything if start or end is out of bounds
-		if (is_out_of_bounds(start_tile) || is_out_of_bounds(end_tile)) {
+		int32_t cost = (int32_t) (tiledef.cost * ABS(end_tile.x - start_tile.x + 1) *
+			ABS(end_tile.y - start_tile.y + 1));
+
+		// Don't place anything if start or end is out of bounds or if we don't have
+		// money
+		if (is_out_of_bounds(start_tile) || is_out_of_bounds(end_tile)
+			|| !m_game_session->has_money(cost)) {
 			reset_selection();
 			return;
 		}
@@ -403,15 +430,21 @@ void GameMap::place_tiles_in_selected_area()
 		for (float x = start_tile.x; x <= end_tile.x; x++) {
 			for (float y = start_tile.y; y <= end_tile.y; y++) {
 				Vector2 tile_pos(x, y);
+				// If tile is different, change it
 				if (interact_tilemap->get_cellv(tile_pos) != s_tile) {
 					tile_changed = true;
 					interact_tilemap->set_cellv(tile_pos, s_tile);
+				}
+				// else tile is identical, just reduce cost
+				else {
+					cost -= tiledef.cost;
 				}
 			}
 		}
 
 		if (tile_changed) {
 			m_sound_player->play(SOUND_POP6);
+			m_game_session->remove_money(cost);
 		}
 	}
 

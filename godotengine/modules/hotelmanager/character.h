@@ -49,7 +49,7 @@ struct CharacterDef
 	CharacterRole role;
 	CharacterSex sex;
 };
-static const uint8_t CHARACTERDEF_SIZE = 4;
+static const uint8_t CHARACTERDEF_CSV_COLS = 4;
 
 typedef std::shared_ptr<CharacterDef> CharacterDefPtr;
 

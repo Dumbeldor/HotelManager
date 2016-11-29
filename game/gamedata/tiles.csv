@@ -1,11 +1,11 @@
-0,1,none,tile_empty.png,Empty,1
-1,2,grass,tile_grass.png,Grass,0
-2,2,stone,tile_stone.png,Stone,0
-3,2,forest,tile_forest.png,Forest,0
-4,2,seawater,tile_seawater.png,Sea water,0
-5,2,swimmingpoolwater,tile_swimmingpoolwater.png,Swimming pool,0
-6,3,floortile,tile_floortile.png,Floor tile,0
-7,3,linoleum,tile_linoleum.png,Linoleum,0
-8,3,mosaic,tile_mosaic.png,Mosaic,0
-9,3,parquet,tile_parquet.png,Parquet,0
-10,3,carpet,tile_carpet.png,Carpet,0
+0,1,none,tile_empty.png,Empty,1,0
+1,2,grass,tile_grass.png,Grass,0,1
+2,2,stone,tile_stone.png,Stone,0,1
+3,2,forest,tile_forest.png,Forest,0,1
+4,2,seawater,tile_seawater.png,Sea water,0,2
+5,2,swimmingpoolwater,tile_swimmingpoolwater.png,Swimming pool,0,4
+6,3,floortile,tile_floortile.png,Floor tile,0,4
+7,3,linoleum,tile_linoleum.png,Linoleum,0,4
+8,3,mosaic,tile_mosaic.png,Mosaic,0,4
+9,3,parquet,tile_parquet.png,Parquet,0,6
+10,3,carpet,tile_carpet.png,Carpet,0,4

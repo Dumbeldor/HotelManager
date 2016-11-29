@@ -27,7 +27,7 @@ struct RoomDef
 	uint8_t min_size;
 	uint8_t max_size;
 };
-static const uint8_t ROOMDEF_SIZE = 4;
+static const uint8_t ROOMDEF_CSV_COLS = 4;
 
 typedef std::shared_ptr<RoomDef> RoomDefPtr;
 
@@ -40,9 +40,14 @@ public:
 	void load_characterdefs();
 	void load_tilesdefs();
 
-	static const GameTileDef &get_tiledef(GameMapTile t)
+	/**
+	 *
+	 * @param tile_id
+	 * @return const reference of the tiledef
+	 */
+	static const GameTileDef &get_tiledef(const GameMapTile tile_id)
 	{
-		return s_singleton->get_tiledef_priv(t);
+		return s_singleton->get_tiledef_priv(tile_id);
 	}
 
 private:

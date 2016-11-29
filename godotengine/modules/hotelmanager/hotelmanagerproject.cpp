@@ -30,8 +30,9 @@ void HotelManagerProject::_bind_methods()
 }
 
 /**
+ * Full version of the project
  *
- * @return
+ * @return m_version + " " + m_release
  */
 String HotelManagerProject::get_full_version() const
 {
