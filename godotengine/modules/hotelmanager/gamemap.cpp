@@ -17,8 +17,9 @@
 #include <scene/main/viewport.h>
 #include <iostream>
 #include <os/input.h>
+#include <scene/audio/sample_player.h>
 #include "gamemap.h"
-#include "scene/audio/sample_player.h"
+#include "mapcontrol.h"
 #include "objectselectorbutton.h"
 #include "objectdefmgr.h"
 #include "gamesession.h"
@@ -66,22 +67,12 @@ void GameMap::init(GameSession *game_session)
 	m_floor_map = get_node(FLOORMAP_NODE)->cast_to<TileMap>();
 	m_object_map = get_node(OBJECTMAP_NODE)->cast_to<TileMap>();
 	m_camera = get_node(CAMERA_NODE)->cast_to<Camera2D>();
-	m_control = get_node(MAPCONTROL_NODE)->cast_to<Control>();
+	m_control = get_node(MAPCONTROL_NODE)->cast_to<MapControl>();
 	assert(m_sound_player &&
 		m_ground_map && m_floor_map && m_object_map &&
 		m_camera && m_control);
 
-	if (!m_control->is_connected("draw", this, "_canvas_draw")) {
-		m_control->connect("draw", this, "_canvas_draw");
-	}
-
-	if (!m_control->is_connected("mouse_enter", this, "_canvas_mouse_enter")) {
-		m_control->connect("mouse_enter", this, "_canvas_mouse_enter");
-	}
-
-	if (!m_control->is_connected("mouse_exit", this, "_canvas_mouse_exit")) {
-		m_control->connect("mouse_exit", this, "_canvas_mouse_exit");
-	}
+	m_control->init(this);
 
 	m_camera->set_limit(MARGIN_LEFT, -(WORLD_LIMIT_X + 3) * GAME_TILE_SIZE);
 	m_camera->set_limit(MARGIN_RIGHT, (WORLD_LIMIT_X + 3) * GAME_TILE_SIZE);

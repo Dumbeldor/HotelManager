@@ -24,6 +24,7 @@
 #include "gui_tabs.h"
 #include "objectselectorbutton.h"
 #include "hud.h"
+#include "mapcontrol.h"
 
 void register_hotelmanager_types()
 {
@@ -36,6 +37,7 @@ void register_hotelmanager_types()
 	ObjectTypeDB::register_type<GroundTab>();
 	ObjectTypeDB::register_type<ObjectSelectorButton>();
 	ObjectTypeDB::register_type<Hud>();
+	ObjectTypeDB::register_type<MapControl>();
 }
 
 void unregister_hotelmanager_types()
