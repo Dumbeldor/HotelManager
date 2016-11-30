@@ -27,7 +27,6 @@
 #define FLOORMAP_NODE String("FloorMap")
 #define OBJECTMAP_NODE String("ObjectMap")
 #define CAMERA_NODE String("GroundMap/Camera2D")
-#define HUD_NODE String("Hud")
 #define MAPCONTROL_NODE String("Hud/ControlPane_Top/MapControl")
 #define SOUND_PLAYER_NODE String("MapSoundPlayer")
 #define SOUND_POP6 String("pop-6")
@@ -170,8 +169,18 @@ void GameMap::_canvas_draw()
 	if (m_mouse_over) {
 		// We have an object selected and current tile is valid
 		if (ObjectSelectorButton::get_selected_tile_id() != TILE_NONE) {
-			Matrix32 cell_xf = m_ground_map->get_cell_transform();
-			Matrix32 xform = m_ground_map->get_global_transform() * m_camera->get_canvas_transform();
+			GameMapTile selected_tile_id = ObjectSelectorButton::get_selected_tile_id();
+			const GameTileDef &tiledef = ObjectDefMgr::get_tiledef(selected_tile_id);
+
+			TileMap *selected_tilemap = nullptr;
+			switch (tiledef.type) {
+				case TILE_TYPE_GROUND: selected_tilemap = m_ground_map; break;
+				case TILE_TYPE_FLOOR: selected_tilemap = m_floor_map; break;
+				default: assert(false); // Unhandled, invalid data
+			}
+
+			Matrix32 cell_xf = selected_tilemap->get_cell_transform();
+			Matrix32 xform = selected_tilemap->get_global_transform() * m_camera->get_canvas_transform();
 
 			Vector2 endpoints[4];
 			Vector2 start_tile = Vector2(MIN(m_over_tile.x, m_selection_init_pos.x),
@@ -181,37 +190,36 @@ void GameMap::_canvas_draw()
 
 			if (m_selection_in_progress) {
 				// If a selection is in progress, points define area rectangle
-				endpoints[0] = m_ground_map->map_to_world(start_tile, true);
-				endpoints[1] = m_ground_map->map_to_world(Vector2(
+				endpoints[0] = selected_tilemap->map_to_world(start_tile, true);
+				endpoints[1] = selected_tilemap->map_to_world(Vector2(
 					MAX(m_over_tile.x, m_selection_init_pos.x),
 					MIN(m_over_tile.y, m_selection_init_pos.y)) + Point2(1, 0), true);
-				endpoints[2] = m_ground_map->map_to_world(end_tile + Point2(1, 1), true);
-				endpoints[3] = m_ground_map->map_to_world(Vector2(
+				endpoints[2] = selected_tilemap->map_to_world(end_tile + Point2(1, 1), true);
+				endpoints[3] = selected_tilemap->map_to_world(Vector2(
 					MIN(m_over_tile.x, m_selection_init_pos.x),
 					MAX(m_over_tile.y, m_selection_init_pos.y)) + Point2(0, 1), true);
 			}
 			else {
-				endpoints[0] = m_ground_map->map_to_world(m_over_tile, true);
-				endpoints[1] = m_ground_map->map_to_world((m_over_tile + Point2(1, 0)), true);
-				endpoints[2] = m_ground_map->map_to_world((m_over_tile + Point2(1, 1)), true);
-				endpoints[3] = m_ground_map->map_to_world((m_over_tile + Point2(0, 1)), true);
+				endpoints[0] = selected_tilemap->map_to_world(m_over_tile, true);
+				endpoints[1] = selected_tilemap->map_to_world((m_over_tile + Point2(1, 0)), true);
+				endpoints[2] = selected_tilemap->map_to_world((m_over_tile + Point2(1, 1)), true);
+				endpoints[3] = selected_tilemap->map_to_world((m_over_tile + Point2(0, 1)), true);
 			}
 
-			for (uint8_t i = 0; i < 4;i++) {
-				if (m_ground_map->get_half_offset() == TileMap::HALF_OFFSET_X
+			for (uint8_t i = 0; i < 4; i++) {
+				if (selected_tilemap->get_half_offset() == TileMap::HALF_OFFSET_X
 					&& ABS(m_over_tile.y) & 1) {
 					endpoints[i] += cell_xf[0] * 0.5;
 				}
-				if (m_ground_map->get_half_offset() == TileMap::HALF_OFFSET_Y
+				if (selected_tilemap->get_half_offset() == TileMap::HALF_OFFSET_Y
 					&& ABS(m_over_tile.x) & 1) {
 					endpoints[i] += cell_xf[1] * 0.5;
 				}
 				endpoints[i] = xform.xform(endpoints[i]);
 			}
 
-			int tile_id = m_ground_map->get_cellv(m_over_tile);
+			int tile_id = selected_tilemap->get_cellv(m_over_tile);
 
-			GameMapTile selected_tile_id = ObjectSelectorButton::get_selected_tile_id();
 			Color border_color;
 			if (tile_id != TileMap::INVALID_CELL && tile_id != selected_tile_id) {
 				border_color = SELECTOR_BORDER_NEWTILE;
@@ -220,11 +228,11 @@ void GameMap::_canvas_draw()
 				border_color = SELECTOR_BORDER_OLDTILE;
 			}
 
-			const GameTileDef &tiledef = ObjectDefMgr::get_tiledef(selected_tile_id);
 			int32_t cost = tiledef.cost;
+			int32_t area_width = (int32_t) (ABS(end_tile.x) - ABS(start_tile.x) + 1);
+			int32_t area_height = (int32_t) (ABS(end_tile.y) - ABS(start_tile.y) + 1);
 			if (m_selection_in_progress) {
-				cost *= (ABS(end_tile.x) - ABS(start_tile.x) + 1)
-					* (ABS(end_tile.y) - ABS(start_tile.y) + 1);
+				cost *= area_width * area_height;
 			}
 
 			// @TODO we should check if tile under selection is already correct to reduce cost
@@ -241,7 +249,30 @@ void GameMap::_canvas_draw()
 
 			// Hovering lines
 			for (uint8_t i = 0; i < 4; i++) {
-				m_control->draw_line(endpoints[i], endpoints[(i + 1) % 4], border_color, 2);
+				m_control->draw_line(endpoints[i], endpoints[(i + 1) % 4], border_color, 3);
+			}
+
+			// Dimension lines
+			if (m_selection_in_progress) {
+				if (area_height > 1) {
+					// Draw height line
+					m_control->draw_line(Vector2(endpoints[2].x + 15, endpoints[0].y),
+						Vector2(endpoints[2].x + 15, endpoints[2].y), selection_color, 2);
+					m_control->draw_line(Vector2(endpoints[2].x + 7, endpoints[0].y),
+						Vector2(endpoints[2].x + 23, endpoints[0].y), selection_color, 2);
+					m_control->draw_line(Vector2(endpoints[2].x + 7, endpoints[2].y),
+						Vector2(endpoints[2].x + 23, endpoints[2].y), selection_color, 2);
+				}
+
+				if (area_width > 1) {
+					// Draw width line
+					m_control->draw_line(Vector2(endpoints[0].x, endpoints[2].y + 15),
+						Vector2(endpoints[2].x, endpoints[2].y + 15), selection_color, 2);
+					m_control->draw_line(Vector2(endpoints[0].x, endpoints[2].y + 7),
+						Vector2(endpoints[0].x, endpoints[2].y + 23), selection_color, 2);
+					m_control->draw_line(Vector2(endpoints[2].x, endpoints[2].y + 7),
+						Vector2(endpoints[2].x, endpoints[2].y + 23), selection_color, 2);
+				}
 			}
 
 			// Hovering rectangle
@@ -361,7 +392,7 @@ void GameMap::init_selection()
 	m_selection_init_pos = m_ground_map->world_to_map(get_local_mouse_pos());
 }
 
-// @TODO checks for money, tile validity, etc will be added to this function
+// @TODO checks for tile validity, etc will be added to this function
 
 void GameMap::place_tiles_in_selected_area()
 {
