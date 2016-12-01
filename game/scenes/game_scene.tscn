@@ -109,10 +109,9 @@ scale = Vector2( 1, 1 )
 
 [node name="ControlPane_Top" type="Node2D" parent="GameSession/GameMap/Hud"]
 
-editor/display_folded = true
 transform/pos = Vector2( 960, 0 )
 
-[node name="MapControl" type="Control" parent="GameSession/GameMap/Hud/ControlPane_Top"]
+[node name="MapControl" type="MapControl" parent="GameSession/GameMap/Hud/ControlPane_Top"]
 
 anchor/right = 1
 anchor/bottom = 1

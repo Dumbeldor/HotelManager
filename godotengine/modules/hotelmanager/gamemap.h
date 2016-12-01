@@ -24,6 +24,7 @@
 #include <scene/2d/camera_2d.h>
 
 class GameSession;
+class MapControl;
 class SamplePlayer;
 
 static constexpr uint16_t WORLD_LIMIT_X = 180;
@@ -64,7 +65,7 @@ private:
 	void zoom_camera(const float multiplier);
 	void move_camera(Vector2 movement);
 
-	Control *m_control = nullptr;
+	MapControl *m_control = nullptr;
 	bool m_mouse_over = false;
 	Point2i m_over_tile;
 
