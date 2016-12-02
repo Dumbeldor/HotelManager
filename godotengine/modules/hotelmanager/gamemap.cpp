@@ -226,7 +226,15 @@ void GameMap::_canvas_draw()
 				cost *= area_width * area_height;
 			}
 
-			// @TODO we should check if tile under selection is already correct to reduce cost
+			for (float x = start_tile.x; x <= end_tile.x; x++) {
+				for (float y = start_tile.y; y <= end_tile.y; y++) {
+					Vector2 tile_pos(x, y);
+					// If tile is identical, reduce cost
+					if (selected_tilemap->get_cellv(tile_pos) == selected_tile_id) {
+						cost -= tiledef.cost;
+					}
+				}
+			}
 
 			Color selection_color;
 			if (is_out_of_bounds(start_tile) || is_out_of_bounds(end_tile) ||
@@ -238,43 +246,18 @@ void GameMap::_canvas_draw()
 				selection_color = SELECTOR_RECT_COLOR_VALID;
 			}
 
-			// Hovering lines
-			for (uint8_t i = 0; i < 4; i++) {
-				m_control->draw_line(endpoints[i], endpoints[(i + 1) % 4], border_color, 3);
-			}
+			MapSelectionInfos selection_infos;
+			selection_infos.border_color = border_color;
+			selection_infos.selection_color = selection_color;
+			selection_infos.endpoints = endpoints;
+			selection_infos.area_height = area_height;
+			selection_infos.area_width = area_width;
+			selection_infos.selection_in_progress = m_selection_in_progress;
+			selection_infos.cost = cost;
+			selection_infos.tile_hovering =
+				(ObjectSelectorButton::get_selected_tile_id() != tile_id);
 
-			// Dimension lines
-			if (m_selection_in_progress) {
-				if (area_height > 1) {
-					// Draw height line
-					m_control->draw_line(Vector2(endpoints[2].x + 15, endpoints[0].y),
-						Vector2(endpoints[2].x + 15, endpoints[2].y), selection_color, 2);
-					m_control->draw_line(Vector2(endpoints[2].x + 7, endpoints[0].y),
-						Vector2(endpoints[2].x + 23, endpoints[0].y), selection_color, 2);
-					m_control->draw_line(Vector2(endpoints[2].x + 7, endpoints[2].y),
-						Vector2(endpoints[2].x + 23, endpoints[2].y), selection_color, 2);
-				}
-
-				if (area_width > 1) {
-					// Draw width line
-					m_control->draw_line(Vector2(endpoints[0].x, endpoints[2].y + 15),
-						Vector2(endpoints[2].x, endpoints[2].y + 15), selection_color, 2);
-					m_control->draw_line(Vector2(endpoints[0].x, endpoints[2].y + 7),
-						Vector2(endpoints[0].x, endpoints[2].y + 23), selection_color, 2);
-					m_control->draw_line(Vector2(endpoints[2].x, endpoints[2].y + 7),
-						Vector2(endpoints[2].x, endpoints[2].y + 23), selection_color, 2);
-				}
-			}
-
-			// Hovering rectangle
-			if (ObjectSelectorButton::get_selected_tile_id() != tile_id) {
-				Vector<Vector2> points;
-				for (uint8_t i = 0; i < 4; i++) {
-					points.push_back(endpoints[i]);
-				}
-
-				m_control->draw_colored_polygon(points, selection_color);
-			}
+			m_control->draw_selection(selection_infos);
 		}
 	}
 }
