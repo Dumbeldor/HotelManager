@@ -16,6 +16,7 @@
 #pragma once
 
 #include <scene/main/node.h>
+#include <cmath>
 
 class GameMap;
 class Hud;
@@ -23,10 +24,11 @@ class ObjectDefMgr;
 
 enum GameSpeed
 {
-	GAMESPEED_NORMAL,
-	GAMESPEED_X2,
-	GAMESPEED_X3,
-	GAMESPEED_X5,
+	GAMESPEED_PAUSE = 0,
+	GAMESPEED_NORMAL = 1,
+	GAMESPEED_X2 = 2,
+	GAMESPEED_X3 = 3,
+	GAMESPEED_X5 = 5,
 };
 
 class GameSession: public Node
@@ -63,12 +65,19 @@ protected:
 	void set_game_speed__api(const uint8_t speed) { m_game_speed = (GameSpeed) speed; }
 
 	// m_current_day
-	uint32_t get_current_day() const { return m_current_day; }
-	void set_next_day() { m_current_day++; }
+	/**
+	 * Calculate current day
+	 * 1 day = m_game_time / (60 * 24) = 24 min real time
+	 * @return current day from m_game_time
+	 */
+	uint32_t get_current_day() const
+	{
+		return (uint32_t) std::floor(m_game_time / 60 / 24) + 1;
+	}
 private:
 	int64_t m_money = 2000;
-	uint32_t m_current_day = 1;
 	GameSpeed m_game_speed = GAMESPEED_NORMAL;
+	double m_game_time = 0;
 
 	GameMap *m_map = nullptr;
 	Hud *m_hud = nullptr;

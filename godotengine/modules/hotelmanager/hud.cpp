@@ -14,6 +14,8 @@
  */
 
 #include <scene/gui/label.h>
+#include <cmath>
+#include <iostream>
 #include "hud.h"
 
 Hud::Hud(): CanvasLayer()
@@ -46,4 +48,25 @@ void Hud::set_day_label(const uint32_t day)
 	Label *day_label = get_node(String("ControlPane_Top/DayLabel"))->cast_to<Label>();
 	assert(day_label);
 	day_label->set_text("Day: " + String::num_int64(day));
+}
+
+/**
+ * Change the hour (temp) label in the player's HUD
+ * \attention This function triggers an assert if the HUD element doesn't exists
+ *
+ * @param time
+ */
+void Hud::set_hour_clock_label(const double &time)
+{
+	uint64_t newtime = (uint64_t) std::floor(time);
+
+	Label *clock_label = get_node(String("ControlPane_Top/ClockLabel"))->cast_to<Label>();
+	assert(clock_label);
+
+	uint64_t hour_num = ((uint64_t) std::floor(time / 60)) % 24;
+	uint64_t min_num = newtime % 60;
+
+	String hour = (hour_num % 24 < 10 ? String("0") : String("")) + String::num(hour_num);
+	String min = (min_num < 10 ? "0" : "") + String::num(min_num);
+	clock_label->set_text(hour + ":" + min);
 }
