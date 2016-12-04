@@ -230,6 +230,22 @@ margin/top = -13.0
 margin/right = -20.0
 margin/bottom = 27.0
 
+[node name="ClockLabel" type="Label" parent="GameSession/GameMap/Hud/ControlPane_Top"]
+
+anchor/right = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 870.0
+margin/top = 20.0
+margin/right = -882.0
+margin/bottom = 34.0
+text = "[ClockLabel]"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
 [node name="ControlPane_Bottom" type="TabContainer" parent="GameSession/GameMap/Hud"]
 
 focus/ignore_mouse = false

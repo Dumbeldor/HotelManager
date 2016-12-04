@@ -17,7 +17,6 @@
 
 #include "scene/2d/tile_map.h"
 #include "game_tiles.h"
-#include "gamesession.h"
 #include <math.h>
 #include <math/math_2d.h>
 #include <scene/gui/box_container.h>

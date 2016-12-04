@@ -44,7 +44,6 @@ void GameSession::_bind_methods()
 
 	// m_current_day
 	ObjectTypeDB::bind_method("get_current_day",&GameSession::get_current_day);
-	ObjectTypeDB::bind_method("set_next_day",&GameSession::set_next_day);
 }
 
 void GameSession::init()
@@ -57,7 +56,8 @@ void GameSession::init()
 	assert(m_hud);
 
 	m_hud->set_money_label(m_money);
-	m_hud->set_day_label(m_current_day);
+	m_hud->set_day_label(get_current_day());
+	m_hud->set_hour_clock_label(m_game_time);
 
 	TabContainer *bottom_pane = get_node(String("GameMap/Hud/ControlPane_Bottom"))->cast_to<TabContainer>();
 	assert(bottom_pane);
@@ -82,6 +82,21 @@ void GameSession::init()
  */
 void GameSession::_process(float delta)
 {
+	// Delta using game_speed
+	float game_delta = delta * m_game_speed;
+	{
+		uint32_t old_day = get_current_day();
+
+		// Increase game_time
+		m_game_time += game_delta;
+		// Only update HUD if day changed
+		if (get_current_day() != old_day) {
+			m_hud->set_day_label(get_current_day());
+		}
+
+		m_hud->set_hour_clock_label(m_game_time);
+	}
+
 	// Map processing
 	m_map->on_process(delta);
 }
