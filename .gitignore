@@ -14,3 +14,4 @@ HotelManager.files
 HotelManager.includes
 HotelManager.creator.user
 
+*callgrind.out.*
