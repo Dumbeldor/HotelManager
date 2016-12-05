@@ -17,6 +17,8 @@
 
 #include <scene/main/canvas_layer.h>
 
+class LayerTileMenu;
+
 class Hud: public CanvasLayer
 {
 	OBJ_TYPE(Hud, CanvasLayer);
@@ -24,7 +26,18 @@ public:
 	Hud();
 	~Hud() {}
 
+	void init();
+
 	void set_money_label(const int64_t &money);
 	void set_day_label(const uint32_t day);
 	void set_hour_clock_label(const double &time);
+
+protected:
+	static void _bind_methods();
+	void _on_draw();
+	void _on_floormenu_pressed();
+	void _on_groundmenu_pressed();
+private:
+	LayerTileMenu *m_ground_menu = nullptr;
+	LayerTileMenu *m_floor_menu = nullptr;
 };

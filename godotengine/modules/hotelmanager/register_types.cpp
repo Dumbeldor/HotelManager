@@ -34,7 +34,7 @@ void register_hotelmanager_types()
 	ObjectTypeDB::register_type<CharacterCEO>();
 	ObjectTypeDB::register_type<CharacterRoomMaid>();
 	ObjectTypeDB::register_type<GameMap>();
-	ObjectTypeDB::register_type<GroundTab>();
+	ObjectTypeDB::register_type<LayerTileMenu>();
 	ObjectTypeDB::register_type<ObjectSelectorButton>();
 	ObjectTypeDB::register_type<Hud>();
 	ObjectTypeDB::register_type<MapControl>();

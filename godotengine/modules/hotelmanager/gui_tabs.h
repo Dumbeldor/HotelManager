@@ -16,12 +16,14 @@
 #pragma once
 
 #include <scene/gui/tabs.h>
+#include "game_tiles.h"
 
-class GroundTab: public Tabs
+class LayerTileMenu: public Tabs
 {
-	OBJ_TYPE(GroundTab, Tabs);
+	OBJ_TYPE(LayerTileMenu, Tabs);
 public:
-	GroundTab();
+	LayerTileMenu();
+	void init(const TileType tt);
 protected:
 	static void _bind_methods();
 };

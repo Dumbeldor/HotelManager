@@ -30,6 +30,17 @@ cd godotengine
 scons platform=x11 tools=yes target=debug openssl=yes colored=yes pulseaudio=no use_llvm=yes
 ```
 
+## Regen tiles alternates
+
+If you want to regen tiles alternates, if you modify disables or hovering mask, execute
+
+```
+cd game/icons/
+sh generate_menu_icons_alternates.sh
+```
+
+__Note__: it requires imagemagick package.
+
 ## Launch editor
 
 Launch _./launch\_editor.sh_

@@ -16,9 +16,90 @@
 #include <scene/gui/label.h>
 #include <cmath>
 #include <iostream>
+#include <scene/gui/tab_container.h>
+#include <scene/2d/node_2d.h>
+#include <scene/gui/container.h>
+#include <scene/gui/texture_button.h>
 #include "hud.h"
+#include "gui_tabs.h"
 
 Hud::Hud(): CanvasLayer()
+{
+
+}
+
+void Hud::init()
+{
+	TextureButton *ground_menu = get_node(String("ControlPane_Bottom/GroundMenu"))->
+		cast_to<TextureButton>();
+	assert(ground_menu);
+
+	TextureButton *floor_menu = get_node(String("ControlPane_Bottom/FloorMenu"))->
+		cast_to<TextureButton>();
+	assert(floor_menu);
+
+	// Init some HUD elements: note this should be done using a Hud element (see issue #17)
+	m_ground_menu = memnew(LayerTileMenu);
+	m_ground_menu->init(TILE_TYPE_GROUND);
+	ground_menu->add_child(m_ground_menu);
+
+	m_floor_menu = memnew(LayerTileMenu);
+	m_floor_menu->init(TILE_TYPE_FLOOR);
+	floor_menu->add_child(m_floor_menu);
+}
+
+/**
+ * Bind methods for script
+ */
+void Hud::_bind_methods()
+{
+	ObjectTypeDB::bind_method(_MD("_on_floormenu_pressed"), &Hud::_on_floormenu_pressed);
+	ObjectTypeDB::bind_method(_MD("_on_groundmenu_pressed"), &Hud::_on_groundmenu_pressed);
+	ObjectTypeDB::bind_method(_MD("_on_draw"), &Hud::_on_draw);
+}
+
+/**
+ * Event when user clicks on ground menu
+ */
+
+void Hud::_on_groundmenu_pressed()
+{
+	// If this menu is shown, hide it
+	if (m_ground_menu->is_visible()) {
+		m_ground_menu->hide();
+		return;
+	}
+
+	// Hide other menus
+	if (m_floor_menu->is_visible()) {
+		m_floor_menu->hide();
+	}
+
+	m_ground_menu->show();
+}
+
+/**
+ * Event when user click on floor menu
+ */
+void Hud::_on_floormenu_pressed()
+{
+	// If this menu is shown, hide it
+	if (m_floor_menu->is_visible()) {
+		m_floor_menu->hide();
+		return;
+	}
+
+	if (m_ground_menu->is_visible()) {
+		m_ground_menu->hide();
+	}
+
+	m_floor_menu->show();
+}
+
+/**
+ * Hud draw event
+ */
+void Hud::_on_draw()
 {
 
 }
@@ -31,7 +112,7 @@ Hud::Hud(): CanvasLayer()
  */
 void Hud::set_money_label(const int64_t &money)
 {
-	Label *money_label = get_node(String("ControlPane_Top/DayLabel/MoneyLabel"))->
+	Label *money_label = get_node(String("ControlPane/DayLabel/MoneyLabel"))->
 		cast_to<Label>();
 	assert(money_label);
 	money_label->set_text(String::num_int64(money) + " $");
@@ -45,7 +126,7 @@ void Hud::set_money_label(const int64_t &money)
  */
 void Hud::set_day_label(const uint32_t day)
 {
-	Label *day_label = get_node(String("ControlPane_Top/DayLabel"))->cast_to<Label>();
+	Label *day_label = get_node(String("ControlPane/DayLabel"))->cast_to<Label>();
 	assert(day_label);
 	day_label->set_text("Day: " + String::num_int64(day));
 }
@@ -60,7 +141,7 @@ void Hud::set_hour_clock_label(const double &time)
 {
 	uint64_t newtime = (uint64_t) std::floor(time);
 
-	Label *clock_label = get_node(String("ControlPane_Top/ClockLabel"))->cast_to<Label>();
+	Label *clock_label = get_node(String("ControlPane/ClockLabel"))->cast_to<Label>();
 	assert(clock_label);
 
 	uint64_t hour_num = ((uint64_t) std::floor(time / 60)) % 24;

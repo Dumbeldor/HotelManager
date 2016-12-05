@@ -93,3 +93,12 @@ void ObjectSelectorButton::_on_draw()
 		draw_colored_polygon(points, OBJECTSELECTOR_MASK);
 	}
 }
+
+/**
+ * Init selector static attributes
+ */
+void ObjectSelectorButton::init_selector()
+{
+	s_selected = nullptr;
+	s_tile_to_init = TILE_NONE;
+}
