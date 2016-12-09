@@ -24,7 +24,9 @@
 
 GameSession::~GameSession()
 {
-	delete m_objdef_mgr;
+	if (m_objdef_mgr) {
+		m_objdef_mgr->delete_singleton();
+	}
 }
 
 void GameSession::_bind_methods()

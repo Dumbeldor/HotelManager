@@ -50,6 +50,12 @@ public:
 		return s_singleton->get_tiledef_priv(tile_id);
 	}
 
+	static void delete_singleton()
+	{
+		delete s_singleton;
+		s_singleton = nullptr;
+	}
+
 private:
 	const GameTileDef &get_tiledef_priv(GameMapTile t);
 	// Singleton
