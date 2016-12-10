@@ -17,7 +17,6 @@
 #include "gamesession.h"
 #include "gamemap.h"
 #include "objectdefmgr.h"
-#include "gui_tabs.h"
 #include "hud.h"
 
 #define MONEY_LIMIT 1000000000000
@@ -48,37 +47,38 @@ void GameSession::_bind_methods()
 	ObjectTypeDB::bind_method("get_current_day",&GameSession::get_current_day);
 }
 
+/**
+ * Initialize session, objectdefmgr, hud & map
+ */
 void GameSession::init()
 {
-	m_map = get_node(String("GameMap"))->cast_to<GameMap>();
-	assert(m_map);
-
-	// Init hud
-	m_hud = get_node(String("GameMap/Hud"))->cast_to<Hud>();
-	assert(m_hud);
-
-	m_hud->set_money_label(m_money);
-	m_hud->set_day_label(get_current_day());
-	m_hud->set_hour_clock_label(m_game_time);
-
-	TabContainer *bottom_pane = get_node(String("GameMap/Hud/ControlPane_Bottom"))->cast_to<TabContainer>();
-	assert(bottom_pane);
-
+	// objdef_mgr should be inited first
 	assert(!m_objdef_mgr);
 	m_objdef_mgr = new ObjectDefMgr();
 	m_objdef_mgr->load_characterdefs();
 	m_objdef_mgr->load_roomdefs();
 	m_objdef_mgr->load_tilesdefs();
 
-	// Init some HUD elements: note this should be done using a Hud element (see issue #17)
-	GroundTab *ground_tab = memnew(GroundTab);
-	bottom_pane->add_child(ground_tab);
+	// Init hud
+	m_hud = get_node(String("GameMap/Hud"))->cast_to<Hud>();
+	assert(m_hud);
+
+	m_hud->init();
+	m_hud->set_money_label(m_money);
+	m_hud->set_day_label(get_current_day());
+	m_hud->set_hour_clock_label(m_game_time);
+
+	m_map = get_node(String("GameMap"))->cast_to<GameMap>();
+	assert(m_map);
 
 	// Map should be inited quickly
 	m_map->init(this);
 }
 
 /**
+ * Main GameSession loop
+ * This loop handle:
+ * - Game time
  *
  * @param delta
  */
@@ -119,6 +119,8 @@ void GameSession::set_money(int64_t money)
 }
 
 /**
+ * Add money to current player money
+ * This is limited by MONEY_LIMIT
  *
  * @param money
  */
@@ -140,6 +142,8 @@ void GameSession::add_money(int64_t money)
 }
 
 /**
+ * Drop some money from current player money
+ * Money cannot be negative
  *
  * @param money
  */
@@ -149,13 +153,11 @@ void GameSession::remove_money(int64_t money)
 	if (money > MONEY_LIMIT) {
 		money = MONEY_LIMIT;
 	}
+	else if (money > m_money) {
+		money = m_money;
+	}
 
 	m_money -= money;
-
-	// If money overhead is greater than limit, limit it
-	if (m_money < -MONEY_LIMIT) {
-		m_money = -MONEY_LIMIT;
-	}
 
 	m_hud->set_money_label(m_money);
 }

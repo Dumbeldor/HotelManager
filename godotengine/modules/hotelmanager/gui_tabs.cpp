@@ -19,14 +19,25 @@
 #include "objectselectorbutton.h"
 #include "objectdefmgr.h"
 
-GroundTab::GroundTab()
+LayerTileMenu::LayerTileMenu()
 {
-	set_name("Grounds");
+	// Init ObjectSelectorButton when init this menu element, should be good
+	ObjectSelectorButton::init_selector();
+}
+
+void LayerTileMenu::init(const TileType tt)
+{
+	set_name("LayerMenuTileType" + String::num(tt));
+
+	// Hide this element, it's only shown when player select parent
+	hide();
+	set_pos(get_pos() + Point2i(-20, -96));
+
 	ObjectSelectorButton *tb = nullptr;
 	for (uint16_t i = 0; i < TILE_MAX; i++) {
 		const GameTileDef &tile_def = ObjectDefMgr::get_tiledef((GameMapTile) i);
-		if (tile_def.type != TILE_TYPE_GROUND
-				|| tile_def.flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
+		if (tile_def.type != tt
+			|| tile_def.flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
 			continue;
 		}
 
@@ -47,6 +58,6 @@ GroundTab::GroundTab()
 	}
 }
 
-void GroundTab::_bind_methods()
+void LayerTileMenu::_bind_methods()
 {
 }

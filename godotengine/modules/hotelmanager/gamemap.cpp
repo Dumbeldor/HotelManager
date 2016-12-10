@@ -25,10 +25,10 @@
 #include "gamesession.h"
 
 #define GROUNDMAP_NODE String("GroundMap")
-#define FLOORMAP_NODE String("FloorMap")
-#define OBJECTMAP_NODE String("ObjectMap")
+#define FLOORMAP_NODE String("GroundMap/FloorMap")
+#define OBJECTMAP_NODE String("GroundMap/FloorMap/ObjectMap")
 #define CAMERA_NODE String("GroundMap/Camera2D")
-#define MAPCONTROL_NODE String("Hud/ControlPane_Top/MapControl")
+#define MAPCONTROL_NODE String("Hud/ControlPane/MapControl")
 #define SOUND_PLAYER_NODE String("MapSoundPlayer")
 #define SOUND_POP6 String("pop-6")
 

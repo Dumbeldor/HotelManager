@@ -22,6 +22,7 @@
 class ObjectSelectorButton: public TextureButton
 {
 	OBJ_TYPE(ObjectSelectorButton, TextureButton)
+
 public:
 	ObjectSelectorButton();
 	void init();
@@ -38,6 +39,7 @@ public:
 	static void set_tile_to_init(const GameMapTile t) { s_tile_to_init = t; }
 
 	void _on_draw();
+	static void init_selector();
 protected:
 	static void _bind_methods();
 
