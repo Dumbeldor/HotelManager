@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=1]
+[gd_scene load_steps=13 format=1]
 
 [ext_resource path="res://tiles/tile_grass.png" type="Texture" id=1]
 [ext_resource path="res://tiles/tile_empty.png" type="Texture" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://tiles/tile_mosaic.png" type="Texture" id=9]
 [ext_resource path="res://tiles/tile_parquet.png" type="Texture" id=10]
 [ext_resource path="res://tiles/tile_carpet.png" type="Texture" id=11]
+[ext_resource path="res://tiles/tile_sand.png" type="Texture" id=12]
 
 [node name="Node2D" type="Node2D"]
 
@@ -76,6 +77,12 @@ region_rect = Rect2( 0, 0, 48, 48 )
 [node name="Carpet" type="Sprite" parent="."]
 
 texture = ExtResource( 11 )
+region = true
+region_rect = Rect2( 0, 0, 48, 48 )
+
+[node name="Sand" type="Sprite" parent="."]
+
+texture = ExtResource( 12 )
 region = true
 region_rect = Rect2( 0, 0, 48, 48 )
 

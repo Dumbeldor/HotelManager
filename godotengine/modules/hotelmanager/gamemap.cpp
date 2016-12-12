@@ -23,6 +23,7 @@
 #include "objectselectorbutton.h"
 #include "objectdefmgr.h"
 #include "gamesession.h"
+#include "mapgen.h"
 
 #define GROUNDMAP_NODE String("GroundMap")
 #define FLOORMAP_NODE String("GroundMap/FloorMap")
@@ -85,9 +86,17 @@ void GameMap::init(GameSession *game_session)
 	m_floor_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
 	m_object_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
 
-	// Init map borders
-	for (uint16_t x = WORLD_LIMIT_X + 1; x < WORLD_LIMIT_X + 10; x++) {
-		for (uint16_t y = 0; y < WORLD_LIMIT_Y + 10; y++) {
+	generate_map_borders();
+	generate_map();
+}
+
+/**
+ * Delimits the map borders with a NONE tile
+ */
+void GameMap::generate_map_borders()
+{
+	for (uint32_t x = WORLD_LIMIT_X + 1; x < WORLD_LIMIT_X + 10; x++) {
+		for (uint32_t y = 0; y < WORLD_LIMIT_Y + 10; y++) {
 			m_ground_map->set_cell(x, y, TILE_NONE);
 			m_ground_map->set_cell(-x, y, TILE_NONE);
 			m_ground_map->set_cell(x, -y, TILE_NONE);
@@ -95,27 +104,23 @@ void GameMap::init(GameSession *game_session)
 		}
 	}
 
-	for (uint16_t x = 0; x < WORLD_LIMIT_X + 5; x++) {
-		for (uint16_t y = WORLD_LIMIT_Y + 1; y < WORLD_LIMIT_Y + 5; y++) {
+	for (uint32_t x = 0; x < WORLD_LIMIT_X + 5; x++) {
+		for (uint32_t y = WORLD_LIMIT_Y + 1; y < WORLD_LIMIT_Y + 5; y++) {
 			m_ground_map->set_cell(x, y, TILE_NONE);
 			m_ground_map->set_cell(-x, y, TILE_NONE);
 			m_ground_map->set_cell(x, -y, TILE_NONE);
 			m_ground_map->set_cell(-x, -y, TILE_NONE);
 		}
 	}
+}
 
-	for (uint16_t x = 0; x < WORLD_LIMIT_X + 1; x++) {
-		m_ground_map->set_cell(x, WORLD_LIMIT_Y, TILE_GROUND_GRASS);
-		m_ground_map->set_cell(-x, WORLD_LIMIT_Y, TILE_GROUND_GRASS);
-		m_ground_map->set_cell(x, -WORLD_LIMIT_Y, TILE_GROUND_GRASS);
-		m_ground_map->set_cell(-x, -WORLD_LIMIT_Y, TILE_GROUND_GRASS);
-	}
-
-	for (uint16_t y = 0; y < WORLD_LIMIT_Y + 1; y++) {
-		m_ground_map->set_cell(WORLD_LIMIT_X, y, TILE_GROUND_GRASS);
-		m_ground_map->set_cell(-WORLD_LIMIT_X, y, TILE_GROUND_GRASS);
-		m_ground_map->set_cell(WORLD_LIMIT_X, -y, TILE_GROUND_GRASS);
-		m_ground_map->set_cell(-WORLD_LIMIT_X, -y, TILE_GROUND_GRASS);
+void GameMap::generate_map()
+{
+	MapGen mg;
+	for (int32_t x = -WORLD_LIMIT_X; x <= WORLD_LIMIT_X; x++) {
+		for (int32_t y = -WORLD_LIMIT_Y; y <= WORLD_LIMIT_Y; y++) {
+			m_ground_map->set_cell(x, y, mg.get_tile_for_pos(x, y));
+		}
 	}
 }
 

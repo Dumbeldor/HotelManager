@@ -45,6 +45,9 @@ protected:
 	void _canvas_mouse_exit();
 	void _on_input_event(const InputEvent &p_event);
 private:
+	void generate_map_borders();
+	void generate_map();
+
 	static bool is_out_of_bounds(const Vector2 &pos);
 
 	// Selection & Placement
