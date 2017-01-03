@@ -75,10 +75,10 @@ void GameMap::init(GameSession *game_session)
 
 	m_control->init(this);
 
-	m_camera->set_limit(MARGIN_LEFT, -(WORLD_LIMIT_X + 3) * GAME_TILE_SIZE);
-	m_camera->set_limit(MARGIN_RIGHT, (WORLD_LIMIT_X + 3) * GAME_TILE_SIZE);
-	m_camera->set_limit(MARGIN_BOTTOM, (WORLD_LIMIT_Y + 3 + 4) * GAME_TILE_SIZE);
-	m_camera->set_limit(MARGIN_TOP, -(WORLD_LIMIT_Y + 3) * GAME_TILE_SIZE);
+	m_camera->set_limit(MARGIN_LEFT, -(WORLD_LIMIT_X + 1) * GAME_TILE_SIZE);
+	m_camera->set_limit(MARGIN_RIGHT, (WORLD_LIMIT_X + 1) * GAME_TILE_SIZE);
+	m_camera->set_limit(MARGIN_BOTTOM, (WORLD_LIMIT_Y + 1 + 4) * GAME_TILE_SIZE);
+	m_camera->set_limit(MARGIN_TOP, -(WORLD_LIMIT_Y + 1) * GAME_TILE_SIZE);
 	m_camera->set_enable_follow_smoothing(true);
 	m_camera->set_pos(BASE_RESOLUTION / 2);
 
@@ -331,10 +331,12 @@ void GameMap::zoom_camera(const float multiplier)
 		|| new_zoom.x < ZOOMIN_LIMIT || new_zoom.y < ZOOMIN_LIMIT) {
 		return;
 	}
+
 	m_camera->set_zoom(new_zoom);
 
 	// This update permits to refresh hovering
 	m_control->update();
+	m_camera->update();
 }
 
 /**
@@ -343,17 +345,17 @@ void GameMap::zoom_camera(const float multiplier)
  */
 void GameMap::move_camera(Vector2 movement)
 {
-	movement.x *= 0.65;
-	movement.y *= 0.5;
-	movement *= m_camera->get_zoom();
+	movement *= m_camera->get_zoom() * m_camera->get_zoom();
 
 	// Limit camera movement to borders
 	// @ TODO take account the zoom value because when zooming we are not in map borders
-	if (ABS(m_camera->get_pos().x + movement.x) + BASE_RESOLUTION.x / 2 > (WORLD_LIMIT_X - 1) * GAME_TILE_SIZE) {
+	if ((ABS(m_camera->get_pos().x + movement.x) + BASE_RESOLUTION.x / 2) *
+		(1 + m_camera->get_zoom().x / 10) > (WORLD_LIMIT_X - 1) * GAME_TILE_SIZE) {
 		movement.x = 0;
 	}
 
-	if (ABS(m_camera->get_pos().y + movement.y) + BASE_RESOLUTION.y / 2 > (WORLD_LIMIT_Y - 1) * GAME_TILE_SIZE) {
+	if ((ABS(m_camera->get_pos().y + movement.y) + BASE_RESOLUTION.y / 2) *
+		(1 + m_camera->get_zoom().y / 10) > (WORLD_LIMIT_Y - 1) * GAME_TILE_SIZE) {
 		movement.y = 0;
 	}
 
@@ -362,7 +364,7 @@ void GameMap::move_camera(Vector2 movement)
 		return;
 	}
 
-	m_camera->global_translate(movement * m_camera->get_zoom());
+	m_camera->global_translate(movement);
 }
 
 void GameMap::init_selection()
