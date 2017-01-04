@@ -174,6 +174,7 @@ GameMapTile MapGen::get_tile_for_pos(int32_t x, int32_t y)
 	// First realign the map center
 	float width = WORLD_LIMIT_X * 2;
 	float height = WORLD_LIMIT_Y * 2;
+	// WORLD_LIMIT_X - WORLD_LIMIT_Y permits to move to center of map
 	x += width / 2 - (WORLD_LIMIT_X - WORLD_LIMIT_Y);
 	y += height / 2;
 
