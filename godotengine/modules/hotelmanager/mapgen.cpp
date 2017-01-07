@@ -146,7 +146,8 @@ double PerlinNoise::noise(int32_t x, int32_t y) const
 
 MapGen::MapGen()
 {
-	std::mt19937 random_gen(time(NULL));
+	uint64_t seed = time(NULL);
+	std::mt19937 random_gen(seed);
 
 	int octaves = 2;
 	float persistence = 0.5f;
@@ -154,7 +155,7 @@ MapGen::MapGen()
 	float amplitude = 0.8f;
 
 	m_perlin_noise = new PerlinNoise(persistence, frequency, amplitude,
-		octaves, random_gen());
+		octaves, seed);
 }
 
 
