@@ -1,4 +1,4 @@
-/*
+/**
  * This game is under its authors' proprietary license and is property of:
  *
  * No commercial usage of this program could be done without its authors
@@ -18,6 +18,8 @@
 #include "gamemap.h"
 #include "objectdefmgr.h"
 #include "hud.h"
+#include "savegame.h"
+#include <unistd.h>
 
 #define MONEY_LIMIT 1000000000000
 
@@ -31,6 +33,7 @@ GameSession::~GameSession()
 void GameSession::_bind_methods()
 {
 	ObjectTypeDB::bind_method("init", &GameSession::init);
+	ObjectTypeDB::bind_method("save", &GameSession::save);
 	ObjectTypeDB::bind_method(_MD("_process"),&GameSession::_process);
 
 	// m_money
@@ -84,6 +87,16 @@ void GameSession::init()
  */
 void GameSession::_process(float delta)
 {
+	m_autosave_timer -= delta;
+	if (m_autosave_timer <= 0.0f) {
+		//get_node(String("GameMap/Hud/ControlPane/MapControl/SaveSprite"))->cast_to<Sprite>()->show();
+		m_autosave_timer = 10.0f;
+		char buf[16];
+		snprintf(buf, 16, "%lu", time(NULL));
+		String date = "autosave_" + (String) buf;
+		save(date);
+		//get_node(String("GameMap/Hud/ControlPane/MapControl/SaveSprite"))->cast_to<Sprite>()->hide();
+	}
 	// Delta using game_speed
 	float game_delta = delta * m_game_speed;
 	{
@@ -116,6 +129,24 @@ void GameSession::set_money(int64_t money)
 	m_money = money;
 
 	m_hud->set_money_label(m_money);
+}
+
+/**
+ * Save the game
+ * @param name of file save
+ */
+void GameSession::save(const String &name)
+{
+	SaveGame().save(name, this, m_map);
+}
+
+/**
+ * Load the game
+ * @param name of file save
+ */
+void GameSession::load(const String &name)
+{
+
 }
 
 /**

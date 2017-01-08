@@ -16,6 +16,8 @@
 #include <scene/main/canvas_layer.h>
 #include <scene/main/viewport.h>
 #include <iostream>
+#include <vector>
+#include <io/base64.h>
 #include <os/input.h>
 #include <scene/audio/sample_player.h>
 #include "gamemap.h"
@@ -472,4 +474,57 @@ bool GameMap::is_out_of_bounds(const Vector2 &pos)
 {
 	return (pos.x > WORLD_LIMIT_X || pos.x < -WORLD_LIMIT_X ||
 		pos.y > WORLD_LIMIT_Y || pos.y < -WORLD_LIMIT_Y);
+}
+
+void GameMap::serialize(Dictionary &result) const
+{
+	result.clear();
+	/**
+	 * Serialize Map
+	 */
+	result["limit_x"] = WORLD_LIMIT_X;
+	result["limit_y"] = WORLD_LIMIT_Y;
+	int WORLD_LIMIT = ((WORLD_LIMIT_X + 1) * (WORLD_LIMIT_Y + 1)) * 2;
+	DVector<char> ground_map;
+	DVector<char> floor_map;
+
+	ground_map.resize(WORLD_LIMIT);
+	floor_map.resize(WORLD_LIMIT);
+
+	uint16_t i = 0;
+	for (int16_t x = -WORLD_LIMIT_X; x <= WORLD_LIMIT_X; x++) {
+		for (int16_t y = -WORLD_LIMIT_Y; y <= WORLD_LIMIT_Y; y++) {
+			ground_map.push_back((char) m_ground_map->get_cell(x, y));
+			floor_map.push_back((char) m_floor_map->get_cell(x, y));
+			i++;
+		}
+	}
+
+	int b64len = WORLD_LIMIT / 3 * 4 + 4 + 1;
+	DVector<char> b64buff;
+	b64buff.resize(b64len);
+
+	DVector<char>::Write w_ground = ground_map.write();
+	DVector<char>::Write w64_ground = b64buff.write();
+	int strlen_ground = base64_encode((char*)(&w64_ground[0]), (char*)(&w_ground[0]), (uint32_t )WORLD_LIMIT);
+	w64_ground[strlen_ground] = 0;
+
+	DVector<char>::Write w_floor = floor_map.write();
+	DVector<char>::Write w64_floor = b64buff.write();
+	int strlen_floor = base64_encode((char*)(&w64_floor[0]), (char*)(&w_floor[0]), (uint32_t) WORLD_LIMIT);
+	w64_floor[strlen_floor] = 0;
+
+	result["ground"] = (char*)&w64_ground[0];
+	result["floor"] = (char*)&w64_floor[0];
+
+	/**
+	 * Serialize Camera
+	 */
+	Dictionary camera;
+	camera["pos_x"] = m_camera->get_pos().x;
+	camera["pos_y"] = m_camera->get_pos().y;
+	camera["zoom_x"] = m_camera->get_zoom().x;
+	camera["zoom_y"] = m_camera->get_zoom().y;
+
+	result["camera"] = camera;
 }
