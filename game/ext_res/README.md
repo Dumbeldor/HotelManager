@@ -3,3 +3,4 @@
 * tilable-img_0044-lush.png: http://opengameart.org/node/9701
 * hardwood.png: http://opengameart.org/node/11950
 * 00water-texture.png: http://opengameart.org/node/10599
+* stone.png: http://opengameart.org/content/gray-stone-mountaincliff
