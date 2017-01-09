@@ -20,7 +20,8 @@ func _input(event):
 				_hide_game_menu()
 
 func _ready():
-	game_session.init()
+    # TODO, get save name and call it from there
+	game_session.init("")
 	set_process_input(true)
 	set_process(true)
 
