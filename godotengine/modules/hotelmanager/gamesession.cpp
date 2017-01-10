@@ -53,7 +53,7 @@ void GameSession::_bind_methods()
 /**
  * Initialize session, objectdefmgr, hud & map
  */
-void GameSession::init()
+void GameSession::init(const String &savename)
 {
 	// objdef_mgr should be inited first
 	assert(!m_objdef_mgr);
@@ -75,7 +75,15 @@ void GameSession::init()
 	assert(m_map);
 
 	// Map should be inited quickly
-	m_map->init(this);
+	SaveGame save(savename);
+	if (!savename.empty()) {
+		// TODO: save.check_if_exists();
+		m_map->init(this, &save);
+		// TODO: deserialize other args for this session
+	}
+	else {
+		m_map->init(this);
+	}
 }
 
 /**
@@ -137,7 +145,7 @@ void GameSession::set_money(int64_t money)
  */
 void GameSession::save(const String &name)
 {
-	SaveGame().save(name, this, m_map);
+	SaveGame(name).save(this, m_map);
 }
 
 /**

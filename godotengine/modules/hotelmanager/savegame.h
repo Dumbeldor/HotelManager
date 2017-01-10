@@ -22,14 +22,10 @@
 class SaveGame
 {
 public:
-	SaveGame() {};
+	SaveGame(const String &name): m_name(name) {};
 	~SaveGame() {};
 
-	void save(const String &name, const GameSession *game_session, const GameMap *game_map);
-
-protected:
-	void init() {};
-	void serialize(Dictionary &result, const GameMap *game_map) const;
-
+	void save(const GameSession *game_session, const GameMap *game_map);
 private:
+	String m_name = "";
 };

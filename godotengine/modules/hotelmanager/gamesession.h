@@ -55,7 +55,7 @@ public:
 protected:
 	static void _bind_methods();
 
-	void init();
+	void init(const String &savename = "");
 	void _process(float delta);
 	void save(const String &name);
 	void load(const String &name);

@@ -25,6 +25,7 @@
 class GameSession;
 class MapControl;
 class SamplePlayer;
+class SaveGame;
 
 static constexpr uint16_t WORLD_LIMIT_X = 180;
 static const Vector2 BASE_RESOLUTION(1920, 1080);
@@ -36,7 +37,7 @@ class GameMap: public VBoxContainer
 public:
 	GameMap();
 
-	void init(GameSession *game_session);
+	void init(GameSession *game_session, const SaveGame* save = nullptr);
 	void on_process(float delta);
 	void serialize(Dictionary &result) const;
 	TileMap *get_ground_map() const { return m_ground_map; };

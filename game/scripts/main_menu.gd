@@ -70,28 +70,27 @@ func _on_PlayBackButton_released():
 	get_node("PlayMenu/PlayPanel/SaveList").clear()
 	current_menu = MAINMENU.MAIN
 
-func _on_NewGameButton_released():
+func start_game():
 	get_tree().change_scene("res://scenes/game_scene.tscn")
-
-
+	
 func _on_OptionsButton_released():
 	get_tree().change_scene("res://scenes/options_scene.tscn")
 
 
 func _on_SaveList_item_activated( index ):
-	var saveList = get_node("PlayMenu/PlayPanel/SaveList").get_item_text(index)
+	var save_name = get_node("PlayMenu/PlayPanel/SaveList").get_item_text(index)
 
 
 func _on_SaveList_item_selected( index ):
 	get_node("PlayMenu/PlayPanel/SaveDetailsPanel/LoadGameButton").set_disabled(false)
 	get_node("PlayMenu/PlayPanel/SaveDetailsPanel/LoadGameButton/RemoveGameButton").set_disabled(false)
 	indexSave = index
-	var saveList = get_node("PlayMenu/PlayPanel/SaveList").get_item_text(index)
+	var save_name = get_node("PlayMenu/PlayPanel/SaveList").get_item_text(index)
 	var saveGame = File.new()
-	if !saveGame.file_exists("user://save/"+saveList+".save"):
+	if !saveGame.file_exists("user://save/"+save_name+".save"):
 		print("Error file don't exist")
 		return
-	saveGame.open("user://save/"+saveList+".save", File.READ)
+	saveGame.open("user://save/"+save_name+".save", File.READ)
 	var currentLine = {}
 	currentLine.parse_json(saveGame.get_line())
 	get_node("PlayMenu/PlayPanel/SaveDetailsPanel/MoneyLabel").show()
@@ -115,12 +114,16 @@ func _on_ConfirmationRemoveDialog_confirmed():
 			get_node("PlayMenu/PlayPanel/SaveDetailsPanel/LoadGameButton/RemoveGameButton").set_disabled(true)
 			get_node("PlayMenu/PlayPanel/SaveDetailsPanel/MoneyLabel").hide()
 			get_node("PlayMenu/PlayPanel/SaveList").remove_item(indexSave)
-	pass # replace with function body
 
-
-func _on_LoadGameButton_released():
-	var saveName = get_node("PlayMenu/PlayPanel/SaveList").get_item_text(indexSave)
-	var file = File.new()
-	file.open("user://save/"+saveName+".save", file.READ)
+func _on_NewGameButton_released():
+	start_game()
 	
-	pass # replace with function body
+func _on_LoadGameButton_released():
+	var save_name = get_node("PlayMenu/PlayPanel/SaveList").get_item_text(indexSave)
+	var file = File.new()
+	if !file.file_exists("user://save/" + save_name + ".save"):
+		print("Error file user://save/" + save_name + ".save doesn't exist")
+		return
+	get_node("/root/global").set_save(save_name)
+	start_game()
+	

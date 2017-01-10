@@ -26,6 +26,7 @@
 #include "objectdefmgr.h"
 #include "gamesession.h"
 #include "mapgen.h"
+#include "savegame.h"
 
 #define GROUNDMAP_NODE String("GroundMap")
 #define FLOORMAP_NODE String("GroundMap/FloorMap")
@@ -62,7 +63,7 @@ void GameMap::_bind_methods()
  *
  * @param game_session
  */
-void GameMap::init(GameSession *game_session)
+void GameMap::init(GameSession *game_session, const SaveGame* save)
 {
 	m_game_session = game_session;
 	m_sound_player = get_parent()->get_node(SOUND_PLAYER_NODE)->cast_to<SamplePlayer>();
@@ -89,7 +90,12 @@ void GameMap::init(GameSession *game_session)
 	m_object_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
 
 	generate_map_borders();
-	generate_map();
+	if (!save) {
+		generate_map();
+	}
+	else {
+		// TODO: deserialize from save
+	}
 }
 
 /**

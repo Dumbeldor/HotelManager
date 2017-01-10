@@ -20,7 +20,8 @@ func _input(event):
 				_hide_game_menu()
 
 func _ready():
-	game_session.init()
+    # TODO, get save name and call it from there
+	game_session.init(get_node("/root/global").get_save())
 	set_process_input(true)
 	set_process(true)
 
@@ -31,9 +32,13 @@ func _process(delta):
 ## Button handlers
 ##
 
-func _on_LeaveGameButton_released():
+func goto_main_menu():
+	get_node("/root/global").set_save("")
 	get_tree().change_scene("res://scenes/main_menu.tscn")
 	get_tree().set_pause(false)
+	
+func _on_LeaveGameButton_released():
+	goto_main_menu()
 
 func _show_game_menu():
 	get_node("MainMenuLayer/GameMainMenu").show()
@@ -74,8 +79,7 @@ func _on_SaveLeaveButton_released():
 	#get_node("MainMenuLayer/SaveMenu").show()
 	#list_save()
 	game_session.save("savequit")
-	get_tree().change_scene("res://scenes/main_menu.tscn")
-	get_tree().set_pause(false)
+	goto_main_menu()
 
 
 func _on_BackButton_released():
