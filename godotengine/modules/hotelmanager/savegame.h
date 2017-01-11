@@ -26,6 +26,7 @@ public:
 	~SaveGame() {};
 
 	void save(const GameSession *game_session, const GameMap *game_map);
+	bool load(GameSession *game_session, GameMap *game_map);
 private:
 	String m_name = "";
 };

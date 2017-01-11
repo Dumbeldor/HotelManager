@@ -63,7 +63,7 @@ void GameMap::_bind_methods()
  *
  * @param game_session
  */
-void GameMap::init(GameSession *game_session, const SaveGame* save)
+bool GameMap::init(GameSession *game_session, const Dictionary &map)
 {
 	m_game_session = game_session;
 	m_sound_player = get_parent()->get_node(SOUND_PLAYER_NODE)->cast_to<SamplePlayer>();
@@ -90,12 +90,53 @@ void GameMap::init(GameSession *game_session, const SaveGame* save)
 	m_object_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
 
 	generate_map_borders();
-	if (!save) {
+
+	if (map.empty()) {
 		generate_map();
+		return false;
 	}
-	else {
-		// TODO: deserialize from save
+
+	if (!(map.has("ground") && map.has("floor") && map.has("camera"))) {
+		return false;
 	}
+
+	const Dictionary &camera = map["camera"];
+	if (!(camera.has("pos_x") && camera.has("pos_y") && camera.has("zoom_x") && camera.has("zoom_y"))) {
+		return false;
+	}
+
+	/*
+	 * Load Map
+	 */
+	const String &ground = (const String&) map["ground"];
+	int strlen_ground = ground.length();
+	DVector<char> buf_ground;
+	buf_ground.resize(strlen_ground / 4 * 3 + 1 + 1);
+	DVector<char>::Write w_ground = buf_ground.write();
+
+	base64_decode((char*)(&w_ground[0]), (char*)(ground.utf8().get_data()), strlen_ground);
+
+	const String &floor = (const String&) map["floor"];
+	int strlen_floor = floor.length();
+	DVector<char> buf_floor;
+	buf_floor.resize(strlen_floor / 4 * 3 + 1 + 1);
+	DVector<char>::Write w_floor = buf_floor.write();
+
+	base64_decode((char*)(&w_floor[0]), (char*)(floor.utf8().get_data()), strlen_floor);
+
+	int32_t i = 0;
+	for (int16_t x = -WORLD_LIMIT_X; x <= WORLD_LIMIT_X; x++) {
+		for (int16_t y = -WORLD_LIMIT_Y; y <= WORLD_LIMIT_Y; y++) {
+			m_ground_map->set_cell(x, y, buf_ground.get(i));
+			m_floor_map->set_cell(x, y, buf_floor.get(i));
+			i++;
+		}
+	}
+
+	m_camera->set_zoom(Vector2(camera["zoom_x"], camera["zoom_y"]));
+	m_camera->set_pos(Point2(camera["pos_x"], camera["pos_y"]));
+
+	return true;
 }
 
 /**
@@ -490,33 +531,35 @@ void GameMap::serialize(Dictionary &result) const
 	 */
 	result["limit_x"] = WORLD_LIMIT_X;
 	result["limit_y"] = WORLD_LIMIT_Y;
-	int WORLD_LIMIT = ((WORLD_LIMIT_X + 1) * (WORLD_LIMIT_Y + 1)) * 2;
+	int WORLD_LIMIT = (WORLD_LIMIT_X * 2 + 1) * (WORLD_LIMIT_Y * 2 + 1);
 	DVector<char> ground_map;
 	DVector<char> floor_map;
 
 	ground_map.resize(WORLD_LIMIT);
 	floor_map.resize(WORLD_LIMIT);
 
-	uint16_t i = 0;
+	uint32_t i = 0;
 	for (int16_t x = -WORLD_LIMIT_X; x <= WORLD_LIMIT_X; x++) {
 		for (int16_t y = -WORLD_LIMIT_Y; y <= WORLD_LIMIT_Y; y++) {
-			ground_map.push_back((char) m_ground_map->get_cell(x, y));
-			floor_map.push_back((char) m_floor_map->get_cell(x, y));
+			ground_map.set(i, (char) m_ground_map->get_cell(x, y));
+			floor_map.set(i, (char) m_floor_map->get_cell(x, y));
 			i++;
 		}
 	}
 
 	int b64len = WORLD_LIMIT / 3 * 4 + 4 + 1;
-	DVector<char> b64buff;
-	b64buff.resize(b64len);
+	DVector<char> b64buff_ground;
+	b64buff_ground.resize(b64len);
 
 	DVector<char>::Write w_ground = ground_map.write();
-	DVector<char>::Write w64_ground = b64buff.write();
+	DVector<char>::Write w64_ground = b64buff_ground.write();
 	int strlen_ground = base64_encode((char*)(&w64_ground[0]), (char*)(&w_ground[0]), (uint32_t )WORLD_LIMIT);
 	w64_ground[strlen_ground] = 0;
 
 	DVector<char>::Write w_floor = floor_map.write();
-	DVector<char>::Write w64_floor = b64buff.write();
+	DVector<char> b64buff_floor;
+	b64buff_floor.resize(b64len);
+	DVector<char>::Write w64_floor = b64buff_floor.write();
 	int strlen_floor = base64_encode((char*)(&w64_floor[0]), (char*)(&w_floor[0]), (uint32_t) WORLD_LIMIT);
 	w64_floor[strlen_floor] = 0;
 

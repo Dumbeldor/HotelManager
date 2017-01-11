@@ -77,12 +77,12 @@ void GameSession::init(const String &savename)
 	// Map should be inited quickly
 	SaveGame save(savename);
 	if (!savename.empty()) {
-		// TODO: save.check_if_exists();
-		m_map->init(this, &save);
+		save.load(this, m_map);
 		// TODO: deserialize other args for this session
 	}
 	else {
-		m_map->init(this);
+		Dictionary fake_map;
+		m_map->init(this, fake_map);
 	}
 }
 
