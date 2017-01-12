@@ -220,7 +220,8 @@ void ObjectDefMgr::load_achievements()
 		}
 		achievement->title = csv_line.get(2).utf8();
 		achievement->objective = (uint32_t) csv_line.get(3).to_int();
-		achievement->description = csv_line.get(2).utf8();
+		achievement->description = csv_line.get(4).utf8();
+		achievement->icon = csv_line.get(5).utf8();
 
 		m_achievements.insert(std::pair<AchievementType, AchievementPtr>(achievement->type, achievement));
 		csv_line = file->get_csv_line();

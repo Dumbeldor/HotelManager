@@ -35,6 +35,7 @@ struct Achievement
 	uint32_t objective = 0;
 	std::string title = "";
 	std::string description = "";
+	std::string icon = "";
 };
 
 struct AchievementProgress
@@ -44,7 +45,7 @@ struct AchievementProgress
 	bool done = false;
 };
 
-static const uint8_t ACHIEVEMENTS_CSV_COLS = 5;
+static const uint8_t ACHIEVEMENTS_CSV_COLS = 6;
 typedef std::shared_ptr<Achievement> AchievementPtr;
 typedef std::unordered_multimap<AchievementType, AchievementPtr> AchievementList;
 typedef std::unordered_map<uint32_t, AchievementProgress> AchievementProgressMap;
