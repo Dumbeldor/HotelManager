@@ -8,7 +8,7 @@
  *
  * Copyright:
  *
- * 2016, Loic Blot <loic.blot@unix-experience.fr>
+ * 2016-2017, Loic Blot <loic.blot@unix-experience.fr>
  *
  * All rights reserved
  */

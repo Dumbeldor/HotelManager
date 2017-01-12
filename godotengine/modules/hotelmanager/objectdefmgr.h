@@ -1,4 +1,4 @@
-/*
+/**
  * This game is under its authors' proprietary license and is property of:
  *
  * No commercial usage of this program could be done without its authors
@@ -9,6 +9,7 @@
  * Copyright:
  *
  * 2016, Vincent Glize <vincent.glize@live.fr>
+ * 2017, Loic Blot <loic.blot@unix-experience.fr>
  *
  * All rights reserved
  */
@@ -17,6 +18,7 @@
 #include <unordered_map>
 #include "core/os/file_access.h"
 #include <memory>
+#include "achievements.h"
 #include "character.h"
 #include "game_tiles.h"
 
@@ -36,9 +38,6 @@ class ObjectDefMgr
 public:
 	ObjectDefMgr();
 	~ObjectDefMgr();
-	void load_roomdefs();
-	void load_characterdefs();
-	void load_tilesdefs();
 
 	/**
 	 *
@@ -57,6 +56,11 @@ public:
 	}
 
 private:
+	void load_roomdefs();
+	void load_characterdefs();
+	void load_tiledefs();
+	void load_achievements();
+
 	const GameTileDef &get_tiledef_priv(GameMapTile t);
 	// Singleton
 	static ObjectDefMgr *s_singleton;
@@ -64,4 +68,5 @@ private:
 	std::unordered_map<uint16_t, RoomDefPtr> m_roomdefs;
 	std::unordered_map<uint16_t, CharacterDefPtr> m_characterdefs;
 	std::unordered_map<GameMapTile, GameTileDefPtr> m_game_tiledefs;
+	AchievementList m_achievements;
 };

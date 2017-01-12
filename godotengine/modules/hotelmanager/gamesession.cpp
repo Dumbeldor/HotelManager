@@ -8,7 +8,7 @@
  *
  * Copyright:
  *
- * 2016, Loic Blot <loic.blot@unix-experience.fr>
+ * 2016-2017, Loic Blot <loic.blot@unix-experience.fr>
  *
  * All rights reserved
  */
@@ -58,9 +58,6 @@ void GameSession::init(const String &savename)
 	// objdef_mgr should be inited first
 	assert(!m_objdef_mgr);
 	m_objdef_mgr = new ObjectDefMgr();
-	m_objdef_mgr->load_characterdefs();
-	m_objdef_mgr->load_roomdefs();
-	m_objdef_mgr->load_tilesdefs();
 
 	// Init hud
 	m_hud = get_node(String("GameMap/Hud"))->cast_to<Hud>();
@@ -154,7 +151,7 @@ void GameSession::save(const String &name)
  */
 void GameSession::load(const String &name)
 {
-
+	// @TODO: load achievement progress to this session
 }
 
 /**
