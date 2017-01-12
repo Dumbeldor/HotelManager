@@ -9,6 +9,7 @@
  * Copyright:
  *
  * 2016, Vincent Glize <vincent.glize@live.fr>
+ * 2017, Loic Blot <loic.blot@unix-experience.fr>
  *
  * All rights reserved
  */
@@ -19,6 +20,7 @@
 #define ROOMDEF_FILE String("room.csv")
 #define CHARACTER_FILE String("character.csv")
 #define TILES_FILE String("tiles.csv")
+#define ACHIEVEMENTS_FILE String("achievements.csv")
 
 ObjectDefMgr *ObjectDefMgr::s_singleton = nullptr;
 
@@ -26,10 +28,16 @@ ObjectDefMgr::ObjectDefMgr()
 {
 	assert(ObjectDefMgr::s_singleton == nullptr); // Should be null here
 	ObjectDefMgr::s_singleton = this;
+
+	load_characterdefs();
+	load_roomdefs();
+	load_tiledefs();
+	load_achievements();
 }
 
-ObjectDefMgr::~ObjectDefMgr() {
-
+ObjectDefMgr::~ObjectDefMgr()
+{
+	ObjectDefMgr::s_singleton = nullptr;
 }
 
 /**
@@ -39,7 +47,10 @@ void ObjectDefMgr::load_roomdefs()
 {
 	Error err;
 	FileAccess *file = FileAccess::open(GAMEDATA_PATH + ROOMDEF_FILE, FileAccess::READ, &err);
-	ERR_FAIL_COND(err != OK || file == NULL);
+	if (err != OK || file == NULL) {
+		ERR_PRINT("No roomdefs game data, ignoring.");
+		return;
+	}
 
 	m_roomdefs.clear();
 
@@ -77,7 +88,10 @@ void ObjectDefMgr::load_characterdefs()
 {
 	Error err;
 	FileAccess *file = FileAccess::open(GAMEDATA_PATH + CHARACTER_FILE, FileAccess::READ, &err);
-	ERR_FAIL_COND(err != OK || file == NULL);
+	if (err != OK || file == NULL) {
+		ERR_PRINT("No characterdefs game data, ignoring.");
+		return;
+	}
 
 	m_characterdefs.clear();
 
@@ -111,11 +125,14 @@ void ObjectDefMgr::load_characterdefs()
 /**
  * Load game data for tiles
  */
-void ObjectDefMgr::load_tilesdefs()
+void ObjectDefMgr::load_tiledefs()
 {
 	Error err;
 	FileAccess *file = FileAccess::open(GAMEDATA_PATH + TILES_FILE, FileAccess::READ, &err);
-	ERR_FAIL_COND(err != OK || file == NULL);
+	if (err != OK || file == NULL) {
+		ERR_PRINT("No tiledefs game data, ignoring.");
+		return;
+	}
 
 	m_game_tiledefs.clear();
 
@@ -164,6 +181,48 @@ void ObjectDefMgr::load_tilesdefs()
 		tiledef->cost = (uint32_t) csv_line.get(6).to_int();
 
 		m_game_tiledefs[tiledef->id] = tiledef;
+		csv_line = file->get_csv_line();
+	}
+
+	file->close();
+}
+
+/**
+ * Load game data for achievements
+ */
+void ObjectDefMgr::load_achievements()
+{
+	Error err;
+	FileAccess *file = FileAccess::open(GAMEDATA_PATH + ACHIEVEMENTS_FILE, FileAccess::READ, &err);
+	if (err != OK || file == NULL) {
+		ERR_PRINT("No achievements game data, ignoring.");
+		return;
+	}
+
+	m_achievements.clear();
+
+	Vector<String> csv_line = file->get_csv_line();
+
+	while (csv_line.size() > 1) {
+		if (csv_line.size() != ACHIEVEMENTS_CSV_COLS) {
+			ERR_PRINT("invalid CSV line (achievements), ignoring.");
+			csv_line = file->get_csv_line();
+			continue;
+		}
+
+		AchievementPtr achievement(new Achievement());
+		achievement->unique_id = (uint32_t) csv_line.get(0).to_int();
+		achievement->type = (AchievementType) csv_line.get(1).to_int();
+		if (achievement->type == ACHIEVEMENT_TYPE_NONE
+			|| achievement->type >= ACHIEVEMENT_TYPE_MAX) {
+			ERR_PRINT("Invalid achievement type, ignoring.")
+			continue;
+		}
+		achievement->title = csv_line.get(2).utf8();
+		achievement->objective = (uint32_t) csv_line.get(3).to_int();
+		achievement->description = csv_line.get(2).utf8();
+
+		m_achievements.insert(std::pair<AchievementType, AchievementPtr>(achievement->type, achievement));
 		csv_line = file->get_csv_line();
 	}
 

@@ -8,7 +8,7 @@
  *
  * Copyright:
  *
- * 2016, Loic Blot <loic.blot@unix-experience.fr>
+ * 2016-2017, Loic Blot <loic.blot@unix-experience.fr>
  *
  * All rights reserved
  */
@@ -17,6 +17,7 @@
 
 #include <scene/main/node.h>
 #include <cmath>
+#include "achievements.h"
 
 class GameMap;
 class Hud;
@@ -35,7 +36,10 @@ class GameSession: public Node
 {
 	OBJ_TYPE(GameSession, Node);
 public:
-	GameSession() {}
+	GameSession()
+	{
+		m_achievements.clear();
+	}
 	~GameSession();
 
 	/**
@@ -86,4 +90,5 @@ private:
 	GameMap *m_map = nullptr;
 	Hud *m_hud = nullptr;
 	ObjectDefMgr *m_objdef_mgr = nullptr;
+	AchievementProgressMap m_achievements;
 };

@@ -55,6 +55,8 @@ void SaveGame::save(const GameSession *game_session, const GameMap *game_map)
 	savedict["game_time"] = game_session->get_game_time();
 	savedict["game_speed"] = game_session->get_game_speed();
 
+	// @TODO: save achievement progress too
+
 	file->store_line(savedict.to_json());
 	file->close();
 }
