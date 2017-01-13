@@ -51,10 +51,15 @@ public:
 	 * @return m_money value
 	 */
 	int64_t get_money() const { return m_money; };
-	GameSpeed get_game_speed() const { return m_game_speed; };
-	double get_game_time() const { return m_game_time; };
-
+	void set_money(int64_t money);
 	void remove_money(int64_t money);
+
+
+	GameSpeed get_game_speed() const { return m_game_speed; };
+	void set_game_speed(const GameSpeed &speed) { m_game_speed = speed; }
+
+	double get_game_time() const { return m_game_time; };
+	void set_game_time(const double &game_time) { m_game_time= game_time; }
 
 protected:
 	static void _bind_methods();
@@ -65,10 +70,8 @@ protected:
 	void load(const String &name);
 
 	// m_money
-	void set_money(int64_t money);
 	void add_money(int64_t money);
 
-	void set_game_speed(const GameSpeed speed) { m_game_speed = speed; }
 	void set_game_speed__api(const uint8_t speed) { m_game_speed = (GameSpeed) speed; }
 
 	// m_current_day

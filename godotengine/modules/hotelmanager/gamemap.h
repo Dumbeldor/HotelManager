@@ -37,7 +37,7 @@ class GameMap: public VBoxContainer
 public:
 	GameMap();
 
-	void init(GameSession *game_session, const SaveGame* save = nullptr);
+	bool init(GameSession *game_session, const Dictionary &map);
 	void on_process(float delta);
 	void serialize(Dictionary &result) const;
 	TileMap *get_ground_map() const { return m_ground_map; };
