@@ -17,7 +17,7 @@
 
 #include <cstdint>
 #include <unordered_map>
-#include <memory>
+
 
 enum AchievementType
 {
@@ -46,6 +46,5 @@ struct AchievementProgress
 };
 
 static const uint8_t ACHIEVEMENTS_CSV_COLS = 6;
-typedef std::shared_ptr<Achievement> AchievementPtr;
-typedef std::unordered_multimap<AchievementType, AchievementPtr> AchievementList;
+typedef std::unordered_multimap<AchievementType, Achievement *> AchievementList;
 typedef std::unordered_map<uint32_t, AchievementProgress> AchievementProgressMap;
