@@ -38,6 +38,21 @@ ObjectDefMgr::ObjectDefMgr()
 ObjectDefMgr::~ObjectDefMgr()
 {
 	ObjectDefMgr::s_singleton = nullptr;
+	for (auto &achievement: m_achievements) {
+		delete achievement.second;
+	}
+
+	for (auto &room: m_roomdefs) {
+		delete room.second;
+	}
+
+	for (auto &cdef: m_characterdefs) {
+		delete cdef.second;
+	}
+
+	for (auto &tdef: m_game_tiledefs) {
+		delete tdef.second;
+	}
 }
 
 /**
@@ -62,7 +77,7 @@ void ObjectDefMgr::load_roomdefs()
 			csv_line = file->get_csv_line();
 			continue;
 		}
-		RoomDefPtr room(new RoomDef());
+		RoomDef *room = new RoomDef();
 		uint16_t room_id = (uint16_t) csv_line.get(0).to_int();
 
 		if (m_roomdefs.find(room_id) != m_roomdefs.end()) {
@@ -103,7 +118,7 @@ void ObjectDefMgr::load_characterdefs()
 			csv_line = file->get_csv_line();
 			continue;
 		}
-		CharacterDefPtr character(new CharacterDef());
+		CharacterDef *character = new CharacterDef();
 		uint16_t character_id = (uint16_t) csv_line.get(0).to_int();
 
 		if (m_characterdefs.find(character_id) != m_characterdefs.end()) {
@@ -144,7 +159,8 @@ void ObjectDefMgr::load_tiledefs()
 			csv_line = file->get_csv_line();
 			continue;
 		}
-		GameTileDefPtr tiledef(new GameTileDef());
+		
+		GameTileDef *tiledef = new GameTileDef();
 		uint16_t tile_id = (uint16_t) csv_line.get(0).to_int();
 
 		if (m_game_tiledefs.find((GameMapTile) tile_id) != m_game_tiledefs.end()) {
@@ -210,7 +226,7 @@ void ObjectDefMgr::load_achievements()
 			continue;
 		}
 
-		AchievementPtr achievement(new Achievement());
+		Achievement *achievement = new Achievement();
 		achievement->unique_id = (uint32_t) csv_line.get(0).to_int();
 		achievement->type = (AchievementType) csv_line.get(1).to_int();
 		if (achievement->type == ACHIEVEMENT_TYPE_NONE
@@ -223,7 +239,7 @@ void ObjectDefMgr::load_achievements()
 		achievement->description = csv_line.get(4).utf8();
 		achievement->icon = csv_line.get(5).utf8();
 
-		m_achievements.insert(std::pair<AchievementType, AchievementPtr>(achievement->type, achievement));
+		m_achievements.insert(std::pair<AchievementType, Achievement *>(achievement->type, achievement));
 		csv_line = file->get_csv_line();
 	}
 

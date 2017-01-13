@@ -15,7 +15,6 @@
 
 #pragma once
 
-#include <memory>
 #include "scene/main/node.h"
 
 enum CharacterSex
@@ -50,8 +49,6 @@ struct CharacterDef
 	CharacterSex sex;
 };
 static const uint8_t CHARACTERDEF_CSV_COLS = 4;
-
-typedef std::shared_ptr<CharacterDef> CharacterDefPtr;
 
 class Character: public Node
 {

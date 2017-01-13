@@ -17,7 +17,6 @@
 #include <iostream>
 #include <unordered_map>
 #include "core/os/file_access.h"
-#include <memory>
 #include "achievements.h"
 #include "character.h"
 #include "game_tiles.h"
@@ -30,8 +29,6 @@ struct RoomDef
 	uint8_t max_size;
 };
 static const uint8_t ROOMDEF_CSV_COLS = 4;
-
-typedef std::shared_ptr<RoomDef> RoomDefPtr;
 
 class ObjectDefMgr
 {
@@ -65,8 +62,8 @@ private:
 	// Singleton
 	static ObjectDefMgr *s_singleton;
 
-	std::unordered_map<uint16_t, RoomDefPtr> m_roomdefs;
-	std::unordered_map<uint16_t, CharacterDefPtr> m_characterdefs;
-	std::unordered_map<GameMapTile, GameTileDefPtr> m_game_tiledefs;
+	std::unordered_map<uint16_t, RoomDef *> m_roomdefs;
+	std::unordered_map<uint16_t, CharacterDef *> m_characterdefs;
+	std::unordered_map<GameMapTile, GameTileDef *> m_game_tiledefs;
 	AchievementList m_achievements;
 };
