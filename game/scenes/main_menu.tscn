@@ -23,7 +23,7 @@ margin/top = -500.0
 margin/right = -200.0
 margin/bottom = 500.0
 
-[node name="PlayButton" type="Button" parent="MainMenu"]
+[node name="MainNewGameButton" type="Button" parent="MainMenu"]
 
 rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = false
@@ -39,11 +39,11 @@ toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
 shortcut = null
-text = "Play"
+text = "New Game"
 flat = false
 align = 0
 
-[node name="OptionsButton" type="Button" parent="MainMenu/PlayButton"]
+[node name="OptionsButton" type="Button" parent="MainMenu/MainNewGameButton"]
 
 anchor/right = 1
 focus/ignore_mouse = false
@@ -62,7 +62,27 @@ text = "Options"
 flat = false
 align = 0
 
-[node name="QuitButton" type="Button" parent="MainMenu/PlayButton"]
+[node name="MainLoadGameButton" type="Button" parent="MainMenu/MainNewGameButton"]
+
+visibility/visible = false
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 50.0
+margin/right = 0.0
+margin/bottom = 70.0
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Load Game"
+flat = false
+align = 0
+
+[node name="QuitButton" type="Button" parent="MainMenu/MainNewGameButton"]
 
 anchor/right = 1
 focus/ignore_mouse = false
@@ -83,6 +103,7 @@ align = 0
 
 [node name="ProjectInfos" type="Container" parent="."]
 
+editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -126,6 +147,7 @@ max_lines_visible = -1
 
 [node name="PlayMenu" type="Container" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -330,9 +352,20 @@ window/title = "Veuillez confirmer…"
 dialog/text = "Remove save"
 dialog/hide_on_ok = true
 
-[node name="NewGamePanel" type="Panel" parent="PlayMenu"]
+[node name="CreateMenu" type="Container" parent="."]
 
 visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -872.0
+margin/top = -540.0
+margin/right = 872.0
+margin/bottom = 540.0
+
+[node name="CreatePanel" type="Panel" parent="CreateMenu"]
+
 visibility/opacity = 0.78
 anchor/right = 1
 anchor/bottom = 1
@@ -345,14 +378,15 @@ margin/top = 0.0
 margin/right = 200.0
 margin/bottom = 0.0
 
-[node name="TitleLabel" type="Label" parent="PlayMenu/NewGamePanel"]
+[node name="TitleLabel" type="Label" parent="CreateMenu/CreatePanel"]
 
+anchor/left = 3
 rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 607.0
+margin/left = 115.0
 margin/top = 5.0
 margin/right = 722.0
 margin/bottom = 14.0
@@ -373,11 +407,13 @@ stream/loop_restart_time = 0.0
 stream/buffering_ms = 500
 script/script = ExtResource( 4 )
 
-[connection signal="released" from="MainMenu/PlayButton" to="." method="_on_PlayButton_released"]
+[connection signal="released" from="MainMenu/MainNewGameButton" to="." method="_on_MainNewGameButton_released"]
 
-[connection signal="released" from="MainMenu/PlayButton/OptionsButton" to="." method="_on_OptionsButton_released"]
+[connection signal="released" from="MainMenu/MainNewGameButton/OptionsButton" to="." method="_on_OptionsButton_released"]
 
-[connection signal="released" from="MainMenu/PlayButton/QuitButton" to="." method="_on_QuitButton_released"]
+[connection signal="released" from="MainMenu/MainNewGameButton/MainLoadGameButton" to="." method="_on_MainLoadGameButton_released"]
+
+[connection signal="released" from="MainMenu/MainNewGameButton/QuitButton" to="." method="_on_QuitButton_released"]
 
 [connection signal="released" from="PlayMenu/PlayPanel/NewGameButton" to="." method="_on_NewGameButton_released"]
 
