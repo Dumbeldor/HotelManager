@@ -159,7 +159,7 @@ void ObjectDefMgr::load_tiledefs()
 			csv_line = file->get_csv_line();
 			continue;
 		}
-		
+
 		GameTileDef *tiledef = new GameTileDef();
 		uint16_t tile_id = (uint16_t) csv_line.get(0).to_int();
 

@@ -16,7 +16,6 @@
 #pragma once
 
 #include <cstdint>
-#include <memory>
 #include <ustring.h>
 
 static constexpr uint16_t GAME_TILE_SIZE = 48;
@@ -64,4 +63,3 @@ struct GameTileDef
 	uint32_t cost;
 };
 static const uint8_t GAMETILEDEF_CSV_COLS = 7;
-typedef std::shared_ptr<GameTileDef> GameTileDefPtr;
