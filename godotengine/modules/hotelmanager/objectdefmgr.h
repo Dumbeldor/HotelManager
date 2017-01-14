@@ -56,6 +56,7 @@ private:
 	void load_roomdefs();
 	void load_characterdefs();
 	void load_tiledefs();
+	void load_achievement_groups();
 	void load_achievements();
 
 	const GameTileDef &get_tiledef_priv(GameMapTile t);
@@ -66,4 +67,5 @@ private:
 	std::unordered_map<uint16_t, CharacterDef *> m_characterdefs;
 	std::unordered_map<GameMapTile, GameTileDef *> m_game_tiledefs;
 	AchievementList m_achievements;
+	AchievementGroupList m_achievement_groups;
 };

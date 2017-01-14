@@ -15,12 +15,35 @@
  */
 
 #include "objectdefmgr.h"
+#include <sstream>
 
 #define GAMEDATA_PATH String("res://gamedata/")
 #define ROOMDEF_FILE String("room.csv")
 #define CHARACTER_FILE String("character.csv")
 #define TILES_FILE String("tiles.csv")
 #define ACHIEVEMENTS_FILE String("achievements.csv")
+#define ACHIEVEMENT_GROUPS_FILE String("achievementgroups.csv")
+
+#define GAMEDEF_LOADER(f, n, store, cn, FN) \
+	Error err; \
+	FileAccess *file = FileAccess::open(GAMEDATA_PATH + f, FileAccess::READ, &err); \
+	if (err != OK || file == NULL) { \
+		ERR_PRINT("No game data, ignoring."); \
+		return; \
+	} \
+	store.clear(); \
+	Vector<String> csv_line = file->get_csv_line(); \
+	while (csv_line.size() > 1) { \
+		if (csv_line.size() != cn) { \
+			ERR_PRINT("invalid CSV line, ignoring."); \
+			csv_line = file->get_csv_line(); \
+			continue; \
+		} \
+		FN \
+		csv_line = file->get_csv_line(); \
+	} \
+	file->close();
+
 
 ObjectDefMgr *ObjectDefMgr::s_singleton = nullptr;
 
@@ -32,6 +55,7 @@ ObjectDefMgr::ObjectDefMgr()
 	load_characterdefs();
 	load_roomdefs();
 	load_tiledefs();
+	load_achievement_groups();
 	load_achievements();
 }
 
@@ -40,6 +64,10 @@ ObjectDefMgr::~ObjectDefMgr()
 	ObjectDefMgr::s_singleton = nullptr;
 	for (auto &achievement: m_achievements) {
 		delete achievement.second;
+	}
+
+	for (auto &ag: m_achievement_groups) {
+		delete ag.second;
 	}
 
 	for (auto &room: m_roomdefs) {
@@ -60,23 +88,7 @@ ObjectDefMgr::~ObjectDefMgr()
  */
 void ObjectDefMgr::load_roomdefs()
 {
-	Error err;
-	FileAccess *file = FileAccess::open(GAMEDATA_PATH + ROOMDEF_FILE, FileAccess::READ, &err);
-	if (err != OK || file == NULL) {
-		ERR_PRINT("No roomdefs game data, ignoring.");
-		return;
-	}
-
-	m_roomdefs.clear();
-
-	Vector<String> csv_line = file->get_csv_line();
-
-	while (csv_line.size() > 1) {
-		if (csv_line.size() != ROOMDEF_CSV_COLS) {
-			ERR_PRINT("invalid CSV line (gametiledef), ignoring.");
-			csv_line = file->get_csv_line();
-			continue;
-		}
+	GAMEDEF_LOADER(ROOMDEF_FILE, "roomdefs", m_roomdefs, ROOMDEF_CSV_COLS,
 		RoomDef *room = new RoomDef();
 		uint16_t room_id = (uint16_t) csv_line.get(0).to_int();
 
@@ -90,10 +102,7 @@ void ObjectDefMgr::load_roomdefs()
 		room->min_size = (uint8_t) csv_line.get(3).to_int();
 
 		m_roomdefs[room_id] = room;
-		csv_line = file->get_csv_line();
-	}
-
-	file->close();
+	)
 }
 
 /**
@@ -101,23 +110,7 @@ void ObjectDefMgr::load_roomdefs()
  */
 void ObjectDefMgr::load_characterdefs()
 {
-	Error err;
-	FileAccess *file = FileAccess::open(GAMEDATA_PATH + CHARACTER_FILE, FileAccess::READ, &err);
-	if (err != OK || file == NULL) {
-		ERR_PRINT("No characterdefs game data, ignoring.");
-		return;
-	}
-
-	m_characterdefs.clear();
-
-	Vector<String> csv_line = file->get_csv_line();
-
-	while (csv_line.size() > 1) {
-		if (csv_line.size() != CHARACTERDEF_CSV_COLS) {
-			ERR_PRINT("invalid CSV line (gametiledef), ignoring.");
-			csv_line = file->get_csv_line();
-			continue;
-		}
+	GAMEDEF_LOADER(CHARACTER_FILE, "characterdefs", m_characterdefs, CHARACTERDEF_CSV_COLS,
 		CharacterDef *character = new CharacterDef();
 		uint16_t character_id = (uint16_t) csv_line.get(0).to_int();
 
@@ -131,10 +124,7 @@ void ObjectDefMgr::load_characterdefs()
 		character->role = (CharacterRole) csv_line.get(3).to_int();
 
 		m_characterdefs[character_id] = character;
-		csv_line = file->get_csv_line();
-	}
-
-	file->close();
+	)
 }
 
 /**
@@ -142,24 +132,7 @@ void ObjectDefMgr::load_characterdefs()
  */
 void ObjectDefMgr::load_tiledefs()
 {
-	Error err;
-	FileAccess *file = FileAccess::open(GAMEDATA_PATH + TILES_FILE, FileAccess::READ, &err);
-	if (err != OK || file == NULL) {
-		ERR_PRINT("No tiledefs game data, ignoring.");
-		return;
-	}
-
-	m_game_tiledefs.clear();
-
-	Vector<String> csv_line = file->get_csv_line();
-
-	while (csv_line.size() > 1) {
-		if (csv_line.size() != GAMETILEDEF_CSV_COLS) {
-			ERR_PRINT("invalid CSV line (gametiledef), ignoring.");
-			csv_line = file->get_csv_line();
-			continue;
-		}
-
+	GAMEDEF_LOADER(TILES_FILE, "tiledef", m_game_tiledefs, GAMETILEDEF_CSV_COLS,
 		GameTileDef *tiledef = new GameTileDef();
 		uint16_t tile_id = (uint16_t) csv_line.get(0).to_int();
 
@@ -197,10 +170,21 @@ void ObjectDefMgr::load_tiledefs()
 		tiledef->cost = (uint32_t) csv_line.get(6).to_int();
 
 		m_game_tiledefs[tiledef->id] = tiledef;
-		csv_line = file->get_csv_line();
-	}
+	)
+}
 
-	file->close();
+/**
+ *
+ */
+void ObjectDefMgr::load_achievement_groups()
+{
+	GAMEDEF_LOADER(ACHIEVEMENT_GROUPS_FILE, "achievementgroups", m_achievement_groups,
+		ACHIEVEMENTGROUPS_CSV_COLS,
+		AchievementGroup *ag = new AchievementGroup();
+		ag->unique_id = (uint32_t) csv_line.get(0).to_int();
+		ag->title = csv_line.get(1).utf8();
+		m_achievement_groups[ag->unique_id] = ag;
+	)
 }
 
 /**
@@ -208,24 +192,7 @@ void ObjectDefMgr::load_tiledefs()
  */
 void ObjectDefMgr::load_achievements()
 {
-	Error err;
-	FileAccess *file = FileAccess::open(GAMEDATA_PATH + ACHIEVEMENTS_FILE, FileAccess::READ, &err);
-	if (err != OK || file == NULL) {
-		ERR_PRINT("No achievements game data, ignoring.");
-		return;
-	}
-
-	m_achievements.clear();
-
-	Vector<String> csv_line = file->get_csv_line();
-
-	while (csv_line.size() > 1) {
-		if (csv_line.size() != ACHIEVEMENTS_CSV_COLS) {
-			ERR_PRINT("invalid CSV line (achievements), ignoring.");
-			csv_line = file->get_csv_line();
-			continue;
-		}
-
+	GAMEDEF_LOADER(ACHIEVEMENTS_FILE, "achievements", m_achievements, ACHIEVEMENTS_CSV_COLS,
 		Achievement *achievement = new Achievement();
 		achievement->unique_id = (uint32_t) csv_line.get(0).to_int();
 		achievement->type = (AchievementType) csv_line.get(1).to_int();
@@ -239,11 +206,20 @@ void ObjectDefMgr::load_achievements()
 		achievement->description = csv_line.get(4).utf8();
 		achievement->icon = csv_line.get(5).utf8();
 
-		m_achievements.insert(std::pair<AchievementType, Achievement *>(achievement->type, achievement));
-		csv_line = file->get_csv_line();
-	}
+		uint32_t group_id = (uint32_t) csv_line.get(6).to_int();
+		if (m_achievement_groups.find(group_id) != m_achievement_groups.end()) {
+			achievement->group_id = group_id;
+		}
+		else {
+			std::stringstream ss;
+			ss << "Achievement " << achievement->title << " has invalid group id " << group_id
+				<< ", resetting to 0." << std::endl;
+			WARN_PRINT(ss.str().c_str());
+		}
 
-	file->close();
+		m_achievements.insert(
+			std::pair<AchievementType, Achievement *>(achievement->type, achievement));
+	)
 }
 
 /**
