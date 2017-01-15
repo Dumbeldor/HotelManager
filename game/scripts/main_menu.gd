@@ -5,7 +5,7 @@ var indexSave = 0;
 
 const MAINMENU = {
 	MAIN = 0,
-	PLAY = 1,
+	LOAD_GAME = 1,
 }
 
 var current_menu = MAINMENU.MAIN
@@ -22,6 +22,17 @@ func _ready():
 
 	OS.set_window_fullscreen(fullscreen)
 	OS.set_window_title(PROJECT.get_project_name())
+	
+	#Button load game
+	var dir = Directory.new()
+	if dir.open("user://save/") == OK:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while (file_name != ""):
+			if !dir.current_is_dir():
+				get_node("MainMenu/MainNewGameButton/MainLoadGameButton").show()
+				break;
+			file_name = dir.get_next()
 
 	# Tell we accept input key
 	set_process_input(true)
@@ -31,7 +42,7 @@ func _input(event):
 		if (event.is_action("ui_cancel")):
 			if (current_menu == MAINMENU.MAIN):
 				quit()
-			elif (current_menu == MAINMENU.PLAY):
+			elif (current_menu == MAINMENU.LOAD_GAME):
 				_on_PlayBackButton_released()
 
 func quit():
@@ -40,12 +51,14 @@ func quit():
 func _on_QuitButton_released():
 	get_tree().quit()
 
-func _on_PlayButton_released():
+func _on_MainNewGameButton_released():
+	start_game()
+
+func _on_MainLoadGameButton_released():
 	get_node("MainMenu").hide()
 	get_node("PlayMenu").show()
-	current_menu = MAINMENU.PLAY
+	current_menu = MAINMENU.LOAD_GAME
 	list_save()
-	
 
 func list_save():
 	var dir  = Directory.new()
@@ -126,4 +139,3 @@ func _on_LoadGameButton_released():
 		return
 	get_node("/root/global").set_save(save_name)
 	start_game()
-	
