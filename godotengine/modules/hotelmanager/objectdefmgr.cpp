@@ -15,6 +15,7 @@
  */
 
 #include "objectdefmgr.h"
+#include "log.h"
 #include <sstream>
 
 #define GAMEDATA_PATH String("res://gamedata/")
@@ -93,7 +94,7 @@ void ObjectDefMgr::load_roomdefs()
 		uint16_t room_id = (uint16_t) csv_line.get(0).to_int();
 
 		if (m_roomdefs.find(room_id) != m_roomdefs.end()) {
-			WARN_PRINT(String("ID "+ String::num(room_id) +" was already registered, overriding it").ascii().get_data());
+			LOG_WARN("ID %d was already registered, overriding it", room_id);
 		}
 
 		room->id = room_id;
@@ -115,7 +116,7 @@ void ObjectDefMgr::load_characterdefs()
 		uint16_t character_id = (uint16_t) csv_line.get(0).to_int();
 
 		if (m_characterdefs.find(character_id) != m_characterdefs.end()) {
-			WARN_PRINT(String("ID "+ String::num(character_id) +" was already registered, overriding it").ascii().get_data());
+			LOG_WARN("ID %d was already registered, overriding it", character_id);
 		}
 
 		character->id = character_id;
@@ -137,26 +138,25 @@ void ObjectDefMgr::load_tiledefs()
 		uint16_t tile_id = (uint16_t) csv_line.get(0).to_int();
 
 		if (m_game_tiledefs.find((GameMapTile) tile_id) != m_game_tiledefs.end()) {
-			WARN_PRINT(String("ID " + String::num(tile_id) + " was already registered, overriding it").ascii().get_data());
+			LOG_WARN("ID %d was already registered, overriding it", tile_id);
 		}
 
 		if (tile_id >= TILE_MAX) {
-			WARN_PRINT(String("Tile ID " + String::num(tile_id) + " was invalid, ignoring").ascii().get_data());
+			LOG_WARN("Tile ID %d was invalid, ignoring", tile_id);
 			csv_line = file->get_csv_line();
 			continue;
 		}
 
 		uint16_t tile_type = (uint16_t) csv_line.get(1).to_int();
 		if (tile_type >= TILE_TYPE_MAX) {
-			WARN_PRINT(String("ID " + String::num(tile_id) + " invalid tile type, ignoring").ascii().get_data());
+			LOG_WARN("ID %d invalid tile type, ignoring", tile_id);
 			csv_line = file->get_csv_line();
 			continue;
 		}
 
 		int tile_flags = csv_line.get(5).to_int();
 		if (tile_flags >= TILE_FLAG_MAX) {
-			WARN_PRINT(String("ID " + String::num(tile_id) + " invalid tile flags ("
-				+ String::num(tile_flags) + "), ignoring").ascii().get_data());
+			LOG_WARN("ID %d invalid tile flags (%d), ignoring", tile_id, tile_flags);
 			csv_line = file->get_csv_line();
 			continue;
 		}
@@ -198,7 +198,7 @@ void ObjectDefMgr::load_achievements()
 		achievement->type = (AchievementType) csv_line.get(1).to_int();
 		if (achievement->type == ACHIEVEMENT_TYPE_NONE
 			|| achievement->type >= ACHIEVEMENT_TYPE_MAX) {
-			ERR_PRINT("Invalid achievement type, ignoring.")
+			LOG_WARN("Invalid achievement type %d, ignoring.", achievement->type);
 			continue;
 		}
 		achievement->title = csv_line.get(2).utf8();
@@ -211,10 +211,8 @@ void ObjectDefMgr::load_achievements()
 			achievement->group_id = group_id;
 		}
 		else {
-			std::stringstream ss;
-			ss << "Achievement " << achievement->title << " has invalid group id " << group_id
-				<< ", resetting to 0." << std::endl;
-			WARN_PRINT(ss.str().c_str());
+			LOG_WARN("Achievement %s has invalid group id %d, resetting to 0",
+				achievement->title.c_str(), group_id);
 		}
 
 		m_achievements.insert(
