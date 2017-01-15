@@ -15,12 +15,6 @@ func _ready():
 	get_node("ProjectInfos/ProjectNameLabel/ProjectVersion").set_text(PROJECT.get_full_version())
 
 	# Launch scene in full screen mode
-	var configFile = ConfigFile.new()
-	var err = configFile.load("user://settings.cfg")
-
-	var fullscreen = configFile.get_value("Graphics", "fullscreen", true)
-
-	OS.set_window_fullscreen(fullscreen)
 	OS.set_window_title(PROJECT.get_project_name())
 	
 	#Button load game

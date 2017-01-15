@@ -20,3 +20,6 @@ func _process(delta):
 			self.set_stream(music1)
 
 		self.play()
+		self.set_volume(get_node("/root/global").configFile.get_value("Sound", "music", 1.0))
+
+
