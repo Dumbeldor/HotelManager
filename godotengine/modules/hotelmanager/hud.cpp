@@ -40,11 +40,11 @@ void Hud::init()
 
 	// Init some HUD elements: note this should be done using a Hud element (see issue #17)
 	m_ground_menu = memnew(LayerTileMenu);
-	m_ground_menu->init(TILE_TYPE_GROUND);
+	m_ground_menu->init("ground");
 	ground_menu->add_child(m_ground_menu);
 
 	m_floor_menu = memnew(LayerTileMenu);
-	m_floor_menu->init(TILE_TYPE_FLOOR);
+	m_floor_menu->init("floor");
 	floor_menu->add_child(m_floor_menu);
 }
 

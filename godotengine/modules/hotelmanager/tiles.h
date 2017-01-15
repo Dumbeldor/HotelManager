@@ -17,6 +17,15 @@
 
 #include <cstdint>
 #include <ustring.h>
+#include <vector>
+
+struct TileGroup
+{
+	uint32_t id = 0;
+	String name = "";
+};
+
+static constexpr uint8_t TILEGROUPS_CSV_COLS = 2;
 
 static constexpr uint16_t GAME_TILE_SIZE = 48;
 
@@ -49,17 +58,23 @@ enum TileFlags
 {
 	TILE_FLAG_NONE = 0x00,
 	TILE_FLAG_UNAVAILABLE_FOR_PLAYERS = 0x01,
-	TILE_FLAG_MAX = 0x02,
+	TILE_FLAG_SOLID = 0x02,
+	TILE_FLAG_OPENABLE = 0x04,
+	TILE_FLAG_MAX = 0x08,
 };
 
 struct GameTileDef
 {
+public:
 	GameMapTile id;
-	TileType type;
+	std::vector<uint32_t> groups = {};
 	String name;
 	String texture_name;
 	String label;
 	int32_t flags;
 	uint32_t cost;
+
+	bool is_in_group(const uint32_t gid) const;
 };
-static const uint8_t GAMETILEDEF_CSV_COLS = 7;
+
+static constexpr uint8_t TILEDEF_CSV_COLS = 7;

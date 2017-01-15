@@ -27,6 +27,7 @@
 #include "gamesession.h"
 #include "mapgen.h"
 #include "savegame.h"
+#include "log.h"
 
 #define GROUNDMAP_NODE String("GroundMap")
 #define FLOORMAP_NODE String("GroundMap/FloorMap")
@@ -216,12 +217,23 @@ void GameMap::_canvas_draw()
 		if (ObjectSelectorButton::get_selected_tile_id() != TILE_NONE) {
 			GameMapTile selected_tile_id = ObjectSelectorButton::get_selected_tile_id();
 			const GameTileDef &tiledef = ObjectDefMgr::get_tiledef(selected_tile_id);
+			const TileGroup &tg_ground = ObjectDefMgr::get_tilegroup("ground"); // @TODO cache this
+			const TileGroup &tg_floor = ObjectDefMgr::get_tilegroup("floor"); // @TODO cache this
+
+			assert(tg_floor.id != 0);
+			assert(tg_ground.id != 0);
 
 			TileMap *selected_tilemap = nullptr;
-			switch (tiledef.type) {
-				case TILE_TYPE_GROUND: selected_tilemap = m_ground_map; break;
-				case TILE_TYPE_FLOOR: selected_tilemap = m_floor_map; break;
-				default: assert(false); // Unhandled, invalid data
+			if (tiledef.is_in_group(tg_ground.id)) {
+				selected_tilemap = m_ground_map;
+			}
+			else if (tiledef.is_in_group(tg_floor.id)) {
+				selected_tilemap = m_floor_map;
+			}
+			else {
+				LOG_CRIT("Selected tile (id %d) is not in any interesting group, ignoring.",
+					tiledef.id);
+				return;
 			}
 
 			Matrix32 cell_xf = selected_tilemap->get_cell_transform();
@@ -439,11 +451,22 @@ void GameMap::place_tiles_in_selected_area()
 		return;
 	}
 
+	const TileGroup &tg_ground = ObjectDefMgr::get_tilegroup("ground"); // @TODO cache this
+	const TileGroup &tg_floor = ObjectDefMgr::get_tilegroup("floor"); // @TODO cache this
+
+	assert(tg_floor.id != 0);
+	assert(tg_ground.id != 0);
+
 	TileMap *interact_tilemap = nullptr;
-	switch (tile_def.type) {
-		case TILE_TYPE_GROUND: interact_tilemap = m_ground_map; break;
-		case TILE_TYPE_FLOOR: interact_tilemap = m_floor_map; break;
-		default: return;
+	if (tile_def.is_in_group(tg_ground.id)) {
+		interact_tilemap = m_ground_map;
+	}
+	else if (tile_def.is_in_group(tg_floor.id)) {
+		interact_tilemap = m_floor_map;
+	}
+	else {
+		LOG_CRIT("Tile %d is not in an interesting group, ignoring.", tile_def.id);
+		return;
 	}
 
 	Vector2 cur_pos = interact_tilemap->world_to_map(get_local_mouse_pos());

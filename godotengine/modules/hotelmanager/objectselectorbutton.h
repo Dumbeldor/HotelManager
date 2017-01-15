@@ -17,7 +17,7 @@
 
 #include <scene/gui/texture_button.h>
 #include <cassert>
-#include "game_tiles.h"
+#include "tiles.h"
 
 class ObjectSelectorButton: public TextureButton
 {

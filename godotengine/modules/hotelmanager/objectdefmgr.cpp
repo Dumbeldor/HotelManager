@@ -22,6 +22,7 @@
 #define ROOMDEF_FILE String("room.csv")
 #define CHARACTER_FILE String("character.csv")
 #define TILES_FILE String("tiles.csv")
+#define TILES_GROUPS_FILE String("tilegroups.csv")
 #define ACHIEVEMENTS_FILE String("achievements.csv")
 #define ACHIEVEMENT_GROUPS_FILE String("achievementgroups.csv")
 
@@ -55,6 +56,7 @@ ObjectDefMgr::ObjectDefMgr()
 
 	load_characterdefs();
 	load_roomdefs();
+	load_tilegroups();
 	load_tiledefs();
 	load_achievement_groups();
 	load_achievements();
@@ -128,12 +130,31 @@ void ObjectDefMgr::load_characterdefs()
 	)
 }
 
+void ObjectDefMgr::load_tilegroups()
+{
+	GAMEDEF_LOADER(TILES_GROUPS_FILE, "tilegroup", m_tilegroups, TILEGROUPS_CSV_COLS,
+		TileGroup *tg = new TileGroup();
+		tg->id = (uint32_t) csv_line.get(0).to_int();
+		tg->name = csv_line.get(1).utf8();
+
+		if (m_tilegroups.find(tg->id) != m_tilegroups.end()) {
+			LOG_WARN("ID %d was already registered, overriding it", tg->id);
+		}
+		m_tilegroups[tg->id] = tg;
+
+		if (m_tilegroups_per_name.find(tg->name) != m_tilegroups_per_name.end()) {
+			LOG_WARN("Name %s was already registered, overriding it", tg->name.ascii().get_data());
+		}
+		m_tilegroups_per_name[tg->name] = tg;
+	)
+}
+
 /**
  * Load game data for tiles
  */
 void ObjectDefMgr::load_tiledefs()
 {
-	GAMEDEF_LOADER(TILES_FILE, "tiledef", m_game_tiledefs, GAMETILEDEF_CSV_COLS,
+	GAMEDEF_LOADER(TILES_FILE, "tiledef", m_game_tiledefs, TILEDEF_CSV_COLS,
 		GameTileDef *tiledef = new GameTileDef();
 		uint16_t tile_id = (uint16_t) csv_line.get(0).to_int();
 
@@ -142,27 +163,30 @@ void ObjectDefMgr::load_tiledefs()
 		}
 
 		if (tile_id >= TILE_MAX) {
-			LOG_WARN("Tile ID %d was invalid, ignoring", tile_id);
-			csv_line = file->get_csv_line();
-			continue;
-		}
-
-		uint16_t tile_type = (uint16_t) csv_line.get(1).to_int();
-		if (tile_type >= TILE_TYPE_MAX) {
-			LOG_WARN("ID %d invalid tile type, ignoring", tile_id);
+			LOG_CRIT("Tile ID %d was invalid, ignoring", tile_id);
+			delete tiledef;
 			csv_line = file->get_csv_line();
 			continue;
 		}
 
 		int tile_flags = csv_line.get(5).to_int();
 		if (tile_flags >= TILE_FLAG_MAX) {
-			LOG_WARN("ID %d invalid tile flags (%d), ignoring", tile_id, tile_flags);
+			LOG_CRIT("ID %d invalid tile flags (%d), ignoring", tile_id, tile_flags);
+			delete tiledef;
 			csv_line = file->get_csv_line();
 			continue;
 		}
 
 		tiledef->id = (GameMapTile) tile_id;
-		tiledef->type = (TileType) tile_type;
+		Vector<String> groups_str = csv_line.get(1).split(";");
+		for (uint32_t i = 0; i < groups_str.size(); i++) {
+			uint32_t group_id = groups_str[i].to_int();
+			if (m_tilegroups.find(group_id) == m_tilegroups.end()) {
+				LOG_WARN("Invalid group id %d for tile %d, ignoring.", group_id, tiledef->id);
+				continue;
+			}
+			tiledef->groups.push_back(group_id);
+		}
 		tiledef->name = csv_line.get(2).utf8();
 		tiledef->texture_name = csv_line.get(3).utf8();
 		tiledef->label = csv_line.get(4).utf8();
@@ -199,6 +223,7 @@ void ObjectDefMgr::load_achievements()
 		if (achievement->type == ACHIEVEMENT_TYPE_NONE
 			|| achievement->type >= ACHIEVEMENT_TYPE_MAX) {
 			LOG_WARN("Invalid achievement type %d, ignoring.", achievement->type);
+			delete achievement;
 			continue;
 		}
 		achievement->title = csv_line.get(2).utf8();
@@ -213,6 +238,7 @@ void ObjectDefMgr::load_achievements()
 		else {
 			LOG_WARN("Achievement %s has invalid group id %d, resetting to 0",
 				achievement->title.c_str(), group_id);
+			achievement->group_id = 0;
 		}
 
 		m_achievements.insert(
@@ -229,6 +255,28 @@ void ObjectDefMgr::load_achievements()
  */
 const GameTileDef &ObjectDefMgr::get_tiledef_priv(GameMapTile t)
 {
-	assert(t < TILE_MAX);
-	return *m_game_tiledefs[t];
+	const auto &td = m_game_tiledefs.find(t);
+	if (td == m_game_tiledefs.end()) {
+		assert(false);
+	}
+	return *td->second;
+}
+
+static const TileGroup null_tilegroup = {};
+const TileGroup& ObjectDefMgr::get_tilegroup_priv(const uint32_t gid)
+{
+	const auto &tg = m_tilegroups.find(gid);
+	if (tg == m_tilegroups.end()) {
+		return null_tilegroup;
+	}
+	return *tg->second;
+}
+
+const TileGroup& ObjectDefMgr::get_tilegroup_priv(const String &g)
+{
+	const auto &tg = m_tilegroups_per_name.find(g);
+	if (tg == m_tilegroups_per_name.end()) {
+		return null_tilegroup;
+	}
+	return *tg->second;
 }
