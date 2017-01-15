@@ -16,10 +16,11 @@
 #pragma once
 #include <iostream>
 #include <unordered_map>
+#include <map>
 #include "core/os/file_access.h"
 #include "achievements.h"
 #include "character.h"
-#include "game_tiles.h"
+#include "tiles.h"
 
 struct RoomDef
 {
@@ -46,6 +47,16 @@ public:
 		return s_singleton->get_tiledef_priv(tile_id);
 	}
 
+	static const TileGroup &get_tilegroup(const uint32_t gid)
+	{
+		return s_singleton->get_tilegroup_priv(gid);
+	}
+
+	static const TileGroup &get_tilegroup(const String &g)
+	{
+		return s_singleton->get_tilegroup_priv(g);
+	}
+
 	static void delete_singleton()
 	{
 		delete s_singleton;
@@ -55,17 +66,22 @@ public:
 private:
 	void load_roomdefs();
 	void load_characterdefs();
+	void load_tilegroups();
 	void load_tiledefs();
 	void load_achievement_groups();
 	void load_achievements();
 
 	const GameTileDef &get_tiledef_priv(GameMapTile t);
+	const TileGroup &get_tilegroup_priv(const uint32_t gid);
+	const TileGroup &get_tilegroup_priv(const String &g);
 	// Singleton
 	static ObjectDefMgr *s_singleton;
 
 	std::unordered_map<uint16_t, RoomDef *> m_roomdefs;
 	std::unordered_map<uint16_t, CharacterDef *> m_characterdefs;
 	std::unordered_map<GameMapTile, GameTileDef *> m_game_tiledefs;
+	std::unordered_map<uint32_t, TileGroup *> m_tilegroups;
+	std::map<String, TileGroup *> m_tilegroups_per_name;
 	AchievementList m_achievements;
 	AchievementGroupList m_achievement_groups;
 };

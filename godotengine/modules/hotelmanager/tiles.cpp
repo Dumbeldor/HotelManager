@@ -13,17 +13,10 @@
  * All rights reserved
  */
 
-#pragma once
-
-#include <scene/gui/tabs.h>
+#include <algorithm>
 #include "tiles.h"
 
-class LayerTileMenu: public Tabs
+bool GameTileDef::is_in_group(const uint32_t gid) const
 {
-	OBJ_TYPE(LayerTileMenu, Tabs);
-public:
-	LayerTileMenu();
-	void init(const String &tile_group);
-protected:
-	static void _bind_methods();
-};
+	return (std::find(groups.begin(), groups.end(), gid) != groups.end());
+}

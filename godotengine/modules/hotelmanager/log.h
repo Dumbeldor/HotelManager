@@ -26,5 +26,5 @@
 { \
     char buf[10240] = {}; \
     sprintf(buf, fmt, __VA_ARGS__); \
-    ERROR_PRINT(buf); \
+    ERR_PRINT(buf); \
 }

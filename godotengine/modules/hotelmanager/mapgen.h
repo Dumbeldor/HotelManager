@@ -16,7 +16,7 @@
 #pragma once
 
 #include <cstdint>
-#include "game_tiles.h"
+#include "tiles.h"
 
 class PerlinNoise
 {
