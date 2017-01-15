@@ -18,6 +18,12 @@ func _input(event):
 				_show_game_menu()
 			elif current_shown_menu == GAMEMENU.MAIN:
 				_hide_game_menu()
+		elif event.is_action("ui_achievement_panel"):
+			var ap = get_node("GameSession/GameMap/Hud/AchievementPopup")
+			if ap.is_visible():
+				ap.hide()
+			else:
+				ap.show()
 
 func _ready():
     # TODO, get save name and call it from there
@@ -135,8 +141,10 @@ func _on_SaveList_item_activated( index ):
 	index_save = index
 	get_node("MainMenuLayer/SaveMenu/OverWriteConfirmDialog").popup()
 
-
 func _on_OverWriteConfirmDialog_confirmed():
 	save_name = get_node("MainMenuLayer/SaveMenu/SaveList").get_item_text(index_save)
 	game_session.save(save_name)
 	_on_BackButton_released()
+
+func _on_APButton_pressed():
+	get_node("GameSession/GameMap/Hud/AchievementPopup").hide()

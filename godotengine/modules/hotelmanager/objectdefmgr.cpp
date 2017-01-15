@@ -198,7 +198,7 @@ void ObjectDefMgr::load_tiledefs()
 }
 
 /**
- *
+ * Load achievement groups
  */
 void ObjectDefMgr::load_achievement_groups()
 {

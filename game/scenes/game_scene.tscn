@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=1]
+[gd_scene load_steps=12 format=1]
 
 [ext_resource path="res://scripts/game_scene.gd" type="Script" id=1]
 [ext_resource path="res://tiles/game-tileset.tres" type="TileSet" id=2]
@@ -7,12 +7,13 @@
 [ext_resource path="res://icons/alternates/icon_menu_tiletype_ground_hover.png" type="Texture" id=5]
 [ext_resource path="res://icons/icon_menu_tiletype_floor.png" type="Texture" id=6]
 [ext_resource path="res://icons/alternates/icon_menu_tiletype_floor_hover.png" type="Texture" id=7]
-[ext_resource path="res://sounds/pop-6.wav" type="Sample" id=8]
-[ext_resource path="res://scripts/ingame_musicplayer.gd" type="Script" id=9]
+[ext_resource path="res://fonts/cabin.fnt" type="BitmapFont" id=8]
+[ext_resource path="res://sounds/pop-6.wav" type="Sample" id=9]
+[ext_resource path="res://scripts/ingame_musicplayer.gd" type="Script" id=10]
 
 [sub_resource type="SampleLibrary" id=1]
 
-samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 8 ) }
+samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 9 ) }
 
 [node name="Root" type="Node2D"]
 
@@ -115,6 +116,7 @@ scale = Vector2( 1, 1 )
 
 [node name="ControlPane" type="Container" parent="GameSession/GameMap/Hud"]
 
+editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -308,6 +310,78 @@ shortcut = null
 textures/normal = ExtResource( 6 )
 textures/hover = ExtResource( 7 )
 
+[node name="AchievementPopup" type="PopupPanel" parent="GameSession/GameMap/Hud"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 390.0
+margin/top = 219.0
+margin/right = 809.0
+margin/bottom = 881.0
+popup/exclusive = false
+
+[node name="APLabel" type="Label" parent="GameSession/GameMap/Hud/AchievementPopup"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 163.0
+margin/top = 7.0
+margin/right = 276.0
+margin/bottom = 35.0
+custom_fonts/font = ExtResource( 8 )
+text = "Achievements"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="APButton" type="Button" parent="GameSession/GameMap/Hud/AchievementPopup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 356.0
+margin/top = 631.0
+margin/right = 409.0
+margin/bottom = 651.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="GameSession/GameMap/Hud/AchievementPopup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 15.0
+margin/top = 37.0
+margin/right = 399.0
+margin/bottom = 614.0
+scroll/horizontal = true
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameSession/GameMap/Hud/AchievementPopup/ScrollContainer"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
 [node name="MapSoundPlayer" type="SamplePlayer" parent="GameSession"]
 
 config/polyphony = 1
@@ -328,6 +402,7 @@ default/chorus_send = 0.0
 [node name="MainMenuLayer" type="CanvasLayer" parent="."]
 
 process/pause_mode = 2
+editor/display_folded = true
 layer = 100
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -698,7 +773,7 @@ stream/autoplay = false
 stream/paused = false
 stream/loop_restart_time = 0.0
 stream/buffering_ms = 500
-script/script = ExtResource( 9 )
+script/script = ExtResource( 10 )
 
 [connection signal="input_event" from="GameSession/GameMap" to="GameSession/GameMap" method="_on_input_event"]
 
@@ -711,6 +786,10 @@ script/script = ExtResource( 9 )
 [connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane_Bottom/GroundMenu" to="GameSession/GameMap/Hud" method="_on_groundmenu_pressed"]
 
 [connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane_Bottom/FloorMenu" to="GameSession/GameMap/Hud" method="_on_floormenu_pressed"]
+
+[connection signal="pressed" from="GameSession/GameMap/Hud/AchievementPopup/APButton" to="." method="_on_APButton_pressed"]
+
+[connection signal="released" from="GameSession/GameMap/Hud/AchievementPopup/APButton" to="." method="_on_APButton_released"]
 
 [connection signal="released" from="MainMenuLayer/GameMainMenu/ResumeButton" to="." method="_hide_game_menu"]
 
