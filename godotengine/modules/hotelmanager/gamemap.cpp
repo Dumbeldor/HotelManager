@@ -217,8 +217,8 @@ void GameMap::_canvas_draw()
 		if (ObjectSelectorButton::get_selected_tile_id() != TILE_NONE) {
 			GameMapTile selected_tile_id = ObjectSelectorButton::get_selected_tile_id();
 			const GameTileDef &tiledef = ObjectDefMgr::get_tiledef(selected_tile_id);
-			const TileGroup &tg_ground = ObjectDefMgr::get_tilegroup("ground"); // @TODO cache this
-			const TileGroup &tg_floor = ObjectDefMgr::get_tilegroup("floor"); // @TODO cache this
+			const TileGroup &tg_ground = ObjectDefMgr::get_tilegroup("ground");
+			const TileGroup &tg_floor = ObjectDefMgr::get_tilegroup("floor");
 
 			assert(tg_floor.id != 0);
 			assert(tg_ground.id != 0);
