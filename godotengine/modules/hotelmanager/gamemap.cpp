@@ -20,6 +20,7 @@
 #include <io/base64.h>
 #include <os/input.h>
 #include <scene/audio/sample_player.h>
+#include <os/os.h>
 #include "gamemap.h"
 #include "mapcontrol.h"
 #include "objectselectorbutton.h"
@@ -180,25 +181,33 @@ void GameMap::generate_map()
  */
 void GameMap::on_process(float delta)
 {
+	// Handle camera movements
 	{
+		const Vector2 &mouse_pos = OS::get_singleton()->get_mouse_pos();
+		const Vector2 &screen_size = OS::get_singleton()->get_window_size();
+
 		bool should_move_camera = false;
 		Vector2 camera_movement(0, 0);
-		if (Input::get_singleton()->is_action_pressed("ui_up")) {
+		if (mouse_pos.y < screen_size.height * 0.05f ||
+			Input::get_singleton()->is_action_pressed("ui_up")) {
 			should_move_camera = true;
 			camera_movement.y -= 10;
 		}
 
-		if (Input::get_singleton()->is_action_pressed("ui_down")) {
+		if (mouse_pos.y > screen_size.height * 0.95f ||
+			Input::get_singleton()->is_action_pressed("ui_down")) {
 			should_move_camera = true;
 			camera_movement.y += 10;
 		}
 
-		if (Input::get_singleton()->is_action_pressed("ui_left")) {
+		if (mouse_pos.x < screen_size.width * 0.05f ||
+			Input::get_singleton()->is_action_pressed("ui_left")) {
 			should_move_camera = true;
 			camera_movement.x -= 10;
 		}
 
-		if (Input::get_singleton()->is_action_pressed("ui_right")) {
+		if (mouse_pos.x > screen_size.width * 0.95f ||
+			Input::get_singleton()->is_action_pressed("ui_right")) {
 			should_move_camera = true;
 			camera_movement.x += 10;
 		}
