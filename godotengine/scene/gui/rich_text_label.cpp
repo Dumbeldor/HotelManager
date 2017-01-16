@@ -1239,6 +1239,13 @@ void RichTextLabel::add_newline() {
 
 }
 
+void RichTextLabel::remove_line(const int line)
+{
+	if (line >= current_frame->lines.size())
+		return;
+	current_frame->lines.remove(line);
+}
+
 void RichTextLabel::push_font(const Ref<Font>& p_font) {
 
 	ERR_FAIL_COND(current->type==ITEM_TABLE);
@@ -1907,6 +1914,7 @@ void RichTextLabel::_bind_methods() {
 	ObjectTypeDB::bind_method(_MD("add_text","text"),&RichTextLabel::add_text);
 	ObjectTypeDB::bind_method(_MD("add_image","image:Texture"),&RichTextLabel::add_image);
 	ObjectTypeDB::bind_method(_MD("newline"),&RichTextLabel::add_newline);
+	ObjectTypeDB::bind_method(_MD("remove_line"),&RichTextLabel::remove_line);
 	ObjectTypeDB::bind_method(_MD("push_font","font"),&RichTextLabel::push_font);
 	ObjectTypeDB::bind_method(_MD("push_color","color"),&RichTextLabel::push_color);
 	ObjectTypeDB::bind_method(_MD("push_align","align"),&RichTextLabel::push_align);

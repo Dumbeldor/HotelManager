@@ -44,6 +44,7 @@ public:
 	int64_t get_money() const { return m_money; };
 	void set_money(int64_t money);
 	void remove_money(int64_t money);
+	void add_money(int64_t money);
 
 
 	uint8_t get_game_speed() const { return m_game_speed; };
@@ -59,9 +60,6 @@ protected:
 	void _process(float delta);
 	void save(const String &name);
 	void load(const String &name);
-
-	// m_money
-	void add_money(int64_t money);
 
 	void set_game_speed__api(const int speed) { m_game_speed = (uint8_t) speed; }
 

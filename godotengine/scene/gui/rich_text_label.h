@@ -284,6 +284,7 @@ public:
 	void add_text(const String& p_text);
 	void add_image(const Ref<Texture>& p_image);
 	void add_newline();
+	void remove_line(const int line);
 	void push_font(const Ref<Font>& p_font);
 	void push_color(const Color& p_color);
 	void push_underline();
