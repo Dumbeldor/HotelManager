@@ -1,6 +1,6 @@
 extends Sprite
 
-var configFile = ConfigFile.new()
+var configFile
 
 const OPTIONMENU = {
 	MAIN = 0,
@@ -21,10 +21,9 @@ var PROJECT = HotelManagerProject.new()
 var current_menu = OPTIONMENU.MAIN
 
 func _ready():
+	configFile = get_node("/root/global").configFile
 	get_node("ProjectInfos/ProjectNameLabel").set_text(PROJECT.get_project_name())
 	get_node("ProjectInfos/ProjectNameLabel/ProjectVersion").set_text(PROJECT.get_full_version())
-
-	var err = configFile.load("user://settings.cfg")
 
 	option_config.fullscreen = configFile.get_value("Graphics", "fullscreen", true)
 	option_config.master_sound = configFile.get_value("Sound", "master_sound", 100)
@@ -100,6 +99,7 @@ func _on_MasterSoundSlider_value_changed( value ):
 	configFile.set_value("Sound", "master_sound", option_config.master_sound)
 
 func _on_MusicSlider_value_changed( value ):
+	get_node("/root/MusicPlayer").set_volume(value)
 	option_config.music = value
 	configFile.set_value("Sound", "music", option_config.music)
 
