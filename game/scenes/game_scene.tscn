@@ -115,7 +115,6 @@ scale = Vector2( 1, 1 )
 
 [node name="ControlPane" type="Container" parent="GameSession/GameMap/Hud"]
 
-editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -311,6 +310,7 @@ textures/hover = ExtResource( 7 )
 
 [node name="AchievementPopup" type="PopupPanel" parent="GameSession/GameMap/Hud"]
 
+visibility/visible = false
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
