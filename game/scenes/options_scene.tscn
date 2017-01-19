@@ -35,7 +35,7 @@ margin/top = 3.0
 margin/right = 200.0
 margin/bottom = -4.0
 
-[node name="BackButton" type="Button" parent="OptionsMenu/Panel"]
+[node name="BackButton" type="HMButton" parent="OptionsMenu/Panel"]
 
 anchor/top = 1
 rect/scale = Vector2( 3, 3 )
@@ -69,7 +69,7 @@ margin/top = 0.0999075
 margin/right = 0.799861
 margin/bottom = 0.79926
 
-[node name="SoundButton" type="Button" parent="OptionsMenu/Panel/Container"]
+[node name="SoundButton" type="HMButton" parent="OptionsMenu/Panel/Container"]
 
 anchor/left = 2
 anchor/top = 2
@@ -91,7 +91,7 @@ shortcut = null
 text = "Sound"
 flat = false
 
-[node name="InputButton" type="Button" parent="OptionsMenu/Panel/Container"]
+[node name="InputButton" type="HMButton" parent="OptionsMenu/Panel/Container"]
 
 anchor/left = 2
 anchor/top = 2
@@ -113,7 +113,7 @@ shortcut = null
 text = "Input"
 flat = false
 
-[node name="GraphicsButton" type="Button" parent="OptionsMenu/Panel/Container"]
+[node name="GraphicsButton" type="HMButton" parent="OptionsMenu/Panel/Container"]
 
 anchor/left = 2
 anchor/top = 2
@@ -161,7 +161,7 @@ margin/top = 3.0
 margin/right = 200.0
 margin/bottom = -4.0
 
-[node name="BackGraphicsButton" type="Button" parent="GraphicsMenu/Panel"]
+[node name="BackGraphicsButton" type="HMButton" parent="GraphicsMenu/Panel"]
 
 anchor/top = 1
 rect/scale = Vector2( 3, 3 )
@@ -271,7 +271,7 @@ margin/top = 3.0
 margin/right = 200.0
 margin/bottom = -4.0
 
-[node name="BackSoundButton" type="Button" parent="SoundMenu/Panel"]
+[node name="BackSoundButton" type="HMButton" parent="SoundMenu/Panel"]
 
 anchor/top = 1
 rect/scale = Vector2( 3, 3 )
@@ -463,7 +463,7 @@ margin/top = 3.0
 margin/right = 200.0
 margin/bottom = -4.0
 
-[node name="BackInputButton" type="Button" parent="InputMenu/Panel"]
+[node name="BackInputButton" type="HMButton" parent="InputMenu/Panel"]
 
 anchor/top = 1
 rect/scale = Vector2( 3, 3 )

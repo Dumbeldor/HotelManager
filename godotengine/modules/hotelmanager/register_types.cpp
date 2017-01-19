@@ -16,6 +16,7 @@
 #include "register_types.h"
 #include "object_type_db.h"
 #include "hotelmanagerproject.h"
+#include "base_overrided_components.h"
 #include "gamesession.h"
 #include "character.h"
 #include "character/characterceo.h"
@@ -38,6 +39,7 @@ void register_hotelmanager_types()
 	ObjectTypeDB::register_type<ObjectSelectorButton>();
 	ObjectTypeDB::register_type<Hud>();
 	ObjectTypeDB::register_type<MapControl>();
+	ObjectTypeDB::register_type<HMButton>();
 }
 
 void unregister_hotelmanager_types()

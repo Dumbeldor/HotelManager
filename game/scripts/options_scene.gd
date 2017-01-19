@@ -35,12 +35,16 @@ func _input(event):
 	if event.type == InputEvent.KEY and event.pressed:
 		if (event.is_action("ui_cancel")):
 			if (current_menu == OPTIONMENU.MAIN):
+				get_node("/root/MusicPlayer").button_click()
 				goToMainMenu()
 			elif (current_menu == OPTIONMENU.GRAPHICS):
+				get_node("/root/MusicPlayer").button_click()
 				_on_BackGraphicsButton_released()
 			elif (current_menu == OPTIONMENU.SOUND):
+				get_node("/root/MusicPlayer").button_click()
 				_on_BackSoundButton_released()
 			elif (current_menu == OPTIONMENU.INPUT):
+				get_node("/root/MusicPlayer").button_click()
 				_on_BackInputButton_released()
 
 func goToMainMenu():

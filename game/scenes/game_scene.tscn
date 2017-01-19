@@ -1,18 +1,19 @@
-[gd_scene load_steps=11 format=1]
+[gd_scene load_steps=12 format=1]
 
 [ext_resource path="res://scripts/game_scene.gd" type="Script" id=1]
 [ext_resource path="res://tiles/game-tileset.tres" type="TileSet" id=2]
 [ext_resource path="res://icons/icon_save.png" type="Texture" id=3]
-[ext_resource path="res://icons/icon_menu_tiletype_ground.png" type="Texture" id=4]
-[ext_resource path="res://icons/alternates/icon_menu_tiletype_ground_hover.png" type="Texture" id=5]
-[ext_resource path="res://icons/icon_menu_tiletype_floor.png" type="Texture" id=6]
-[ext_resource path="res://icons/alternates/icon_menu_tiletype_floor_hover.png" type="Texture" id=7]
-[ext_resource path="res://fonts/cabin.fnt" type="BitmapFont" id=8]
-[ext_resource path="res://sounds/pop-6.wav" type="Sample" id=9]
+[ext_resource path="res://images/clock.png" type="Texture" id=4]
+[ext_resource path="res://icons/icon_menu_tiletype_ground.png" type="Texture" id=5]
+[ext_resource path="res://icons/alternates/icon_menu_tiletype_ground_hover.png" type="Texture" id=6]
+[ext_resource path="res://icons/icon_menu_tiletype_floor.png" type="Texture" id=7]
+[ext_resource path="res://icons/alternates/icon_menu_tiletype_floor_hover.png" type="Texture" id=8]
+[ext_resource path="res://fonts/cabin.fnt" type="BitmapFont" id=9]
+[ext_resource path="res://sounds/pop-6.wav" type="Sample" id=10]
 
 [sub_resource type="SampleLibrary" id=1]
 
-samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 9 ) }
+samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 10 ) }
 
 [node name="Root" type="Node2D"]
 
@@ -31,6 +32,10 @@ margin/top = 0.0
 margin/right = 1920.0
 margin/bottom = 1080.0
 alignment = 0
+
+[node name="CanvasModulateDayNight" type="CanvasModulate" parent="GameSession/GameMap"]
+
+color = Color( 1, 1, 1, 1 )
 
 [node name="GroundMap" type="TileMap" parent="GameSession/GameMap"]
 
@@ -108,6 +113,7 @@ tile_data = IntArray(  )
 
 [node name="Hud" type="Hud" parent="GameSession/GameMap"]
 
+editor/display_folded = true
 layer = 20
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -126,6 +132,7 @@ margin/bottom = 1080.0
 
 [node name="MapControl" type="MapControl" parent="GameSession/GameMap/Hud/ControlPane"]
 
+editor/display_folded = true
 anchor/right = 1
 anchor/bottom = 1
 rect/min_size = Vector2( 1920, 1080 )
@@ -188,6 +195,7 @@ texture = ExtResource( 3 )
 
 [node name="DayLabel" type="Label" parent="GameSession/GameMap/Hud/ControlPane"]
 
+editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -256,14 +264,20 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 1850.0
-margin/top = 20.0
-margin/right = -6.0
-margin/bottom = 34.0
+margin/left = 1753.0
+margin/top = 217.0
+margin/right = 91.0
+margin/bottom = 231.0
 text = "[ClockLabel]"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+
+[node name="ClockBackground" type="Sprite" parent="GameSession/GameMap/Hud/ControlPane"]
+
+transform/pos = Vector2( 1794.17, 128.489 )
+transform/scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 4 )
 
 [node name="ControlPane_Bottom" type="Container" parent="GameSession/GameMap/Hud"]
 
@@ -289,8 +303,8 @@ margin/bottom = 48.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 4 )
-textures/hover = ExtResource( 5 )
+textures/normal = ExtResource( 5 )
+textures/hover = ExtResource( 6 )
 
 [node name="FloorMenu" type="TextureButton" parent="GameSession/GameMap/Hud/ControlPane_Bottom"]
 
@@ -305,8 +319,8 @@ margin/bottom = 48.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 6 )
-textures/hover = ExtResource( 7 )
+textures/normal = ExtResource( 7 )
+textures/hover = ExtResource( 8 )
 
 [node name="AchievementPopup" type="PopupPanel" parent="GameSession/GameMap/Hud"]
 
@@ -331,7 +345,7 @@ margin/left = 163.0
 margin/top = 7.0
 margin/right = 276.0
 margin/bottom = 35.0
-custom_fonts/font = ExtResource( 8 )
+custom_fonts/font = ExtResource( 9 )
 text = "Achievements"
 percent_visible = 1.0
 lines_skipped = 0
@@ -347,7 +361,7 @@ margin/left = 356.0
 margin/top = 631.0
 margin/right = 409.0
 margin/bottom = 651.0
-custom_fonts/font = ExtResource( 8 )
+custom_fonts/font = ExtResource( 9 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -399,7 +413,6 @@ default/chorus_send = 0.0
 [node name="MainMenuLayer" type="CanvasLayer" parent="."]
 
 process/pause_mode = 2
-editor/display_folded = true
 layer = 100
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -423,7 +436,7 @@ margin/top = 352.0
 margin/right = -288.0
 margin/bottom = -288.0
 
-[node name="ResumeButton" type="Button" parent="MainMenuLayer/GameMainMenu"]
+[node name="ResumeButton" type="HMButton" parent="MainMenuLayer/GameMainMenu"]
 
 rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = false
@@ -441,7 +454,7 @@ shortcut = null
 text = "Resume"
 flat = false
 
-[node name="OptionsButton" type="Button" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
+[node name="OptionsButton" type="HMButton" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
 
 anchor/left = 3
 anchor/right = 3
@@ -460,7 +473,7 @@ shortcut = null
 text = "Options"
 flat = false
 
-[node name="LeaveGameButton" type="Button" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
+[node name="LeaveGameButton" type="HMButton" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
 
 anchor/left = 3
 anchor/right = 3
@@ -479,7 +492,7 @@ shortcut = null
 text = "Leave game"
 flat = false
 
-[node name="SaveButton" type="Button" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
+[node name="SaveButton" type="HMButton" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -496,7 +509,7 @@ shortcut = null
 text = "Save"
 flat = false
 
-[node name="SaveLeaveButton" type="Button" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
+[node name="SaveLeaveButton" type="HMButton" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -685,7 +698,7 @@ margin/top = 50.0
 margin/right = 1100.0
 margin/bottom = 310.0
 
-[node name="BackButton" type="Button" parent="MainMenuLayer/SaveMenu"]
+[node name="BackButton" type="HMButton" parent="MainMenuLayer/SaveMenu"]
 
 anchor/top = 1
 rect/scale = Vector2( 3, 3 )
@@ -704,7 +717,7 @@ shortcut = null
 text = "Back"
 flat = false
 
-[node name="OverWriteButton" type="Button" parent="MainMenuLayer/SaveMenu/BackButton"]
+[node name="OverWriteButton" type="HMButton" parent="MainMenuLayer/SaveMenu/BackButton"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true

@@ -254,6 +254,21 @@ void fill_default_theme(Ref<Theme>& t,const Ref<Font> & default_font,const Ref<F
 
 	t->set_constant("hseparation","Button", 2 *scale);
 
+	t->set_stylebox("normal","HMButton", sb_button_normal);
+	t->set_stylebox("pressed","HMButton", sb_button_pressed);
+	t->set_stylebox("hover","HMButton", sb_button_hover);
+	t->set_stylebox("disabled","HMButton", sb_button_disabled);
+	t->set_stylebox("focus","HMButton", sb_button_focus);
+
+	t->set_font("font","HMButton", default_font );
+
+	t->set_color("font_color","HMButton", control_font_color );
+	t->set_color("font_color_pressed","HMButton", control_font_color_pressed );
+	t->set_color("font_color_hover","HMButton", control_font_color_hover );
+	t->set_color("font_color_disabled","HMButton", control_font_color_disabled );
+
+	t->set_constant("hseparation","HMButton", 2 *scale);
+
 	// LinkButton
 
 	t->set_font("font","LinkButton", default_font );

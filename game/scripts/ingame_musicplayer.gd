@@ -5,7 +5,7 @@ var music2
 var music3
 
 func _ready():
-	set_process(true)
+	set_process(false)
 	music1 = load("sounds/Gymnopedie No 1.ogg")
 	music2 = load("sounds/Gymnopedie No 2.ogg")
 	music3 = load("sounds/Gymnopedie No 3.ogg")
@@ -22,4 +22,5 @@ func _process(delta):
 		self.play()
 		self.set_volume(get_node("/root/global").configFile.get_value("Sound", "music", 1.0))
 
-
+func button_click():
+	get_node("UserEventSoundPlayer").play("switch36")
