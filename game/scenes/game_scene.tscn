@@ -399,7 +399,6 @@ default/chorus_send = 0.0
 [node name="MainMenuLayer" type="CanvasLayer" parent="."]
 
 process/pause_mode = 2
-editor/display_folded = true
 layer = 100
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -423,7 +422,7 @@ margin/top = 352.0
 margin/right = -288.0
 margin/bottom = -288.0
 
-[node name="ResumeButton" type="Button" parent="MainMenuLayer/GameMainMenu"]
+[node name="ResumeButton" type="HMButton" parent="MainMenuLayer/GameMainMenu"]
 
 rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = false
@@ -441,7 +440,7 @@ shortcut = null
 text = "Resume"
 flat = false
 
-[node name="OptionsButton" type="Button" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
+[node name="OptionsButton" type="HMButton" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
 
 anchor/left = 3
 anchor/right = 3
@@ -460,7 +459,7 @@ shortcut = null
 text = "Options"
 flat = false
 
-[node name="LeaveGameButton" type="Button" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
+[node name="LeaveGameButton" type="HMButton" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
 
 anchor/left = 3
 anchor/right = 3
@@ -479,7 +478,7 @@ shortcut = null
 text = "Leave game"
 flat = false
 
-[node name="SaveButton" type="Button" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
+[node name="SaveButton" type="HMButton" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -496,7 +495,7 @@ shortcut = null
 text = "Save"
 flat = false
 
-[node name="SaveLeaveButton" type="Button" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
+[node name="SaveLeaveButton" type="HMButton" parent="MainMenuLayer/GameMainMenu/ResumeButton"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -685,7 +684,7 @@ margin/top = 50.0
 margin/right = 1100.0
 margin/bottom = 310.0
 
-[node name="BackButton" type="Button" parent="MainMenuLayer/SaveMenu"]
+[node name="BackButton" type="HMButton" parent="MainMenuLayer/SaveMenu"]
 
 anchor/top = 1
 rect/scale = Vector2( 3, 3 )
@@ -704,7 +703,7 @@ shortcut = null
 text = "Back"
 flat = false
 
-[node name="OverWriteButton" type="Button" parent="MainMenuLayer/SaveMenu/BackButton"]
+[node name="OverWriteButton" type="HMButton" parent="MainMenuLayer/SaveMenu/BackButton"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true

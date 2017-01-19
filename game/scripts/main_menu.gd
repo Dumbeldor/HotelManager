@@ -133,3 +133,4 @@ func _on_LoadGameButton_released():
 		return
 	get_node("/root/global").set_save(save_name)
 	start_game()
+

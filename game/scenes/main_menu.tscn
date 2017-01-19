@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://images/menu_background.jpg" type="Texture" id=1]
 [ext_resource path="res://scripts/main_menu.gd" type="Script" id=2]
-[ext_resource path="res://fonts/cabin.fnt" type="BitmapFont" id=3]
+[ext_resource path="res://themes/hotelmanager.tres" type="Theme" id=3]
+[ext_resource path="res://fonts/cabin.fnt" type="BitmapFont" id=4]
+
+[sub_resource type="Theme" id=1]
+
 
 [node name="Root" type="Sprite"]
 
@@ -22,7 +26,7 @@ margin/top = -500.0
 margin/right = -200.0
 margin/bottom = 500.0
 
-[node name="MainNewGameButton" type="Button" parent="MainMenu"]
+[node name="MainNewGameButton" type="HMButton" parent="MainMenu"]
 
 rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = false
@@ -30,11 +34,11 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 size_flags/stretch_ratio = 0.0
+theme/theme = ExtResource( 3 )
 margin/left = 0.0
 margin/top = 50.0
 margin/right = 100.0
-margin/bottom = 70.0
-custom_fonts/font = ExtResource( 3 )
+margin/bottom = 72.0
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -43,7 +47,7 @@ text = "New Game"
 flat = false
 align = 0
 
-[node name="OptionsButton" type="Button" parent="MainMenu/MainNewGameButton"]
+[node name="OptionsButton" type="HMButton" parent="MainMenu/MainNewGameButton"]
 
 anchor/right = 1
 focus/ignore_mouse = false
@@ -53,8 +57,8 @@ size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 233.0
 margin/right = 0.0
-margin/bottom = 253.0
-custom_fonts/font = ExtResource( 3 )
+margin/bottom = 255.0
+custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -63,7 +67,7 @@ text = "Options"
 flat = false
 align = 0
 
-[node name="MainLoadGameButton" type="Button" parent="MainMenu/MainNewGameButton"]
+[node name="MainLoadGameButton" type="HMButton" parent="MainMenu/MainNewGameButton"]
 
 visibility/visible = false
 anchor/right = 1
@@ -71,20 +75,19 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
+theme/theme = SubResource( 1 )
 margin/left = 0.0
 margin/top = 50.0
 margin/right = 0.0
 margin/bottom = 70.0
-custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
 shortcut = null
 text = "Load Game"
 flat = false
-align = 0
 
-[node name="QuitButton" type="Button" parent="MainMenu/MainNewGameButton"]
+[node name="QuitButton" type="HMButton" parent="MainMenu/MainNewGameButton"]
 
 anchor/right = 1
 focus/ignore_mouse = false
@@ -95,7 +98,7 @@ margin/left = 1.0
 margin/top = 284.0
 margin/right = -1.0
 margin/bottom = 304.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -127,7 +130,7 @@ margin/left = -679.0
 margin/top = -540.0
 margin/right = 823.0
 margin/bottom = 594.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 text = "[PROJECT_NAME]"
 percent_visible = 1.0
 lines_skipped = 0
@@ -143,7 +146,7 @@ margin/left = 120.0
 margin/top = 0.0
 margin/right = 0.0
 margin/bottom = 0.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 text = "[REVISION]"
 percent_visible = 1.0
 lines_skipped = 0
@@ -175,7 +178,7 @@ margin/top = 0.0
 margin/right = 200.0
 margin/bottom = 0.0
 
-[node name="NewGameButton" type="Button" parent="PlayMenu/PlayPanel"]
+[node name="NewGameButton" type="HMButton" parent="PlayMenu/PlayPanel"]
 
 anchor/top = 1
 rect/scale = Vector2( 3, 3 )
@@ -187,7 +190,7 @@ margin/left = 100.0
 margin/top = 100.0
 margin/right = 179.0
 margin/bottom = 1004.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -195,7 +198,7 @@ shortcut = null
 text = "New game"
 flat = false
 
-[node name="PlayBackButton" type="Button" parent="PlayMenu/PlayPanel/NewGameButton"]
+[node name="PlayBackButton" type="HMButton" parent="PlayMenu/PlayPanel/NewGameButton"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -205,7 +208,7 @@ margin/left = 372.0
 margin/top = 0.0
 margin/right = 414.0
 margin/bottom = 20.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -239,7 +242,7 @@ margin/top = 50.0
 margin/right = 50.0
 margin/bottom = 450.0
 
-[node name="LoadGameButton" type="Button" parent="PlayMenu/PlayPanel/SaveDetailsPanel"]
+[node name="LoadGameButton" type="HMButton" parent="PlayMenu/PlayPanel/SaveDetailsPanel"]
 
 rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = false
@@ -250,7 +253,7 @@ margin/left = 220.0
 margin/top = 650.0
 margin/right = 301.0
 margin/bottom = 670.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 disabled = true
 toggle_mode = false
 click_on_press = true
@@ -259,7 +262,7 @@ shortcut = null
 text = "Load game"
 flat = false
 
-[node name="RemoveGameButton" type="Button" parent="PlayMenu/PlayPanel/SaveDetailsPanel/LoadGameButton"]
+[node name="RemoveGameButton" type="HMButton" parent="PlayMenu/PlayPanel/SaveDetailsPanel/LoadGameButton"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -269,7 +272,7 @@ margin/left = 100.0
 margin/top = 0.0
 margin/right = 164.0
 margin/bottom = 20.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 disabled = true
 toggle_mode = false
 click_on_press = true
@@ -290,7 +293,7 @@ margin/left = 20.0
 margin/top = 20.0
 margin/right = 71.0
 margin/bottom = 34.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 text = "Money :"
 percent_visible = 1.0
 lines_skipped = 0
@@ -306,7 +309,7 @@ margin/left = 60.0
 margin/top = 0.0
 margin/right = 100.0
 margin/bottom = 14.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -321,7 +324,7 @@ margin/left = 0.0
 margin/top = 20.0
 margin/right = 40.0
 margin/bottom = 34.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 text = "Date :"
 percent_visible = 1.0
 lines_skipped = 0
@@ -337,7 +340,7 @@ margin/left = 60.0
 margin/top = 0.0
 margin/right = 100.0
 margin/bottom = 14.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -401,7 +404,7 @@ margin/left = 115.0
 margin/top = 5.0
 margin/right = 722.0
 margin/bottom = 14.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 text = "Create New World"
 percent_visible = 1.0
 lines_skipped = 0
