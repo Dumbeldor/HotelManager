@@ -18,6 +18,7 @@
 #include <scene/main/canvas_layer.h>
 
 class LayerTileMenu;
+class Clock;
 
 class Hud: public CanvasLayer
 {
@@ -40,4 +41,5 @@ protected:
 private:
 	LayerTileMenu *m_ground_menu = nullptr;
 	LayerTileMenu *m_floor_menu = nullptr;
+	Clock *m_clock = nullptr;
 };
