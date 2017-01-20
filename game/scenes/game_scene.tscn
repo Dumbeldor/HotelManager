@@ -1,19 +1,21 @@
-[gd_scene load_steps=12 format=1]
+[gd_scene load_steps=14 format=1]
 
 [ext_resource path="res://scripts/game_scene.gd" type="Script" id=1]
 [ext_resource path="res://tiles/game-tileset.tres" type="TileSet" id=2]
 [ext_resource path="res://icons/icon_save.png" type="Texture" id=3]
 [ext_resource path="res://images/clock.png" type="Texture" id=4]
-[ext_resource path="res://icons/icon_menu_tiletype_ground.png" type="Texture" id=5]
-[ext_resource path="res://icons/alternates/icon_menu_tiletype_ground_hover.png" type="Texture" id=6]
-[ext_resource path="res://icons/icon_menu_tiletype_floor.png" type="Texture" id=7]
-[ext_resource path="res://icons/alternates/icon_menu_tiletype_floor_hover.png" type="Texture" id=8]
-[ext_resource path="res://fonts/cabin.fnt" type="BitmapFont" id=9]
-[ext_resource path="res://sounds/pop-6.wav" type="Sample" id=10]
+[ext_resource path="res://images/clock_min.png" type="Texture" id=5]
+[ext_resource path="res://images/clock_hour.png" type="Texture" id=6]
+[ext_resource path="res://icons/icon_menu_tiletype_ground.png" type="Texture" id=7]
+[ext_resource path="res://icons/alternates/icon_menu_tiletype_ground_hover.png" type="Texture" id=8]
+[ext_resource path="res://icons/icon_menu_tiletype_floor.png" type="Texture" id=9]
+[ext_resource path="res://icons/alternates/icon_menu_tiletype_floor_hover.png" type="Texture" id=10]
+[ext_resource path="res://fonts/cabin.fnt" type="BitmapFont" id=11]
+[ext_resource path="res://sounds/pop-6.wav" type="Sample" id=12]
 
 [sub_resource type="SampleLibrary" id=1]
 
-samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 10 ) }
+samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 12 ) }
 
 [node name="Root" type="Node2D"]
 
@@ -113,7 +115,6 @@ tile_data = IntArray(  )
 
 [node name="Hud" type="Hud" parent="GameSession/GameMap"]
 
-editor/display_folded = true
 layer = 20
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -273,11 +274,19 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="ClockBackground" type="Sprite" parent="GameSession/GameMap/Hud/ControlPane"]
+[node name="Clock" type="Clock" parent="GameSession/GameMap/Hud/ControlPane"]
 
 transform/pos = Vector2( 1794.17, 128.489 )
 transform/scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 4 )
+
+[node name="ClockHour" type="Sprite" parent="GameSession/GameMap/Hud/ControlPane/Clock"]
+
+texture = ExtResource( 5 )
+
+[node name="ClockMin" type="Sprite" parent="GameSession/GameMap/Hud/ControlPane/Clock"]
+
+texture = ExtResource( 6 )
 
 [node name="ControlPane_Bottom" type="Container" parent="GameSession/GameMap/Hud"]
 
@@ -303,8 +312,8 @@ margin/bottom = 48.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 5 )
-textures/hover = ExtResource( 6 )
+textures/normal = ExtResource( 7 )
+textures/hover = ExtResource( 8 )
 
 [node name="FloorMenu" type="TextureButton" parent="GameSession/GameMap/Hud/ControlPane_Bottom"]
 
@@ -319,8 +328,8 @@ margin/bottom = 48.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 7 )
-textures/hover = ExtResource( 8 )
+textures/normal = ExtResource( 9 )
+textures/hover = ExtResource( 10 )
 
 [node name="AchievementPopup" type="PopupPanel" parent="GameSession/GameMap/Hud"]
 
@@ -345,7 +354,7 @@ margin/left = 163.0
 margin/top = 7.0
 margin/right = 276.0
 margin/bottom = 35.0
-custom_fonts/font = ExtResource( 9 )
+custom_fonts/font = ExtResource( 11 )
 text = "Achievements"
 percent_visible = 1.0
 lines_skipped = 0
@@ -361,7 +370,7 @@ margin/left = 356.0
 margin/top = 631.0
 margin/right = 409.0
 margin/bottom = 651.0
-custom_fonts/font = ExtResource( 9 )
+custom_fonts/font = ExtResource( 11 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null

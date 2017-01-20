@@ -21,7 +21,8 @@
 #include <scene/gui/container.h>
 #include <scene/gui/texture_button.h>
 #include "hud.h"
-#include "gui_tabs.h"
+#include "modules/hotelmanager/gui_tabs.h"
+#include "clock.h"
 
 Hud::Hud(): CanvasLayer()
 {
@@ -46,6 +47,9 @@ void Hud::init()
 	m_floor_menu = memnew(LayerTileMenu);
 	m_floor_menu->init("floor");
 	floor_menu->add_child(m_floor_menu);
+
+	m_clock = get_node(String("ControlPane/Clock"))->cast_to<Clock>();
+	assert(m_clock);
 }
 
 /**
@@ -139,15 +143,11 @@ void Hud::set_day_label(const uint32_t day)
  */
 void Hud::set_hour_clock_label(const double &time)
 {
-	uint64_t newtime = (uint64_t) std::floor(time);
+	assert(m_clock);
+	m_clock->set(time);
 
 	Label *clock_label = get_node(String("ControlPane/ClockLabel"))->cast_to<Label>();
 	assert(clock_label);
 
-	uint64_t hour_num = ((uint64_t) std::floor(time / 60)) % 24;
-	uint64_t min_num = newtime % 60;
-
-	String hour = (hour_num % 24 < 10 ? String("0") : String("")) + String::num(hour_num);
-	String min = (min_num < 10 ? "0" : "") + String::num(min_num);
-	clock_label->set_text(hour + ":" + min);
+	clock_label->set_text(m_clock->to_string());
 }

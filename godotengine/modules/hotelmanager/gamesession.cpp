@@ -17,7 +17,7 @@
 #include "gamesession.h"
 #include "gamemap.h"
 #include "objectdefmgr.h"
-#include "hud.h"
+#include "modules/hotelmanager/hud/hud.h"
 #include "savegame.h"
 #include <unistd.h>
 
