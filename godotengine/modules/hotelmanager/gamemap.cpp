@@ -188,25 +188,25 @@ void GameMap::on_process(float delta)
 
 		bool should_move_camera = false;
 		Vector2 camera_movement(0, 0);
-		if (mouse_pos.y < screen_size.height * 0.05f ||
+		if (mouse_pos.y < screen_size.height * 0.04f ||
 			Input::get_singleton()->is_action_pressed("ui_up")) {
 			should_move_camera = true;
 			camera_movement.y -= 10;
 		}
 
-		if (mouse_pos.y > screen_size.height * 0.95f ||
+		if (mouse_pos.y > screen_size.height * 0.96f ||
 			Input::get_singleton()->is_action_pressed("ui_down")) {
 			should_move_camera = true;
 			camera_movement.y += 10;
 		}
 
-		if (mouse_pos.x < screen_size.width * 0.05f ||
+		if (mouse_pos.x < screen_size.width * 0.03f ||
 			Input::get_singleton()->is_action_pressed("ui_left")) {
 			should_move_camera = true;
 			camera_movement.x -= 10;
 		}
 
-		if (mouse_pos.x > screen_size.width * 0.95f ||
+		if (mouse_pos.x > screen_size.width * 0.97f ||
 			Input::get_singleton()->is_action_pressed("ui_right")) {
 			should_move_camera = true;
 			camera_movement.x += 10;
