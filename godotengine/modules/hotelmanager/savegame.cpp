@@ -87,7 +87,7 @@ bool SaveGame::load(GameSession *game_session, GameMap *game_map)
 
 	game_session->set_money((int64_t) data["money"]);
 	game_session->set_game_time((double) data["game_time"]);
-	game_session->set_game_speed((GameSpeed) (int) data["game_speed"]);
+	game_session->set_game_speed((uint8_t) data["game_speed"]);
 
 
 	return game_map->init(game_session, data["map"]);

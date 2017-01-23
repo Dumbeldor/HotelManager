@@ -31,7 +31,7 @@ public:
 
 	void set_money_label(const int64_t &money);
 	void set_day_label(const uint32_t day);
-	void set_hour_clock_label(const double &time);
+	void modify_clock(const double &time);
 
 protected:
 	static void _bind_methods();

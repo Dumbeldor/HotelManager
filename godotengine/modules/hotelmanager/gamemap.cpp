@@ -19,7 +19,9 @@
 #include <vector>
 #include <io/base64.h>
 #include <os/input.h>
+#include <scene/2d/camera_2d.h>
 #include <scene/audio/sample_player.h>
+#include <scene/2d/canvas_modulate.h>
 #include <os/os.h>
 #include "gamemap.h"
 #include "mapcontrol.h"
@@ -36,6 +38,7 @@
 #define CAMERA_NODE String("GroundMap/Camera2D")
 #define MAPCONTROL_NODE String("Hud/ControlPane/MapControl")
 #define SOUND_PLAYER_NODE String("MapSoundPlayer")
+#define CANVAS_MODULATE_NODE String("DayNightMapMask")
 #define SOUND_POP6 String("pop-6")
 
 #define SELECTOR_BORDER_NEWTILE Color(0.2, 1.0, 0.8, 0.9)
@@ -74,9 +77,10 @@ bool GameMap::init(GameSession *game_session, const Dictionary &map)
 	m_object_map = get_node(OBJECTMAP_NODE)->cast_to<TileMap>();
 	m_camera = get_node(CAMERA_NODE)->cast_to<Camera2D>();
 	m_control = get_node(MAPCONTROL_NODE)->cast_to<MapControl>();
+	m_canvas_modulate = get_node(CANVAS_MODULATE_NODE)->cast_to<CanvasModulate>();
 	assert(m_sound_player &&
 		m_ground_map && m_floor_map && m_object_map &&
-		m_camera && m_control);
+		m_camera && m_control && m_canvas_modulate);
 
 	m_control->init(this);
 
@@ -111,24 +115,24 @@ bool GameMap::init(GameSession *game_session, const Dictionary &map)
 	 * Load Map
 	 */
 	const String &ground = (const String&) map["ground"];
-	int strlen_ground = ground.length();
+	uint32_t strlen_ground = (uint32_t) ground.length();
 	DVector<char> buf_ground;
 	buf_ground.resize(strlen_ground / 4 * 3 + 1 + 1);
 	DVector<char>::Write w_ground = buf_ground.write();
 
-	base64_decode((char*)(&w_ground[0]), (char*)(ground.utf8().get_data()), strlen_ground);
+	base64_decode(&w_ground[0], (char*)(ground.utf8().get_data()), strlen_ground);
 
 	const String &floor = (const String&) map["floor"];
-	int strlen_floor = floor.length();
+	uint32_t strlen_floor = (uint32_t) floor.length();
 	DVector<char> buf_floor;
 	buf_floor.resize(strlen_floor / 4 * 3 + 1 + 1);
 	DVector<char>::Write w_floor = buf_floor.write();
 
-	base64_decode((char*)(&w_floor[0]), (char*)(floor.utf8().get_data()), strlen_floor);
+	base64_decode(&w_floor[0], (char*)(floor.utf8().get_data()), strlen_floor);
 
 	int32_t i = 0;
-	for (int16_t x = -WORLD_LIMIT_X; x <= WORLD_LIMIT_X; x++) {
-		for (int16_t y = -WORLD_LIMIT_Y; y <= WORLD_LIMIT_Y; y++) {
+	for (int32_t x = -WORLD_LIMIT_X; x <= WORLD_LIMIT_X; x++) {
+		for (int32_t y = -WORLD_LIMIT_Y; y <= WORLD_LIMIT_Y; y++) {
 			m_ground_map->set_cell(x, y, buf_ground.get(i));
 			m_floor_map->set_cell(x, y, buf_floor.get(i));
 			i++;
@@ -585,18 +589,18 @@ void GameMap::serialize(Dictionary &result) const
 
 	DVector<char>::Write w_ground = ground_map.write();
 	DVector<char>::Write w64_ground = b64buff_ground.write();
-	int strlen_ground = base64_encode((char*)(&w64_ground[0]), (char*)(&w_ground[0]), (uint32_t )WORLD_LIMIT);
+	int strlen_ground = base64_encode((&w64_ground[0]), (&w_ground[0]), (uint32_t )WORLD_LIMIT);
 	w64_ground[strlen_ground] = 0;
 
 	DVector<char>::Write w_floor = floor_map.write();
 	DVector<char> b64buff_floor;
 	b64buff_floor.resize(b64len);
 	DVector<char>::Write w64_floor = b64buff_floor.write();
-	int strlen_floor = base64_encode((char*)(&w64_floor[0]), (char*)(&w_floor[0]), (uint32_t) WORLD_LIMIT);
+	int strlen_floor = base64_encode(&w64_floor[0], &w_floor[0], (uint32_t) WORLD_LIMIT);
 	w64_floor[strlen_floor] = 0;
 
-	result["ground"] = (char*)&w64_ground[0];
-	result["floor"] = (char*)&w64_floor[0];
+	result["ground"] = &w64_ground[0];
+	result["floor"] = &w64_floor[0];
 
 	/**
 	 * Serialize Camera
@@ -608,4 +612,44 @@ void GameMap::serialize(Dictionary &result) const
 	camera["zoom_y"] = m_camera->get_zoom().y;
 
 	result["camera"] = camera;
+}
+
+/**
+ * Modify CanvasModulate filter
+ *
+ * @param time
+ */
+void GameMap::apply_daynight_cycle(const double &time)
+{
+	uint64_t hour_num = ((uint64_t) std::floor(time / 60)) % 24;
+	uint64_t min_num = (uint64_t) std::floor(time) % 60;
+
+	static constexpr uint8_t night_start = 21;
+	static constexpr uint8_t night_end = 4;
+
+	if (hour_num <= night_end || hour_num >= night_start) {
+		m_canvas_modulate->set_color(Color(0.30f, 0.32f, 0.46f));
+	}
+	else if (hour_num >= 18) {
+		const float multiplier = ((hour_num - 18) * 60.0f + min_num) / 240.0f;
+
+		Color daynightmask;
+		daynightmask.r = 1.0f - multiplier * 0.70f;
+		daynightmask.g = 1.0f - multiplier * 0.65f;
+		daynightmask.b = 1.0f - multiplier * 0.48f;
+		m_canvas_modulate->set_color(daynightmask);
+	}
+	else if (hour_num < 8) {
+		const float multiplier = ((hour_num - night_end) * 60.0f + min_num) / 240.0f;
+
+		Color daynightmask;
+		daynightmask.r = 0.30f + multiplier * (1.0f - 0.30f);
+		daynightmask.g = 0.32f + multiplier * (1.0f - 0.35f);
+		daynightmask.b = 0.46f + multiplier * (1.0f - 0.52f);
+		m_canvas_modulate->set_color(daynightmask);
+	}
+	else {
+		m_canvas_modulate->set_color(Color(1.0f, 1.0f, 1.0f, 1.0f));
+	}
+
 }

@@ -66,7 +66,7 @@ void GameSession::init(const String &savename)
 	m_hud->init();
 	m_hud->set_money_label(m_money);
 	m_hud->set_day_label(get_current_day());
-	m_hud->set_hour_clock_label(m_game_time);
+	m_hud->modify_clock(m_game_time);
 
 	m_map = get_node(String("GameMap"))->cast_to<GameMap>();
 	assert(m_map);
@@ -92,16 +92,16 @@ void GameSession::init(const String &savename)
  */
 void GameSession::_process(float delta)
 {
+	// Auto save
 	m_autosave_timer -= delta;
 	if (m_autosave_timer <= 0.0f) {
-		//get_node(String("GameMap/Hud/ControlPane/MapControl/SaveSprite"))->cast_to<Sprite>()->show();
-		m_autosave_timer = 10.0f;
+		m_autosave_timer = 600.0f;
 		char buf[16];
 		snprintf(buf, 16, "%lu", time(NULL));
 		String date = "autosave_" + (String) buf;
 		save(date);
-		//get_node(String("GameMap/Hud/ControlPane/MapControl/SaveSprite"))->cast_to<Sprite>()->hide();
 	}
+
 	// Delta using game_speed
 	float game_delta = delta * m_game_speed;
 	{
@@ -114,7 +114,8 @@ void GameSession::_process(float delta)
 			m_hud->set_day_label(get_current_day());
 		}
 
-		m_hud->set_hour_clock_label(m_game_time);
+		m_hud->modify_clock(m_game_time);
+		m_map->apply_daynight_cycle(m_game_time);
 	}
 
 	// Map processing
