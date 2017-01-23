@@ -141,7 +141,7 @@ void Hud::set_day_label(const uint32_t day)
  *
  * @param time
  */
-void Hud::set_hour_clock_label(const double &time)
+void Hud::modify_clock(const double &time)
 {
 	assert(m_clock);
 	m_clock->set(time);

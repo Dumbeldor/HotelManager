@@ -23,15 +23,6 @@ class GameMap;
 class Hud;
 class ObjectDefMgr;
 
-enum GameSpeed
-{
-	GAMESPEED_PAUSE = 0,
-	GAMESPEED_NORMAL = 1,
-	GAMESPEED_X2 = 2,
-	GAMESPEED_X3 = 3,
-	GAMESPEED_X5 = 5,
-};
-
 class GameSession: public Node
 {
 	OBJ_TYPE(GameSession, Node);
@@ -55,8 +46,8 @@ public:
 	void remove_money(int64_t money);
 
 
-	GameSpeed get_game_speed() const { return m_game_speed; };
-	void set_game_speed(const GameSpeed &speed) { m_game_speed = speed; }
+	uint8_t get_game_speed() const { return m_game_speed; };
+	void set_game_speed(const uint8_t speed) { m_game_speed = speed; }
 
 	double get_game_time() const { return m_game_time; };
 	void set_game_time(const double &game_time) { m_game_time= game_time; }
@@ -72,7 +63,7 @@ protected:
 	// m_money
 	void add_money(int64_t money);
 
-	void set_game_speed__api(const uint8_t speed) { m_game_speed = (GameSpeed) speed; }
+	void set_game_speed__api(const int speed) { m_game_speed = (uint8_t) speed; }
 
 	// m_current_day
 	/**
@@ -86,7 +77,7 @@ protected:
 	}
 private:
 	int64_t m_money = 2000;
-	GameSpeed m_game_speed = GAMESPEED_NORMAL;
+	uint8_t m_game_speed = 1;
 	double m_game_time = 0;
 	float m_autosave_timer = 10.0f;
 

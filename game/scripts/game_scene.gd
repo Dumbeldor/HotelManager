@@ -148,3 +148,18 @@ func _on_OverWriteConfirmDialog_confirmed():
 
 func _on_APButton_pressed():
 	get_node("GameSession/GameMap/Hud/AchievementPopup").hide()
+
+func _on_ClockSpeed1_pressed():
+	get_node("GameSession").set_game_speed(1)
+
+func _on_ClockSpeed2_pressed():
+	get_node("GameSession").set_game_speed(2)
+
+func _on_ClockSpeedPause_pressed():
+	get_node("GameSession").set_game_speed(0)
+
+func _on_ClockSpeed3_pressed():
+	get_node("GameSession").set_game_speed(3)
+
+func _on_ClockSpeed5_pressed():
+	get_node("GameSession").set_game_speed(5)
