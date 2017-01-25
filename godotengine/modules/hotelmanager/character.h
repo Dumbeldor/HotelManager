@@ -15,12 +15,14 @@
 
 #pragma once
 
-#include "scene/main/node.h"
+#include <scene/main/node.h>
+#include <string>
 
 enum CharacterSex
 {
 	MALE,
 	FEMALE,
+	SEX_MAX,
 };
 
 enum CharacterRole
@@ -39,12 +41,13 @@ enum CharacterRole
 	CHARARACTER_ROLE_RECEPTIONIST,
 	CHARARACTER_ROLE_WATCHMAN,
 	// More ?
+	CHARACTER_ROLE_MAX,
 };
 
 struct CharacterDef
 {
 	uint16_t id;
-	String name;
+	std::string name;
 	CharacterRole role;
 	CharacterSex sex;
 };

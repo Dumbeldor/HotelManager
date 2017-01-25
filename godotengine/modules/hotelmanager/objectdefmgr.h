@@ -14,18 +14,17 @@
  * All rights reserved
  */
 #pragma once
-#include <iostream>
 #include <unordered_map>
-#include <map>
-#include "core/os/file_access.h"
+#include <core/os/file_access.h>
 #include "achievements.h"
 #include "character.h"
 #include "tiles.h"
+#include "missions.h"
 
 struct RoomDef
 {
 	uint16_t id;
-	String name;
+	std::string name;
 	uint8_t min_size;
 	uint8_t max_size;
 };
@@ -52,7 +51,7 @@ public:
 		return s_singleton->get_tilegroup_priv(gid);
 	}
 
-	static const TileGroup &get_tilegroup(const String &g)
+	static const TileGroup &get_tilegroup(const std::string &g)
 	{
 		return s_singleton->get_tilegroup_priv(g);
 	}
@@ -70,18 +69,22 @@ private:
 	void load_tiledefs();
 	void load_achievement_groups();
 	void load_achievements();
+	void load_mission_objectives();
+	void load_missions();
 
 	const GameTileDef &get_tiledef_priv(GameMapTile t);
 	const TileGroup &get_tilegroup_priv(const uint32_t gid);
-	const TileGroup &get_tilegroup_priv(const String &g);
+	const TileGroup &get_tilegroup_priv(const std::string &g);
 	// Singleton
 	static ObjectDefMgr *s_singleton;
 
-	std::unordered_map<uint16_t, RoomDef *> m_roomdefs;
-	std::unordered_map<uint16_t, CharacterDef *> m_characterdefs;
-	std::unordered_map<GameMapTile, GameTileDef *> m_game_tiledefs;
-	std::unordered_map<uint32_t, TileGroup *> m_tilegroups;
-	std::map<String, TileGroup *> m_tilegroups_per_name;
-	AchievementList m_achievements;
-	AchievementGroupList m_achievement_groups;
+	std::unordered_map<uint16_t, RoomDef *> m_roomdefs = {};
+	std::unordered_map<uint16_t, CharacterDef *> m_characterdefs = {};
+	std::unordered_map<GameMapTile, GameTileDef *> m_game_tiledefs = {};
+	std::unordered_map<uint32_t, TileGroup *> m_tilegroups = {};
+	std::unordered_map<std::string, TileGroup *> m_tilegroups_per_name = {};
+	AchievementList m_achievements = {};
+	AchievementGroupList m_achievement_groups = {};
+	MissionMap m_missions = {};
+	MissionObjectiveMap m_mission_objectives = {};
 };

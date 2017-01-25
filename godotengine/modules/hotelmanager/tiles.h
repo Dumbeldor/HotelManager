@@ -18,11 +18,12 @@
 #include <cstdint>
 #include <ustring.h>
 #include <vector>
+#include <string>
 
 struct TileGroup
 {
 	uint32_t id = 0;
-	String name = "";
+	std::string name = "";
 };
 
 static constexpr uint8_t TILEGROUPS_CSV_COLS = 2;

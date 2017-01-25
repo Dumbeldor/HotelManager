@@ -30,7 +30,7 @@ enum AchievementType
 
 struct AchievementGroup
 {
-	uint32_t unique_id = 0;
+	uint32_t id = 0;
 	std::string title = "";
 };
 

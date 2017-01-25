@@ -35,7 +35,7 @@ void LayerTileMenu::init(const String &tile_group)
 	hide();
 	set_pos(get_pos() + Point2i(-20, -96));
 
-	const TileGroup &tg_def = ObjectDefMgr::get_tilegroup(tile_group);
+	const TileGroup &tg_def = ObjectDefMgr::get_tilegroup(std::string(tile_group.utf8()));
 	if (tg_def.id == 0) {
 		LOG_CRIT("Invalid tile_group name provided (%s), ignoring all comportment.",
 			tile_group.ascii().get_data());
