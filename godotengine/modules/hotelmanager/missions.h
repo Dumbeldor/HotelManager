@@ -23,6 +23,8 @@
 enum MissionObjectiveType
 {
 	MISSION_OBJECTIVE_TYPE_NONE,
+	MISSION_OBJECTIVE_TYPE_HIRE,
+	MISSION_OBJECTIVE_TYPE_MAX,
 };
 
 struct MissionObjective
