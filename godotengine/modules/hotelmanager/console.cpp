@@ -19,7 +19,7 @@
 #include "scene/main/viewport.h"
 #include "gamesession.h"
 
-static constexpr uint16_t MAX_HISTORY = 100;
+static constexpr uint16_t MAX_HISTORY = 1000;
 
 Console::Console() : Panel()
 {
@@ -38,10 +38,8 @@ void Console::_bind_methods()
 
 void Console::add_text(const std::string &text)
 {
-	std::cout << "Nombre dans le texte : " << get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->get_total_character_count() << std::endl;
 	get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->add_text(String(text.c_str()) + "\n");
 	if (get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->get_total_character_count() > MAX_HISTORY) {
-		std::cout << "ENLEVEMENT D'UNE LIGNE" << std::endl;
 		get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->remove_line(0);
 	}
 }
@@ -49,11 +47,17 @@ void Console::add_text(const std::string &text)
 void Console::tag_sucess(const std::string &text)
 {
 	get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->append_bbcode("[color=#33C73A]" + String(text.c_str()) + "[/color]\n");
+	if (get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->get_total_character_count() > MAX_HISTORY) {
+		get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->remove_line(0);
+	}
 }
 
 void Console::add_error(const std::string &text)
 {
 	get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->append_bbcode("[color=red]Error : " + String(text.c_str()) + "[/color]\n");
+	if (get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->get_total_character_count() > MAX_HISTORY) {
+		get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->remove_line(0);
+	}
 }
 
 void Console::send_command(const String &command)
