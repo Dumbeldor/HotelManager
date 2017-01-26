@@ -14,9 +14,11 @@
  */
 
 #include "gamedatareader.h"
+#include "log.h"
 #include <core/os/file_access.h>
 #include <string>
 #include <iostream>
+#include <vector>
 
 #define GAMEDATA_PATH String("res://gamedata/")
 
@@ -27,7 +29,7 @@ GameDataReader::GameDataReader(const String &resourcename, const uint16_t col_nu
 	m_file = FileAccess::open(GAMEDATA_PATH + resourcename + String(".csv"),
 		FileAccess::READ, &err);
 	if (err != OK || m_file == NULL) {
-		ERR_PRINT("No game data, ignoring.");
+		LOG_CRIT("No %s game data, ignoring.", resourcename.ascii().get_data());
 		m_is_good = false;
 		return;
 	}
@@ -53,7 +55,8 @@ void GameDataReader::nextr()
 		m_is_good = false;
 	}
 	else if (m_csv_line.size() != m_col_number) {
-		ERR_PRINT("invalid CSV line (col number invalid), ignoring.");
+		LOG_CRIT("invalid CSV line (found %d cols, expected %d), ignoring.",
+			m_csv_line.size(), m_col_number);
 		nextr();
 	}
 }
@@ -96,6 +99,21 @@ GameDataReader &GameDataReader::operator>>(uint32_t &out)
 		return *this;
 	}
 	out = (uint32_t) m_csv_line.get(m_current_col).to_int();
+	next();
+	return *this;
+}
+
+template<>
+GameDataReader &GameDataReader::operator>>(std::vector<uint32_t> &out)
+{
+	if (!m_is_good) {
+		return *this;
+	}
+
+	Vector<String> out_str = m_csv_line.get(m_current_col).split(";");
+	for (uint32_t i = 0; i < out_str.size(); i++) {
+		out.push_back((uint32_t) out_str[i].to_int());
+	}
 	next();
 	return *this;
 }

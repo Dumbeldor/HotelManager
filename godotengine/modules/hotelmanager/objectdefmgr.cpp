@@ -32,6 +32,8 @@ ObjectDefMgr::ObjectDefMgr()
 	load_tiledefs();
 	load_achievement_groups();
 	load_achievements();
+	load_mission_objectives();
+	load_missions();
 }
 
 ObjectDefMgr::~ObjectDefMgr()
@@ -55,6 +57,18 @@ ObjectDefMgr::~ObjectDefMgr()
 
 	for (auto &tdef: m_game_tiledefs) {
 		delete tdef.second;
+	}
+
+	for (auto &tg: m_tilegroups) {
+		delete tg.second;
+	}
+
+	for (auto &m: m_missions) {
+		delete m.second;
+	}
+
+	for (auto &mo: m_mission_objectives) {
+		delete mo.second;
 	}
 }
 
@@ -125,6 +139,7 @@ void ObjectDefMgr::load_tilegroups()
 			LOG_WARN("ID %d was already registered, overriding it", tg->id);
 			delete m_tilegroups[tg->id];
 		}
+
 		m_tilegroups[tg->id] = tg;
 
 		if (m_tilegroups_per_name.find(tg->name) != m_tilegroups_per_name.end()) {
@@ -197,7 +212,7 @@ void ObjectDefMgr::load_achievement_groups()
 		AchievementGroup *ag = new AchievementGroup();
 		reader >> ag->id >> ag->title;
 		if (m_achievement_groups.find(ag->id) != m_achievement_groups.end()) {
-			LOG_WARN("AchievemengGroup %d was already registered, overriding it", ag->id);
+			LOG_WARN("AchievementGroup %d was already registered, overriding it", ag->id);
 			delete m_achievement_groups[ag->id];
 		}
 		m_achievement_groups[ag->id] = ag;
@@ -245,7 +260,25 @@ void ObjectDefMgr::load_mission_objectives()
 	GameDataReader reader("missionobjectives", MISSIONOBJECTIVES_CSV_COLS);
 	while (reader.is_good()) {
 		MissionObjective *mission_objective = new MissionObjective();
-		delete mission_objective;
+		uint16_t type;
+		reader >> mission_objective->id >> mission_objective->title >> type >>
+			mission_objective->count;
+
+		if (type >= MISSION_OBJECTIVE_TYPE_MAX) {
+			LOG_WARN("Invalid missionobjective type %d, ignoring.", type);
+			delete mission_objective;
+			continue;
+		}
+
+		mission_objective->type = (MissionObjectiveType) type;
+
+		if (m_mission_objectives.find(mission_objective->id) != m_mission_objectives.end()) {
+			LOG_WARN("MissionObjective %d was already registered, overriding it",
+				mission_objective->id);
+			delete m_achievement_groups[mission_objective->id];
+		}
+
+		m_mission_objectives[mission_objective->id] = mission_objective;
 	}
 }
 
@@ -255,7 +288,23 @@ void ObjectDefMgr::load_missions()
 	GameDataReader reader("missions", MISSIONS_CSV_COLS);
 	while (reader.is_good()) {
 		Mission *mission = new Mission();
-		delete mission;
+
+		std::vector<uint32_t> objectives = {};
+		reader >> mission->id >> mission->title >> mission->description >> mission->parents >>
+			objectives;
+
+		for (const auto &o: objectives) {
+			const auto &mo = m_mission_objectives.find(o);
+			if (mo == m_mission_objectives.end()) {
+				LOG_WARN("MissionObjective %d doesn't exists. It will not be added to mission %d",
+					o, mission->id);
+				continue;
+			}
+
+			mission->objectives.push_back(mo->second);
+		}
+
+		m_missions[mission->id] = mission;
 	}
 }
 
