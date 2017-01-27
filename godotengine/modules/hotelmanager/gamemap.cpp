@@ -494,7 +494,9 @@ void GameMap::place_tiles_in_selected_area()
 	if (cur_pos == m_selection_init_pos) {
 		if (!m_game_session->has_money(tiledef.cost)) {
 			// m_sound_player->play(SOUND_ERROR);
+			return;
 		}
+
 		if (interact_tilemap->get_cellv(cur_pos) != s_tile) {
 			interact_tilemap->set_cellv(cur_pos, s_tile);
 			m_sound_player->play(SOUND_POP6);
@@ -514,10 +516,8 @@ void GameMap::place_tiles_in_selected_area()
 		int32_t cost = (int32_t) (tiledef.cost * ABS(end_tile.x - start_tile.x + 1) *
 			ABS(end_tile.y - start_tile.y + 1));
 
-		// Don't place anything if start or end is out of bounds or if we don't have
-		// money
-		if (is_out_of_bounds(start_tile) || is_out_of_bounds(end_tile)
-			|| !m_game_session->has_money(cost)) {
+		// Don't place anything if start or end is out of bounds
+		if (is_out_of_bounds(start_tile) || is_out_of_bounds(end_tile)) {
 			reset_selection();
 			return;
 		}
@@ -537,6 +537,13 @@ void GameMap::place_tiles_in_selected_area()
 					cost -= tiledef.cost;
 				}
 			}
+		}
+
+		// No money, no chocolate.
+		if (!m_game_session->has_money(cost)) {
+			// m_sound_player->play(SOUND_ERROR);
+			reset_selection();
+			return;
 		}
 
 		if (tile_changed) {
