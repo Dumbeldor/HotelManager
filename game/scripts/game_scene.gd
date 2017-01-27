@@ -14,7 +14,10 @@ const GAMEMENU = {
 func _input(event):
 	if event.type == InputEvent.KEY and event.pressed:
 		if event.is_action("ui_cancel"):
-			if current_shown_menu == 0:
+			var console = get_node("MainMenuLayer/Console")
+			if console.is_visible():
+				console.hide()
+			elif current_shown_menu == 0:
 				_show_game_menu()
 			elif current_shown_menu == GAMEMENU.MAIN:
 				_hide_game_menu()
@@ -24,12 +27,21 @@ func _input(event):
 				ap.hide()
 			else:
 				ap.show()
+		elif event.is_action("ui_console"):
+			var console = get_node("MainMenuLayer/Console")
+			if console.is_visible():
+				console.hide()
+			else:
+				console.show()
+				get_node("MainMenuLayer/Console/ConsoleLineEdit").grab_focus()
 
 func _ready():
     # TODO, get save name and call it from there
 	game_session.init(get_node("/root/global").get_save())
 	set_process_input(true)
 	set_process(true)
+	#Activate scroll console
+	get_node("MainMenuLayer/Console/RichTextLabel").set_scroll_follow(true)
 
 func _process(delta):
 	game_session._process(delta)
@@ -148,6 +160,16 @@ func _on_OverWriteConfirmDialog_confirmed():
 
 func _on_APButton_pressed():
 	get_node("GameSession/GameMap/Hud/AchievementPopup").hide()
+
+func _on_ConsoleLineEdit_text_entered( text ):
+	send_command(text)
+
+func send_command(text):
+	get_node("MainMenuLayer/Console").send_command(text)
+	get_node("MainMenuLayer/Console/ConsoleLineEdit").set_text("")
+
+func _on_SendCommandButton_released():
+	send_command(get_node("MainMenuLayer/Console/ConsoleLineEdit").get_text())
 
 func _on_ClockSpeed1_pressed():
 	get_node("GameSession").set_game_speed(1)

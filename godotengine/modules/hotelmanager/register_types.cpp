@@ -26,6 +26,7 @@
 #include "objectselectorbutton.h"
 #include "modules/hotelmanager/hud/hud.h"
 #include "mapcontrol.h"
+#include "console.h"
 #include "hud/clock.h"
 
 void register_hotelmanager_types()
@@ -41,6 +42,7 @@ void register_hotelmanager_types()
 	ObjectTypeDB::register_type<ObjectSelectorButton>();
 	ObjectTypeDB::register_type<Hud>();
 	ObjectTypeDB::register_type<MapControl>();
+	ObjectTypeDB::register_type<Console>();
 	ObjectTypeDB::register_type<HMButton>();
 }
 
