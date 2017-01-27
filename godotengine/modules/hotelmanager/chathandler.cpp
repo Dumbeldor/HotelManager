@@ -16,6 +16,7 @@
 #include "chathandler.h"
 #include "gamesession.h"
 #include "console.h"
+#include <scene/gui/rich_text_label.h>
 
 static const ChatCommand COMMANDHANDLERFINISHER = { nullptr, false, nullptr, nullptr, ""};
 
@@ -40,6 +41,7 @@ ChatCommand *ChatHandler::getCommandTable()
 		{ "time", true, nullptr, timeCommandTable, "/time <speed>"},
 		{ "list", true, &ChatHandler::handle_command_list, nullptr, ""},
 		{ "help", true, &ChatHandler::handle_command_help, nullptr, ""},
+		{ "remove_line", true, &ChatHandler::handle_command_remove_line, nullptr, "/remove_line <nb>"},
 		COMMANDHANDLERFINISHER,
 	};
 
@@ -256,5 +258,11 @@ bool ChatHandler::handle_command_time_speed(const std::string &args, GameSession
 	}
 	game_session->set_game_speed(speed);
 	msg = "Time speed changed";
+	return true;
+}
+
+bool ChatHandler::handle_command_remove_line(const std::string &args, GameSession *game_session, std::string &msg)
+{
+	m_console->get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->remove_line(std::atoi(args.c_str()));
 	return true;
 }

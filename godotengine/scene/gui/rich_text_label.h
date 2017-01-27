@@ -217,6 +217,7 @@ private:
 	void _validate_line_caches(ItemFrame *p_frame);
 
 	void _add_item(Item *p_item, bool p_enter=false,bool p_ensure_newline=false);
+	void _remove_item(Item *p_item, const int p_line, const int p_subitem_line);
 
 
 

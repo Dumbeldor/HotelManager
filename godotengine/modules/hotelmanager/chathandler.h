@@ -60,6 +60,8 @@ public:
 	//help
 	bool handle_command_help(const std::string &args, GameSession *game_session, std::string &msg);
 
+	bool handle_command_remove_line(const std::string &args, GameSession *game_session, std::string &msg);
+
 private:
 	ChatCommandSearchResult find_command(ChatCommand* table, const char *&text, ChatCommand *&command, ChatCommand **parentCommand = nullptr);
 	ChatCommand* getCommandTable();
