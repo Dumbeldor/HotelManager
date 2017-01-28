@@ -19,6 +19,7 @@
 #include "objectdefmgr.h"
 #include "modules/hotelmanager/hud/hud.h"
 #include "savegame.h"
+#include "log.h"
 #include <unistd.h>
 
 #define MONEY_LIMIT 1000000000000
@@ -80,6 +81,11 @@ void GameSession::init(const String &savename)
 	else {
 		Dictionary fake_map;
 		m_map->init(this, fake_map);
+	}
+
+	// No mission & no mission progress recorded, it's a new game
+	if (m_mission_progress.empty()) {
+		start_mission(1);
 	}
 }
 
@@ -197,4 +203,60 @@ void GameSession::remove_money(int64_t money)
 	m_money -= money;
 
 	m_hud->set_money_label(m_money);
+}
+
+/**
+ * Start mission_id if exists and not already started
+ *
+ * @param mission_id
+ */
+void GameSession::start_mission(const uint32_t mission_id)
+{
+	const Mission &mission = ObjectDefMgr::get_mission(mission_id);
+	if (mission.id == 0) {
+		LOG_CRIT("start_mission: mission id %d not found, not starting.", mission_id);
+		return;
+	}
+
+	MissionProgressPtr current_progress;
+	const auto &mission_progress = m_mission_progress.find(mission_id);
+	if (mission_progress == m_mission_progress.end()) {
+		m_mission_progress[mission_id] = MissionProgressPtr(new MissionProgress());
+		current_progress = m_mission_progress[mission_id];
+	}
+	else {
+		current_progress = mission_progress->second;
+	}
+
+	if (current_progress->state != MISSION_STATE_NOT_STARTED) {
+		LOG_WARN("start_mission: trying to start already started or finished mission %d, "
+			"not starting.",
+			mission_id);
+		return;
+	}
+
+	// Verify if parent missions are finished
+	for (const auto &parent: mission.parents) {
+		const auto &parent_progress = m_mission_progress.find(parent);
+		if (parent_progress == m_mission_progress.end()) {
+			LOG_CRIT("start_mission: unable to start mission %d, mission %d requirement "
+				"not accomplished", mission.id, parent);
+			return;
+		}
+
+		if (parent_progress->second->state != MISSION_STATE_DONE) {
+			LOG_CRIT("start_mission: unable to start mission %d, mission %d requirement "
+				"not finished", mission.id, parent);
+			return;
+		}
+	}
+
+	// Mark mission as in progress & populate objectives
+	current_progress->state = MISSION_STATE_IN_PROGRESS;
+	for (const auto &mo: mission.objectives) {
+		current_progress->objectives_progress[mo->id] = MissionObjectiveProgress();
+		current_progress->objectives_progress[mo->id].id = mo->id;
+	}
+
+	m_hud->add_mission(mission);
 }

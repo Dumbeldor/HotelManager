@@ -134,6 +134,7 @@ margin/bottom = 1080.0
 
 [node name="MapControl" type="MapControl" parent="GameSession/GameMap/Hud/ControlPane"]
 
+editor/display_folded = true
 anchor/right = 1
 anchor/bottom = 1
 rect/min_size = Vector2( 1920, 1080 )
@@ -373,6 +374,17 @@ enabled_focus_mode = 2
 shortcut = null
 text = "x5"
 flat = false
+
+[node name="MissionPanel" type="Panel" parent="GameSession/GameMap/Hud/ControlPane"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 1675.0
+margin/top = 284.0
+margin/right = 1914.0
+margin/bottom = 417.0
 
 [node name="ControlPane_Bottom" type="Container" parent="GameSession/GameMap/Hud"]
 

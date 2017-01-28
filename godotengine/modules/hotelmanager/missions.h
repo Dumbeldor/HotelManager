@@ -18,7 +18,8 @@
 #include <cstdint>
 #include <vector>
 #include <string>
-#include <bits/unordered_map.h>
+#include <unordered_map>
+#include <memory>
 
 enum MissionObjectiveType
 {
@@ -49,3 +50,30 @@ struct Mission
 
 typedef std::unordered_map<uint32_t, Mission *> MissionMap;
 #define MISSIONS_CSV_COLS 5
+
+struct MissionObjectiveProgress
+{
+	uint32_t id = 0;
+	uint32_t progress = 0;
+};
+
+typedef std::unordered_map<uint32_t, MissionObjectiveProgress> MissionObjectiveProgressMap;
+
+enum MissionState
+{
+	MISSION_STATE_NOT_STARTED,
+	MISSION_STATE_IN_PROGRESS,
+	MISSION_STATE_DONE,
+	MISSION_STATE_MAX,
+};
+
+struct MissionProgress
+{
+	uint32_t id = 0;
+	MissionState state = MISSION_STATE_NOT_STARTED;
+	MissionObjectiveProgressMap objectives_progress = {};
+};
+
+typedef std::shared_ptr<MissionProgress> MissionProgressPtr;
+typedef std::unordered_map<uint32_t, MissionProgressPtr> MissionProgressMap;
+

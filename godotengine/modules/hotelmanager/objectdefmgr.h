@@ -56,6 +56,11 @@ public:
 		return s_singleton->get_tilegroup_priv(g);
 	}
 
+	static const Mission &get_mission(const uint32_t id)
+	{
+		return s_singleton->get_mission_priv(id);
+	}
+
 	static void delete_singleton()
 	{
 		delete s_singleton;
@@ -75,6 +80,7 @@ private:
 	const GameTileDef &get_tiledef_priv(GameMapTile t);
 	const TileGroup &get_tilegroup_priv(const uint32_t gid);
 	const TileGroup &get_tilegroup_priv(const std::string &g);
+	const Mission &get_mission_priv(const uint32_t id);
 	// Singleton
 	static ObjectDefMgr *s_singleton;
 

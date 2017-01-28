@@ -112,6 +112,9 @@ GameDataReader &GameDataReader::operator>>(std::vector<uint32_t> &out)
 
 	Vector<String> out_str = m_csv_line.get(m_current_col).split(";");
 	for (uint32_t i = 0; i < out_str.size(); i++) {
+		if (out_str[i].empty()) {
+			continue;
+		}
 		out.push_back((uint32_t) out_str[i].to_int());
 	}
 	next();
@@ -127,6 +130,9 @@ GameDataReader &GameDataReader::operator>>(Vector<uint32_t> &out)
 
 	Vector<String> out_str = m_csv_line.get(m_current_col).split(";");
 	for (uint32_t i = 0; i < out_str.size(); i++) {
+		if (out_str[i].empty()) {
+			continue;
+		}
 		out.push_back((uint32_t) out_str[i].to_int());
 	}
 	next();
