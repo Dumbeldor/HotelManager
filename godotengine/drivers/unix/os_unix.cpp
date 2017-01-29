@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -522,9 +522,6 @@ String OS_Unix::get_executable_path() const {
 	delete[] resolved_path;
 
 	return path;
-#elif defined(EMSCRIPTEN)
-	// We return nothing
-	return String();
 #else
 	ERR_PRINT("Warning, don't know how to obtain executable path on this OS! Please override this function properly.");
 	return OS::get_executable_path();

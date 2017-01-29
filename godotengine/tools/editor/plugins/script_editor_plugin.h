@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -338,6 +338,8 @@ public:
 	virtual void edited_scene_changed();
 
 	void close_builtin_scripts_from_scene(const String& p_scene);
+
+	void goto_help(const String& p_desc) { _help_class_goto(p_desc); }
 
 	ScriptEditorDebugger *get_debugger() { return debugger; }
 	void set_live_auto_reload_running_scripts(bool p_enabled);

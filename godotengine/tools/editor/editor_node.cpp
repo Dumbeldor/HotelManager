@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -195,6 +195,9 @@ void EditorNode::_unhandled_input(const InputEvent& p_event) {
 			int next_tab = editor_data.get_edited_scene() - 1;
 			next_tab = next_tab >= 0 ? next_tab : editor_data.get_edited_scene_count() - 1;
 			_scene_tab_changed(next_tab);
+		}
+		if (ED_IS_SHORTCUT("editor/filter_files", p_event)) {
+			filesystem_dock->focus_on_filter();
 		}
 
 		switch(p_event.key.scancode) {
@@ -1852,7 +1855,6 @@ void EditorNode::_run(bool p_current,const String& p_custom) {
 
 			run_filename=scene->get_filename();
 		} else {
-			args=run_settings_dialog->get_custom_arguments();
 			current_filename=scene->get_filename();
 		}
 
@@ -1927,9 +1929,14 @@ void EditorNode::_run(bool p_current,const String& p_custom) {
 		log->clear();
 	}
 
+	if (bool(EDITOR_DEF("run/always_open_output_on_play", true))) {
+		make_bottom_panel_item_visible(log);
+	}
 
 	List<String> breakpoints;
 	editor_data.get_editor_breakpoints(&breakpoints);
+    
+	args = Globals::get_singleton()->get("editor/main_run_args");
 
 	Error error = editor_run.run(run_filename,args,breakpoints,current_filename);
 
@@ -2067,14 +2074,6 @@ void EditorNode::_menu_option_confirm(int p_option,bool p_confirmed) {
 
 			quick_open->popup("Script", true);
 			quick_open->set_title(TTR("Quick Open Script.."));
-
-		} break;
-		case FILE_QUICK_OPEN_FILE: {
-
-
-			//quick_open->popup("Resource", false, true);
-			//quick_open->set_title("Quick Search File..");
-			scenes_dock->focus_on_filter();
 
 		} break;
 		case FILE_RUN_SCRIPT: {
@@ -3268,7 +3267,7 @@ Error EditorNode::save_translatable_strings(const String& p_to_file) {
 	OS::Time time = OS::get_singleton()->get_time();
 	f->store_line("# Translation Strings Dump.");
 	f->store_line("# Created By.");
-	f->store_line("# \t" VERSION_FULL_NAME " (c) 2008-2016 Juan Linietsky, Ariel Manzur.");
+	f->store_line("# \t" VERSION_FULL_NAME " (c) 2008-2017 Juan Linietsky, Ariel Manzur.");
 	f->store_line("# From Scene: ");
 	f->store_line("# \t"+get_edited_scene()->get_filename());
 	f->store_line("");
@@ -3837,9 +3836,9 @@ void EditorNode::request_instance_scenes(const Vector<String>& p_files) {
 	scene_tree_dock->instance_scenes(p_files);
 }
 
-FileSystemDock *EditorNode::get_scenes_dock() {
+FileSystemDock *EditorNode::get_filesystem_dock() {
 
-	return scenes_dock;
+	return filesystem_dock;
 }
 SceneTreeDock *EditorNode::get_scene_tree_dock() {
 
@@ -5148,7 +5147,7 @@ Variant EditorNode::drag_files_and_dirs(const Vector<String>& p_files, Control *
 
 void EditorNode::_dropped_files(const Vector<String>& p_files,int p_screen) {
 
-	String cur_path = scenes_dock->get_current_path();
+	String cur_path = filesystem_dock->get_current_path();
 	for(int i=0;i<EditorImportExport::get_singleton()->get_import_plugin_count();i++) {
 		EditorImportExport::get_singleton()->get_import_plugin(i)->import_from_drop(p_files,cur_path);
 	}
@@ -5398,7 +5397,7 @@ EditorNode::EditorNode() {
 
 	editor_import_export->load_config();
 
-	GLOBAL_DEF("editor/main_run_args","$exec -path $path -scene $scene $main_scene");
+	GLOBAL_DEF("editor/main_run_args","$scene");
 
 	ObjectTypeDB::set_type_enabled("CollisionShape",true);
 	ObjectTypeDB::set_type_enabled("CollisionShape2D",true);
@@ -5676,6 +5675,7 @@ EditorNode::EditorNode() {
 
 	ED_SHORTCUT("editor/next_tab", TTR("Next tab"), KEY_MASK_CMD+KEY_TAB);
 	ED_SHORTCUT("editor/prev_tab", TTR("Previous tab"), KEY_MASK_CMD+KEY_MASK_SHIFT+KEY_TAB);
+	ED_SHORTCUT("editor/filter_files", TTR("Filter Files.."), KEY_MASK_ALT+KEY_MASK_CMD+KEY_P);
 
 
 	file_menu->set_tooltip(TTR("Operations with scene files."));
@@ -5695,7 +5695,6 @@ EditorNode::EditorNode() {
 	p->add_separator();
 	p->add_shortcut(ED_SHORTCUT("editor/quick_open_scene",TTR("Quick Open Scene.."),KEY_MASK_SHIFT+KEY_MASK_CMD+KEY_O),FILE_QUICK_OPEN_SCENE);
 	p->add_shortcut(ED_SHORTCUT("editor/quick_open_script",TTR("Quick Open Script.."),KEY_MASK_ALT+KEY_MASK_CMD+KEY_O),FILE_QUICK_OPEN_SCRIPT);
-	p->add_shortcut(ED_SHORTCUT("editor/quick_filter_files",TTR("Quick Filter Files.."),KEY_MASK_ALT+KEY_MASK_CMD+KEY_P),FILE_QUICK_OPEN_FILE);
 	p->add_separator();
 
 	PopupMenu *pm_export = memnew(PopupMenu );
@@ -5892,6 +5891,7 @@ EditorNode::EditorNode() {
 	debug_button->set_tooltip(TTR("Debug options"));
 
 	p=debug_button->get_popup();
+	p->set_hide_on_item_selection(false);
 	p->add_check_item(TTR("Deploy with Remote Debug"),RUN_DEPLOY_REMOTE_DEBUG);
 	p->set_item_tooltip(p->get_item_count()-1,TTR("When exporting or deploying, the resulting executable will attempt to connect to the IP of this computer in order to be debugged."));
 	p->add_check_item(TTR("Small Deploy with Network FS"),RUN_FILE_SERVER);
@@ -6178,13 +6178,13 @@ EditorNode::EditorNode() {
 	//node_dock->set_undoredo(&editor_data.get_undo_redo());
 	dock_slot[DOCK_SLOT_RIGHT_BL]->add_child(node_dock);
 
-	scenes_dock = memnew( FileSystemDock(this) );
-	scenes_dock->set_name(TTR("FileSystem"));
-	scenes_dock->set_display_mode(int(EditorSettings::get_singleton()->get("filesystem_dock/display_mode")));
-	dock_slot[DOCK_SLOT_LEFT_UR]->add_child(scenes_dock);
-	//prop_pallete->add_child(scenes_dock);
-	scenes_dock->connect("open",this,"open_request");
-	scenes_dock->connect("instance",this,"_instance_request");
+	filesystem_dock = memnew( FileSystemDock(this) );
+	filesystem_dock->set_name(TTR("FileSystem"));
+	filesystem_dock->set_display_mode(int(EditorSettings::get_singleton()->get("filesystem_dock/display_mode")));
+	dock_slot[DOCK_SLOT_LEFT_UR]->add_child(filesystem_dock);
+	//prop_pallete->add_child(filesystem_dock);
+	filesystem_dock->connect("open",this,"open_request");
+	filesystem_dock->connect("instance",this,"_instance_request");
 
 	const String docks_section = "docks";
 
@@ -6341,7 +6341,7 @@ EditorNode::EditorNode() {
 	about->get_ok()->set_text(TTR("Thanks!"));
 	about->set_hide_on_ok(true);
 	Label *about_text = memnew( Label );
-	about_text->set_text(VERSION_FULL_NAME"\n(c) 2008-2016 Juan Linietsky, Ariel Manzur.\n");
+	about_text->set_text(VERSION_FULL_NAME"\n(c) 2008-2017 Juan Linietsky, Ariel Manzur.\n");
 	about_text->set_pos(Point2(gui_base->get_icon("Logo","EditorIcons")->get_size().width+30,20));
 	gui_base->add_child(about);
 	about->add_child(about_text);

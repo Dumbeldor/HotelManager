@@ -1,0 +1,290 @@
+diff --git a/core/dvector.h b/core/dvector.h
+index a5519ed60..8590f2682 100644
+--- a/core/dvector.h
++++ b/core/dvector.h
+@@ -30,6 +30,7 @@
+ #define DVECTOR_H
+ 
+ #include "os/memory.h"
++#include <cassert>
+ 
+ 
+ /**
+@@ -326,11 +327,7 @@ void DVector<T>::push_back(const T& p_val) {
+ 
+ template<class T>
+ const T DVector<T>::operator[](int p_index) const {
+-
+-	if (p_index<0 || p_index>=size()) {
+-		T& aux=*((T*)0); //nullreturn
+-		ERR_FAIL_COND_V(p_index<0 || p_index>=size(),aux);
+-	}
++	assert(p_index >= 0 && p_index < size());
+ 
+ 	Read r = read();
+ 
+diff --git a/core/hash_map.h b/core/hash_map.h
+index e83710c70..76dd2be00 100644
+--- a/core/hash_map.h
++++ b/core/hash_map.h
+@@ -33,6 +33,7 @@
+ #include "error_macros.h"
+ #include "ustring.h"
+ #include "os/memory.h"
++#include <cassert>
+ #include "list.h"
+ 
+ 
+@@ -487,8 +488,7 @@ public:
+ 		if (!e) {
+ 
+ 			e=create_entry(p_key);
+-			if (!e)
+-				return *(TData*)NULL; /* panic! */
++			assert(e); /* panic! */
+ 			check_hash_table(); // perform mantenience routine
+ 		}
+ 
+diff --git a/core/list.h b/core/list.h
+index b989f009a..8c3de06bf 100644
+--- a/core/list.h
++++ b/core/list.h
+@@ -29,6 +29,7 @@
+ #ifndef GLOBALS_LIST_H
+ #define GLOBALS_LIST_H
+ 
++#include <cassert>
+ #include "os/memory.h"
+ #include "sort.h"
+ 
+@@ -404,11 +405,7 @@ public:
+ 	}
+ 
+ 	T& operator[](int p_index) {
+-
+-		if (p_index<0 || p_index>=size()) {
+-			T& aux=*((T*)0); //nullreturn
+-			ERR_FAIL_COND_V(p_index<0 || p_index>=size(),aux);
+-		}
++		assert(p_index >= 0 && p_index < size());
+ 
+ 		Element *I=front();
+ 		int c=0;
+@@ -422,15 +419,11 @@ public:
+ 			c++;
+ 		}
+ 
+-		ERR_FAIL_V( *((T*)0) );	// bug!!
++		assert(false);	// bug!!
+ 	}
+ 
+ 	const T& operator[](int p_index) const {
+-
+-		if (p_index<0 || p_index>=size()) {
+-			T& aux=*((T*)0); //nullreturn
+-			ERR_FAIL_COND_V(p_index<0 || p_index>=size(),aux);
+-		}
++		assert(p_index >= 0 && p_index < size());
+ 
+ 		const Element *I=front();
+ 		int c=0;
+@@ -444,7 +437,7 @@ public:
+ 			c++;
+ 		}
+ 
+-		ERR_FAIL_V( *((T*)0) );	 // bug!
++		assert(false);	 // bug!
+ 	}
+ 
+ 
+diff --git a/core/map.h b/core/map.h
+index 81cda1ece..3d63f33f7 100644
+--- a/core/map.h
++++ b/core/map.h
+@@ -30,6 +30,7 @@
+ #define MAP_H
+ 
+ #include "set.h"
++#include <cassert>
+ /**
+ 	@author Juan Linietsky <reduzio@gmail.com>
+ */
+@@ -614,9 +615,9 @@ public:
+ 
+ 	const V& operator[](const K& p_key) const {
+ 
+-		ERR_FAIL_COND_V(!_data._root, *(V*)NULL); // crash on purpose
++		assert(_data._root);
+ 		const Element *e=find(p_key);
+-		ERR_FAIL_COND_V(!e, *(V*)NULL); // crash on purpose
++		assert(e);
+ 		return e->_value;
+ 	}
+ 	V& operator[](const K& p_key) {
+@@ -628,7 +629,7 @@ public:
+ 		if (!e)
+ 			e=insert(p_key,V());
+ 
+-		ERR_FAIL_COND_V(!e, *(V*)NULL); // crash on purpose
++		assert(e);
+ 		return e->_value;
+ 	}
+ 
+diff --git a/core/os/input_event.cpp b/core/os/input_event.cpp
+index 7350be824..2b9046a0d 100644
+--- a/core/os/input_event.cpp
++++ b/core/os/input_event.cpp
+@@ -29,9 +29,7 @@
+ #include "input_event.h"
+ #include "input_map.h"
+ #include "os/keyboard.h"
+-/**
+- *
+- */
++
+ 
+ bool InputEvent::operator==(const InputEvent &p_event) const {
+ 	if (type != p_event.type){
+diff --git a/core/vector.h b/core/vector.h
+index cafb4a4aa..f4b562df0 100644
+--- a/core/vector.h
++++ b/core/vector.h
+@@ -34,6 +34,7 @@
+  * @author Juan Linietsky
+  * Vector container. Regular Vector Container. Use with care and for smaller arrays when possible. Use DVector for large arrays.
+ */
++#include <cassert>
+ #include "os/memory.h"
+ #include "error_macros.h"
+ #include "safe_refcount.h"
+@@ -126,11 +127,7 @@ public:
+ 	T get(int p_index) const;
+ 
+ 	inline T& operator[](int p_index) {
+-
+-		if (p_index<0 || p_index>=size()) {
+-			T& aux=*((T*)0); //nullreturn
+-			ERR_FAIL_COND_V(p_index<0 || p_index>=size(),aux);
+-		}
++		assert(p_index >= 0 && p_index < size());
+ 
+ 		_copy_on_write(); // wants to write, so copy on write.
+ 
+@@ -138,11 +135,7 @@ public:
+ 	}
+ 
+ 	inline const T& operator[](int p_index) const {
+-
+-		if (p_index<0 || p_index>=size()) {
+-			const T& aux=*((T*)0); //nullreturn
+-			ERR_FAIL_COND_V(p_index<0 || p_index>=size(),aux);
+-		}
++		assert(p_index >= 0 && p_index < size());
+ 		// no cow needed, since it's reading
+ 		return _get_data()[p_index];
+ 	}
+diff --git a/main/main.cpp b/main/main.cpp
+index d18ccc7c1..b4e7f57f2 100644
+--- a/main/main.cpp
++++ b/main/main.cpp
+@@ -136,14 +136,6 @@ void Main::print_help(const char* p_binary) {
+ #endif
+ 	OS::get_singleton()->print("\t-test [test] : Run a test.\n");
+ 	OS::get_singleton()->print("\t\t(");
+-	const char **test_names=tests_get_names();
+-	const char* coma = "";
+-	while(*test_names) {
+-
+-		OS::get_singleton()->print("%s%s", coma, *test_names);
+-		test_names++;
+-		coma = ", ";
+-	}
+ 	OS::get_singleton()->print(")\n");
+ 
+ 	OS::get_singleton()->print("\t-r WIDTHxHEIGHT\t : Request Window Resolution\n");
+@@ -1166,13 +1158,6 @@ bool Main::start() {
+ 	};
+ 
+ 	if (test!="") {
+-#ifdef DEBUG_ENABLED
+-		main_loop = test_main(test,args);
+-
+-		if (!main_loop)
+-			return false;
+-
+-#endif
+ 
+ 	} else if (script!="") {
+ 
+diff --git a/scene/gui/rich_text_label.cpp b/scene/gui/rich_text_label.cpp
+index 73a3cda5f..42b1befbd 100644
+--- a/scene/gui/rich_text_label.cpp
++++ b/scene/gui/rich_text_label.cpp
+@@ -1239,6 +1239,13 @@ void RichTextLabel::add_newline() {
+ 
+ }
+ 
++void RichTextLabel::remove_line(const int line)
++{
++	if (line >= current_frame->lines.size())
++		return;
++	current_frame->lines.remove(line);
++}
++
+ void RichTextLabel::push_font(const Ref<Font>& p_font) {
+ 
+ 	ERR_FAIL_COND(current->type==ITEM_TABLE);
+@@ -1907,6 +1914,7 @@ void RichTextLabel::_bind_methods() {
+ 	ObjectTypeDB::bind_method(_MD("add_text","text"),&RichTextLabel::add_text);
+ 	ObjectTypeDB::bind_method(_MD("add_image","image:Texture"),&RichTextLabel::add_image);
+ 	ObjectTypeDB::bind_method(_MD("newline"),&RichTextLabel::add_newline);
++	ObjectTypeDB::bind_method(_MD("remove_line"),&RichTextLabel::remove_line);
+ 	ObjectTypeDB::bind_method(_MD("push_font","font"),&RichTextLabel::push_font);
+ 	ObjectTypeDB::bind_method(_MD("push_color","color"),&RichTextLabel::push_color);
+ 	ObjectTypeDB::bind_method(_MD("push_align","align"),&RichTextLabel::push_align);
+diff --git a/scene/gui/rich_text_label.h b/scene/gui/rich_text_label.h
+index 5147905a0..f231ebb60 100644
+--- a/scene/gui/rich_text_label.h
++++ b/scene/gui/rich_text_label.h
+@@ -284,6 +284,7 @@ public:
+ 	void add_text(const String& p_text);
+ 	void add_image(const Ref<Texture>& p_image);
+ 	void add_newline();
++	void remove_line(const int line);
+ 	void push_font(const Ref<Font>& p_font);
+ 	void push_color(const Color& p_color);
+ 	void push_underline();
+diff --git a/scene/resources/default_theme/default_theme.cpp b/scene/resources/default_theme/default_theme.cpp
+index 631896378..5aa0a084c 100644
+--- a/scene/resources/default_theme/default_theme.cpp
++++ b/scene/resources/default_theme/default_theme.cpp
+@@ -219,6 +219,7 @@ void fill_default_theme(Ref<Theme>& t,const Ref<Font> & default_font,const Ref<F
+ 	// Panel
+ 
+ 	t->set_stylebox("panel","Panel", make_stylebox( panel_bg_png,0,0,0,0) );
++	t->set_stylebox("panel","Console", make_stylebox( panel_bg_png,0,0,0,0));
+ 
+ 
+ 
+@@ -254,6 +255,21 @@ void fill_default_theme(Ref<Theme>& t,const Ref<Font> & default_font,const Ref<F
+ 
+ 	t->set_constant("hseparation","Button", 2 *scale);
+ 
++	t->set_stylebox("normal","HMButton", sb_button_normal);
++	t->set_stylebox("pressed","HMButton", sb_button_pressed);
++	t->set_stylebox("hover","HMButton", sb_button_hover);
++	t->set_stylebox("disabled","HMButton", sb_button_disabled);
++	t->set_stylebox("focus","HMButton", sb_button_focus);
++
++	t->set_font("font","HMButton", default_font );
++
++	t->set_color("font_color","HMButton", control_font_color );
++	t->set_color("font_color_pressed","HMButton", control_font_color_pressed );
++	t->set_color("font_color_hover","HMButton", control_font_color_hover );
++	t->set_color("font_color_disabled","HMButton", control_font_color_disabled );
++
++	t->set_constant("hseparation","HMButton", 2 *scale);
++
+ 	// LinkButton
+ 
+ 	t->set_font("font","LinkButton", default_font );

@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -686,7 +686,7 @@ LRESULT OS_Windows::WndProc(HWND hWnd,UINT uMsg, WPARAM	wParam,	LPARAM	lParam) {
 			print_line("input lang change");
 		} break;
 
-		#if WINVER >= 0x0700 // for windows 7
+		#if WINVER >= 0x0601 // for windows 7
 		case WM_TOUCH: {
 
 			BOOL bHandled = FALSE;
@@ -1329,10 +1329,18 @@ void OS_Windows::vprint(const char* p_format, va_list p_list, bool p_stderr) {
 	MultiByteToWideChar(CP_UTF8,0,buf,len,wbuf,wlen);
 	wbuf[wlen]=0;
 
+// Recent MinGW and MSVC compilers seem to disagree on the case here
+#ifdef __MINGW32__
 	if (p_stderr)
-		fwprintf(stderr,L"%s",wbuf);
+		fwprintf(stderr, L"%S", wbuf);
 	else
-		wprintf(L"%s",wbuf);
+		wprintf(L"%S", wbuf);
+#else  // MSVC
+	if (p_stderr)
+		fwprintf(stderr, L"%s", wbuf);
+	else
+		wprintf(L"%s", wbuf);
+#endif
 
 #ifdef STDOUT_FILE
 	//vwfprintf(stdo,p_format,p_list);

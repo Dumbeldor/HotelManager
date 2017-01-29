@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -308,6 +308,7 @@ static const char* locale_list[]={
 "sa_IN", //  Sanskrit (India)
 "sat_IN", //  Santali (India)
 "sc_IT", //  Sardinian (Italy)
+"sco", //  Scots
 "sd_IN", //  Sindhi (India)
 "se_NO", //  Northern Sami (Norway)
 "sgs_LT", //  Samogitian (Lithuania)

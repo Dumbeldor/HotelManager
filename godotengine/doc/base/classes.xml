@@ -23,6 +23,16 @@
 				Make a color from red, green, blue and alpha. Arguments can range from 0 to 255.
 			</description>
 		</method>
+		<method name="ColorN">
+			<return type="Color">
+			</return>
+			<argument index="0" name="name" type="String">
+			</argument>
+			<argument index="1" name="alpha" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="abs">
 			<return type="float">
 			</return>
@@ -2498,6 +2508,11 @@
 		</method>
 	</methods>
 	<signals>
+		<signal name="finished">
+			<description>
+				Emitted when the animation is finished (when it plays the last frame). If the animation is looping, this signal is emitted everytime the last frame is drawn, before looping.
+			</description>
+		</signal>
 		<signal name="frame_changed">
 			<description>
 				Emitted when frame is changed.
@@ -4612,6 +4627,11 @@
 				Append an element at the end of the array (alias of [method push_back]).
 			</description>
 		</method>
+		<method name="back">
+			<description>
+				Returns the last element of the array if the array is not empty (size&gt;0).
+			</description>
+		</method>
 		<method name="clear">
 			<description>
 				Clear the array (resize to 0).
@@ -4658,6 +4678,11 @@
 			</argument>
 			<description>
 				Searches the array in reverse order for a value and returns its index or -1 if not found.
+			</description>
+		</method>
+		<method name="front">
+			<description>
+				Returns the first element of the array if the array is not empty (size&gt;0).
 			</description>
 		</method>
 		<method name="has">
@@ -6259,6 +6284,18 @@
 		This node must be the child of a [Skeleton] node. You can then select a bone for this node to attach to. The BoneAttachment node will copy the transform of the selected bone.
 	</description>
 	<methods>
+		<method name="get_bone_name" qualifiers="const">
+			<return type="String">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="set_bone_name">
+			<argument index="0" name="bone_name" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
 	</methods>
 	<constants>
 	</constants>
@@ -6535,6 +6572,12 @@
 				Return the index of the currently selected button in the array.
 			</description>
 		</method>
+		<method name="is_flat" qualifiers="const">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
 		<method name="set_button_icon">
 			<argument index="0" name="button_idx" type="int">
 			</argument>
@@ -6557,6 +6600,12 @@
 			<argument index="0" name="button_idx" type="int">
 			</argument>
 			<argument index="1" name="text" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_flat">
+			<argument index="0" name="enabled" type="bool">
 			</argument>
 			<description>
 			</description>
@@ -6905,6 +6954,13 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_custom_viewport" qualifiers="const">
+			<return type="Viewport">
+			</return>
+			<description>
+				Return the viewport RID for this layer.
+			</description>
+		</method>
 		<method name="get_drag_margin" qualifiers="const">
 			<return type="float">
 			</return>
@@ -6998,6 +7054,12 @@
 		</method>
 		<method name="set_anchor_mode">
 			<argument index="0" name="anchor_mode" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_custom_viewport">
+			<argument index="0" name="viewport" type="Viewport">
 			</argument>
 			<description>
 			</description>
@@ -7694,6 +7756,13 @@
 		Canvas Item layer. [CanvasItem] nodes that are direct or indirect children of a [CanvasLayer] will be drawn in that layer. The layer is a numeric index that defines the draw order. The default 2D scene renders with index 0, so a [CanvasLayer] with index -1 will be drawn below, and one with index 1 will be drawn above. This is very useful for HUDs (in layer 1+ or above), or backgrounds (in layer -1 or below).
 	</description>
 	<methods>
+		<method name="get_custom_viewport" qualifiers="const">
+			<return type="Viewport">
+			</return>
+			<description>
+				Return the viewport RID for this layer.
+			</description>
+		</method>
 		<method name="get_layer" qualifiers="const">
 			<return type="int">
 			</return>
@@ -7736,18 +7805,17 @@
 				Return the base transform for this layer.
 			</description>
 		</method>
-		<method name="get_viewport" qualifiers="const">
-			<return type="RID">
-			</return>
-			<description>
-				Return the viewport RID for this layer.
-			</description>
-		</method>
 		<method name="get_world_2d" qualifiers="const">
 			<return type="World2D">
 			</return>
 			<description>
 				Return the [World2D] used by this layer.
+			</description>
+		</method>
+		<method name="set_custom_viewport">
+			<argument index="0" name="viewport" type="Viewport">
+			</argument>
+			<description>
 			</description>
 		</method>
 		<method name="set_layer">
@@ -10338,6 +10406,10 @@
 				If "atpos" is given, the point is inserted before the point number "atpos", moving that point (and every point after) after the inserted point. If "atpos" is not given, or is an illegal value (atpos &lt;0 or atpos &gt;= [method get_point_count]), the point will be appended at the end of the point list.
 			</description>
 		</method>
+		<method name="clear_points">
+			<description>
+			</description>
+		</method>
 		<method name="get_bake_interval" qualifiers="const">
 			<return type="float">
 			</return>
@@ -10507,6 +10579,10 @@
 			<description>
 				Adds a point to a curve, at position "pos", with control points "in" and "out".
 				If "atpos" is given, the point is inserted before the point number "atpos", moving that point (and every point after) after the inserted point. If "atpos" is not given, or is an illegal value (atpos &lt;0 or atpos &gt;= [method get_point_count]), the point will be appended at the end of the point list.
+			</description>
+		</method>
+		<method name="clear_points">
+			<description>
 			</description>
 		</method>
 		<method name="get_bake_interval" qualifiers="const">
@@ -11599,6 +11675,13 @@
 				This function is used for plugins that edit specific object types (nodes or resources). It requests the editor to edit the given object.
 			</description>
 		</method>
+		<method name="edit_resource">
+			<argument index="0" name="arg0" type="Object">
+			</argument>
+			<description>
+				Tells the editor to handle the edit of the given resource. For example, if you pass a script as argument, the editor will open the script editor.
+			</description>
+		</method>
 		<method name="forward_input_event" qualifiers="virtual">
 			<return type="bool">
 			</return>
@@ -11916,17 +11999,19 @@
 			</argument>
 			<description>
 				Add a custom property info to a property. The dictionary must contain: name:[String](the name of the property) and type:[int](see TYPE_* in [@Global Scope]), and optionally hint:[int](see PROPERTY_HINT_* in [@Global Scope]), hint_string:[String].
-			Example:[codeblock]
-			editor_settings.set("category/property_name", 0)
+				Example:
+				[codeblock]
+				editor_settings.set("category/property_name", 0)
 
-			var property_info = {
-			    "name": "category/property_name",
-			    "type": TYPE_INT,
-			    "hint": PROPERTY_HINT_ENUM,
-			    "hint_string": "one,two,three"
-			}
+				var property_info = {
+				    "name": "category/property_name",
+				    "type": TYPE_INT,
+				    "hint": PROPERTY_HINT_ENUM,
+				    "hint_string": "one,two,three"
+				}
 
-			editor_settings.add_property_info(property_info)[/codeblock]
+				editor_settings.add_property_info(property_info)
+				[/codeblock]
 			</description>
 		</method>
 		<method name="erase">
@@ -15051,7 +15136,7 @@
 			<return type="int">
 			</return>
 			<description>
-				Returns a status string like STATUS_REQUESTING. Need to call [method poll] in order to get status updates.
+				Returns a STATUS_* enum constant. Need to call [method poll] in order to get status updates.
 			</description>
 		</method>
 		<method name="has_response" qualifiers="const">
@@ -15173,6 +15258,12 @@
 			</argument>
 			<description>
 				Set connection to use, for this client.
+			</description>
+		</method>
+		<method name="set_ip_type">
+			<argument index="0" name="ip_type" type="int">
+			</argument>
+			<description>
 			</description>
 		</method>
 		<method name="set_read_chunk_size">
@@ -15418,6 +15509,12 @@
 				Set the file to download into. Outputs the response body into the file.
 			</description>
 		</method>
+		<method name="set_ip_type">
+			<argument index="0" name="ip_type" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="set_max_redirects">
 			<argument index="0" name="amount" type="int">
 			</argument>
@@ -15560,6 +15657,12 @@
 		IP contains some support functions for the IPv4 protocol. TCP/IP support is in different classes (see [StreamPeerTCP] and [TCP_Server]). IP provides hostname resolution support, both blocking and threaded.
 	</description>
 	<methods>
+		<method name="clear_cache">
+			<argument index="0" name="arg0" type="String" default="&quot;&quot;">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="erase_resolve_item">
 			<argument index="0" name="id" type="int">
 			</argument>
@@ -15596,8 +15699,10 @@
 			</return>
 			<argument index="0" name="host" type="String">
 			</argument>
+			<argument index="1" name="ip_type" type="int" default="3">
+			</argument>
 			<description>
-				Resolve a given hostname, blocking. Resolved hostname is returned as an IP.
+				Resolve a given hostname, blocking. Resolved hostname is returned as an IPv4 or IPv6 depending on "ip_type".
 			</description>
 		</method>
 		<method name="resolve_hostname_queue_item">
@@ -15605,8 +15710,10 @@
 			</return>
 			<argument index="0" name="host" type="String">
 			</argument>
+			<argument index="1" name="ip_type" type="int" default="3">
+			</argument>
 			<description>
-				Create a queue item for resolving a given hostname. The queue ID is returned, or RESOLVER_INVALID_ID on error.
+				Create a queue item for resolving a given hostname to an IPv4 or IPv6 depending on "ip_type". The queue ID is returned, or RESOLVER_INVALID_ID on error.
 			</description>
 		</method>
 	</methods>
@@ -15622,6 +15729,14 @@
 		<constant name="RESOLVER_MAX_QUERIES" value="32">
 		</constant>
 		<constant name="RESOLVER_INVALID_ID" value="-1">
+		</constant>
+		<constant name="TYPE_NONE" value="0">
+		</constant>
+		<constant name="TYPE_IPV4" value="1">
+		</constant>
+		<constant name="TYPE_IPV6" value="2">
+		</constant>
+		<constant name="TYPE_ANY" value="3">
 		</constant>
 	</constants>
 </class>
@@ -18464,7 +18579,7 @@
 			</description>
 		</method>
 		<method name="get_collider" qualifiers="const">
-			<return type="Object">
+			<return type="Variant">
 			</return>
 			<description>
 				Return the body that collided with this one.
@@ -18580,7 +18695,7 @@
 	</description>
 	<methods>
 		<method name="get_collider" qualifiers="const">
-			<return type="Object">
+			<return type="Variant">
 			</return>
 			<description>
 				Return the body that collided with this one.
@@ -22514,6 +22629,27 @@
 				Return the global position of the 2D node.
 			</description>
 		</method>
+		<method name="get_global_rot" qualifiers="const">
+			<return type="float">
+			</return>
+			<description>
+				Return the global rotation in radians of the 2D node.
+			</description>
+		</method>
+		<method name="get_global_rotd" qualifiers="const">
+			<return type="float">
+			</return>
+			<description>
+				Return the global rotation in degrees of the 2D node.
+			</description>
+		</method>
+		<method name="get_global_scale" qualifiers="const">
+			<return type="Vector2">
+			</return>
+			<description>
+				Return the global scale of the 2D node.
+			</description>
+		</method>
 		<method name="get_pos" qualifiers="const">
 			<return type="Vector2">
 			</return>
@@ -22615,6 +22751,27 @@
 			</argument>
 			<description>
 				Set the global position of the 2D node to 'pos'.
+			</description>
+		</method>
+		<method name="set_global_rot">
+			<argument index="0" name="radians" type="float">
+			</argument>
+			<description>
+				Set the global rotation in radians of the 2D node.
+			</description>
+		</method>
+		<method name="set_global_rotd">
+			<argument index="0" name="degrees" type="float">
+			</argument>
+			<description>
+				Set the global rotation in degrees of the 2D node.
+			</description>
+		</method>
+		<method name="set_global_scale">
+			<argument index="0" name="scale" type="Vector2">
+			</argument>
+			<description>
+				Set the global scale of the 2D node.
 			</description>
 		</method>
 		<method name="set_global_transform">
@@ -22951,6 +23108,12 @@
 			</return>
 			<description>
 				Return the path to the current engine executable.
+			</description>
+		</method>
+		<method name="get_exit_code" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
 			</description>
 		</method>
 		<method name="get_frames_drawn">
@@ -23407,6 +23570,12 @@
 		</method>
 		<method name="set_current_screen">
 			<argument index="0" name="screen" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_exit_code">
+			<argument index="0" name="code" type="int">
 			</argument>
 			<description>
 			</description>
@@ -24507,13 +24676,6 @@
 				Close the UDP socket the [PacketPeerUDP] is currently listening on.
 			</description>
 		</method>
-		<method name="get_packet_address" qualifiers="const">
-			<return type="int">
-			</return>
-			<description>
-				Return the address of the remote peer(as a 32bit integer) that sent the last packet(that was received with [method get_packet] or [method get_var]).
-			</description>
-		</method>
 		<method name="get_packet_ip" qualifiers="const">
 			<return type="String">
 			</return>
@@ -24543,7 +24705,13 @@
 			<argument index="1" name="recv_buf_size" type="int" default="65536">
 			</argument>
 			<description>
-				Make this [PacketPeerUDP] listen on the "port" using a buffer size "recv_buf_size". Listens on all available adresses.
+				Make this [PacketPeerUDP] listen on the "port" with a buffer size "recv_buf_size". Listens on all available addresses.
+			</description>
+		</method>
+		<method name="set_ip_type">
+			<argument index="0" name="ip_type" type="int">
+			</argument>
+			<description>
 			</description>
 		</method>
 		<method name="set_send_address">
@@ -24554,7 +24722,7 @@
 			<argument index="1" name="port" type="int">
 			</argument>
 			<description>
-				Set the destination address and port for sending packets and variables, a hostname will be resolved if valid.
+				Set the destination address and port for sending packets and variables, a hostname will be resolved using if valid.
 			</description>
 		</method>
 		<method name="wait">
@@ -30171,6 +30339,13 @@
 			<description>
 			</description>
 		</method>
+		<method name="is_hide_on_item_selection">
+			<return type="bool">
+			</return>
+			<description>
+				Returns a boolean that indicates whether or not the PopupMenu will hide on item selection.
+			</description>
+		</method>
 		<method name="is_item_checkable" qualifiers="const">
 			<return type="bool">
 			</return>
@@ -30212,6 +30387,13 @@
 			</argument>
 			<description>
 				Removes the item at index "idx" from the menu. Note that the indexes of items after the removed item are going to be shifted by one.
+			</description>
+		</method>
+		<method name="set_hide_on_item_selection">
+			<argument index="0" name="enable" type="bool">
+			</argument>
+			<description>
+				Sets whether or not the PopupMenu will hide on item selection.
 			</description>
 		</method>
 		<method name="set_item_ID">
@@ -32569,7 +32751,7 @@
 			<return type="Array">
 			</return>
 			<description>
-				Return a list of the bodies colliding with this one.
+				Return a list of the bodies colliding with this one. By default, number of max contacts reported is at 0 , see [method set_max_contacts_reported] to increase it.
 			</description>
 		</method>
 		<method name="get_friction" qualifiers="const">
@@ -32930,7 +33112,7 @@
 			<return type="Array">
 			</return>
 			<description>
-				Return a list of the bodies colliding with this one.
+				Return a list of the bodies colliding with this one. By default, number of max contacts reported is at 0 , see [method set_max_contacts_reported] to increase it. You must also enable contact monitor, see [method set_contact_monitor]
 			</description>
 		</method>
 		<method name="get_continuous_collision_detection_mode" qualifiers="const">
@@ -38120,7 +38302,7 @@
 			<argument index="1" name="port" type="int">
 			</argument>
 			<description>
-				Connect to the specified IP:port pair. Returns [OK] on success or [FAILED] on failure.
+				Connect to the specified host:port pair. A hostname will be resolved if valid. Returns [OK] on success or [FAILED] on failure.
 			</description>
 		</method>
 		<method name="disconnect">
@@ -38154,6 +38336,12 @@
 			</return>
 			<description>
 				Return whether this peer is connected. Returns true while connecting and connected.
+			</description>
+		</method>
+		<method name="set_ip_type">
+			<argument index="0" name="ip_type" type="int">
+			</argument>
+			<description>
 			</description>
 		</method>
 	</methods>
@@ -39634,7 +39822,13 @@
 			<argument index="1" name="accepted_hosts" type="StringArray" default="StringArray([])">
 			</argument>
 			<description>
-				Listen on a port, alternatively give a white-list of accepted hosts.
+				Listen on a port using protocol, alternatively give a white-list of accepted hosts.
+			</description>
+		</method>
+		<method name="set_ip_type">
+			<argument index="0" name="ip_type" type="int">
+			</argument>
+			<description>
 			</description>
 		</method>
 		<method name="stop">
@@ -45104,6 +45298,12 @@
 				Return the 3D world of the viewport.
 			</description>
 		</method>
+		<method name="get_world_2d" qualifiers="const">
+			<return type="World2D">
+			</return>
+			<description>
+			</description>
+		</method>
 		<method name="gui_get_drag_data" qualifiers="const">
 			<return type="Variant">
 			</return>
@@ -45325,6 +45525,12 @@
 			</argument>
 			<description>
 				Change the 3D world of the viewport.
+			</description>
+		</method>
+		<method name="set_world_2d">
+			<argument index="0" name="world_2d" type="World2D">
+			</argument>
+			<description>
 			</description>
 		</method>
 		<method name="unhandled_input">

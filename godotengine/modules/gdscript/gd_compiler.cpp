@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -659,6 +659,46 @@ int GDCompiler::_parse_expression(CodeGen& codegen,const GDParser::Node *p_expre
 					codegen.opcodes[jump_success_pos2]=codegen.opcodes.size();
 					codegen.opcodes.push_back(GDFunction::OPCODE_ASSIGN_TRUE);
 					codegen.opcodes.push_back(p_stack_level|GDFunction::ADDR_TYPE_STACK<<GDFunction::ADDR_BITS);
+					return p_stack_level|GDFunction::ADDR_TYPE_STACK<<GDFunction::ADDR_BITS;
+
+				} break;
+				// ternary operators
+				case GDParser::OperatorNode::OP_TERNARY_IF: {
+
+					// x IF a ELSE y operator with early out on failure
+
+					int res = _parse_expression(codegen,on->arguments[0],p_stack_level);
+					if (res<0)
+						return res;
+					codegen.opcodes.push_back(GDFunction::OPCODE_JUMP_IF_NOT);
+					codegen.opcodes.push_back(res);
+					int jump_fail_pos=codegen.opcodes.size();
+					codegen.opcodes.push_back(0);
+
+
+					res = _parse_expression(codegen,on->arguments[1],p_stack_level);
+					if (res<0)
+						return res;
+					
+					codegen.alloc_stack(p_stack_level); //it will be used..
+					codegen.opcodes.push_back(GDFunction::OPCODE_ASSIGN);
+					codegen.opcodes.push_back(p_stack_level|GDFunction::ADDR_TYPE_STACK<<GDFunction::ADDR_BITS);
+					codegen.opcodes.push_back(res);
+					codegen.opcodes.push_back(GDFunction::OPCODE_JUMP);
+					int jump_past_pos=codegen.opcodes.size();
+					codegen.opcodes.push_back(0);
+					
+					codegen.opcodes[jump_fail_pos]=codegen.opcodes.size();
+					res = _parse_expression(codegen,on->arguments[2],p_stack_level);
+					if (res<0)
+						return res;
+					
+					codegen.opcodes.push_back(GDFunction::OPCODE_ASSIGN);
+					codegen.opcodes.push_back(p_stack_level|GDFunction::ADDR_TYPE_STACK<<GDFunction::ADDR_BITS);
+					codegen.opcodes.push_back(res);
+					
+					codegen.opcodes[jump_past_pos]=codegen.opcodes.size();
+					
 					return p_stack_level|GDFunction::ADDR_TYPE_STACK<<GDFunction::ADDR_BITS;
 
 				} break;
