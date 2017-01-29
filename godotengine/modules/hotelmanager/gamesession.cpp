@@ -101,7 +101,7 @@ void GameSession::_process(float delta)
 	// Auto save
 	m_autosave_timer -= delta;
 	if (m_autosave_timer <= 0.0f) {
-		m_autosave_timer = 600.0f;
+		m_autosave_timer = 300.0f;
 		char buf[16];
 		snprintf(buf, 16, "%lu", time(NULL));
 		String date = "autosave_" + (String) buf;
