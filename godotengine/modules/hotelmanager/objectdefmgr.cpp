@@ -342,3 +342,13 @@ const TileGroup& ObjectDefMgr::get_tilegroup_priv(const std::string &g)
 	}
 	return *tg->second;
 }
+
+const Mission& ObjectDefMgr::get_mission_priv(const uint32_t id)
+{
+	const auto &m = m_missions.find(id);
+	if (m == m_missions.end()) {
+		static const Mission null_mission = {};
+		return null_mission;
+	}
+	return *m->second;
+}

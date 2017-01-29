@@ -16,9 +16,11 @@
 #pragma once
 
 #include <scene/main/canvas_layer.h>
+#include <modules/hotelmanager/missions.h>
 
 class LayerTileMenu;
 class Clock;
+class Panel;
 
 class Hud: public CanvasLayer
 {
@@ -33,6 +35,7 @@ public:
 	void set_day_label(const uint32_t day);
 	void modify_clock(const double &time);
 
+	void add_mission(const Mission &mission);
 protected:
 	static void _bind_methods();
 	void _on_draw();
@@ -42,4 +45,5 @@ private:
 	LayerTileMenu *m_ground_menu = nullptr;
 	LayerTileMenu *m_floor_menu = nullptr;
 	Clock *m_clock = nullptr;
+	Panel *m_mission_panel = nullptr;
 };

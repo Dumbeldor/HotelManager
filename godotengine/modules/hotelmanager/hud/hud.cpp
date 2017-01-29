@@ -14,11 +14,9 @@
  */
 
 #include <scene/gui/label.h>
-#include <cmath>
 #include <iostream>
-#include <scene/gui/tab_container.h>
 #include <scene/2d/node_2d.h>
-#include <scene/gui/container.h>
+#include <scene/gui/panel.h>
 #include <scene/gui/texture_button.h>
 #include "hud.h"
 #include "modules/hotelmanager/gui_tabs.h"
@@ -38,6 +36,9 @@ void Hud::init()
 	TextureButton *floor_menu = get_node(String("ControlPane_Bottom/FloorMenu"))->
 		cast_to<TextureButton>();
 	assert(floor_menu);
+
+	m_mission_panel = get_node(String("ControlPane/MissionPanel"))->cast_to<Panel>();
+	assert(m_mission_panel);
 
 	// Init some HUD elements: note this should be done using a Hud element (see issue #17)
 	m_ground_menu = memnew(LayerTileMenu);
@@ -150,4 +151,14 @@ void Hud::modify_clock(const double &time)
 	assert(clock_label);
 
 	clock_label->set_text(m_clock->to_string());
+}
+
+/**
+ * Add mission to HUD
+ *
+ * @param mission
+ */
+void Hud::add_mission(const Mission &mission)
+{
+	// @ TODO create mission + objectives onto hud
 }

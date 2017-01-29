@@ -17,7 +17,9 @@
 
 #include <scene/main/node.h>
 #include <cmath>
+#include <unordered_set>
 #include "achievements.h"
+#include "missions.h"
 
 class GameMap;
 class Hud;
@@ -63,7 +65,6 @@ protected:
 
 	void set_game_speed__api(const int speed) { m_game_speed = (uint8_t) speed; }
 
-	// m_current_day
 	/**
 	 * Calculate current day
 	 * 1 day = m_game_time / (60 * 24) = 24 min real time
@@ -74,6 +75,8 @@ protected:
 		return (uint32_t) std::floor(m_game_time / 60 / 24) + 1;
 	}
 private:
+	void start_mission(const uint32_t mission_id);
+
 	int64_t m_money = 2000;
 	uint8_t m_game_speed = 1;
 	double m_game_time = 0;
@@ -82,5 +85,6 @@ private:
 	GameMap *m_map = nullptr;
 	Hud *m_hud = nullptr;
 	ObjectDefMgr *m_objdef_mgr = nullptr;
-	AchievementProgressMap m_achievements;
+	AchievementProgressMap m_achievements = {};
+	MissionProgressMap m_mission_progress = {};
 };
