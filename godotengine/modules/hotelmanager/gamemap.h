@@ -55,6 +55,8 @@ private:
 	void generate_map_borders();
 	void generate_map();
 
+	static int32_t get_area_cost(const GameTileDef &tiledef, const Vector2 &pos1,
+		const Vector2 &pos2);
 	static bool is_out_of_bounds(const Vector2 &pos);
 
 	// Selection & Placement
