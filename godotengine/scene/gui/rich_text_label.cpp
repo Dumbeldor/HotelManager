@@ -1262,8 +1262,8 @@ void RichTextLabel::add_newline() {
 
 }
 
-void RichTextLabel::remove_line(const int line)
-{
+void RichTextLabel::remove_line(const int line) {
+
 	if (line >= current_frame->lines.size())
 		return;
 
