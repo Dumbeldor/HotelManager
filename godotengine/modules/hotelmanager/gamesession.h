@@ -80,7 +80,7 @@ private:
 	int64_t m_money = 2000;
 	uint8_t m_game_speed = 1;
 	double m_game_time = 0;
-	float m_autosave_timer = 10.0f;
+	float m_autosave_timer = 300.0f;
 
 	GameMap *m_map = nullptr;
 	Hud *m_hud = nullptr;
