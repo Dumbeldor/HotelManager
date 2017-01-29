@@ -67,7 +67,7 @@ Files extracted from upstream source:
 ## libpng
 
 - Upstream: http://libpng.org/pub/png/libpng.html
-- Version: 1.6.26
+- Version: 1.6.28
 - License: libpng/zlib
 
 Files extracted from upstream source:
@@ -94,7 +94,7 @@ Files extracted from upstream source:
 ## libwebp
 
 - Upstream: https://chromium.googlesource.com/webm/libwebp/
-- Version: 0.5.1
+- Version: 0.5.2
 - License: BSD-3-Clause
 
 Files extracted from upstream source:
@@ -110,7 +110,7 @@ changes are marked with `// -- GODOT --` comments.
 ## openssl
 
 - Upstream: https://www.openssl.org
-- Version: 1.2.0h
+- Version: 1.0.2h
 - License: OpenSSL license / BSD-like
 
 Files extracted from the upstream source:
@@ -121,7 +121,7 @@ TODO.
 ## opus
 
 - Upstream: https://opus-codec.org
-- Version: 1.1.2 (opus) and 0.7 (opusfile)
+- Version: 1.1.3 (opus) and 0.8 (opusfile)
 - License: BSD-3-Clause
 
 Files extracted from upstream source:
@@ -201,9 +201,9 @@ Files extracted from upstream source:
 ## zlib
 
 - Upstream: http://www.zlib.net/
-- Version: 1.2.8
+- Version: 1.2.11
 - License: zlib
 
 Files extracted from upstream source:
 
-- all .c and .h files apart from `gz*`
+- all .c and .h files

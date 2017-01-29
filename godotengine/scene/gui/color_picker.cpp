@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -162,7 +162,7 @@ void ColorPicker::_html_entered(const String& p_html) {
 	if (!is_inside_tree())
 		return;
 
-	_update_color();
+	set_color(color);
 	emit_signal("color_changed",color);
 }
 
@@ -296,7 +296,7 @@ void ColorPicker::_hsv_draw(int p_wich,Control* c)
 void ColorPicker::_uv_input(const InputEvent &ev) {
 	if (ev.type == InputEvent::MOUSE_BUTTON) {
 		const InputEventMouseButton &bev = ev.mouse_button;
-		if (bev.pressed) {
+		if (bev.pressed && bev.button_index==BUTTON_LEFT) {
 			changing_color = true;
 			float x = CLAMP((float)bev.x,0,256);
 			float y = CLAMP((float)bev.y,0,256);
@@ -329,7 +329,7 @@ void ColorPicker::_uv_input(const InputEvent &ev) {
 void ColorPicker::_w_input(const InputEvent &ev) {
 	if (ev.type == InputEvent::MOUSE_BUTTON) {
 		const InputEventMouseButton &bev = ev.mouse_button;
-		if (bev.pressed) {
+		if (bev.pressed && bev.button_index==BUTTON_LEFT) {
 			changing_color = true;
 			h=1-((float)bev.y)/256.0;
 

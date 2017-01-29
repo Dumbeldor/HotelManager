@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -3437,7 +3437,7 @@ void SpatialEditor::_instance_scene() {
 #if 0
 	EditorNode *en = get_scene()->get_root_node()->cast_to<EditorNode>();
 	ERR_FAIL_COND(!en);
-	String path = en->get_scenes_dock()->get_selected_path();
+	String path = en->get_filesystem_dock()->get_selected_path();
 	if (path=="") {
 		set_message(TTR("No scene selected to instance!"));
 		return;

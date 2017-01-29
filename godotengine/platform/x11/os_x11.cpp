@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -1989,6 +1989,11 @@ OS_X11::OS_X11() {
 #ifdef ALSA_ENABLED
 	AudioDriverManagerSW::add_driver(&driver_alsa);
 #endif
+
+	if(AudioDriverManagerSW::get_driver_count() == 0){
+		WARN_PRINT("No sound driver found... Defaulting to dummy driver");
+		AudioDriverManagerSW::add_driver(&driver_dummy);
+	}
 
 	minimized = false;
 	xim_style=0L;

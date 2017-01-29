@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -144,7 +144,7 @@ public:
 	bool is_numeric() const;
 	double to_double() const;
 	float to_float() const;
-	int hex_to_int() const;
+	int hex_to_int(bool p_with_prefix = true) const;
 	int to_int() const;
 
 	int64_t to_int64() const;
@@ -226,6 +226,7 @@ public:
 	bool is_valid_identifier() const;
 	bool is_valid_integer() const;
 	bool is_valid_float() const;
+	bool is_valid_hex_number(bool p_with_prefix) const;
 	bool is_valid_html_color() const;
 	bool is_valid_ip_address() const;
 

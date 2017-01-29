@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -571,15 +571,12 @@ Error ShaderCompilerGLES2::compile_node(SL::ProgramNode *p_program) {
 
 		global_code+=uline;
 		if (uniforms) {
-			//if (uniforms->has(E->key())) {
-			//	//repeated uniform, error
-		//		ERR_EXPLAIN("Uniform already exists from other shader: "+String(E->key()));
-		//		ERR_FAIL_COND_V(uniforms->has(E->key()),ERR_ALREADY_EXISTS);
-//
-//			}
-			SL::Uniform u = E->get();
-			u.order+=ubase;
-			uniforms->insert(E->key(),u);
+			// Check to avoid uniforms with the same name being re-added to avoid overwriting entries
+			if (!uniforms->has(E->key())) {
+				SL::Uniform u = E->get();
+				u.order+=ubase;
+				uniforms->insert(E->key(),u);
+			}
 		}
 	}
 

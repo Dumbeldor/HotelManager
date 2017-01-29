@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,16 +31,11 @@
 #include "stream_peer_winsock.h"
 
 #include <winsock2.h>
+#include <ws2tcpip.h>
+
+#include "drivers/unix/socket_helpers.h"
 
 int winsock_refcount = 0;
-
-static void set_addr_in(struct sockaddr_in& their_addr, const IP_Address& p_host, uint16_t p_port) {
-
-	their_addr.sin_family = AF_INET;    // host byte order
-	their_addr.sin_port = htons(p_port);  // short, network byte order
-	their_addr.sin_addr = *((struct in_addr*)&p_host.host);
-	memset(&(their_addr.sin_zero), '\0', 8);
-};
 
 StreamPeerTCP* StreamPeerWinsock::_create() {
 
@@ -92,10 +87,10 @@ Error StreamPeerWinsock::_poll_connection(bool p_block) const {
 		_block(sockfd, false, true);
 	};
 
-	struct sockaddr_in their_addr;
-	set_addr_in(their_addr, peer_host, peer_port);
+	struct sockaddr_storage their_addr;
+	size_t addr_size = _set_sockaddr(&their_addr, peer_host, peer_port, ip_type);
 
-	if (::connect(sockfd, (struct sockaddr *)&their_addr,sizeof(struct sockaddr)) == SOCKET_ERROR) {
+	if (::connect(sockfd, (struct sockaddr *)&their_addr,addr_size) == SOCKET_ERROR) {
 
 		int err = WSAGetLastError();
 		if (err == WSAEISCONN) {
@@ -103,7 +98,12 @@ Error StreamPeerWinsock::_poll_connection(bool p_block) const {
 			return OK;
 		};
 
-		return OK;
+		if (err == WSAEINPROGRESS || err == WSAEALREADY) {
+			return OK;
+		}
+
+		status = STATUS_ERROR;
+		return ERR_CONNECTION_ERROR;
 	} else {
 
 		status = STATUS_CONNECTED;
@@ -136,13 +136,11 @@ Error StreamPeerWinsock::write(const uint8_t* p_data,int p_bytes, int &r_sent, b
 	int data_to_send = p_bytes;
 	const uint8_t *offset = p_data;
 	if (sockfd == -1) return FAILED;
-	errno = 0;
 	int total_sent = 0;
 
 	while (data_to_send) {
 
 		int sent_amount = send(sockfd, (const char*)offset, data_to_send, 0);
-		//printf("Sent TCP data of %d bytes, errno %d\n", sent_amount, errno);
 
 		if (sent_amount == -1) {
 
@@ -195,7 +193,6 @@ Error StreamPeerWinsock::read(uint8_t* p_buffer, int p_bytes,int &r_received, bo
 
 	int to_read = p_bytes;
 	int total_read = 0;
-	errno = 0;
 
 	while (to_read) {
 
@@ -289,8 +286,9 @@ void StreamPeerWinsock::disconnect() {
 	peer_port = 0;
 };
 
-void StreamPeerWinsock::set_socket(int p_sockfd, IP_Address p_host, int p_port) {
+void StreamPeerWinsock::set_socket(int p_sockfd, IP_Address p_host, int p_port, IP::Type p_ip_type) {
 
+	ip_type = p_ip_type;
 	sockfd = p_sockfd;
 	status = STATUS_CONNECTING;
 	peer_host = p_host;
@@ -299,9 +297,10 @@ void StreamPeerWinsock::set_socket(int p_sockfd, IP_Address p_host, int p_port) 
 
 Error StreamPeerWinsock::connect(const IP_Address& p_host, uint16_t p_port) {
 
-	ERR_FAIL_COND_V( p_host.host == 0, ERR_INVALID_PARAMETER);
+	ERR_FAIL_COND_V( p_host == IP_Address(), ERR_INVALID_PARAMETER);
 
-	if ((sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == INVALID_SOCKET) {
+	sockfd = _socket_create(ip_type, SOCK_STREAM, IPPROTO_TCP);
+	if (sockfd  == INVALID_SOCKET) {
 		ERR_PRINT("Socket creation failed!");
 		disconnect();
 		//perror("socket");
@@ -315,10 +314,10 @@ Error StreamPeerWinsock::connect(const IP_Address& p_host, uint16_t p_port) {
 		return FAILED;
 	};
 
-	struct sockaddr_in their_addr;
-	set_addr_in(their_addr, p_host, p_port);
+	struct sockaddr_storage their_addr;
+	size_t addr_size = _set_sockaddr(&their_addr, p_host, p_port, ip_type);
 
-	if (::connect(sockfd, (struct sockaddr *)&their_addr,sizeof(struct sockaddr)) == SOCKET_ERROR) {
+	if (::connect(sockfd, (struct sockaddr *)&their_addr,addr_size) == SOCKET_ERROR) {
 
 		if (WSAGetLastError() != WSAEWOULDBLOCK) {
 			ERR_PRINT("Connection to remote host failed!");
@@ -366,6 +365,7 @@ StreamPeerWinsock::StreamPeerWinsock() {
 	sockfd = INVALID_SOCKET;
 	status = STATUS_NONE;
 	peer_port = 0;
+	ip_type = IP::TYPE_ANY;
 };
 
 StreamPeerWinsock::~StreamPeerWinsock() {

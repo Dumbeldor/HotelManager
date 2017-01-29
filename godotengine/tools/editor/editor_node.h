@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -137,7 +137,6 @@ private:
 		FILE_OPEN_OLD_SCENE,
 		FILE_QUICK_OPEN_SCENE,
 		FILE_QUICK_OPEN_SCRIPT,
-		FILE_QUICK_OPEN_FILE,
 		FILE_RUN_SCRIPT,
 		FILE_OPEN_PREV,
 		FILE_CLOSE,
@@ -276,7 +275,7 @@ private:
 	PropertyEditor *property_editor;
 	NodeDock *node_dock;
 	VBoxContainer *prop_editor_vb;
-	FileSystemDock *scenes_dock;
+	FileSystemDock *filesystem_dock;
 	EditorRunNative *run_native;
 
 	HBoxContainer *search_bar;
@@ -587,6 +586,7 @@ public:
 		EDITOR_SCRIPT
 	};
 
+	void set_visible_editor(EditorTable p_table) { _editor_select(p_table); }
 	static EditorNode* get_singleton() { return singleton; }
 
 
@@ -668,7 +668,7 @@ public:
 
 	void request_instance_scene(const String &p_path);
 	void request_instance_scenes(const Vector<String>& p_files);
-	FileSystemDock *get_scenes_dock();
+	FileSystemDock *get_filesystem_dock();
 	SceneTreeDock *get_scene_tree_dock();
 	static UndoRedo* get_undo_redo() { return &singleton->editor_data.get_undo_redo(); }
 

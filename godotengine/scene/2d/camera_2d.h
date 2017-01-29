@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -48,6 +48,8 @@ protected:
 	Point2 smoothed_camera_pos;
 	bool first;
 
+	ObjectID custom_viewport_id; // to check validity
+	Viewport *custom_viewport;
 	Viewport *viewport;
 
 	StringName group_name;
@@ -125,6 +127,9 @@ public:
 	Vector2 get_zoom() const;
 
 	Point2 get_camera_screen_center() const;
+
+	void set_custom_viewport(Node *p_viewport);
+	Node* get_custom_viewport() const;
 
 	Vector2 get_camera_pos() const;
 	void force_update_scroll();

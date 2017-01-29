@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -246,6 +246,9 @@ public:
 	void set_use_file_access_save_and_swap(bool p_enable);
 
 	void set_icon(const Image& p_icon);
+
+	int get_exit_code() const;
+	void set_exit_code(int p_code);
 	Dictionary get_date(bool utc) const;
 	Dictionary get_time(bool utc) const;
 	Dictionary get_datetime(bool utc) const;

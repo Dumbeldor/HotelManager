@@ -5,7 +5,7 @@
 /*                           GODOT ENGINE                                */
 /*                    http://www.godotengine.org                         */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2017 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -472,6 +472,8 @@ static void _call_##m_type##_##m_method(Variant& r_ret,Variant& p_self,const Var
 	VCALL_LOCALMEM1(Array,resize);
 	VCALL_LOCALMEM2(Array,insert);
 	VCALL_LOCALMEM1(Array,remove);
+	VCALL_LOCALMEM0R(Array,front);
+	VCALL_LOCALMEM0R(Array,back);
 	VCALL_LOCALMEM2R(Array,find);
 	VCALL_LOCALMEM2R(Array,rfind);
 	VCALL_LOCALMEM1R(Array,find_last);
@@ -1517,6 +1519,8 @@ _VariantCall::addfunc(Variant::m_vtype,Variant::m_ret,_SCS(#m_method),VCALL(m_cl
 	ADDFUNC2(ARRAY,NIL,Array,insert,INT,"pos",NIL,"value",varray());
 	ADDFUNC1(ARRAY,NIL,Array,remove,INT,"pos",varray());
 	ADDFUNC1(ARRAY,NIL,Array,erase,NIL,"value",varray());
+	ADDFUNC0(ARRAY,NIL,Array,front,varray());
+	ADDFUNC0(ARRAY,NIL,Array,back,varray());
 	ADDFUNC2(ARRAY,INT,Array,find,NIL,"what",INT,"from",varray(0));
 	ADDFUNC2(ARRAY,INT,Array,rfind,NIL,"what",INT,"from",varray(-1));
 	ADDFUNC1(ARRAY,INT,Array,find_last,NIL,"value",varray());
@@ -1760,6 +1764,7 @@ _VariantCall::addfunc(Variant::m_vtype,Variant::m_ret,_SCS(#m_method),VCALL(m_cl
 	_VariantCall::add_constant(Variant::IMAGE,"INTERPOLATE_NEAREST",Image::INTERPOLATE_NEAREST);
 	_VariantCall::add_constant(Variant::IMAGE,"INTERPOLATE_BILINEAR",Image::INTERPOLATE_BILINEAR);
 	_VariantCall::add_constant(Variant::IMAGE,"INTERPOLATE_CUBIC",Image::INTERPOLATE_CUBIC);
+
 }
 
 void unregister_variant_methods() {
