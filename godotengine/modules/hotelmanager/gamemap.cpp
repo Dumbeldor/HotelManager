@@ -23,6 +23,7 @@
 #include <scene/audio/sample_player.h>
 #include <scene/2d/canvas_modulate.h>
 #include <os/os.h>
+#include <queue>
 #include "gamemap.h"
 #include "mapcontrol.h"
 #include "objectselectorbutton.h"
@@ -298,31 +299,29 @@ void GameMap::_canvas_draw()
 				border_color = SELECTOR_BORDER_OLDTILE;
 			}
 
-			int32_t cost = tiledef.cost;
-			int32_t area_width = (int32_t) (ABS(end_tile.x) - ABS(start_tile.x) + 1);
-			int32_t area_height = (int32_t) (ABS(end_tile.y) - ABS(start_tile.y) + 1);
-			if (m_selection_in_progress) {
-				cost *= area_width * area_height;
-			}
+			Color selection_color = SELECTOR_RECT_COLOR_VALID;
 
-			for (float x = start_tile.x; x <= end_tile.x; x++) {
-				for (float y = start_tile.y; y <= end_tile.y; y++) {
-					Vector2 tile_pos(x, y);
-					// If tile is identical, reduce cost
-					if (selected_tilemap->get_cellv(tile_pos) == selected_tile_id) {
-						cost -= tiledef.cost;
+			int32_t cost = 0;
+			int32_t area_width = (int32_t) ABS(end_tile.x - start_tile.x + 1);
+			int32_t area_height = (int32_t) ABS(end_tile.y - start_tile.y + 1);
+			if (m_selection_in_progress) {
+				cost = get_area_cost(tiledef, start_tile, end_tile);
+
+				for (float x = start_tile.x; x <= end_tile.x; x++) {
+					for (float y = start_tile.y; y <= end_tile.y; y++) {
+						Vector2 tile_pos(x, y);
+						// If tile is identical, reduce cost
+						if (selected_tilemap->get_cellv(tile_pos) == selected_tile_id) {
+							cost -= tiledef.cost;
+						}
 					}
 				}
 			}
 
-			Color selection_color;
 			if (is_out_of_bounds(start_tile) || is_out_of_bounds(end_tile) ||
 				!m_game_session->has_money(cost)) {
 				selection_color = SELECTOR_RECT_COLOR_INVALID;
 				border_color = SELECTOR_BORDER_INVALID;
-			}
-			else {
-				selection_color = SELECTOR_RECT_COLOR_VALID;
 			}
 
 			MapSelectionInfos selection_infos;
@@ -447,14 +446,16 @@ void GameMap::init_selection()
 	m_selection_init_pos = m_ground_map->world_to_map(get_local_mouse_pos());
 }
 
-// @TODO checks for tile validity, etc will be added to this function
-
+/**
+ * checks for tile validity, etc will be added to this function
+ */
 void GameMap::place_tiles_in_selected_area()
 {
 	GameMapTile s_tile = ObjectSelectorButton::get_selected_tile_id();
 	const GameTileDef &tile_def = ObjectDefMgr::get_tiledef(s_tile);
 	// Ignore none tiles & tile unavailable to players
 	if (s_tile == TILE_NONE || tile_def.flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
+		reset_selection();
 		return;
 	}
 
@@ -479,6 +480,7 @@ void GameMap::place_tiles_in_selected_area()
 	}
 	else {
 		LOG_CRIT("Tile %d is not in an interesting group, ignoring.", tile_def.id);
+		reset_selection();
 		return;
 	}
 
@@ -493,7 +495,7 @@ void GameMap::place_tiles_in_selected_area()
 
 	if (cur_pos == m_selection_init_pos) {
 		if (!m_game_session->has_money(tiledef.cost)) {
-			// m_sound_player->play(SOUND_ERROR);
+			reset_selection();
 			return;
 		}
 
@@ -513,28 +515,26 @@ void GameMap::place_tiles_in_selected_area()
 			MAX(cur_pos.y, m_selection_init_pos.y)
 		);
 
-		int32_t cost = (int32_t) (tiledef.cost * ABS(end_tile.x - start_tile.x + 1) *
-			ABS(end_tile.y - start_tile.y + 1));
-
 		// Don't place anything if start or end is out of bounds
 		if (is_out_of_bounds(start_tile) || is_out_of_bounds(end_tile)) {
 			reset_selection();
 			return;
 		}
 
-		bool tile_changed = false;
+		int32_t cost = get_area_cost(tiledef, start_tile, end_tile);
 
+		std::queue<Vector2> tiles_to_modify;
+		// First reduce cost & note which tile we need to modify
 		for (float x = start_tile.x; x <= end_tile.x; x++) {
 			for (float y = start_tile.y; y <= end_tile.y; y++) {
 				Vector2 tile_pos(x, y);
-				// If tile is different, change it
-				if (interact_tilemap->get_cellv(tile_pos) != s_tile) {
-					tile_changed = true;
-					interact_tilemap->set_cellv(tile_pos, s_tile);
-				}
-				// else tile is identical, just reduce cost
-				else {
+				// tile is identical, just reduce cost
+				if (interact_tilemap->get_cellv(tile_pos) == s_tile) {
 					cost -= tiledef.cost;
+				}
+				// it's a different tile, add it to modifying queue
+				else {
+					tiles_to_modify.push(tile_pos);
 				}
 			}
 		}
@@ -546,13 +546,31 @@ void GameMap::place_tiles_in_selected_area()
 			return;
 		}
 
-		if (tile_changed) {
+		if (!tiles_to_modify.empty()) {
 			m_sound_player->play(SOUND_POP6);
 			m_game_session->remove_money(cost);
+
+			while (!tiles_to_modify.empty()) {
+				const Vector2 &pos = tiles_to_modify.front();
+				interact_tilemap->set_cellv(pos, s_tile);
+				tiles_to_modify.pop();
+			}
 		}
 	}
 
 	reset_selection();
+}
+
+/**
+ * Helper to calculate maximum area cost
+ * @param tiledef
+ * @param pos1
+ * @param pos2
+ * @return
+ */
+int32_t GameMap::get_area_cost(const GameTileDef &tiledef, const Vector2 &pos1, const Vector2 &pos2)
+{
+	return (int32_t) (tiledef.cost * ABS(pos2.x - pos1.x + 1) * ABS(pos2.y - pos1.y + 1));
 }
 
 /**
