@@ -20,6 +20,10 @@
 
 static const ChatCommand COMMANDHANDLERFINISHER = { nullptr, false, nullptr, nullptr, ""};
 
+/**
+ *
+ * @return
+ */
 ChatCommand *ChatHandler::getCommandTable()
 {
 	static ChatCommand moneyCommandTable[] =
@@ -173,6 +177,13 @@ ChatCommandSearchResult ChatHandler::find_command(ChatCommand *table, const char
 	return CHAT_COMMAND_UNKNOWN;
 }
 
+/**
+ *
+ * @param args
+ * @param game_session
+ * @param msg
+ * @return
+ */
 bool ChatHandler::handle_command_list(const std::string &args, GameSession *game_session, std::string &msg)
 {
 	ChatCommand* cmds = getCommandTable();
@@ -183,6 +194,13 @@ bool ChatHandler::handle_command_list(const std::string &args, GameSession *game
 	return true;
 }
 
+/**
+ *
+ * @param args
+ * @param game_session
+ * @param msg
+ * @return
+ */
 bool ChatHandler::handle_command_help(const std::string &args, GameSession *game_session, std::string &msg)
 {
 	if (args.empty()) {
@@ -215,6 +233,13 @@ bool ChatHandler::handle_command_help(const std::string &args, GameSession *game
 	}
 }
 
+/**
+ *
+ * @param args
+ * @param game_session
+ * @param msg
+ * @return
+ */
 bool ChatHandler::handle_command_money_add(const std::string &args, GameSession *game_session, std::string &msg)
 {
 	int nb = std::atoi(args.c_str());
@@ -227,6 +252,13 @@ bool ChatHandler::handle_command_money_add(const std::string &args, GameSession 
 	return true;
 }
 
+/**
+ *
+ * @param args
+ * @param game_session
+ * @param msg
+ * @return
+ */
 bool ChatHandler::handle_command_money_remove(const std::string &args, GameSession *game_session, std::string &msg)
 {
 	int nb = std::atoi(args.c_str());
@@ -239,6 +271,13 @@ bool ChatHandler::handle_command_money_remove(const std::string &args, GameSessi
 	return true;
 }
 
+/**
+ *
+ * @param args
+ * @param game_session
+ * @param msg
+ * @return
+ */
 bool ChatHandler::handle_command_time_speed(const std::string &args, GameSession *game_session, std::string &msg)
 {
 	if (args.empty()) {
@@ -261,6 +300,13 @@ bool ChatHandler::handle_command_time_speed(const std::string &args, GameSession
 	return true;
 }
 
+/**
+ *
+ * @param args
+ * @param game_session
+ * @param msg
+ * @return
+ */
 bool ChatHandler::handle_command_remove_line(const std::string &args, GameSession *game_session, std::string &msg)
 {
 	m_console->get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->remove_line(std::atoi(args.c_str()));
