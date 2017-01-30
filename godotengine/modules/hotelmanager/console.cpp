@@ -36,6 +36,10 @@ void Console::_bind_methods()
 	ObjectTypeDB::bind_method("send_command", &Console::send_command);
 }
 
+/**
+ * Add text at the end
+ * @param text
+ */
 void Console::add_text(const std::string &text)
 {
 	RichTextLabel *rich_text_label = get_node(String("RichTextLabel"))->cast_to<RichTextLabel>();
@@ -47,7 +51,10 @@ void Console::add_text(const std::string &text)
 		}
 	}
 }
-
+/**
+ * Append green colored sucessful text
+ * @param text
+ */
 void Console::tag_sucess(const std::string &text)
 {
 	if (text == "")
@@ -56,6 +63,10 @@ void Console::tag_sucess(const std::string &text)
 	rich_text_label->append_bbcode("[color=#33C73A]" + String(text.c_str()) + "[/color]\n");
 }
 
+/**
+ * Append red colored error text
+ * @param text
+ */
 void Console::add_error(const std::string &text)
 {
 	if (text == "")
@@ -64,6 +75,10 @@ void Console::add_error(const std::string &text)
 	rich_text_label->append_bbcode("[color=red]Error : " + String(text.c_str()) + "[/color]\n");
 }
 
+/**
+ *
+ * @param command
+ */
 void Console::send_command(const String &command)
 {
 	add_text(std::string(command.ascii().get_data()));
