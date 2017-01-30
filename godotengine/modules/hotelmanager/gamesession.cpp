@@ -20,6 +20,7 @@
 #include "modules/hotelmanager/hud/hud.h"
 #include "savegame.h"
 #include "log.h"
+#include "gameconfig.h"
 #include <unistd.h>
 
 #define MONEY_LIMIT 1000000000000
@@ -87,6 +88,9 @@ void GameSession::init(const String &savename)
 	if (m_mission_progress.empty()) {
 		start_mission(1);
 	}
+
+	//Auto save
+	m_autosave_timer = GameConfig::get_singleton()->get_interval_save();
 }
 
 /**
@@ -99,13 +103,15 @@ void GameSession::init(const String &savename)
 void GameSession::_process(float delta)
 {
 	// Auto save
-	m_autosave_timer -= delta;
-	if (m_autosave_timer <= 0.0f) {
-		m_autosave_timer = 300.0f;
-		char buf[16];
-		snprintf(buf, 16, "%lu", time(NULL));
-		String date = "autosave_" + (String) buf;
-		save(date);
+	if (GameConfig::get_singleton()->get_auto_save()) {
+		m_autosave_timer -= delta;
+		if (m_autosave_timer <= 0.0f) {
+			m_autosave_timer = GameConfig::get_singleton()->get_interval_save();
+			char buf[16];
+			snprintf(buf, 16, "%lu", time(NULL));
+			String date = "autosave_" + (String) buf;
+			save(date);
+		}
 	}
 
 	// Delta using game_speed

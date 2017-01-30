@@ -28,6 +28,7 @@
 #include "mapcontrol.h"
 #include "console.h"
 #include "hud/clock.h"
+#include "gameconfig.h"
 
 void register_hotelmanager_types()
 {
@@ -44,6 +45,7 @@ void register_hotelmanager_types()
 	ObjectTypeDB::register_type<MapControl>();
 	ObjectTypeDB::register_type<Console>();
 	ObjectTypeDB::register_type<HMButton>();
+	ObjectTypeDB::register_type<GameConfig>();
 }
 
 void unregister_hotelmanager_types()
