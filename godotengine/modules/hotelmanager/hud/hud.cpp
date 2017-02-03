@@ -18,6 +18,9 @@
 #include <scene/2d/node_2d.h>
 #include <scene/gui/panel.h>
 #include <scene/gui/texture_button.h>
+#include <scene/gui/box_container.h>
+#include <math/math_2d.h>
+#include <scene/gui/rich_text_label.h>
 #include "hud.h"
 #include "modules/hotelmanager/gui_tabs.h"
 #include "clock.h"
@@ -37,8 +40,8 @@ void Hud::init()
 		cast_to<TextureButton>();
 	assert(floor_menu);
 
-	m_mission_panel = get_node(String("ControlPane/MissionPanel"))->cast_to<Panel>();
-	assert(m_mission_panel);
+	m_mission_container = get_node(String("ControlPane/MissionPanel/MissionContainer"))->cast_to<VBoxContainer>();
+	assert(m_mission_container);
 
 	// Init some HUD elements: note this should be done using a Hud element (see issue #17)
 	m_ground_menu = memnew(LayerTileMenu);
@@ -160,5 +163,29 @@ void Hud::modify_clock(const double &time)
  */
 void Hud::add_mission(const Mission &mission)
 {
-	// @ TODO create mission + objectives onto hud
+	m_mission_container->get_parent()->cast_to<Panel>()->show();
+	RichTextLabel *mission_title = memnew(RichTextLabel);
+	mission_title->set_use_bbcode(true);
+	mission_title->set_bbcode(String("[b]") + String(mission.title.c_str()) + String("[/b]"));
+	mission_title->set_name("mission_" + String::num(mission.id));
+	mission_title->set_custom_minimum_size(Size2(200, 15));
+	m_mission_container->add_child(mission_title);
+
+	RichTextLabel *mission_desc = memnew(RichTextLabel);
+	mission_desc->set_use_bbcode(true);
+	mission_desc->set_bbcode(String("[i]") + String(mission.description.c_str()) + String("[/i]"));
+	mission_desc->set_name("mission_" + String::num(mission.id) + "_desc");
+	mission_desc->set_custom_minimum_size(Size2(200, 15));
+	m_mission_container->add_child(mission_desc);
+
+	VBoxContainer *objectives_container = memnew(VBoxContainer);
+	m_mission_container->add_child(objectives_container);
+
+	for (const auto &o: mission.objectives) {
+		Label *objective = memnew(Label);
+		objective->set_text(String("- ") + o->title.c_str());
+		objective->set_name("mission_obj_" + String::num(o->id));
+		objectives_container->set_margin(MARGIN_LEFT, 20);
+		objectives_container->add_child(objective);
+	}
 }

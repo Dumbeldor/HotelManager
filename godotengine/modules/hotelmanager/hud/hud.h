@@ -20,7 +20,7 @@
 
 class LayerTileMenu;
 class Clock;
-class Panel;
+class VBoxContainer;
 
 class Hud: public CanvasLayer
 {
@@ -45,5 +45,5 @@ private:
 	LayerTileMenu *m_ground_menu = nullptr;
 	LayerTileMenu *m_floor_menu = nullptr;
 	Clock *m_clock = nullptr;
-	Panel *m_mission_panel = nullptr;
+	VBoxContainer *m_mission_container = nullptr;
 };
