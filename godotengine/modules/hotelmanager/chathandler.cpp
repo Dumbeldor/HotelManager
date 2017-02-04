@@ -28,24 +28,24 @@ ChatCommand *ChatHandler::getCommandTable()
 {
 	static ChatCommand moneyCommandTable[] =
 	{
-		{ "add", true, &ChatHandler::handle_command_money_add, nullptr, "/money add <somme>" },
-		{ "remove", true, &ChatHandler::handle_command_money_remove, nullptr, "/money remove <somme>"},
+		{ "add", true, &ChatHandler::handle_command_money_add, nullptr, "Usage: /money add <count>" },
+		{ "remove", true, &ChatHandler::handle_command_money_remove, nullptr, "Usage: /money remove <count>"},
 		COMMANDHANDLERFINISHER,
 	};
 
 	static ChatCommand timeCommandTable[] =
 	{
-		{ "speed", true, &ChatHandler::handle_command_time_speed, nullptr, "/time speed <nb> nb between 0 and 100"},
+		{ "speed", true, &ChatHandler::handle_command_time_speed, nullptr, "Usage: /time speed <multiplier>. multiplier value is between 0 and 100"},
 		COMMANDHANDLERFINISHER,
 	};
 
 	static ChatCommand globalCommandTable[] =
 	{
-		{ "money", true, nullptr, moneyCommandTable, "/money <add OR remove>"},
-		{ "time", true, nullptr, timeCommandTable, "/time <speed>"},
+		{ "money", true, nullptr, moneyCommandTable, "Available subcommands: add|remove"},
+		{ "time", true, nullptr, timeCommandTable, "Available subcommands: speed"},
 		{ "list", true, &ChatHandler::handle_command_list, nullptr, ""},
 		{ "help", true, &ChatHandler::handle_command_help, nullptr, ""},
-		{ "remove_line", true, &ChatHandler::handle_command_remove_line, nullptr, "/remove_line <nb>"},
+		{ "remove_line", true, &ChatHandler::handle_command_remove_line, nullptr, "Usage: /remove_line <number>"},
 		COMMANDHANDLERFINISHER,
 	};
 
