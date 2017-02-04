@@ -1264,10 +1264,10 @@ void RichTextLabel::add_newline() {
 
 void RichTextLabel::remove_line(const int line) {
 
-	if (line >= current_frame->lines.size())
-		return;
-
 	int lines = line * 2;
+
+	if (lines >= current->subitems.size() || line < 0)
+		return;
 
 	if (current->subitems[lines]->type != ITEM_NEWLINE)
 		_remove_item(current->subitems[lines], current->subitems[lines]->line, lines);
