@@ -217,7 +217,7 @@ private:
 	void _validate_line_caches(ItemFrame *p_frame);
 
 	void _add_item(Item *p_item, bool p_enter=false,bool p_ensure_newline=false);
-	void _remove_item(Item *p_item, const int p_line, const int p_subitem_line);
+	void _remove_item(Item *p_item, const unsigned int p_line, const unsigned int p_subitem_line);
 
 
 
@@ -285,7 +285,7 @@ public:
 	void add_text(const String& p_text);
 	void add_image(const Ref<Texture>& p_image);
 	void add_newline();
-	void remove_line(const int line);
+	void remove_line(const unsigned int line);
 	void push_font(const Ref<Font>& p_font);
 	void push_color(const Color& p_color);
 	void push_underline();
