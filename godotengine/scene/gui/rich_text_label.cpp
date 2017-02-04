@@ -1216,7 +1216,7 @@ void RichTextLabel::_add_item(Item *p_item, bool p_enter, bool p_ensure_newline)
 
 }
 
-void RichTextLabel::_remove_item(Item* p_item, const int p_line, const int p_subitem_line) {
+void RichTextLabel::_remove_item(Item* p_item, const unsigned int p_line, const unsigned int p_subitem_line) {
 
 
 	int size = p_item->subitems.size();
@@ -1262,11 +1262,11 @@ void RichTextLabel::add_newline() {
 
 }
 
-void RichTextLabel::remove_line(const int line) {
+void RichTextLabel::remove_line(const unsigned int line) {
 
 	int lines = line * 2;
 
-	if (lines >= current->subitems.size() || line < 0)
+	if (lines >= current->subitems.size())
 		return;
 
 	if (current->subitems[lines]->type != ITEM_NEWLINE)
