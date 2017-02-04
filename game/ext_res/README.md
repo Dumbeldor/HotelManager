@@ -9,3 +9,7 @@
 # Sound resources
 * Danse Morialta.mp3 => mainmenu.ogg: http://incompetech.com/music/royalty-free/mp3-royaltyfree/Danse%20Morialta.mp3
 * Gymnopedie No 1 to 3: http://incompetech.com/music/royalty-free/index.html?collection=8 (CC By Attribution 3.0 License)
+
+# Font resources
+
+* Teen Font: http://www.1001fonts.com/teen-font.html

@@ -11,6 +11,11 @@ const MAINMENU = {
 var current_menu = MAINMENU.MAIN
 
 func _ready():
+	var default_theme = get_node("/root/global").get_theme()
+	get_node("ProjectInfos").set_theme(default_theme)
+	get_node("MainMenu").set_theme(default_theme)
+	get_node("PlayMenu").set_theme(default_theme)
+	
 	get_node("ProjectInfos/ProjectNameLabel").set_text(PROJECT.get_project_name())
 	get_node("ProjectInfos/ProjectNameLabel/ProjectVersion").set_text(PROJECT.get_full_version())
 
@@ -89,8 +94,8 @@ func _on_SaveList_item_activated( index ):
 
 
 func _on_SaveList_item_selected( index ):
-	get_node("PlayMenu/PlayPanel/SaveDetailsPanel/LoadGameButton").set_disabled(false)
-	get_node("PlayMenu/PlayPanel/SaveDetailsPanel/LoadGameButton/RemoveGameButton").set_disabled(false)
+	get_node("PlayMenu/PlayPanel/SaveDetailsPanel/RemoveGameButton/LoadGameButton").set_disabled(false)
+	get_node("PlayMenu/PlayPanel/SaveDetailsPanel/RemoveGameButton").set_disabled(false)
 	indexSave = index
 	var save_name = get_node("PlayMenu/PlayPanel/SaveList").get_item_text(index)
 	var saveGame = File.new()

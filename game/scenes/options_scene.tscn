@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=1]
+[gd_scene load_steps=4 format=1]
 
 [ext_resource path="res://images/menu_background.jpg" type="Texture" id=1]
 [ext_resource path="res://scripts/options_scene.gd" type="Script" id=2]
+[ext_resource path="res://fonts/teen.fnt" type="BitmapFont" id=3]
 
 [node name="Root" type="Sprite"]
 
@@ -30,23 +31,23 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 100.0
-margin/top = 3.0
-margin/right = 200.0
-margin/bottom = -4.0
+margin/left = 300.0
+margin/top = 100.0
+margin/right = 300.0
+margin/bottom = 100.0
 
 [node name="BackButton" type="HMButton" parent="OptionsMenu/Panel"]
 
 anchor/top = 1
-rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 100.0
 margin/top = 100.0
-margin/right = 142.0
-margin/bottom = 1001.0
+margin/right = 200.0
+margin/bottom = 830.0
+custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -64,54 +65,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 0.199446
+margin/left = 0.198834
 margin/top = 0.0999075
-margin/right = 0.799861
+margin/right = 0.798575
 margin/bottom = 0.79926
-
-[node name="SoundButton" type="HMButton" parent="OptionsMenu/Panel/Container"]
-
-anchor/left = 2
-anchor/top = 2
-anchor/right = 2
-anchor/bottom = 2
-rect/scale = Vector2( 3, 3 )
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 0.289683
-margin/right = 0.332564
-margin/bottom = 0.316138
-toggle_mode = false
-click_on_press = true
-enabled_focus_mode = 2
-shortcut = null
-text = "Sound"
-flat = false
-
-[node name="InputButton" type="HMButton" parent="OptionsMenu/Panel/Container"]
-
-anchor/left = 2
-anchor/top = 2
-anchor/right = 2
-anchor/bottom = 2
-rect/scale = Vector2( 3, 3 )
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 0.578042
-margin/right = 0.332564
-margin/bottom = 0.604497
-toggle_mode = false
-click_on_press = true
-enabled_focus_mode = 2
-shortcut = null
-text = "Input"
-flat = false
 
 [node name="GraphicsButton" type="HMButton" parent="OptionsMenu/Panel/Container"]
 
@@ -119,20 +76,64 @@ anchor/left = 2
 anchor/top = 2
 anchor/right = 2
 anchor/bottom = 2
-rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 0.0
-margin/right = 0.332564
-margin/bottom = 0.026455
+margin/left = 0.262391
+margin/top = 0.269481
+margin/right = 0.699708
+margin/bottom = 0.350649
+custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
 shortcut = null
 text = "Graphics"
+flat = false
+
+[node name="InputButton" type="HMButton" parent="OptionsMenu/Panel/Container/GraphicsButton"]
+
+anchor/left = 2
+anchor/top = 2
+anchor/right = 2
+anchor/bottom = 2
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -0.00333333
+margin/top = 5.38
+margin/right = 0.996667
+margin/bottom = 6.38
+custom_fonts/font = ExtResource( 3 )
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Input"
+flat = false
+
+[node name="SoundButton" type="HMButton" parent="OptionsMenu/Panel/Container/GraphicsButton"]
+
+anchor/left = 2
+anchor/top = 2
+anchor/right = 2
+anchor/bottom = 2
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -0.00333333
+margin/top = 2.76
+margin/right = 0.996667
+margin/bottom = 3.76
+custom_fonts/font = ExtResource( 3 )
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Sound"
 flat = false
 
 [node name="GraphicsMenu" type="Container" parent="."]
@@ -156,23 +157,23 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 100.0
-margin/top = 3.0
-margin/right = 200.0
-margin/bottom = -4.0
+margin/left = 300.0
+margin/top = 100.0
+margin/right = 300.0
+margin/bottom = 100.0
 
 [node name="BackGraphicsButton" type="HMButton" parent="GraphicsMenu/Panel"]
 
 anchor/top = 1
-rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 100.0
 margin/top = 100.0
-margin/right = 142.0
-margin/bottom = 1001.0
+margin/right = 200.0
+margin/bottom = 830.0
+custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -190,22 +191,22 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 0.199446
-margin/top = 0.145236
-margin/right = 0.799169
-margin/bottom = 0.827937
+margin/left = 0.199301
+margin/top = 0.144318
+margin/right = 0.798951
+margin/bottom = 0.827273
 
 [node name="FullScreenCheck" type="CheckBox" parent="GraphicsMenu/Panel/Container"]
 
-rect/scale = Vector2( 3, 3 )
+rect/min_size = Vector2( 40, 40 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 0.0
-margin/right = 26.0
-margin/bottom = 23.0
+margin/left = 100.0
+margin/top = 100.0
+margin/right = 140.0
+margin/bottom = 140.0
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
@@ -220,8 +221,9 @@ size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 20.0
 margin/top = 4.0
-margin/right = 0.0
-margin/bottom = 0.0
+margin/right = 143.0
+margin/bottom = 34.0
+custom_fonts/font = ExtResource( 3 )
 text = "Plein écran"
 percent_visible = 1.0
 lines_skipped = 0
@@ -266,23 +268,23 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 100.0
-margin/top = 3.0
-margin/right = 200.0
-margin/bottom = -4.0
+margin/left = 300.0
+margin/top = 100.0
+margin/right = 300.0
+margin/bottom = 100.0
 
 [node name="BackSoundButton" type="HMButton" parent="SoundMenu/Panel"]
 
 anchor/top = 1
-rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 100.0
 margin/top = 100.0
-margin/right = 142.0
-margin/bottom = 1001.0
+margin/right = 200.0
+margin/bottom = 830.0
+custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -300,22 +302,22 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 0.199446
-margin/top = 0.0999075
-margin/right = 0.799169
-margin/bottom = 0.79926
+margin/left = 0.199301
+margin/top = 0.0988636
+margin/right = 0.798951
+margin/bottom = 0.798864
 
 [node name="MasterSoundSlider" type="HSlider" parent="SoundMenu/Panel/Container"]
 
-rect/scale = Vector2( 3, 3 )
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 0.0
 margin/top = 100.0
-margin/right = 288.0
-margin/bottom = 116.0
+margin/right = 0.0
+margin/bottom = 100.0
 range/min = 0.0
 range/max = 100.0
 range/step = 1.0
@@ -329,14 +331,14 @@ focus_mode = 2
 
 [node name="MusicSlider" type="HSlider" parent="SoundMenu/Panel/Container"]
 
-rect/scale = Vector2( 3, 3 )
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 0.0
 margin/top = 291.0
-margin/right = 288.0
+margin/right = 0.0
 margin/bottom = 307.0
 range/min = 0.0
 range/max = 1.0
@@ -351,14 +353,14 @@ focus_mode = 2
 
 [node name="EnvironmentSoundSlider" type="HSlider" parent="SoundMenu/Panel/Container"]
 
-rect/scale = Vector2( 3, 3 )
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 0.0
 margin/top = 482.0
-margin/right = 288.0
+margin/right = 0.0
 margin/bottom = 498.0
 range/min = 0.0
 range/max = 100.0
@@ -373,15 +375,15 @@ focus_mode = 2
 
 [node name="MasterSoundLabel" type="Label" parent="SoundMenu/Panel/Container"]
 
-rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 0.0
 margin/top = 59.0
-margin/right = 107.0
-margin/bottom = 73.0
+margin/right = 159.0
+margin/bottom = 89.0
+custom_fonts/font = ExtResource( 3 )
 text = "Sound Master"
 percent_visible = 1.0
 lines_skipped = 0
@@ -389,7 +391,6 @@ max_lines_visible = -1
 
 [node name="MusicLabel" type="Label" parent="SoundMenu/Panel/Container"]
 
-rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -397,7 +398,8 @@ size_flags/vertical = 0
 margin/left = 0.0
 margin/top = 250.0
 margin/right = 107.0
-margin/bottom = 264.0
+margin/bottom = 280.0
+custom_fonts/font = ExtResource( 3 )
 text = "Music"
 percent_visible = 1.0
 lines_skipped = 0
@@ -405,7 +407,6 @@ max_lines_visible = -1
 
 [node name="EnvironmentSoundLabel" type="Label" parent="SoundMenu/Panel/Container"]
 
-rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -413,8 +414,9 @@ size_flags/vertical = 0
 margin/left = 0.0
 margin/top = 441.0
 margin/right = 107.0
-margin/bottom = 455.0
-text = "Music"
+margin/bottom = 471.0
+custom_fonts/font = ExtResource( 3 )
+text = "Environment"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -423,15 +425,15 @@ max_lines_visible = -1
 
 anchor/left = 3
 anchor/right = 3
-rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 94.0
 margin/top = 50.0
-margin/right = 24.0
-margin/bottom = 64.0
+margin/right = -106.0
+margin/bottom = 80.0
+custom_fonts/font = ExtResource( 3 )
 text = "Sound Options"
 percent_visible = 1.0
 lines_skipped = 0
@@ -458,23 +460,23 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 100.0
-margin/top = 3.0
-margin/right = 200.0
-margin/bottom = -4.0
+margin/left = 300.0
+margin/top = 100.0
+margin/right = 300.0
+margin/bottom = 100.0
 
 [node name="BackInputButton" type="HMButton" parent="InputMenu/Panel"]
 
 anchor/top = 1
-rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 100.0
 margin/top = 100.0
-margin/right = 142.0
-margin/bottom = 1001.0
+margin/right = 200.0
+margin/bottom = 830.0
+custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -492,24 +494,24 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 0.199446
-margin/top = 0.0999075
-margin/right = 0.799861
-margin/bottom = 0.79926
+margin/left = 0.199301
+margin/top = 0.0988636
+margin/right = 0.799825
+margin/bottom = 0.798864
 
 [node name="Title" type="Label" parent="InputMenu/Panel"]
 
 anchor/left = 3
 anchor/right = 3
-rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 89.0
 margin/top = 50.0
-margin/right = 0.0
-margin/bottom = 64.0
+margin/right = -111.0
+margin/bottom = 100.0
+custom_fonts/font = ExtResource( 3 )
 text = "Input Options"
 percent_visible = 1.0
 lines_skipped = 0
@@ -534,10 +536,11 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = -679.0
-margin/top = -540.0
-margin/right = 823.0
-margin/bottom = 594.0
+margin/left = -573.0
+margin/top = -536.0
+margin/right = 796.0
+margin/bottom = 605.0
+custom_fonts/font = ExtResource( 3 )
 text = "[PROJECT_NAME]"
 percent_visible = 1.0
 lines_skipped = 0
@@ -549,10 +552,11 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 120.0
+margin/left = 186.0
 margin/top = 0.0
-margin/right = 189.0
-margin/bottom = 14.0
+margin/right = 294.0
+margin/bottom = 29.0
+custom_fonts/font = ExtResource( 3 )
 text = "[REVISION]"
 percent_visible = 1.0
 lines_skipped = 0
@@ -560,11 +564,11 @@ max_lines_visible = -1
 
 [connection signal="released" from="OptionsMenu/Panel/BackButton" to="." method="_on_BackButton_released"]
 
-[connection signal="released" from="OptionsMenu/Panel/Container/SoundButton" to="." method="_on_SoundButton_released"]
-
-[connection signal="released" from="OptionsMenu/Panel/Container/InputButton" to="." method="_on_InputButton_released"]
-
 [connection signal="released" from="OptionsMenu/Panel/Container/GraphicsButton" to="." method="_on_GraphicsButton_released"]
+
+[connection signal="released" from="OptionsMenu/Panel/Container/GraphicsButton/InputButton" to="." method="_on_InputButton_released"]
+
+[connection signal="released" from="OptionsMenu/Panel/Container/GraphicsButton/SoundButton" to="." method="_on_SoundButton_released"]
 
 [connection signal="released" from="GraphicsMenu/Panel/BackGraphicsButton" to="." method="_on_BackGraphicsButton_released"]
 
