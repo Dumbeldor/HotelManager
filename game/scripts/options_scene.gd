@@ -1,4 +1,4 @@
-extends Sprite
+extends Control
 
 var configFile
 
@@ -21,6 +21,8 @@ var PROJECT = HotelManagerProject.new()
 var current_menu = OPTIONMENU.MAIN
 
 func _ready():
+	set_theme(get_node("/root/global").get_theme())
+	
 	configFile = get_node("/root/global").configFile
 	get_node("ProjectInfos/ProjectNameLabel").set_text(PROJECT.get_project_name())
 	get_node("ProjectInfos/ProjectNameLabel/ProjectVersion").set_text(PROJECT.get_full_version())

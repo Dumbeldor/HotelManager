@@ -1,4 +1,4 @@
-extends Sprite
+extends Control
 
 var PROJECT = HotelManagerProject.new()
 var indexSave = 0;
@@ -11,10 +11,7 @@ const MAINMENU = {
 var current_menu = MAINMENU.MAIN
 
 func _ready():
-	var default_theme = get_node("/root/global").get_theme()
-	get_node("ProjectInfos").set_theme(default_theme)
-	get_node("MainMenu").set_theme(default_theme)
-	get_node("PlayMenu").set_theme(default_theme)
+	set_theme(get_node("/root/global").get_theme())
 	
 	get_node("ProjectInfos/ProjectNameLabel").set_text(PROJECT.get_project_name())
 	get_node("ProjectInfos/ProjectNameLabel/ProjectVersion").set_text(PROJECT.get_full_version())
