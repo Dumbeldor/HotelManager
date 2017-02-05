@@ -1,5 +1,4 @@
-
-extends Node2D
+extends Control
 
 onready var game_session = get_node("GameSession")
 
@@ -36,6 +35,8 @@ func _input(event):
 				get_node("MainMenuLayer/Console/ConsoleLineEdit").grab_focus()
 
 func _ready():
+	set_theme(get_node("/root/global").get_theme())
+	get_node("MainMenuLayer/GameMainMenu").set_theme(get_node("/root/global").get_theme())
     # TODO, get save name and call it from there
 	game_session.init(get_node("/root/global").get_save())
 	set_process_input(true)
