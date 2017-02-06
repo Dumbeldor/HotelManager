@@ -48,7 +48,7 @@ public:
 	MapGen();
 	~MapGen();
 
-	GameMapTile get_tile_for_pos(int32_t x, int32_t y);
+	uint32_t get_tile_for_pos(int32_t x, int32_t y);
 private:
 	PerlinNoise *m_perlin_noise;
 };

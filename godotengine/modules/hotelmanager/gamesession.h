@@ -23,7 +23,6 @@
 
 class GameMap;
 class Hud;
-class ObjectDefMgr;
 
 class GameSession: public Node
 {
@@ -84,7 +83,6 @@ private:
 
 	GameMap *m_map = nullptr;
 	Hud *m_hud = nullptr;
-	ObjectDefMgr *m_objdef_mgr = nullptr;
 	AchievementProgressMap m_achievements = {};
 	MissionProgressMap m_mission_progress = {};
 };

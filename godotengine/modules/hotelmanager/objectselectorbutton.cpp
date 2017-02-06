@@ -22,7 +22,7 @@
 #define OBJECTSELECTOR_MASK Color(1.0, 1.0, 1.0, 0.2)
 
 ObjectSelectorButton *ObjectSelectorButton::s_selected = nullptr;
-GameMapTile ObjectSelectorButton::s_tile_to_init = TILE_NONE;
+uint32_t ObjectSelectorButton::s_tile_to_init = 0;
 
 ObjectSelectorButton::ObjectSelectorButton():
 	m_tile_id(s_tile_to_init)
@@ -41,7 +41,7 @@ void ObjectSelectorButton::_bind_methods()
 
 void ObjectSelectorButton::init()
 {
-	const GameTileDef &tile_def = ObjectDefMgr::get_tiledef(m_tile_id);
+	const GameTileDef &tile_def = ObjectDefMgr::get_singleton()->get_tiledef(m_tile_id);
 
 	ImageTexture *texture = memnew(ImageTexture);
 	texture->load(String("res://tiles/") + tile_def.texture_name);

@@ -229,10 +229,11 @@ void GameMap::_canvas_draw()
 	if (m_mouse_over) {
 		// We have an object selected and current tile is valid
 		if (ObjectSelectorButton::get_selected_tile_id() != TILE_NONE) {
-			GameMapTile selected_tile_id = ObjectSelectorButton::get_selected_tile_id();
-			const GameTileDef &tiledef = ObjectDefMgr::get_tiledef(selected_tile_id);
-			const TileGroup &tg_ground = ObjectDefMgr::get_tilegroup("ground");
-			const TileGroup &tg_floor = ObjectDefMgr::get_tilegroup("floor");
+			uint32_t selected_tile_id = ObjectSelectorButton::get_selected_tile_id();
+			const GameTileDef &tiledef =
+				ObjectDefMgr::get_singleton()->get_tiledef(selected_tile_id);
+			const TileGroup &tg_ground = ObjectDefMgr::get_singleton()->get_tilegroup("ground");
+			const TileGroup &tg_floor = ObjectDefMgr::get_singleton()->get_tilegroup("floor");
 
 			assert(tg_floor.id != 0);
 			assert(tg_ground.id != 0);
@@ -451,8 +452,8 @@ void GameMap::init_selection()
  */
 void GameMap::place_tiles_in_selected_area()
 {
-	GameMapTile s_tile = ObjectSelectorButton::get_selected_tile_id();
-	const GameTileDef &tile_def = ObjectDefMgr::get_tiledef(s_tile);
+	uint32_t s_tile = ObjectSelectorButton::get_selected_tile_id();
+	const GameTileDef &tile_def = ObjectDefMgr::get_singleton()->get_tiledef(s_tile);
 	// Ignore none tiles & tile unavailable to players
 	if (s_tile == TILE_NONE || tile_def.flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
 		reset_selection();
@@ -465,8 +466,8 @@ void GameMap::place_tiles_in_selected_area()
 		return;
 	}
 
-	const TileGroup &tg_ground = ObjectDefMgr::get_tilegroup("ground"); // @TODO cache this
-	const TileGroup &tg_floor = ObjectDefMgr::get_tilegroup("floor"); // @TODO cache this
+	const TileGroup &tg_ground = ObjectDefMgr::get_singleton()->get_tilegroup("ground"); // @TODO cache this
+	const TileGroup &tg_floor = ObjectDefMgr::get_singleton()->get_tilegroup("floor"); // @TODO cache this
 
 	assert(tg_floor.id != 0);
 	assert(tg_ground.id != 0);
@@ -491,7 +492,7 @@ void GameMap::place_tiles_in_selected_area()
 		return;
 	}
 
-	const GameTileDef &tiledef = ObjectDefMgr::get_tiledef(s_tile);
+	const GameTileDef &tiledef = ObjectDefMgr::get_singleton()->get_tiledef(s_tile);
 
 	if (cur_pos == m_selection_init_pos) {
 		if (!m_game_session->has_money(tiledef.cost)) {

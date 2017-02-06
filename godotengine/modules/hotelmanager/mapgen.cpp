@@ -170,7 +170,7 @@ MapGen::~MapGen()
  * @param y
  * @return tile_id to set at (x,y)
  */
-GameMapTile MapGen::get_tile_for_pos(int32_t x, int32_t y)
+uint32_t MapGen::get_tile_for_pos(int32_t x, int32_t y)
 {
 	// First realign the map center
 	float width = WORLD_LIMIT_X * 2;
@@ -187,15 +187,15 @@ GameMapTile MapGen::get_tile_for_pos(int32_t x, int32_t y)
 	double noise = m_perlin_noise->get_height(x, y) + (1.0f - distanceToCenter);
 
 	if (noise > 0.85f) {
-		return TILE_GROUND_STONE;
+		return 2; // Stone
 	}
 	else if (noise > 0.25f) {
-		return TILE_GROUND_GRASS;
+		return 1; // Grass
 	}
 	else if (noise > 0.0f) {
-		return TILE_GROUND_SAND;
+		return 11; // Sand
 	}
 	else {
-		return TILE_GROUND_SEAWATER;
+		return 4; // Water
 	}
 }
