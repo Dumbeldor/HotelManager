@@ -223,6 +223,29 @@ void GameMap::on_process(float delta)
 	}
 }
 
+TileMap* GameMap::get_tilemap(const GameTileDef &tiledef)
+{
+	const TileGroup &tg_ground = ObjectDefMgr::get_singleton()->get_tilegroup("ground");
+	const TileGroup &tg_floor = ObjectDefMgr::get_singleton()->get_tilegroup("floor");
+	const TileGroup &tg_wall = ObjectDefMgr::get_singleton()->get_tilegroup("wall");
+
+	assert(tg_floor.id != 0);
+	assert(tg_ground.id != 0);
+	assert(tg_wall.id != 0);
+
+	if (tiledef.is_in_group(tg_ground.id)) {
+		return m_ground_map;
+	}
+	else if (tiledef.is_in_group(tg_floor.id)) {
+		return m_floor_map;
+	}
+	else if (tiledef.is_in_group(tg_wall.id)) {
+		return m_object_map;
+	}
+
+	return nullptr;
+}
+
 void GameMap::_canvas_draw()
 {
 	// If mouse is over a node
@@ -232,20 +255,9 @@ void GameMap::_canvas_draw()
 			uint32_t selected_tile_id = ObjectSelectorButton::get_selected_tile_id();
 			const GameTileDef &tiledef =
 				ObjectDefMgr::get_singleton()->get_tiledef(selected_tile_id);
-			const TileGroup &tg_ground = ObjectDefMgr::get_singleton()->get_tilegroup("ground");
-			const TileGroup &tg_floor = ObjectDefMgr::get_singleton()->get_tilegroup("floor");
 
-			assert(tg_floor.id != 0);
-			assert(tg_ground.id != 0);
-
-			TileMap *selected_tilemap = nullptr;
-			if (tiledef.is_in_group(tg_ground.id)) {
-				selected_tilemap = m_ground_map;
-			}
-			else if (tiledef.is_in_group(tg_floor.id)) {
-				selected_tilemap = m_floor_map;
-			}
-			else {
+			TileMap *selected_tilemap = get_tilemap(tiledef);
+			if (!selected_tilemap) {
 				LOG_CRIT("Selected tile (id %d) is not in any interesting group, ignoring.",
 					tiledef.id);
 				return;
@@ -466,20 +478,8 @@ void GameMap::place_tiles_in_selected_area()
 		return;
 	}
 
-	const TileGroup &tg_ground = ObjectDefMgr::get_singleton()->get_tilegroup("ground"); // @TODO cache this
-	const TileGroup &tg_floor = ObjectDefMgr::get_singleton()->get_tilegroup("floor"); // @TODO cache this
-
-	assert(tg_floor.id != 0);
-	assert(tg_ground.id != 0);
-
-	TileMap *interact_tilemap = nullptr;
-	if (tile_def.is_in_group(tg_ground.id)) {
-		interact_tilemap = m_ground_map;
-	}
-	else if (tile_def.is_in_group(tg_floor.id)) {
-		interact_tilemap = m_floor_map;
-	}
-	else {
+	TileMap *interact_tilemap = get_tilemap(tile_def);
+	if (!interact_tilemap) {
 		LOG_CRIT("Tile %d is not in an interesting group, ignoring.", tile_def.id);
 		reset_selection();
 		return;

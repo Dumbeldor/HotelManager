@@ -186,3 +186,4 @@ func _on_ClockSpeed3_pressed():
 
 func _on_ClockSpeed5_pressed():
 	get_node("GameSession").set_game_speed(5)
+

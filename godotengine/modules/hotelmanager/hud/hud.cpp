@@ -40,6 +40,11 @@ void Hud::init()
 		cast_to<TextureButton>();
 	assert(floor_menu);
 
+	TextureButton *wall_menu = get_node(String("ControlPane_Bottom/WallMenu"))->
+		cast_to<TextureButton>();
+	assert(wall_menu);
+
+
 	m_mission_container = get_node(String("ControlPane/MissionPanel/MissionContainer"))->cast_to<VBoxContainer>();
 	assert(m_mission_container);
 
@@ -52,6 +57,10 @@ void Hud::init()
 	m_floor_menu->init("floor");
 	floor_menu->add_child(m_floor_menu);
 
+	m_wall_menu = memnew(LayerTileMenu);
+	m_wall_menu->init("wall");
+	wall_menu->add_child(m_wall_menu);
+
 	m_clock = get_node(String("ControlPane/Clock"))->cast_to<Clock>();
 	assert(m_clock);
 }
@@ -63,6 +72,7 @@ void Hud::_bind_methods()
 {
 	ObjectTypeDB::bind_method(_MD("_on_floormenu_pressed"), &Hud::_on_floormenu_pressed);
 	ObjectTypeDB::bind_method(_MD("_on_groundmenu_pressed"), &Hud::_on_groundmenu_pressed);
+	ObjectTypeDB::bind_method(_MD("_on_wallmenu_pressed"), &Hud::_on_wallmenu_pressed);
 	ObjectTypeDB::bind_method(_MD("_on_draw"), &Hud::_on_draw);
 }
 
@@ -83,6 +93,10 @@ void Hud::_on_groundmenu_pressed()
 		m_floor_menu->hide();
 	}
 
+	if (m_wall_menu->is_visible()) {
+		m_wall_menu->hide();
+	}
+
 	m_ground_menu->show();
 }
 
@@ -101,7 +115,35 @@ void Hud::_on_floormenu_pressed()
 		m_ground_menu->hide();
 	}
 
+	if (m_wall_menu->is_visible()) {
+		m_wall_menu->hide();
+	}
+
 	m_floor_menu->show();
+}
+
+/**
+ * Event when user clicks on wall menu
+ */
+
+void Hud::_on_wallmenu_pressed()
+{
+	// If this menu is shown, hide it
+	if (m_wall_menu->is_visible()) {
+		m_wall_menu->hide();
+		return;
+	}
+
+	// Hide other menus
+	if (m_floor_menu->is_visible()) {
+		m_floor_menu->hide();
+	}
+
+	if (m_ground_menu->is_visible()) {
+		m_ground_menu->hide();
+	}
+
+	m_wall_menu->show();
 }
 
 /**

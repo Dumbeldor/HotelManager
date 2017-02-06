@@ -10,3 +10,6 @@
 9,2,parquet,tile_parquet.png,Parquet,0,6
 10,2,carpet,tile_carpet.png,Carpet,0,4
 11,1,sand,tile_sand.png,Sand,0,1
+12,3,concrete wall,tile_empty.png,Concrete wall,2,10
+13,3,brick wall,tile_empty.png,Brick wall,2,8
+14,3,simple door,tile_empty.png,Simple door,6,10
