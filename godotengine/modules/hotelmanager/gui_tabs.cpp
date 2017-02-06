@@ -35,7 +35,8 @@ void LayerTileMenu::init(const String &tile_group)
 	hide();
 	set_pos(get_pos() + Point2i(-20, -96));
 
-	const TileGroup &tg_def = ObjectDefMgr::get_tilegroup(std::string(tile_group.utf8()));
+	const TileGroup &tg_def = ObjectDefMgr::get_singleton()->
+		get_tilegroup(std::string(tile_group.utf8()));
 	if (tg_def.id == 0) {
 		LOG_CRIT("Invalid tile_group name provided (%s), ignoring all comportment.",
 			tile_group.ascii().get_data());
@@ -43,14 +44,13 @@ void LayerTileMenu::init(const String &tile_group)
 	}
 
 	ObjectSelectorButton *tb = nullptr;
-	for (uint16_t i = 0; i < TILE_MAX; i++) {
-		const GameTileDef &tile_def = ObjectDefMgr::get_tiledef((GameMapTile) i);
-		if (!tile_def.is_in_group(tg_def.id)
-			|| tile_def.flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
+	for (const auto &tile_def: ObjectDefMgr::get_singleton()->get_tiledefs()) {
+		if (!tile_def.second->is_in_group(tg_def.id)
+			|| tile_def.second->flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
 			continue;
 		}
 
-		ObjectSelectorButton::set_tile_to_init((GameMapTile) i);
+		ObjectSelectorButton::set_tile_to_init(tile_def.second->id);
 		ObjectSelectorButton *tmp = memnew(ObjectSelectorButton);
 		if (tb) {
 			tb->add_child(tmp);

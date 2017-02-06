@@ -17,7 +17,6 @@
 
 #include <scene/gui/texture_button.h>
 #include <cassert>
-#include "tiles.h"
 
 class ObjectSelectorButton: public TextureButton
 {
@@ -27,16 +26,16 @@ public:
 	ObjectSelectorButton();
 	void init();
 
-	GameMapTile get_map_tile() const { return m_tile_id; }
+	uint32_t get_map_tile() const { return m_tile_id; }
 
 	void _change_selected_tile();
 
-	static const GameMapTile get_selected_tile_id()
+	static const uint32_t get_selected_tile_id()
 	{
-		return s_selected ? s_selected->get_map_tile() : TILE_NONE;
+		return s_selected ? s_selected->get_map_tile() : 0;
 	}
 
-	static void set_tile_to_init(const GameMapTile t) { s_tile_to_init = t; }
+	static void set_tile_to_init(const uint32_t t) { s_tile_to_init = t; }
 
 	void _on_draw();
 	static void init_selector();
@@ -46,6 +45,6 @@ protected:
 private:
 	static ObjectSelectorButton *s_selected;
 
-	static GameMapTile s_tile_to_init;
-	const GameMapTile m_tile_id;
+	static uint32_t s_tile_to_init;
+	const uint32_t m_tile_id;
 };

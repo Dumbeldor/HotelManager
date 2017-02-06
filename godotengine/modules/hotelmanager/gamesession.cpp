@@ -26,8 +26,8 @@
 
 GameSession::~GameSession()
 {
-	if (m_objdef_mgr) {
-		m_objdef_mgr->delete_singleton();
+	if (ObjectDefMgr::get_singleton()) {
+		delete ObjectDefMgr::get_singleton();
 	}
 }
 
@@ -57,8 +57,8 @@ void GameSession::_bind_methods()
 void GameSession::init(const String &savename)
 {
 	// objdef_mgr should be inited first
-	assert(!m_objdef_mgr);
-	m_objdef_mgr = new ObjectDefMgr();
+	assert(!ObjectDefMgr::get_singleton());
+	new ObjectDefMgr();
 
 	// Init hud
 	m_hud = get_node(String("GameMap/Hud"))->cast_to<Hud>();
@@ -212,7 +212,7 @@ void GameSession::remove_money(int64_t money)
  */
 void GameSession::start_mission(const uint32_t mission_id)
 {
-	const Mission &mission = ObjectDefMgr::get_mission(mission_id);
+	const Mission &mission = ObjectDefMgr::get_singleton()->get_mission(mission_id);
 	if (mission.id == 0) {
 		LOG_CRIT("start_mission: mission id %d not found, not starting.", mission_id);
 		return;

@@ -159,7 +159,7 @@ void ObjectDefMgr::load_tiledefs()
 	GameDataReader reader("tiles", TILEDEF_CSV_COLS);
 	while (reader.is_good()) {
 		GameTileDef *tiledef = new GameTileDef();
-		uint16_t tile_id;
+		uint32_t tile_id;
 
 		reader >> tile_id;
 		if (tile_id >= TILE_MAX) {
@@ -168,7 +168,7 @@ void ObjectDefMgr::load_tiledefs()
 			continue;
 		}
 
-		tiledef->id = (GameMapTile) tile_id;
+		tiledef->id = tile_id;
 		Vector<uint32_t> groups;
 		reader >> groups;
 		for (uint32_t i = 0; i < groups.size(); i++) {
@@ -192,7 +192,7 @@ void ObjectDefMgr::load_tiledefs()
 
 		tiledef->flags = tile_flags;
 
-		if (m_game_tiledefs.find((GameMapTile) tile_id) != m_game_tiledefs.end()) {
+		if (m_game_tiledefs.find(tile_id) != m_game_tiledefs.end()) {
 			LOG_WARN("ID %d was already registered, overriding it", tile_id);
 			delete m_game_tiledefs[tiledef->id];
 		}
@@ -315,17 +315,18 @@ void ObjectDefMgr::load_missions()
  * @param t tiledef_id
  * @return GameTileDef for tiledef_id
  */
-const GameTileDef &ObjectDefMgr::get_tiledef_priv(GameMapTile t)
+const GameTileDef &ObjectDefMgr::get_tiledef(uint32_t t) const
 {
 	const auto &td = m_game_tiledefs.find(t);
 	if (td == m_game_tiledefs.end()) {
+		LOG_CRIT("Trying to get tiledef %d, but it's not defined, aborting.", t);
 		assert(false);
 	}
 	return *td->second;
 }
 
 static const TileGroup null_tilegroup = {};
-const TileGroup& ObjectDefMgr::get_tilegroup_priv(const uint32_t gid)
+const TileGroup& ObjectDefMgr::get_tilegroup(const uint32_t gid) const
 {
 	const auto &tg = m_tilegroups.find(gid);
 	if (tg == m_tilegroups.end()) {
@@ -334,7 +335,7 @@ const TileGroup& ObjectDefMgr::get_tilegroup_priv(const uint32_t gid)
 	return *tg->second;
 }
 
-const TileGroup& ObjectDefMgr::get_tilegroup_priv(const std::string &g)
+const TileGroup& ObjectDefMgr::get_tilegroup(const std::string &g) const
 {
 	const auto &tg = m_tilegroups_per_name.find(g);
 	if (tg == m_tilegroups_per_name.end()) {
@@ -343,7 +344,7 @@ const TileGroup& ObjectDefMgr::get_tilegroup_priv(const std::string &g)
 	return *tg->second;
 }
 
-const Mission& ObjectDefMgr::get_mission_priv(const uint32_t id)
+const Mission& ObjectDefMgr::get_mission(const uint32_t id) const
 {
 	const auto &m = m_missions.find(id);
 	if (m == m_missions.end()) {
