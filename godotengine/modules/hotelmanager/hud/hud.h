@@ -41,9 +41,11 @@ protected:
 	void _on_draw();
 	void _on_floormenu_pressed();
 	void _on_groundmenu_pressed();
+	void _on_wallmenu_pressed();
 private:
 	LayerTileMenu *m_ground_menu = nullptr;
 	LayerTileMenu *m_floor_menu = nullptr;
+	LayerTileMenu *m_wall_menu = nullptr;
 	Clock *m_clock = nullptr;
 	VBoxContainer *m_mission_container = nullptr;
 };

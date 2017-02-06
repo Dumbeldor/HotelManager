@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=1]
+[gd_scene load_steps=20 format=1]
 
 [ext_resource path="res://scripts/game_scene.gd" type="Script" id=1]
 [ext_resource path="res://tiles/game-tileset.tres" type="TileSet" id=2]
@@ -11,15 +11,17 @@
 [ext_resource path="res://icons/alternates/icon_menu_tiletype_ground_hover.png" type="Texture" id=9]
 [ext_resource path="res://icons/icon_menu_tiletype_floor.png" type="Texture" id=10]
 [ext_resource path="res://icons/alternates/icon_menu_tiletype_floor_hover.png" type="Texture" id=11]
-[ext_resource path="res://sounds/pop-6.wav" type="Sample" id=12]
-[ext_resource path="res://fonts/teen-bold-italic.fnt" type="BitmapFont" id=13]
-[ext_resource path="res://fonts/teen-italic.fnt" type="BitmapFont" id=14]
-[ext_resource path="res://fonts/teen-bold.fnt" type="BitmapFont" id=15]
-[ext_resource path="res://fonts/teen.fnt" type="BitmapFont" id=16]
+[ext_resource path="res://icons/icon_menu_tiletype_wall.png" type="Texture" id=12]
+[ext_resource path="res://icons/alternates/icon_menu_tiletype_wall_hover.png" type="Texture" id=13]
+[ext_resource path="res://sounds/pop-6.wav" type="Sample" id=14]
+[ext_resource path="res://fonts/teen-bold-italic.fnt" type="BitmapFont" id=15]
+[ext_resource path="res://fonts/teen-italic.fnt" type="BitmapFont" id=16]
+[ext_resource path="res://fonts/teen-bold.fnt" type="BitmapFont" id=17]
+[ext_resource path="res://fonts/teen.fnt" type="BitmapFont" id=18]
 
 [sub_resource type="SampleLibrary" id=1]
 
-samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 12 ) }
+samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 14 ) }
 
 [node name="Root" type="Control"]
 
@@ -471,6 +473,22 @@ enabled_focus_mode = 2
 shortcut = null
 textures/normal = ExtResource( 10 )
 textures/hover = ExtResource( 11 )
+
+[node name="WallMenu" type="TextureButton" parent="GameSession/GameMap/Hud/ControlPane_Bottom"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 200.0
+margin/top = 0.0
+margin/right = 248.0
+margin/bottom = 48.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 12 )
+textures/hover = ExtResource( 13 )
 
 [node name="AchievementPopup" type="PopupPanel" parent="GameSession/GameMap/Hud"]
 
@@ -948,10 +966,10 @@ margin/left = 100.0
 margin/top = 10.0
 margin/right = 100.0
 margin/bottom = 40.0
-custom_fonts/bold_italics_font = ExtResource( 13 )
-custom_fonts/italics_font = ExtResource( 14 )
-custom_fonts/bold_font = ExtResource( 15 )
-custom_fonts/normal_font = ExtResource( 16 )
+custom_fonts/bold_italics_font = ExtResource( 15 )
+custom_fonts/italics_font = ExtResource( 16 )
+custom_fonts/bold_font = ExtResource( 17 )
+custom_fonts/normal_font = ExtResource( 18 )
 bbcode/enabled = true
 bbcode/bbcode = ""
 visible_characters = -1
@@ -1013,6 +1031,8 @@ flat = false
 [connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane_Bottom/GroundMenu" to="GameSession/GameMap/Hud" method="_on_groundmenu_pressed"]
 
 [connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane_Bottom/FloorMenu" to="GameSession/GameMap/Hud" method="_on_floormenu_pressed"]
+
+[connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane_Bottom/WallMenu" to="GameSession/GameMap/Hud" method="_on_wallmenu_pressed"]
 
 [connection signal="pressed" from="GameSession/GameMap/Hud/AchievementPopup/APButton" to="." method="_on_APButton_pressed"]
 
