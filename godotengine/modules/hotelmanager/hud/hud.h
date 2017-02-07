@@ -41,7 +41,6 @@ protected:
 	static void _bind_methods();
 	void _on_draw();
 	void _on_tilemenu_pressed(const String &menu_name);
-	void _on_wallmenu_pressed();
 private:
 	void create_menu(const std::string &name);
 	Clock *m_clock = nullptr;
