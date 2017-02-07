@@ -23,7 +23,6 @@
 
 class GameMap;
 class Hud;
-class GameConfig;
 
 class GameSession: public Node
 {
