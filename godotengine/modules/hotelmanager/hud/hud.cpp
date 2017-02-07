@@ -102,41 +102,17 @@ void Hud::_on_tilemenu_pressed(const String &menu_name)
 		if (menu.first == m_name) {
 			// If it's visible hide it, else show it
 			if (menu.second->get_menu()->is_visible()) {
-				menu.second->get_menu()->hide();
+				menu.second->hide_menu();
 			}
 			else {
-				menu.second->get_menu()->show();
+				menu.second->show_menu();
 			}
 		}
 		// hide other menus
 		else if (menu.second->get_menu()->is_visible()) {
-			menu.second->get_menu()->hide();
+			menu.second->hide_menu();
 		}
 	}
-}
-
-/**
- * Event when user clicks on wall menu
- */
-
-void Hud::_on_wallmenu_pressed()
-{
-	// If this menu is shown, hide it
-	if (m_tile_menus["wall"]->get_menu()->is_visible()) {
-		m_tile_menus["wall"]->get_menu()->hide();
-		return;
-	}
-
-	// Hide other menus
-	if (m_tile_menus["floor"]->get_menu()->is_visible()) {
-		m_tile_menus["floor"]->get_menu()->hide();
-	}
-
-	if (m_tile_menus["ground"]->get_menu()->is_visible()) {
-		m_tile_menus["ground"]->get_menu()->hide();
-	}
-
-	m_tile_menus["wall"]->get_menu()->show();
 }
 
 /**

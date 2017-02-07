@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=1]
+[gd_scene load_steps=16 format=1]
 
 [ext_resource path="res://tiles/tile_grass.png" type="Texture" id=1]
 [ext_resource path="res://tiles/tile_empty.png" type="Texture" id=2]
@@ -13,10 +13,26 @@
 [ext_resource path="res://tiles/tile_carpet.png" type="Texture" id=11]
 [ext_resource path="res://tiles/tile_sand.png" type="Texture" id=12]
 
+[sub_resource type="ConvexPolygonShape2D" id=3]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
+
+[sub_resource type="ConvexPolygonShape2D" id=1]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
+
+[sub_resource type="ConvexPolygonShape2D" id=2]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
+
 [node name="Node2D" type="Node2D"]
 
 [node name="Grass" type="Sprite" parent="."]
 
+transform/pos = Vector2( 48, 144 )
 texture = ExtResource( 1 )
 region_rect = Rect2( 0, 0, 48, 48 )
 
@@ -28,62 +44,153 @@ region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Stone" type="Sprite" parent="."]
 
+transform/pos = Vector2( 0, 144 )
 texture = ExtResource( 3 )
 region = true
 region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Forest" type="Sprite" parent="."]
 
+transform/pos = Vector2( 144, 96 )
 texture = ExtResource( 4 )
 region = true
 region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="SeaWater" type="Sprite" parent="."]
 
+transform/pos = Vector2( 96, 144 )
 texture = ExtResource( 5 )
 region = true
 region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="SwimmingpoolWater" type="Sprite" parent="."]
 
+transform/pos = Vector2( 96, 96 )
 texture = ExtResource( 6 )
 region = true
 region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="FloorTile" type="Sprite" parent="."]
 
+transform/pos = Vector2( 0, 96 )
 texture = ExtResource( 7 )
 region = true
 region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Linoleum" type="Sprite" parent="."]
 
+transform/pos = Vector2( 144, 48 )
 texture = ExtResource( 8 )
 region = true
 region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Mosaic" type="Sprite" parent="."]
 
+transform/pos = Vector2( 144, 0 )
 texture = ExtResource( 9 )
 region = true
 region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Parquet" type="Sprite" parent="."]
 
+transform/pos = Vector2( 48, 0 )
 texture = ExtResource( 10 )
 region = true
 region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Carpet" type="Sprite" parent="."]
 
+transform/pos = Vector2( 96, 0 )
 texture = ExtResource( 11 )
 region = true
 region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Sand" type="Sprite" parent="."]
 
+transform/pos = Vector2( 48, 96 )
 texture = ExtResource( 12 )
 region = true
 region_rect = Rect2( 0, 0, 48, 48 )
+
+[node name="ConcreteWall" type="Sprite" parent="."]
+
+transform/pos = Vector2( 96, 48 )
+texture = ExtResource( 12 )
+region = true
+region_rect = Rect2( 0, 0, 48, 48 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="ConcreteWall"]
+
+input/pickable = false
+shapes/0/shape = SubResource( 3 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="ConcreteWall/StaticBody2D"]
+
+build_mode = 0
+polygon = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
+shape_range = Vector2( 0, 0 )
+trigger = false
+
+[node name="BrickWall" type="Sprite" parent="."]
+
+transform/pos = Vector2( 0, 48 )
+texture = ExtResource( 12 )
+region = true
+region_rect = Rect2( 0, 0, 48, 48 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="BrickWall"]
+
+input/pickable = false
+shapes/0/shape = SubResource( 1 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BrickWall/StaticBody2D"]
+
+build_mode = 0
+polygon = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
+shape_range = Vector2( 0, 0 )
+trigger = false
+
+[node name="SimpleDoor" type="Sprite" parent="."]
+
+transform/pos = Vector2( 48, 48 )
+texture = ExtResource( 12 )
+region = true
+region_rect = Rect2( 0, 0, 48, 48 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="SimpleDoor"]
+
+input/pickable = false
+shapes/0/shape = SubResource( 2 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="SimpleDoor/StaticBody2D"]
+
+build_mode = 0
+polygon = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
+shape_range = Vector2( 0, 0 )
+trigger = false
 
 
