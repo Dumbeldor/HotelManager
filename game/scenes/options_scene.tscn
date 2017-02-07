@@ -24,6 +24,7 @@ texture = ExtResource( 2 )
 
 [node name="OptionsMenu" type="Container" parent="."]
 
+editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -143,6 +144,27 @@ shortcut = null
 text = "Sound"
 flat = false
 
+[node name="GameButton" type="HMButton" parent="OptionsMenu/Panel/Container/GraphicsButton"]
+
+anchor/left = 2
+anchor/top = 2
+anchor/right = 2
+anchor/bottom = 2
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -0.00334448
+margin/top = 8.10204
+margin/right = 0.996656
+margin/bottom = 9.10204
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Game"
+flat = false
+
 [node name="GraphicsMenu" type="Container" parent="."]
 
 visibility/visible = false
@@ -255,6 +277,7 @@ max_lines_visible = -1
 
 [node name="SoundMenu" type="Container" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -445,8 +468,191 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
+[node name="GameMenu" type="Container" parent="."]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -872.0
+margin/top = -540.0
+margin/right = 872.0
+margin/bottom = 540.0
+
+[node name="Panel" type="Panel" parent="GameMenu"]
+
+visibility/opacity = 0.78
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 300.0
+margin/top = 100.0
+margin/right = 300.0
+margin/bottom = 100.0
+
+[node name="BackGameButton" type="HMButton" parent="GameMenu/Panel"]
+
+anchor/top = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 20.0
+margin/top = 40.0
+margin/right = 142.0
+margin/bottom = 331.0
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Back"
+flat = false
+
+[node name="Container" type="Container" parent="GameMenu/Panel"]
+
+anchor/top = 2
+anchor/right = 1
+anchor/bottom = 2
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 50.0
+margin/top = 0.0997151
+margin/right = 50.0
+margin/bottom = 0.797721
+
+[node name="IntervalLabel" type="Label" parent="GameMenu/Panel/Container"]
+
+anchor/left = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -100.0
+margin/top = 50.0
+margin/right = 621.0
+margin/bottom = 64.0
+text = "Interval"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="IntervalHSlider" type="HSlider" parent="GameMenu/Panel/Container/IntervalLabel"]
+
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 54.0
+margin/top = -1.0
+margin/right = -186.0
+margin/bottom = 16.0
+range/min = 1.0
+range/max = 60.0
+range/step = 1.0
+range/page = 0.0
+range/value = 1.0
+range/exp_edit = false
+range/rounded = false
+tick_count = 0
+ticks_on_borders = true
+focus_mode = 2
+
+[node name="IntervalNbLabel" type="Label" parent="GameMenu/Panel/Container/IntervalLabel/IntervalHSlider"]
+
+anchor/left = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 2.0
+margin/right = 156.0
+margin/bottom = 16.0
+text = "00mn"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="AutoSaveCheckBox" type="CheckBox" parent="GameMenu/Panel/Container"]
+
+anchor/left = 1
+anchor/right = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 648.0
+margin/top = 46.0
+margin/right = 100.0
+margin/bottom = 69.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+align = 0
+
+[node name="AutoSaveLabel" type="Label" parent="GameMenu/Panel/Container/AutoSaveCheckBox"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -79.0
+margin/top = 4.0
+margin/right = -2.0
+margin/bottom = 18.0
+text = "Auto save :"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Title" type="Label" parent="GameMenu/Panel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 47.0
+margin/top = 20.0
+margin/right = -47.0
+margin/bottom = 20.0
+text = "Sound Options"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="SaveHMButton" type="HMButton" parent="GameMenu/Panel"]
+
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 142.0
+margin/top = 40.0
+margin/right = 20.0
+margin/bottom = 331.0
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Save"
+flat = false
+
 [node name="InputMenu" type="Container" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -574,6 +780,8 @@ max_lines_visible = -1
 
 [connection signal="released" from="OptionsMenu/Panel/Container/GraphicsButton/SoundButton" to="." method="_on_SoundButton_released"]
 
+[connection signal="released" from="OptionsMenu/Panel/Container/GraphicsButton/GameButton" to="." method="_on_GameButton_released"]
+
 [connection signal="released" from="GraphicsMenu/Panel/BackGraphicsButton" to="." method="_on_BackGraphicsButton_released"]
 
 [connection signal="toggled" from="GraphicsMenu/Panel/Container/FullScreenCheck" to="." method="_on_CheckBox_toggled"]
@@ -585,6 +793,14 @@ max_lines_visible = -1
 [connection signal="value_changed" from="SoundMenu/Panel/Container/MusicSlider" to="." method="_on_MusicSlider_value_changed"]
 
 [connection signal="value_changed" from="SoundMenu/Panel/Container/EnvironmentSoundSlider" to="." method="_on_EnvironmentSoundSlider_value_changed"]
+
+[connection signal="released" from="GameMenu/Panel/BackGameButton" to="." method="_on_BackGameButton_released"]
+
+[connection signal="value_changed" from="GameMenu/Panel/Container/IntervalLabel/IntervalHSlider" to="." method="_on_HSlider_value_changed"]
+
+[connection signal="toggled" from="GameMenu/Panel/Container/AutoSaveCheckBox" to="." method="_on_AutoSaveCheckBox_toggled"]
+
+[connection signal="released" from="GameMenu/Panel/SaveHMButton" to="." method="_on_SaveHMButton_released"]
 
 [connection signal="released" from="InputMenu/Panel/BackInputButton" to="." method="_on_BackInputButton_released"]
 

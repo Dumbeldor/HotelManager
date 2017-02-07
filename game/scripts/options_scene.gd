@@ -1,12 +1,13 @@
 extends Control
 
-var configFile
+var game_config
 
 const OPTIONMENU = {
 	MAIN = 0,
-	GRAPHICS = 1,
-	SOUND = 2,
-	INPUT = 3,
+	GAME = 1,
+	GRAPHICS = 2,
+	SOUND = 3,
+	INPUT = 4,
 }
 
 var option_config = {
@@ -22,15 +23,17 @@ var current_menu = OPTIONMENU.MAIN
 
 func _ready():
 	set_theme(get_node("/root/global").get_theme())
-	
-	configFile = get_node("/root/global").configFile
+
+	game_config = get_node("/root/global").game_config
 	get_node("ProjectInfos/ProjectNameLabel").set_text(PROJECT.get_project_name())
 	get_node("ProjectInfos/ProjectNameLabel/ProjectVersion").set_text(PROJECT.get_full_version())
 
-	option_config.fullscreen = configFile.get_value("Graphics", "fullscreen", true)
-	option_config.master_sound = configFile.get_value("Sound", "master_sound", 100)
-	option_config.music = configFile.get_value("Sound", "music", 100)
-	option_config.environment_sound = configFile.get_value("Sound", "environment_sound", 100)
+	option_config.interval_save = game_config.get_value("Game", "interval_save", 300.0)
+	option_config.auto_save = game_config.get_value("Game", "auto_save", true)
+	option_config.fullscreen = game_config.get_value("Graphics", "fullscreen", true)
+	option_config.master_sound = game_config.get_value("Sound", "master_sound", 100)
+	option_config.music = game_config.get_value("Sound", "music", 100)
+	option_config.environment_sound = game_config.get_value("Sound", "environment_sound", 100)
 	set_process_input(true)
 
 func _input(event):
@@ -39,6 +42,9 @@ func _input(event):
 			if (current_menu == OPTIONMENU.MAIN):
 				get_node("/root/MusicPlayer").button_click()
 				goToMainMenu()
+			elif (current_menu == OPTIONMENU.GAME):
+				get_node("/root/MusicPlayer").button_click()
+				_on_BackGameButton_released()
 			elif (current_menu == OPTIONMENU.GRAPHICS):
 				get_node("/root/MusicPlayer").button_click()
 				_on_BackGraphicsButton_released()
@@ -54,6 +60,13 @@ func goToMainMenu():
 
 func _on_BackButton_released():
 	goToMainMenu()
+
+func _on_GameButton_released():
+	get_node("OptionsMenu").hide()
+	get_node("GameMenu").show()
+	current_menu = OPTIONMENU.GAME
+	get_node("GameMenu/Panel/Container/IntervalLabel/IntervalHSlider").set_value(option_config.interval_save / 60)
+	get_node("GameMenu/Panel/Container/AutoSaveCheckBox").set_pressed(option_config.auto_save)
 
 func _on_GraphicsButton_released():
 	get_node("OptionsMenu").hide()
@@ -74,6 +87,11 @@ func _on_SoundButton_released():
 	get_node("SoundMenu/Panel/Container/MusicSlider").set_value(option_config.music)
 	get_node("SoundMenu/Panel/Container/EnvironmentSoundSlider").set_value(option_config.environment_sound)
 
+func _on_BackGameButton_released():
+	get_node("GameMenu").hide()
+	get_node("OptionsMenu").show()
+	current_menu = OPTIONMENU.MAIN
+
 func _on_BackGraphicsButton_released():
 	get_node("GraphicsMenu").hide()
 	get_node("OptionsMenu").show()
@@ -83,8 +101,7 @@ func _on_BackSoundButton_released():
 	get_node("SoundMenu").hide()
 	get_node("OptionsMenu").show()
 	current_menu = OPTIONMENU.MAIN
-	configFile.save("user://settings.cfg")
-
+	game_config.save("user://settings.cfg")
 
 func _on_BackInputButton_released():
 	get_node("InputMenu").hide()
@@ -94,21 +111,40 @@ func _on_BackInputButton_released():
 func _on_CheckBox_toggled( pressed ):
 	option_config.fullscreen = get_node("GraphicsMenu/Panel/Container/FullScreenCheck").is_pressed()
 	OS.set_window_fullscreen(option_config.fullscreen)
-	configFile.set_value("Graphics", "fullscreen", option_config.fullscreen)
-	configFile.save("user://settings.cfg")
+	game_config.set_value("Graphics", "fullscreen", option_config.fullscreen)
+	game_config.save("user://settings.cfg")
 
 #--------------
 #Sound Option
 #--------------
 func _on_MasterSoundSlider_value_changed( value ):
 	option_config.master_sound = value
-	configFile.set_value("Sound", "master_sound", option_config.master_sound)
+	game_config.set_value("Sound", "master_sound", option_config.master_sound)
 
 func _on_MusicSlider_value_changed( value ):
 	get_node("/root/MusicPlayer").set_volume(value)
 	option_config.music = value
-	configFile.set_value("Sound", "music", option_config.music)
+	game_config.set_value("Sound", "music", option_config.music)
 
 func _on_EnvironmentSoundSlider_value_changed( value ):
 	option_config.environment_sound = value
-	configFile.set_value("Sound", "environment_sound", option_config.environment_sound)
+	game_config.set_value("Sound", "environment_sound", option_config.environment_sound)
+
+
+func _on_HSlider_value_changed( value ):
+	get_node("GameMenu/Panel/Container/IntervalLabel/IntervalHSlider/IntervalNbLabel").set_text(str(value, "mn"))
+	option_config.interval_save = value * 60
+
+
+func _on_AutoSaveCheckBox_toggled( pressed ):
+	option_config.auto_save = get_node("GameMenu/Panel/Container/AutoSaveCheckBox").is_pressed()
+	game_config.set_auto_save(option_config.auto_save)
+	game_config.set_interval_save(option_config.interval_save)
+	game_config.save("user://settings.cfg")
+
+
+func _on_SaveHMButton_released():
+	game_config.set_auto_save(option_config.auto_save)
+	game_config.set_interval_save(option_config.interval_save)
+	game_config.save("user://settings.cfg")
+	_on_BackGameButton_released()
