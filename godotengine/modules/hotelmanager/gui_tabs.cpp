@@ -20,6 +20,31 @@
 #include "objectdefmgr.h"
 #include "log.h"
 
+TileMenu::TileMenu()
+{
+}
+
+void TileMenu::init(const String &tile_group)
+{
+	set_normal_texture(ResourceLoader::load("res://icons/icon_menu_tiletype_" + tile_group + ".png"));
+	set_hover_texture(ResourceLoader::load("res://icons/alternates/icon_menu_tiletype_" + tile_group + "_hover.png"));
+
+	m_menu = memnew(LayerTileMenu);
+	m_menu->init(tile_group);
+	m_menu->set_name(String("tilemenu_layer_" + tile_group));
+	add_child(m_menu);
+}
+
+void TileMenu::show_menu()
+{
+	m_menu->show();
+}
+
+void TileMenu::hide_menu()
+{
+	m_menu->hide();
+}
+
 LayerTileMenu::LayerTileMenu()
 {
 	// Init ObjectSelectorButton when init this menu element, should be good

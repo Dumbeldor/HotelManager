@@ -21,6 +21,7 @@
 #include <scene/gui/box_container.h>
 #include <math/math_2d.h>
 #include <scene/gui/rich_text_label.h>
+#include "modules/hotelmanager/log.h"
 #include "hud.h"
 #include "modules/hotelmanager/gui_tabs.h"
 #include "clock.h"
@@ -32,37 +33,49 @@ Hud::Hud(): CanvasLayer()
 
 void Hud::init()
 {
-	TextureButton *ground_menu = get_node(String("ControlPane_Bottom/GroundMenu"))->
-		cast_to<TextureButton>();
-	assert(ground_menu);
-
-	TextureButton *floor_menu = get_node(String("ControlPane_Bottom/FloorMenu"))->
-		cast_to<TextureButton>();
-	assert(floor_menu);
-
-	TextureButton *wall_menu = get_node(String("ControlPane_Bottom/WallMenu"))->
-		cast_to<TextureButton>();
-	assert(wall_menu);
-
-
 	m_mission_container = get_node(String("ControlPane/MissionPanel/MissionContainer"))->cast_to<VBoxContainer>();
 	assert(m_mission_container);
 
-	// Init some HUD elements: note this should be done using a Hud element (see issue #17)
-	m_ground_menu = memnew(LayerTileMenu);
-	m_ground_menu->init("ground");
-	ground_menu->add_child(m_ground_menu);
-
-	m_floor_menu = memnew(LayerTileMenu);
-	m_floor_menu->init("floor");
-	floor_menu->add_child(m_floor_menu);
-
-	m_wall_menu = memnew(LayerTileMenu);
-	m_wall_menu->init("wall");
-	wall_menu->add_child(m_wall_menu);
+	create_menu("ground");
+	create_menu("floor");
+	create_menu("wall");
 
 	m_clock = get_node(String("ControlPane/Clock"))->cast_to<Clock>();
 	assert(m_clock);
+}
+
+/**
+ * Create menu with name
+ *
+ * @param name
+ */
+void Hud::create_menu(const std::string &name)
+{
+	if (m_tile_menus.find(name) != m_tile_menus.end()) {
+		LOG_CRIT("Creating menu %s another time, aborting.", name.c_str());
+		assert(false);
+	}
+
+	TileMenu *menu = memnew(TileMenu);
+	assert(menu);
+	menu->init(String(name.c_str()));
+	Node *bottom_pane = get_node(String("ControlPane_Bottom"));
+	assert(bottom_pane);
+	bottom_pane->add_child(menu);
+
+	m_tile_menus[name] = menu;
+
+	menu->connect("pressed", this, ("_on_menu_pressed_" + name).c_str());
+
+	// @TODO this should be more flexible, especially for left & right margin
+	// adding a menu index could be the solution
+
+	menu->set_margin(MARGIN_TOP, 0);
+	menu->set_margin(MARGIN_BOTTOM, 48);
+
+	int margin_padding = 40 + (bottom_pane->get_child_count() - 1) * 80;
+	menu->set_margin(MARGIN_LEFT, margin_padding);
+	menu->set_margin(MARGIN_RIGHT, 48 + margin_padding);
 }
 
 /**
@@ -70,56 +83,36 @@ void Hud::init()
  */
 void Hud::_bind_methods()
 {
-	ObjectTypeDB::bind_method(_MD("_on_floormenu_pressed"), &Hud::_on_floormenu_pressed);
-	ObjectTypeDB::bind_method(_MD("_on_groundmenu_pressed"), &Hud::_on_groundmenu_pressed);
-	ObjectTypeDB::bind_method(_MD("_on_wallmenu_pressed"), &Hud::_on_wallmenu_pressed);
+	// @TODO try to use templates functions for bound methods ?
+	ObjectTypeDB::bind_method(_MD("_on_menu_pressed_floor"), &Hud::_on_tilemenu_pressed, String("floor"));
+	ObjectTypeDB::bind_method(_MD("_on_menu_pressed_ground"), &Hud::_on_tilemenu_pressed, String("ground"));
+	ObjectTypeDB::bind_method(_MD("_on_menu_pressed_wall"), &Hud::_on_tilemenu_pressed, String("wall"));
 	ObjectTypeDB::bind_method(_MD("_on_draw"), &Hud::_on_draw);
 }
 
 /**
- * Event when user clicks on ground menu
+ * Generic function to swap between tile menus
+ * @param menu_name
  */
-
-void Hud::_on_groundmenu_pressed()
+void Hud::_on_tilemenu_pressed(const String &menu_name)
 {
-	// If this menu is shown, hide it
-	if (m_ground_menu->is_visible()) {
-		m_ground_menu->hide();
-		return;
+	std::string m_name(menu_name.ascii().get_data());
+	for (auto &menu: m_tile_menus) {
+		// If menu is current clicked menu
+		if (menu.first == m_name) {
+			// If it's visible hide it, else show it
+			if (menu.second->get_menu()->is_visible()) {
+				menu.second->get_menu()->hide();
+			}
+			else {
+				menu.second->get_menu()->show();
+			}
+		}
+		// hide other menus
+		else if (menu.second->get_menu()->is_visible()) {
+			menu.second->get_menu()->hide();
+		}
 	}
-
-	// Hide other menus
-	if (m_floor_menu->is_visible()) {
-		m_floor_menu->hide();
-	}
-
-	if (m_wall_menu->is_visible()) {
-		m_wall_menu->hide();
-	}
-
-	m_ground_menu->show();
-}
-
-/**
- * Event when user click on floor menu
- */
-void Hud::_on_floormenu_pressed()
-{
-	// If this menu is shown, hide it
-	if (m_floor_menu->is_visible()) {
-		m_floor_menu->hide();
-		return;
-	}
-
-	if (m_ground_menu->is_visible()) {
-		m_ground_menu->hide();
-	}
-
-	if (m_wall_menu->is_visible()) {
-		m_wall_menu->hide();
-	}
-
-	m_floor_menu->show();
 }
 
 /**
@@ -129,21 +122,21 @@ void Hud::_on_floormenu_pressed()
 void Hud::_on_wallmenu_pressed()
 {
 	// If this menu is shown, hide it
-	if (m_wall_menu->is_visible()) {
-		m_wall_menu->hide();
+	if (m_tile_menus["wall"]->get_menu()->is_visible()) {
+		m_tile_menus["wall"]->get_menu()->hide();
 		return;
 	}
 
 	// Hide other menus
-	if (m_floor_menu->is_visible()) {
-		m_floor_menu->hide();
+	if (m_tile_menus["floor"]->get_menu()->is_visible()) {
+		m_tile_menus["floor"]->get_menu()->hide();
 	}
 
-	if (m_ground_menu->is_visible()) {
-		m_ground_menu->hide();
+	if (m_tile_menus["ground"]->get_menu()->is_visible()) {
+		m_tile_menus["ground"]->get_menu()->hide();
 	}
 
-	m_wall_menu->show();
+	m_tile_menus["wall"]->get_menu()->show();
 }
 
 /**
