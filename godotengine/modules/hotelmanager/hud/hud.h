@@ -21,6 +21,7 @@
 class LayerTileMenu;
 class Clock;
 class VBoxContainer;
+class TileMenu;
 
 class Hud: public CanvasLayer
 {
@@ -39,13 +40,11 @@ public:
 protected:
 	static void _bind_methods();
 	void _on_draw();
-	void _on_floormenu_pressed();
-	void _on_groundmenu_pressed();
+	void _on_tilemenu_pressed(const String &menu_name);
 	void _on_wallmenu_pressed();
 private:
-	LayerTileMenu *m_ground_menu = nullptr;
-	LayerTileMenu *m_floor_menu = nullptr;
-	LayerTileMenu *m_wall_menu = nullptr;
+	void create_menu(const std::string &name);
 	Clock *m_clock = nullptr;
 	VBoxContainer *m_mission_container = nullptr;
+	std::unordered_map<std::string, TileMenu *> m_tile_menus = {};
 };
