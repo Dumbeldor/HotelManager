@@ -137,8 +137,6 @@ func _on_HSlider_value_changed( value ):
 
 
 func _on_AutoSaveCheckBox_toggled( pressed ):
-	print(pressed)
-	print(get_node("GameMenu/Panel/Container/AutoSaveCheckBox").is_pressed())
 	option_config.auto_save = get_node("GameMenu/Panel/Container/AutoSaveCheckBox").is_pressed()
 	game_config.set_auto_save(option_config.auto_save)
 	game_config.set_interval_save(option_config.interval_save)
