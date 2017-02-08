@@ -65,8 +65,8 @@ func _on_GameButton_released():
 	get_node("OptionsMenu").hide()
 	get_node("GameMenu").show()
 	current_menu = OPTIONMENU.GAME
-	get_node("GameMenu/Panel/Container/IntervalLabel/IntervalHSlider").set_value(option_config.interval_save / 60)
-	get_node("GameMenu/Panel/Container/AutoSaveCheckBox").set_pressed(option_config.auto_save)
+	get_node("GameMenu/Panel/Container/IntervalHSlider").set_value(option_config.interval_save / 60)
+	get_node("GameMenu/Panel/Container/AutoSaveLabel/AutoSaveCheckBox").set_pressed(option_config.auto_save)
 
 func _on_GraphicsButton_released():
 	get_node("OptionsMenu").hide()
@@ -88,6 +88,9 @@ func _on_SoundButton_released():
 	get_node("SoundMenu/Panel/Container/EnvironmentSoundSlider").set_value(option_config.environment_sound)
 
 func _on_BackGameButton_released():
+	game_config.set_auto_save(option_config.auto_save)
+	game_config.set_interval_save(option_config.interval_save)
+	game_config.save("user://settings.cfg")
 	get_node("GameMenu").hide()
 	get_node("OptionsMenu").show()
 	current_menu = OPTIONMENU.MAIN
@@ -132,19 +135,12 @@ func _on_EnvironmentSoundSlider_value_changed( value ):
 
 
 func _on_HSlider_value_changed( value ):
-	get_node("GameMenu/Panel/Container/IntervalLabel/IntervalHSlider/IntervalNbLabel").set_text(str(value, "mn"))
+	get_node("GameMenu/Panel/Container/IntervalHSlider/IntervalNbLabel").set_text(str(value, "mn"))
 	option_config.interval_save = value * 60
 
 
 func _on_AutoSaveCheckBox_toggled( pressed ):
-	option_config.auto_save = get_node("GameMenu/Panel/Container/AutoSaveCheckBox").is_pressed()
+	option_config.auto_save = get_node("GameMenu/Panel/Container/AutoSaveLabel/AutoSaveCheckBox").is_pressed()
 	game_config.set_auto_save(option_config.auto_save)
 	game_config.set_interval_save(option_config.interval_save)
 	game_config.save("user://settings.cfg")
-
-
-func _on_SaveHMButton_released():
-	game_config.set_auto_save(option_config.auto_save)
-	game_config.set_interval_save(option_config.interval_save)
-	game_config.save("user://settings.cfg")
-	_on_BackGameButton_released()

@@ -628,26 +628,6 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="SaveHMButton" type="HMButton" parent="GameMenu/Panel"]
-
-anchor/left = 1
-anchor/top = 1
-anchor/right = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 142.0
-margin/top = 40.0
-margin/right = 20.0
-margin/bottom = 331.0
-toggle_mode = false
-click_on_press = true
-enabled_focus_mode = 2
-shortcut = null
-text = "Save"
-flat = false
-
 [node name="InputMenu" type="Container" parent="."]
 
 editor/display_folded = true
@@ -794,11 +774,11 @@ max_lines_visible = -1
 
 [connection signal="released" from="GameMenu/Panel/BackGameButton" to="." method="_on_BackGameButton_released"]
 
+[connection signal="focus_exit" from="GameMenu/Panel/Container/IntervalHSlider" to="." method="_on_IntervalHSlider_focus_exit"]
+
 [connection signal="value_changed" from="GameMenu/Panel/Container/IntervalHSlider" to="." method="_on_HSlider_value_changed"]
 
 [connection signal="toggled" from="GameMenu/Panel/Container/AutoSaveLabel/AutoSaveCheckBox" to="." method="_on_AutoSaveCheckBox_toggled"]
-
-[connection signal="released" from="GameMenu/Panel/SaveHMButton" to="." method="_on_SaveHMButton_released"]
 
 [connection signal="released" from="InputMenu/Panel/BackInputButton" to="." method="_on_BackInputButton_released"]
 
