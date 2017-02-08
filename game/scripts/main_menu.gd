@@ -119,8 +119,8 @@ func _on_ConfirmationRemoveDialog_confirmed():
 	var dir = Directory.new()
 	if dir.open("user://save") == OK:
 		if dir.remove(saveName+".save") == OK:
-			get_node("PlayMenu/PlayPanel/SaveDetailsPanel/LoadGameButton").set_disabled(true)
-			get_node("PlayMenu/PlayPanel/SaveDetailsPanel/LoadGameButton/RemoveGameButton").set_disabled(true)
+			get_node("PlayMenu/PlayPanel/SaveDetailsPanel/RemoveGameButton/LoadGameButton").set_disabled(true)
+			get_node("PlayMenu/PlayPanel/SaveDetailsPanel/RemoveGameButton").set_disabled(true)
 			get_node("PlayMenu/PlayPanel/SaveDetailsPanel/MoneyLabel").hide()
 			get_node("PlayMenu/PlayPanel/SaveList").remove_item(indexSave)
 
