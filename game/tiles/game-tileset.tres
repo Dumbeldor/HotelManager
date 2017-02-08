@@ -13,17 +13,17 @@
 [ext_resource path="res://tiles/tile_mosaic.png" type="Texture" id=11]
 [ext_resource path="res://tiles/tile_parquet.png" type="Texture" id=12]
 
-[sub_resource type="ConvexPolygonShape2D" id=3]
-
-custom_solver_bias = 0.0
-points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
-
 [sub_resource type="ConvexPolygonShape2D" id=1]
 
 custom_solver_bias = 0.0
 points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
+
+[sub_resource type="ConvexPolygonShape2D" id=3]
 
 custom_solver_bias = 0.0
 points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
@@ -133,7 +133,7 @@ points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
 12/occluder_offset = Vector2( 24, 24 )
 12/navigation_offset = Vector2( 24, 24 )
 12/shape_offset = Vector2( 24, 24 )
-12/shapes = [ SubResource( 3 ) ]
+12/shapes = [ SubResource( 1 ) ]
 13/name = "BrickWall"
 13/texture = ExtResource( 4 )
 13/tex_offset = Vector2( 0, 0 )
@@ -141,7 +141,7 @@ points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
 13/occluder_offset = Vector2( 24, 24 )
 13/navigation_offset = Vector2( 24, 24 )
 13/shape_offset = Vector2( 24, 24 )
-13/shapes = [ SubResource( 1 ) ]
+13/shapes = [ SubResource( 2 ) ]
 14/name = "SimpleDoor"
 14/texture = ExtResource( 4 )
 14/tex_offset = Vector2( 0, 0 )
@@ -149,5 +149,5 @@ points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
 14/occluder_offset = Vector2( 24, 24 )
 14/navigation_offset = Vector2( 24, 24 )
 14/shape_offset = Vector2( 24, 24 )
-14/shapes = [ SubResource( 2 ) ]
+14/shapes = [ SubResource( 3 ) ]
 

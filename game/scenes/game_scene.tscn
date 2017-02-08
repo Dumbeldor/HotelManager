@@ -13,12 +13,12 @@
 [ext_resource path="res://fonts/teen-bold.fnt" type="BitmapFont" id=11]
 [ext_resource path="res://fonts/teen.fnt" type="BitmapFont" id=12]
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
 extents = Vector2( 10, 10 )
 
-[sub_resource type="SampleLibrary" id=1]
+[sub_resource type="SampleLibrary" id=2]
 
 samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 8 ) }
 
@@ -130,7 +130,7 @@ tile_data = IntArray(  )
 
 transform/pos = Vector2( 950, 200 )
 input/pickable = true
-shapes/0/shape = SubResource( 2 )
+shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Matrix32( 1.89335, 0, 0, 1.82659, -0.319902, -1.05052 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -159,7 +159,7 @@ texture = ExtResource( 3 )
 
 transform/pos = Vector2( -0.319902, -1.05052 )
 transform/scale = Vector2( 1.89335, 1.82659 )
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
 
@@ -552,7 +552,7 @@ alignment = 0
 [node name="MapSoundPlayer" type="SamplePlayer" parent="GameSession"]
 
 config/polyphony = 1
-config/samples = SubResource( 1 )
+config/samples = SubResource( 2 )
 default/volume_db = 0.0
 default/pitch_scale = 1.0
 default/pan = 0.0
