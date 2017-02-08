@@ -142,6 +142,7 @@ func save():
 	save_name = get_node("MainMenuLayer/SaveMenu/SaveDetailPanel/NameSaveEdit").get_text()
 	game_session.save(save_name)
 	_on_BackButton_released()
+	_hide_game_menu()
 
 func _on_SaveExistConfirmDialog_confirmed():
 	save()
@@ -158,6 +159,7 @@ func _on_OverWriteConfirmDialog_confirmed():
 	save_name = get_node("MainMenuLayer/SaveMenu/SaveList").get_item_text(index_save)
 	game_session.save(save_name)
 	_on_BackButton_released()
+	_hide_game_menu()
 
 func _on_APButton_pressed():
 	get_node("GameSession/GameMap/Hud/AchievementPopup").hide()
