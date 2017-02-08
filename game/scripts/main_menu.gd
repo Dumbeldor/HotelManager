@@ -88,6 +88,7 @@ func _on_OptionsButton_released():
 
 func _on_SaveList_item_activated( index ):
 	var save_name = get_node("PlayMenu/PlayPanel/SaveList").get_item_text(index)
+	loadGame()
 
 
 func _on_SaveList_item_selected( index ):
@@ -128,6 +129,9 @@ func _on_NewGameButton_released():
 	start_game()
 	
 func _on_LoadGameButton_released():
+	loadGame()
+
+func loadGame():
 	var save_name = get_node("PlayMenu/PlayPanel/SaveList").get_item_text(indexSave)
 	var file = File.new()
 	if !file.file_exists("user://save/" + save_name + ".save"):
@@ -135,4 +139,3 @@ func _on_LoadGameButton_released():
 		return
 	get_node("/root/global").set_save(save_name)
 	start_game()
-
