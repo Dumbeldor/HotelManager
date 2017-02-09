@@ -3,7 +3,6 @@ extends Control
 onready var game_session = get_node("GameSession")
 
 var current_shown_menu = 0
-var index_save = null
 var save_name = null
 
 const GAMEMENU = {
@@ -37,6 +36,7 @@ func _input(event):
 func _ready():
 	set_theme(get_node("/root/global").get_theme())
 	get_node("MainMenuLayer/GameMainMenu").set_theme(get_node("/root/global").get_theme())
+	get_node("MainMenuLayer/SaveMenu").set_theme(get_node("/root/global").get_theme())
     # TODO, get save name and call it from there
 	game_session.init(get_node("/root/global").get_save())
 	set_process_input(true)
@@ -86,8 +86,7 @@ func list_save():
 		else:
 			print("An error occured when trying to access the path.")
 	if save_name != null:
-		#get_node("MainMenuLayer/SaveMenu/SaveList").select(index_save)
-		get_node("MainMenuLayer/SaveMenu/SaveDetailPanel/NameSaveEdit").set_text(save_name)
+		get_node("MainMenuLayer/SaveMenu/SaveDetailPanel/NewSaveButton/NameSaveEdit").set_text(save_name)
 
 func _on_SaveButton_released():
 	get_node("MainMenuLayer/SaveMenu").show()
@@ -103,7 +102,6 @@ func _on_SaveLeaveButton_released():
 
 func _on_BackButton_released():
 	get_node("MainMenuLayer/SaveMenu").hide()
-	get_node("MainMenuLayer/SaveMenu/BackButton/OverWriteButton").set_disabled(true)
 	get_node("MainMenuLayer/SaveMenu/SaveList").clear()
 	get_node("MainMenuLayer/SaveMenu/SaveDetailPanel/MoneyLabel/MoneyValueLabel").set_text(String(""))
 	get_node("MainMenuLayer/SaveMenu/SaveDetailPanel/MoneyLabel/MoneyValueLabel/DateValueLabel").set_text(String(""))
@@ -111,9 +109,7 @@ func _on_BackButton_released():
 
 
 func _on_SaveList_item_selected( index ):
-	get_node("MainMenuLayer/SaveMenu/BackButton/OverWriteButton").set_disabled(false)
 	var saveName = get_node("MainMenuLayer/SaveMenu/SaveList").get_item_text(index)
-	index_save = index
 	var saveGame = File.new()
 	if !saveGame.file_exists("user://save/"+saveName+".save"):
 		print("Error file don't exist")
@@ -132,34 +128,20 @@ func _on_NewSaveButton_released():
 		if dir.open("user://") == OK:
 			dir.make_dir("save")
 	if dir.open("user://save/") == OK:
-		if dir.file_exists(get_node("MainMenuLayer/SaveMenu/SaveDetailPanel/NameSaveEdit").get_text() + ".save"):
-			get_node("MainMenuLayer/SaveMenu/SaveExistConfirmDialog").popup()
-			print("Error save exist")
+		save_name = get_node("MainMenuLayer/SaveMenu/SaveDetailPanel/NewSaveButton/NameSaveEdit").get_text()
+		if dir.file_exists(save_name + ".save"):
+			get_node("MainMenuLayer/SaveMenu/OverWriteConfirmDialog").popup()
 		else:
 			save()
 
 func save():
-	save_name = get_node("MainMenuLayer/SaveMenu/SaveDetailPanel/NameSaveEdit").get_text()
 	game_session.save(save_name)
 	_on_BackButton_released()
 	_hide_game_menu()
-
-func _on_SaveExistConfirmDialog_confirmed():
-	save()
-
-
-func _on_OverWriteButton_released():
-	get_node("MainMenuLayer/SaveMenu/OverWriteConfirmDialog").popup()
 
 func _on_SaveList_item_activated( index ):
-	index_save = index
+	save_name = get_node("MainMenuLayer/SaveMenu/SaveList").get_item_text(index)
 	get_node("MainMenuLayer/SaveMenu/OverWriteConfirmDialog").popup()
-
-func _on_OverWriteConfirmDialog_confirmed():
-	save_name = get_node("MainMenuLayer/SaveMenu/SaveList").get_item_text(index_save)
-	game_session.save(save_name)
-	_on_BackButton_released()
-	_hide_game_menu()
 
 func _on_APButton_pressed():
 	get_node("GameSession/GameMap/Hud/AchievementPopup").hide()
