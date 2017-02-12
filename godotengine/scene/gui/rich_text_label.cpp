@@ -1262,12 +1262,12 @@ void RichTextLabel::add_newline() {
 
 }
 
-void RichTextLabel::remove_line(const unsigned int line) {
+bool RichTextLabel::remove_line(const unsigned int line) {
 
 	int lines = line * 2;
 
 	if (lines >= current->subitems.size())
-		return;
+		return false;
 
 	if (current->subitems[lines]->type != ITEM_NEWLINE)
 		_remove_item(current->subitems[lines], current->subitems[lines]->line, lines);
@@ -1279,7 +1279,7 @@ void RichTextLabel::remove_line(const unsigned int line) {
 	}
 
 	main->first_invalid_line = 0;
-	update();
+	return true;
 }
 
 void RichTextLabel::push_font(const Ref<Font>& p_font) {

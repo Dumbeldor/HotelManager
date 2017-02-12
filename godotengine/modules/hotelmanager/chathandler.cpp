@@ -309,6 +309,12 @@ bool ChatHandler::handle_command_time_speed(const std::string &args, GameSession
  */
 bool ChatHandler::handle_command_remove_line(const std::string &args, GameSession *game_session, std::string &msg)
 {
-	m_console->get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->remove_line(std::atoi(args.c_str()));
-	return true;
+	if (args.empty()) {
+		msg = "/remove_line <nb>.";
+		return true;
+	}
+
+	bool res = m_console->get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->remove_line(std::atoi(args.c_str()));
+	(res) ? msg = "Line " + std::to_string(std::atoi(args.c_str())) + " has been deleted" : msg = "The line number does not exist.";
+	return res;
 }
