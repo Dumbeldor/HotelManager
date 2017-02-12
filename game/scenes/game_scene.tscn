@@ -685,6 +685,7 @@ flat = false
 
 [node name="SaveMenu" type="Panel" parent="MainMenuLayer"]
 
+visibility/visible = false
 visibility/opacity = 0.9
 anchor/left = 3
 anchor/top = 3
