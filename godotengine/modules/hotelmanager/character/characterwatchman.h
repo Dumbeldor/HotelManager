@@ -21,7 +21,7 @@ class CharacterWatchman: public Character
 {
 	OBJ_TYPE(CharacterWatchman, Character);
 public:
-	CharacterWatchman(): Character(CHARARACTER_ROLE_WATCHMAN) {}
+	CharacterWatchman(): Character(CHARACTER_ROLE_WATCHMAN) {}
 protected:
 	static void _bind_methods() {}
 };

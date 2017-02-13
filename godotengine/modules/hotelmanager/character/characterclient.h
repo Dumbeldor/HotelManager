@@ -21,7 +21,7 @@ class CharacterClient: public Character
 {
 	OBJ_TYPE(CharacterClient, Character);
 public:
-	CharacterClient(): Character(CHARARACTER_ROLE_CLIENT) {}
+	CharacterClient(): Character(CHARACTER_ROLE_CLIENT) {}
 protected:
 	static void _bind_methods() {}
 };

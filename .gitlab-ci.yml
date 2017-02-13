@@ -5,6 +5,7 @@ image: docker.io/nerzhul/archlinux:2016.10.01
 
 stages:
   - codestyle
+  - cppcheck
   - build
   - package
   - pages
@@ -14,6 +15,14 @@ check:codestyle:
   environment: staging
   script:
     - .gitlab-ci/codestyle_check.sh
+
+check:codestyle:
+  stage: cppcheck
+  environment: staging
+  before_script:
+    - pacman --noconfirm -Sy cppcheck
+  script:
+    - cppcheck --enable=warning,performance godotengine/modules/hotelmanager
 
 .build_template: &build_template
   stage: build

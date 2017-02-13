@@ -24,10 +24,10 @@
 
 struct RoomDef
 {
-	uint16_t id;
-	std::string name;
-	uint8_t min_size;
-	uint8_t max_size;
+	uint16_t id = 0;
+	std::string name = "";
+	uint8_t min_size = 1;
+	uint8_t max_size = 1;
 };
 static const uint8_t ROOMDEF_CSV_COLS = 4;
 typedef std::unordered_map<uint32_t, GameTileDef *> TileDefMap;

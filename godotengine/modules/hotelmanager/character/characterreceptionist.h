@@ -21,7 +21,7 @@ class CharacterReceptionist: public Character
 {
 	OBJ_TYPE(CharacterReceptionist, Character);
 public:
-	CharacterReceptionist(): Character(CHARARACTER_ROLE_RECEPTIONIST) {}
+	CharacterReceptionist(): Character(CHARACTER_ROLE_RECEPTIONIST) {}
 protected:
 	static void _bind_methods() {}
 };

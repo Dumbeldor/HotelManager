@@ -21,7 +21,7 @@ class CharacterGardener: public Character
 {
 	OBJ_TYPE(CharacterGardener, Character);
 public:
-	CharacterGardener(): Character(CHARARACTER_ROLE_GARDENER) {}
+	CharacterGardener(): Character(CHARACTER_ROLE_GARDENER) {}
 protected:
 	static void _bind_methods() {}
 };

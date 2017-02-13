@@ -39,6 +39,7 @@ typedef std::unordered_map<uint32_t, AchievementGroup *> AchievementGroupList;
 
 struct Achievement
 {
+	Achievement() {}
 	uint32_t unique_id = 0;
 	AchievementType type = ACHIEVEMENT_TYPE_NONE;
 	uint32_t objective = 0;

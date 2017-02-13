@@ -30,6 +30,7 @@ enum MissionObjectiveType
 
 struct MissionObjective
 {
+	MissionObjective() {}
 	uint32_t id = 0;
 	std::string title = "";
 	MissionObjectiveType type = MISSION_OBJECTIVE_TYPE_NONE;

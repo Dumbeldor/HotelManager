@@ -22,7 +22,7 @@ class CharacterRoomMaid: public Character
 {
 	OBJ_TYPE(CharacterRoomMaid, Character);
 public:
-	CharacterRoomMaid(): Character(CHARARACTER_ROLE_ROOM_MADE) {}
+	CharacterRoomMaid(): Character(CHARACTER_ROLE_ROOM_MADE) {}
 protected:
 	static void _bind_methods() {}
 };
