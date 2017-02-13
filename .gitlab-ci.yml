@@ -4,20 +4,19 @@ image: docker.io/nerzhul/archlinux:2016.10.01
 # - pacman --noconfirm -S libxml2 jsoncpp curl
 
 stages:
-  - codestyle
-  - cppcheck
+  - prechecks
   - build
   - package
   - pages
 
 check:codestyle:
-  stage: codestyle
+  stage: prechecks
   environment: staging
   script:
     - .gitlab-ci/codestyle_check.sh
 
-check:codestyle:
-  stage: cppcheck
+check:cppcheck:
+  stage: prechecks
   environment: staging
   before_script:
     - pacman --noconfirm -Sy cppcheck
