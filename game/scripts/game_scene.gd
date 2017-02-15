@@ -14,7 +14,7 @@ func _input(event):
 		if event.is_action("ui_cancel"):
 			var console = get_node("MainMenuLayer/Console")
 			if console.is_visible():
-				console.hide()
+				get_node("MainMenuLayer/Console/ConsoleAnim").play("HideAnim")
 			elif current_shown_menu == 0:
 				_show_game_menu()
 			elif current_shown_menu == GAMEMENU.MAIN:
@@ -28,9 +28,10 @@ func _input(event):
 		elif event.is_action("ui_console"):
 			var console = get_node("MainMenuLayer/Console")
 			if console.is_visible():
-				console.hide()
+				get_node("MainMenuLayer/Console/ConsoleAnim").play("HideAnim")
 			else:
 				console.show()
+				get_node("MainMenuLayer/Console/ConsoleAnim").play("ShowAnim")
 				get_node("MainMenuLayer/Console/ConsoleLineEdit").grab_focus()
 
 func _ready():
@@ -171,3 +172,9 @@ func _on_ClockSpeed3_pressed():
 func _on_ClockSpeed5_pressed():
 	get_node("GameSession").set_game_speed(5)
 
+
+func _on_ConsoleAnim_finished():
+	var console = get_node("MainMenuLayer/Console")
+	if get_node("MainMenuLayer/Console/ConsoleAnim").get_current_animation() != "ShowAnim":
+		if console.is_visible():
+			console.hide()
