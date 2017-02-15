@@ -13,11 +13,6 @@
 [ext_resource path="res://tiles/tile_carpet.png" type="Texture" id=11]
 [ext_resource path="res://tiles/tile_sand.png" type="Texture" id=12]
 
-[sub_resource type="ConvexPolygonShape2D" id=3]
-
-custom_solver_bias = 0.0
-points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
-
 [sub_resource type="ConvexPolygonShape2D" id=1]
 
 custom_solver_bias = 0.0
@@ -28,26 +23,32 @@ points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
 custom_solver_bias = 0.0
 points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
 
+[sub_resource type="ConvexPolygonShape2D" id=3]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
+
 [node name="Node2D" type="Node2D"]
 
 [node name="Grass" type="Sprite" parent="."]
 
-transform/pos = Vector2( 48, 144 )
+transform/pos = Vector2( 833.643, -72.2607 )
 texture = ExtResource( 1 )
-region_rect = Rect2( 0, 0, 48, 48 )
+region_rect = Rect2( 0, 0, 512, 512 )
 
 [node name="Empty" type="Sprite" parent="."]
 
+transform/pos = Vector2( 570.316, -333.701 )
 texture = ExtResource( 2 )
 region = true
-region_rect = Rect2( 0, 0, 48, 48 )
+region_rect = Rect2( 0, 0, 512, 256 )
 
 [node name="Stone" type="Sprite" parent="."]
 
-transform/pos = Vector2( 0, 144 )
+transform/pos = Vector2( -479.407, 482.538 )
 texture = ExtResource( 3 )
 region = true
-region_rect = Rect2( 0, 0, 48, 48 )
+region_rect = Rect2( 0, 0, 512, 512 )
 
 [node name="Forest" type="Sprite" parent="."]
 
@@ -58,17 +59,15 @@ region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="SeaWater" type="Sprite" parent="."]
 
-transform/pos = Vector2( 96, 144 )
+transform/pos = Vector2( 299.943, -196.245 )
 texture = ExtResource( 5 )
-region = true
-region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="SwimmingpoolWater" type="Sprite" parent="."]
 
-transform/pos = Vector2( 96, 96 )
+transform/pos = Vector2( 306.46, -470.58 )
 texture = ExtResource( 6 )
 region = true
-region_rect = Rect2( 0, 0, 48, 48 )
+region_rect = Rect2( 0, 0, 512, 256 )
 
 [node name="FloorTile" type="Sprite" parent="."]
 
@@ -107,10 +106,10 @@ region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Sand" type="Sprite" parent="."]
 
-transform/pos = Vector2( 48, 96 )
+transform/pos = Vector2( 624.751, 523.728 )
 texture = ExtResource( 12 )
 region = true
-region_rect = Rect2( 0, 0, 48, 48 )
+region_rect = Rect2( 0, 0, 512, 512 )
 
 [node name="ConcreteWall" type="Sprite" parent="."]
 
@@ -122,7 +121,7 @@ region_rect = Rect2( 0, 0, 48, 48 )
 [node name="StaticBody2D" type="StaticBody2D" parent="ConcreteWall"]
 
 input/pickable = false
-shapes/0/shape = SubResource( 3 )
+shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -149,7 +148,7 @@ region_rect = Rect2( 0, 0, 48, 48 )
 [node name="StaticBody2D" type="StaticBody2D" parent="BrickWall"]
 
 input/pickable = false
-shapes/0/shape = SubResource( 1 )
+shapes/0/shape = SubResource( 2 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -176,7 +175,7 @@ region_rect = Rect2( 0, 0, 48, 48 )
 [node name="StaticBody2D" type="StaticBody2D" parent="SimpleDoor"]
 
 input/pickable = false
-shapes/0/shape = SubResource( 2 )
+shapes/0/shape = SubResource( 3 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
 collision/layers = 1

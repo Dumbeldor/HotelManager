@@ -79,7 +79,7 @@ void LayerTileMenu::init(const String &tile_group)
 		ObjectSelectorButton *tmp = memnew(ObjectSelectorButton);
 		if (tb) {
 			tb->add_child(tmp);
-			tmp->set_margin(MARGIN_LEFT, GAME_TILE_SIZE + 20);
+			tmp->set_margin(MARGIN_LEFT, 48 + 20);
 		}
 		else {
 			add_child(tmp);

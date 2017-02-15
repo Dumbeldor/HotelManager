@@ -48,8 +48,8 @@
 #define SELECTOR_RECT_COLOR_VALID Color(0.2, 1, 0.4, 0.4)
 #define SELECTOR_RECT_COLOR_INVALID Color(1, 0.2, 0.3, 0.4)
 
-static constexpr float ZOOMOUT_LIMIT = 8;
-static constexpr float ZOOMIN_LIMIT = 0.55;
+static constexpr float ZOOMOUT_LIMIT = 10;
+static constexpr float ZOOMIN_LIMIT = 0.65;
 
 GameMap::GameMap()
 {
@@ -92,9 +92,9 @@ bool GameMap::init(GameSession *game_session, const Dictionary &map)
 	m_camera->set_enable_follow_smoothing(true);
 	m_camera->set_pos(BASE_RESOLUTION / 2);
 
-	m_ground_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
-	m_floor_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
-	m_object_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
+	m_ground_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE / 2));
+	m_floor_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE / 2));
+	m_object_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE / 2 ));
 
 	generate_map_borders();
 

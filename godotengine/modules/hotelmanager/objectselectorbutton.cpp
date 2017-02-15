@@ -19,6 +19,7 @@
 #include <scene/gui/label.h>
 #include <iostream>
 
+#define OBJECTSELECTOR_SIZE 48
 #define OBJECTSELECTOR_MASK Color(1.0, 1.0, 1.0, 0.2)
 
 ObjectSelectorButton *ObjectSelectorButton::s_selected = nullptr;
@@ -27,7 +28,7 @@ uint32_t ObjectSelectorButton::s_tile_to_init = 0;
 ObjectSelectorButton::ObjectSelectorButton():
 	m_tile_id(s_tile_to_init)
 {
-	set_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE));
+	set_size(Size2(OBJECTSELECTOR_SIZE, OBJECTSELECTOR_SIZE));
 }
 
 void ObjectSelectorButton::_bind_methods()
@@ -45,13 +46,17 @@ void ObjectSelectorButton::init()
 
 	ImageTexture *texture = memnew(ImageTexture);
 	texture->load(String("res://tiles/") + tile_def.texture_name);
+
+	// Height is multiplied height/width because some textures don't have x = y
+	texture->set_size_override(Size2(OBJECTSELECTOR_SIZE,
+		OBJECTSELECTOR_SIZE * (texture->get_size().y / texture->get_size().x)));
 	set_normal_texture(texture);
 
 	Label *label = memnew(Label);
 	label->set_text(tile_def.label);
 	label->set_align(Label::ALIGN_CENTER);
-	label->set_margin(MARGIN_RIGHT, GAME_TILE_SIZE);
-	label->set_margin(MARGIN_TOP, GAME_TILE_SIZE + 5);
+	label->set_margin(MARGIN_RIGHT, OBJECTSELECTOR_SIZE);
+	label->set_margin(MARGIN_TOP, OBJECTSELECTOR_SIZE + 5);
 	add_child(label);
 
 	connect("pressed",this,"_change_selected_tile");
