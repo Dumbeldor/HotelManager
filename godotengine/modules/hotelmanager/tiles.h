@@ -28,7 +28,7 @@ struct TileGroup
 
 static constexpr uint8_t TILEGROUPS_CSV_COLS = 2;
 
-static constexpr uint16_t GAME_TILE_SIZE = 48;
+static constexpr uint16_t GAME_TILE_SIZE = 512;
 static constexpr uint16_t TILE_NONE = 0;
 static constexpr uint32_t TILE_MAX = UINT32_MAX;
 
