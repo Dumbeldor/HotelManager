@@ -21,6 +21,7 @@
 #include "savegame.h"
 #include "log.h"
 #include "gameconfig.h"
+#include "objectmgr.h"
 #include <unistd.h>
 
 #define MONEY_LIMIT 1000000000000
@@ -29,6 +30,10 @@ GameSession::~GameSession()
 {
 	if (ObjectDefMgr::get_singleton()) {
 		delete ObjectDefMgr::get_singleton();
+	}
+
+	if (ObjectMgr::get_singleton()) {
+		delete ObjectMgr::get_singleton();
 	}
 }
 
@@ -60,6 +65,7 @@ void GameSession::init(const String &savename)
 	// objdef_mgr should be inited first
 	assert(!ObjectDefMgr::get_singleton());
 	new ObjectDefMgr();
+	new ObjectMgr();
 
 	// Init hud
 	m_hud = get_node(String("GameMap/Hud"))->cast_to<Hud>();

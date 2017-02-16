@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "../character.h"
+#include "character.h"
 
 class CharacterRoomMaid: public Character
 {

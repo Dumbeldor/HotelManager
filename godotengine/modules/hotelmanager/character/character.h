@@ -17,7 +17,8 @@
 
 #include <scene/main/node.h>
 #include <string>
-#include "actorobject.h"
+#include <scene/2d/physics_body_2d.h>
+#include "modules/hotelmanager/actorobject.h"
 
 enum CharacterSex
 {
@@ -54,12 +55,14 @@ struct CharacterDef
 };
 static const uint8_t CHARACTERDEF_CSV_COLS = 4;
 
-class Character: public Node, public ActorObject
+class Character: public RigidBody2D, public ActorObject
 {
-	OBJ_TYPE(Character, Node);
+	OBJ_TYPE(Character, RigidBody2D);
 public:
-	Character(): Node() {}
+	Character(): RigidBody2D(), ActorObject() {}
 	Character(CharacterRole role);
+
+	virtual ~Character();
 
 	CharacterSex get_sex() const { return m_sex; }
 	void set_sex(const CharacterSex sex) { m_sex = sex; }
@@ -68,6 +71,17 @@ public:
 	CharacterRole get_role() const { return m_character_role; }
 	void set_role(const CharacterRole role) { m_character_role = role; }
 	void set_role__api(const uint8_t role) { m_character_role = (CharacterRole) role; }
+
+	virtual const ActorObjectType get_ao_type() const
+	{
+		return ACTOROBJECT_TYPE_CHARACTER;
+	}
+
+	virtual Point2 get_ao_position() const
+	{
+		return get_pos();
+	}
+
 protected:
 	static void _bind_methods();
 	CharacterRole m_character_role = CHARARACTER_ROLE_NONE;

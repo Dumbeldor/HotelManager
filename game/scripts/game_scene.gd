@@ -44,9 +44,16 @@ func _ready():
 	set_process(true)
 	#Activate scroll console
 	get_node("MainMenuLayer/Console/RichTextLabel").set_scroll_follow(true)
+	
+	
 
 func _process(delta):
 	game_session._process(delta)
+	
+	var ceo = preload("res://scenes/characters/ceo.tscn")
+	var c_ceo = ceo.instance()
+	c_ceo.set_pos(get_global_pos()+Vector2(randf()*6-3,randf()*6-3))
+	get_node("GameSession/GameMap/GroundMap/FloorMap/ObjectMap").add_child(c_ceo)
 
 ##
 ## Button handlers

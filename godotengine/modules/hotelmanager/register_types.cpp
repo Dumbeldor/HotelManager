@@ -18,7 +18,6 @@
 #include "hotelmanagerproject.h"
 #include "base_overrided_components.h"
 #include "gamesession.h"
-#include "character.h"
 #include "character/characterceo.h"
 #include "character/characterroommaid.h"
 #include "gamemap.h"
@@ -34,7 +33,6 @@ void register_hotelmanager_types()
 {
 	ObjectTypeDB::register_type<HotelManagerProject>();
 	ObjectTypeDB::register_type<GameSession>();
-	ObjectTypeDB::register_type<Character>();
 	ObjectTypeDB::register_type<CharacterCEO>();
 	ObjectTypeDB::register_type<CharacterRoomMaid>();
 	ObjectTypeDB::register_type<Clock>();
