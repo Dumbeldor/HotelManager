@@ -13,11 +13,27 @@
  * All rights reserved
  */
 
-#include <cassert>
 #include "actorobject.h"
+#include "objectmgr.h"
+
+ActorObject::ActorObject()
+{
+	// Necessary condition for editor
+	if (ObjectMgr::get_singleton()) {
+		ObjectMgr::get_singleton()->register_ao(this);
+	}
+}
+
+ActorObject::~ActorObject()
+{
+	// Necessary condition for editor
+	if (ObjectMgr::get_singleton()) {
+		ObjectMgr::get_singleton()->unregister_ao(m_id);
+	}
+}
 
 void ActorObject::set_id(const uint32_t id)
 {
-	assert(m_id != 0);
+	assert(m_id == 0);
 	m_id = id;
 }

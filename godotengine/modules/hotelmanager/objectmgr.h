@@ -25,10 +25,16 @@ public:
 	ObjectMgr();
 	~ObjectMgr();
 
-	void register_ao(ActorObjectPtr ao);
+	void register_ao(ActorObject *ao);
+	void unregister_ao(const uint32_t id);
+
+	static ObjectMgr *get_singleton() { return s_singleton; }
 private:
 	const uint32_t &next_id();
 
 	uint32_t m_next_id = 0;
-	std::unordered_map<uint32_t, ActorObjectPtr> m_actor_objects = {};
+	std::unordered_map<uint32_t, ActorObject *> m_actor_objects = {};
+
+	// Singleton
+	static ObjectMgr *s_singleton;
 };

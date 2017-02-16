@@ -17,7 +17,7 @@
 #include <unordered_map>
 #include <core/os/file_access.h>
 #include "achievements.h"
-#include "character.h"
+#include "modules/hotelmanager/character/character.h"
 #include "tiles.h"
 #include "missions.h"
 
@@ -37,13 +37,13 @@ public:
 	ObjectDefMgr();
 	~ObjectDefMgr();
 
+	static ObjectDefMgr *get_singleton() { return s_singleton; }
+
 	/**
 	 *
 	 * @param tile_id
 	 * @return const reference of the tiledef
 	 */
-	static ObjectDefMgr *get_singleton() { return s_singleton; }
-
 	const GameTileDef &get_tiledef(uint32_t t) const;
 	const std::unordered_map<uint32_t, GameTileDef *>& get_tiledefs() const
 	{

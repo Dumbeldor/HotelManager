@@ -16,9 +16,14 @@
 #include "character.h"
 
 Character::Character(CharacterRole role):
+	RigidBody2D(), ActorObject(),
 	m_character_role(role)
 {
 	// @ TODO generate random name
+}
+
+Character::~Character()
+{
 }
 
 void Character::_bind_methods()

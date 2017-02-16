@@ -17,16 +17,23 @@
 
 #include <cstdint>
 #include <memory>
+#include <math/math_2d.h>
+
+enum ActorObjectType
+{
+	ACTOROBJECT_TYPE_CHARACTER = 1,
+};
 
 class ActorObject
 {
 public:
-	ActorObject() {}
-	virtual ~ActorObject() {}
+	ActorObject();
+	virtual ~ActorObject();
 
 	void set_id(const uint32_t id);
-private:
+
+	virtual const ActorObjectType get_ao_type() const = 0;
+	virtual Point2 get_ao_position() const = 0;
+protected:
 	uint32_t m_id = 0;
 };
-
-typedef std::shared_ptr<ActorObject> ActorObjectPtr;

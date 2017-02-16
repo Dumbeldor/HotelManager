@@ -14,14 +14,20 @@
  */
 
 #include <cassert>
+#include <iostream>
 #include "objectmgr.h"
+
+ObjectMgr *ObjectMgr::s_singleton = nullptr;
 
 ObjectMgr::ObjectMgr()
 {
+	assert(ObjectMgr::s_singleton == nullptr); // Should be null here
+	ObjectMgr::s_singleton = this;
 }
 
 ObjectMgr::~ObjectMgr()
 {
+	ObjectMgr::s_singleton = nullptr;
 }
 
 const uint32_t& ObjectMgr::next_id()
@@ -35,10 +41,18 @@ const uint32_t& ObjectMgr::next_id()
 	return m_next_id;
 }
 
-void ObjectMgr::register_ao(ActorObjectPtr ao)
+void ObjectMgr::register_ao(ActorObject *ao)
 {
 	const uint32_t &new_id = next_id();
 	ao->set_id(new_id);
 	assert(m_actor_objects.find(new_id) == m_actor_objects.end());
 	m_actor_objects[new_id] = ao;
+}
+
+void ObjectMgr::unregister_ao(const uint32_t id)
+{
+	auto itr = m_actor_objects.find(id);
+	if (itr != m_actor_objects.end()) {
+		m_actor_objects.erase(itr);
+	}
 }

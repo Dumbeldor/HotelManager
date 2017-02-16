@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "../character.h"
+#include "character.h"
 
 class CharacterWaiter: public Character
 {
