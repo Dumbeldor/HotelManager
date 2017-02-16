@@ -22,8 +22,8 @@
 
 enum CharacterSex
 {
-	MALE,
-	FEMALE,
+	MALE = 1,
+	FEMALE = 2,
 	SEX_MAX,
 };
 

@@ -14,12 +14,19 @@
  */
 
 #include "character.h"
+#include "../objectdefmgr.h"
 
 Character::Character(CharacterRole role):
 	RigidBody2D(), ActorObject(),
 	m_character_role(role)
 {
-	// @ TODO generate random name
+	m_sex = ObjectDefMgr::get_singleton()->get_random_sex();
+	if (m_sex == MALE) {
+		m_character_name = ObjectDefMgr::get_singleton()->get_random_male_name();
+	}
+	else if (m_sex == FEMALE){
+		m_character_name = ObjectDefMgr::get_singleton()->get_random_female_name();
+	}
 }
 
 Character::~Character()

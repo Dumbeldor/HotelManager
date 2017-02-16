@@ -26,6 +26,8 @@ ObjectDefMgr::ObjectDefMgr()
 	assert(ObjectDefMgr::s_singleton == nullptr); // Should be null here
 	ObjectDefMgr::s_singleton = this;
 
+	m_random_gen = std::mt19937(time(NULL));
+
 	load_characterdefs();
 	load_roomdefs();
 	load_tilegroups();
@@ -34,6 +36,7 @@ ObjectDefMgr::ObjectDefMgr()
 	load_achievements();
 	load_mission_objectives();
 	load_missions();
+	load_names();
 }
 
 ObjectDefMgr::~ObjectDefMgr()
@@ -308,6 +311,21 @@ void ObjectDefMgr::load_missions()
 	}
 }
 
+#define NAMES_CSV_COLS 2
+void ObjectDefMgr::load_names()
+{
+	m_female_names.clear();
+	m_male_names.clear();
+	GameDataReader reader("names", NAMES_CSV_COLS);
+	while (reader.is_good()) {
+		std::string female_name;
+		std::string male_name;
+		reader >> female_name >> male_name;
+		m_female_names.push_back(female_name);
+		m_male_names.push_back(male_name);
+	}
+}
+
 /**
  * Returns the tiledef associated with t
  * \attention tile id should be a real tile id, else an assertion is triggered
@@ -352,4 +370,30 @@ const Mission& ObjectDefMgr::get_mission(const uint32_t id) const
 		return null_mission;
 	}
 	return *m->second;
+}
+
+String ObjectDefMgr::get_random_female_name()
+{
+	if (m_female_names.size() == 0) {
+		return String("null");
+	}
+
+	std::uniform_int_distribution<uint32_t> rd_name(0, (uint32_t)(m_female_names.size() - 1));
+	return String(m_female_names[rd_name(m_random_gen)].c_str());
+}
+
+String ObjectDefMgr::get_random_male_name()
+{
+	if (m_male_names.size() == 0) {
+		return String("null");
+	}
+
+	std::uniform_int_distribution<uint32_t> rd_name(0, (uint32_t)(m_male_names.size() - 1));
+	return String(m_male_names[rd_name(m_random_gen)].c_str());
+}
+
+CharacterSex ObjectDefMgr::get_random_sex()
+{
+	static std::uniform_int_distribution<uint8_t> rd_sex(MALE, FEMALE);
+	return (CharacterSex) rd_sex(m_random_gen);
 }

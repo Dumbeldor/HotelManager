@@ -64,6 +64,7 @@ void GameSession::init(const String &savename)
 {
 	// objdef_mgr should be inited first
 	assert(!ObjectDefMgr::get_singleton());
+	assert(!ObjectMgr::get_singleton());
 	new ObjectDefMgr();
 	new ObjectMgr();
 

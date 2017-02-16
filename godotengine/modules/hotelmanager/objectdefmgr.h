@@ -16,6 +16,7 @@
 #pragma once
 #include <unordered_map>
 #include <core/os/file_access.h>
+#include <random>
 #include "achievements.h"
 #include "modules/hotelmanager/character/character.h"
 #include "tiles.h"
@@ -54,6 +55,9 @@ public:
 	const TileGroup &get_tilegroup(const std::string &g) const;
 	const Mission &get_mission(const uint32_t id) const;
 
+	CharacterSex get_random_sex();
+	String get_random_male_name();
+	String get_random_female_name();
 private:
 	void load_roomdefs();
 	void load_characterdefs();
@@ -63,7 +67,7 @@ private:
 	void load_achievements();
 	void load_mission_objectives();
 	void load_missions();
-
+	void load_names();
 
 	// Singleton
 	static ObjectDefMgr *s_singleton;
@@ -77,4 +81,9 @@ private:
 	AchievementGroupList m_achievement_groups = {};
 	MissionMap m_missions = {};
 	MissionObjectiveMap m_mission_objectives = {};
+
+	std::vector<std::string> m_female_names = {};
+	std::vector<std::string> m_male_names = {};
+
+	std::mt19937 m_random_gen;
 };
