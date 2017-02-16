@@ -17,6 +17,7 @@
 
 #include <scene/main/node.h>
 #include <string>
+#include "actorobject.h"
 
 enum CharacterSex
 {
@@ -53,7 +54,7 @@ struct CharacterDef
 };
 static const uint8_t CHARACTERDEF_CSV_COLS = 4;
 
-class Character: public Node
+class Character: public Node, public ActorObject
 {
 	OBJ_TYPE(Character, Node);
 public:
