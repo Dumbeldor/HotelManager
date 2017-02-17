@@ -15,10 +15,13 @@
 
 #include "tiles.h"
 #include <math/math_2d.h>
+#include <iostream>
 #include "gui_tabs.h"
 #include "objectselectorbutton.h"
 #include "objectdefmgr.h"
 #include "log.h"
+
+#define MENU_ICON_SIZE 48
 
 TileMenu::TileMenu()
 {
@@ -26,11 +29,14 @@ TileMenu::TileMenu()
 
 void TileMenu::init(const String &tile_group)
 {
-	set_normal_texture(ResourceLoader::load("res://icons/icon_menu_tiletype_" + tile_group + ".png"));
+	const Ref<Texture> &texture = ResourceLoader::load("res://icons/icon_menu_tiletype_" + tile_group + ".png");
+	set_scale(Vector2(MENU_ICON_SIZE / texture->get_size().x, MENU_ICON_SIZE / texture->get_size().y));
+	set_normal_texture(texture);
 	set_hover_texture(ResourceLoader::load("res://icons/alternates/icon_menu_tiletype_" + tile_group + "_hover.png"));
 
 	m_menu = memnew(LayerTileMenu);
 	m_menu->init(tile_group);
+	m_menu->set_scale(Vector2(1 / get_scale().x, 1 / get_scale().y));
 	m_menu->set_name(String("tilemenu_layer_" + tile_group));
 	add_child(m_menu);
 }

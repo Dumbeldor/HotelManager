@@ -36,9 +36,9 @@ void Hud::init()
 	m_mission_container = get_node(String("ControlPane/MissionPanel/MissionContainer"))->cast_to<VBoxContainer>();
 	assert(m_mission_container);
 
-	create_menu("ground");
-	create_menu("floor");
-	create_menu("wall");
+	create_tilemenu("ground");
+	create_tilemenu("floor");
+	create_tilemenu("wall");
 
 	m_clock = get_node(String("ControlPane/Clock"))->cast_to<Clock>();
 	assert(m_clock);
@@ -49,7 +49,7 @@ void Hud::init()
  *
  * @param name
  */
-void Hud::create_menu(const std::string &name)
+void Hud::create_tilemenu(const std::string &name)
 {
 	if (m_tile_menus.find(name) != m_tile_menus.end()) {
 		LOG_CRIT("Creating menu %s another time, aborting.", name.c_str());
@@ -73,7 +73,7 @@ void Hud::create_menu(const std::string &name)
 	menu->set_margin(MARGIN_TOP, 0);
 	menu->set_margin(MARGIN_BOTTOM, 48);
 
-	int margin_padding = 40 + (bottom_pane->get_child_count() - 1) * 80;
+	int margin_padding = bottom_pane->get_child_count() * 80;
 	menu->set_margin(MARGIN_LEFT, margin_padding);
 	menu->set_margin(MARGIN_RIGHT, 48 + margin_padding);
 }
