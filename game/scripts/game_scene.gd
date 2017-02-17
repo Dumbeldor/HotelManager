@@ -185,3 +185,10 @@ func _on_ConsoleAnim_finished():
 	if get_node("MainMenuLayer/Console/ConsoleAnim").get_current_animation() != "ShowAnim":
 		if console.is_visible():
 			console.hide()
+
+func _on_HireMenuButton_pressed():
+	var hire_menu = get_node("GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton/HireMenu")
+	if hire_menu.is_hidden():
+		hire_menu.show()
+	else:
+		hire_menu.hide()

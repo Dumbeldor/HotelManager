@@ -7,6 +7,7 @@
 * stone.png: http://opengameart.org/content/gray-stone-mountaincliff
 
 * 2D isometric tile pack: https://www.gamedevmarket.net/asset/2d-isometric-tile-pack-6970/
+* shovel_4132.png: http://icon-icons.com/fr/icone/pelle/3570
 
 # Sound resources
 * Danse Morialta.mp3 => mainmenu.ogg: http://incompetech.com/music/royalty-free/mp3-royaltyfree/Danse%20Morialta.mp3

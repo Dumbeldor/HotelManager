@@ -1,21 +1,22 @@
-[gd_scene load_steps=16 format=1]
+[gd_scene load_steps=17 format=1]
 
 [ext_resource path="res://scripts/game_scene.gd" type="Script" id=1]
 [ext_resource path="res://tiles/game-tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://icons/icon_save.png" type="Texture" id=3]
-[ext_resource path="res://images/clock.png" type="Texture" id=4]
-[ext_resource path="res://images/clock_min.png" type="Texture" id=5]
-[ext_resource path="res://images/clock_hour.png" type="Texture" id=6]
-[ext_resource path="res://fonts/cabin.fnt" type="BitmapFont" id=7]
-[ext_resource path="res://sounds/pop-6.wav" type="Sample" id=8]
-[ext_resource path="res://fonts/teen-bold-italic.fnt" type="BitmapFont" id=9]
-[ext_resource path="res://fonts/teen-italic.fnt" type="BitmapFont" id=10]
-[ext_resource path="res://fonts/teen-bold.fnt" type="BitmapFont" id=11]
-[ext_resource path="res://fonts/teen.fnt" type="BitmapFont" id=12]
+[ext_resource path="res://images/clock.png" type="Texture" id=3]
+[ext_resource path="res://images/clock_min.png" type="Texture" id=4]
+[ext_resource path="res://images/clock_hour.png" type="Texture" id=5]
+[ext_resource path="res://fonts/cabin.fnt" type="BitmapFont" id=6]
+[ext_resource path="res://icons/icon_hire.png" type="Texture" id=7]
+[ext_resource path="res://icons/alternates/icon_hire_hover.png" type="Texture" id=8]
+[ext_resource path="res://sounds/pop-6.wav" type="Sample" id=9]
+[ext_resource path="res://fonts/teen-bold-italic.fnt" type="BitmapFont" id=10]
+[ext_resource path="res://fonts/teen-italic.fnt" type="BitmapFont" id=11]
+[ext_resource path="res://fonts/teen-bold.fnt" type="BitmapFont" id=12]
+[ext_resource path="res://fonts/teen.fnt" type="BitmapFont" id=13]
 
 [sub_resource type="SampleLibrary" id=1]
 
-samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 8 ) }
+samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 9 ) }
 
 [sub_resource type="Animation" id=2]
 
@@ -165,7 +166,6 @@ margin/bottom = 1080.0
 
 [node name="MapControl" type="MapControl" parent="GameSession/GameMap/Hud/ControlPane"]
 
-editor/display_folded = true
 anchor/right = 1
 anchor/bottom = 1
 rect/min_size = Vector2( 1920, 1080 )
@@ -220,14 +220,9 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="SaveSprite" type="Sprite" parent="GameSession/GameMap/Hud/ControlPane/MapControl"]
-
-visibility/visible = false
-transform/pos = Vector2( 1742.96, 75.8702 )
-texture = ExtResource( 3 )
-
 [node name="DayLabel" type="Label" parent="GameSession/GameMap/Hud/ControlPane"]
 
+editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -307,17 +302,18 @@ max_lines_visible = -1
 
 [node name="Clock" type="Clock" parent="GameSession/GameMap/Hud/ControlPane"]
 
+editor/display_folded = true
 transform/pos = Vector2( 1794.17, 128.489 )
 transform/scale = Vector2( 0.25, 0.25 )
-texture = ExtResource( 4 )
+texture = ExtResource( 3 )
 
 [node name="ClockHour" type="Sprite" parent="GameSession/GameMap/Hud/ControlPane/Clock"]
 
-texture = ExtResource( 5 )
+texture = ExtResource( 4 )
 
 [node name="ClockMin" type="Sprite" parent="GameSession/GameMap/Hud/ControlPane/Clock"]
 
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 
 [node name="ClockSpeed1" type="HMButton" parent="GameSession/GameMap/Hud/ControlPane/Clock"]
 
@@ -330,7 +326,7 @@ margin/left = -251.0
 margin/top = 351.0
 margin/right = -224.0
 margin/bottom = 373.0
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 6 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -347,7 +343,7 @@ margin/left = 46.0
 margin/top = 0.0
 margin/right = 74.0
 margin/bottom = 22.0
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 6 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -364,7 +360,7 @@ margin/left = -48.0
 margin/top = 0.0
 margin/right = -20.0
 margin/bottom = 22.0
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 6 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -381,7 +377,7 @@ margin/left = 93.0
 margin/top = 0.0
 margin/right = 121.0
 margin/bottom = 22.0
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 6 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -398,7 +394,7 @@ margin/left = 144.0
 margin/top = 0.0
 margin/right = 173.0
 margin/bottom = 22.0
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 6 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -407,6 +403,7 @@ flat = false
 
 [node name="MissionPanel" type="Panel" parent="GameSession/GameMap/Hud/ControlPane"]
 
+editor/display_folded = true
 visibility/visible = false
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -428,7 +425,7 @@ margin/left = 10.0
 margin/top = 10.0
 margin/right = 10.0
 margin/bottom = 14.0
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 6 )
 text = "Missions"
 align = 1
 percent_visible = 1.0
@@ -452,13 +449,44 @@ alignment = 0
 [node name="ControlPane_Bottom" type="Container" parent="GameSession/GameMap/Hud"]
 
 focus/ignore_mouse = false
-focus/stop_mouse = true
+focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 1000.0
 margin/right = 1920.0
 margin/bottom = 1080.0
+
+[node name="HireMenuButton" type="TextureButton" parent="GameSession/GameMap/Hud/ControlPane_Bottom"]
+
+visibility/behind_parent = true
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 40.0
+margin/top = 0.0
+margin/right = 296.0
+margin/bottom = 256.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 7 )
+textures/hover = ExtResource( 8 )
+params/scale = Vector2( 0.1875, 0.1875 )
+
+[node name="HireMenu" type="Panel" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton"]
+
+visibility/visible = false
+visibility/self_opacity = 0.4
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = -300.0
+margin/right = 200.0
+margin/bottom = -10.0
 
 [node name="AchievementPopup" type="PopupPanel" parent="GameSession/GameMap/Hud"]
 
@@ -483,7 +511,7 @@ margin/left = 163.0
 margin/top = 7.0
 margin/right = 276.0
 margin/bottom = 35.0
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 6 )
 text = "Achievements"
 percent_visible = 1.0
 lines_skipped = 0
@@ -499,7 +527,7 @@ margin/left = 356.0
 margin/top = 631.0
 margin/right = 409.0
 margin/bottom = 651.0
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 6 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -901,10 +929,10 @@ margin/left = 100.0
 margin/top = 10.0
 margin/right = 100.0
 margin/bottom = 40.0
-custom_fonts/bold_italics_font = ExtResource( 9 )
-custom_fonts/italics_font = ExtResource( 10 )
-custom_fonts/bold_font = ExtResource( 11 )
-custom_fonts/normal_font = ExtResource( 12 )
+custom_fonts/bold_italics_font = ExtResource( 10 )
+custom_fonts/italics_font = ExtResource( 11 )
+custom_fonts/bold_font = ExtResource( 12 )
+custom_fonts/normal_font = ExtResource( 13 )
 bbcode/enabled = true
 bbcode/bbcode = ""
 visible_characters = -1
@@ -974,6 +1002,10 @@ autoplay = ""
 [connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane/Clock/ClockSpeed1/ClockSpeed3" to="." method="_on_ClockSpeed3_pressed"]
 
 [connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane/Clock/ClockSpeed1/ClockSpeed5" to="." method="_on_ClockSpeed5_pressed"]
+
+[connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton" to="." method="_on_HireMenuButton_pressed"]
+
+[connection signal="toggled" from="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton" to="." method="_on_HireMenuButton_toggled"]
 
 [connection signal="pressed" from="GameSession/GameMap/Hud/AchievementPopup/APButton" to="." method="_on_APButton_pressed"]
 
