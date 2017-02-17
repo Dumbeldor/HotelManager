@@ -104,7 +104,7 @@ package:clang:
 
 pages:
   before_script:
-    - pacman --noconfirm -S doxygen
+    - pacman --noconfirm -Sy doxygen
   stage: pages
   script:
     - cd doc && doxygen && cd ..
