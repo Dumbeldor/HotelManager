@@ -51,31 +51,23 @@ void Hud::init()
  */
 void Hud::create_tilemenu(const std::string &name)
 {
-	if (m_tile_menus.find(name) != m_tile_menus.end()) {
-		LOG_CRIT("Creating menu %s another time, aborting.", name.c_str());
-		assert(false);
+	Panel *menu = nullptr;
+
+	if (name == "ground") {
+		menu = get_node(String("ControlPane_Bottom/HireMenuButton/GroundMenuButton/GroundMenu"))->cast_to<Panel>();
+	}
+	else if (name == "floor") {
+		menu = get_node(String("ControlPane_Bottom/HireMenuButton/FloorMenuButton/FloorMenu"))->cast_to<Panel>();
+	}
+	else if (name == "wall") {
+		menu = get_node(String("ControlPane_Bottom/HireMenuButton/WallMenuButton/WallMenu"))->cast_to<Panel>();
 	}
 
-	TileMenu *menu = memnew(TileMenu);
 	assert(menu);
-	menu->init(String(name.c_str()));
-	Node *bottom_pane = get_node(String("ControlPane_Bottom"));
-	assert(bottom_pane);
-	bottom_pane->add_child(menu);
-
-	m_tile_menus[name] = menu;
-
-	menu->connect("pressed", this, ("_on_menu_pressed_" + name).c_str());
-
-	// @TODO this should be more flexible, especially for left & right margin
-	// adding a menu index could be the solution
-
-	menu->set_margin(MARGIN_TOP, 0);
-	menu->set_margin(MARGIN_BOTTOM, 48);
-
-	int margin_padding = bottom_pane->get_child_count() * 80;
-	menu->set_margin(MARGIN_LEFT, margin_padding);
-	menu->set_margin(MARGIN_RIGHT, 48 + margin_padding);
+	LayerTileMenu *ltm = memnew(LayerTileMenu);
+	menu->add_child(ltm);
+	ltm->init(String(name.c_str()));
+	//ltm->set_scale(Vector2(1 / menu->get_scale().x, 1 / menu->get_scale().y));
 }
 
 /**
@@ -83,36 +75,7 @@ void Hud::create_tilemenu(const std::string &name)
  */
 void Hud::_bind_methods()
 {
-	// @TODO try to use templates functions for bound methods ?
-	ObjectTypeDB::bind_method(_MD("_on_menu_pressed_floor"), &Hud::_on_tilemenu_pressed, String("floor"));
-	ObjectTypeDB::bind_method(_MD("_on_menu_pressed_ground"), &Hud::_on_tilemenu_pressed, String("ground"));
-	ObjectTypeDB::bind_method(_MD("_on_menu_pressed_wall"), &Hud::_on_tilemenu_pressed, String("wall"));
 	ObjectTypeDB::bind_method(_MD("_on_draw"), &Hud::_on_draw);
-}
-
-/**
- * Generic function to swap between tile menus
- * @param menu_name
- */
-void Hud::_on_tilemenu_pressed(const String &menu_name)
-{
-	std::string m_name(menu_name.ascii().get_data());
-	for (auto &menu: m_tile_menus) {
-		// If menu is current clicked menu
-		if (menu.first == m_name) {
-			// If it's visible hide it, else show it
-			if (menu.second->get_menu()->is_visible()) {
-				menu.second->hide_menu();
-			}
-			else {
-				menu.second->show_menu();
-			}
-		}
-		// hide other menus
-		else if (menu.second->get_menu()->is_visible()) {
-			menu.second->hide_menu();
-		}
-	}
 }
 
 /**

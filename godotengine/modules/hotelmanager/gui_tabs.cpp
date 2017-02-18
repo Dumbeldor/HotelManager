@@ -21,36 +21,6 @@
 #include "objectdefmgr.h"
 #include "log.h"
 
-#define MENU_ICON_SIZE 48
-
-TileMenu::TileMenu()
-{
-}
-
-void TileMenu::init(const String &tile_group)
-{
-	const Ref<Texture> &texture = ResourceLoader::load("res://icons/icon_menu_tiletype_" + tile_group + ".png");
-	set_scale(Vector2(MENU_ICON_SIZE / texture->get_size().x, MENU_ICON_SIZE / texture->get_size().y));
-	set_normal_texture(texture);
-	set_hover_texture(ResourceLoader::load("res://icons/alternates/icon_menu_tiletype_" + tile_group + "_hover.png"));
-
-	m_menu = memnew(LayerTileMenu);
-	m_menu->init(tile_group);
-	m_menu->set_scale(Vector2(1 / get_scale().x, 1 / get_scale().y));
-	m_menu->set_name(String("tilemenu_layer_" + tile_group));
-	add_child(m_menu);
-}
-
-void TileMenu::show_menu()
-{
-	m_menu->show();
-}
-
-void TileMenu::hide_menu()
-{
-	m_menu->hide();
-}
-
 LayerTileMenu::LayerTileMenu()
 {
 	// Init ObjectSelectorButton when init this menu element, should be good
@@ -62,10 +32,6 @@ void LayerTileMenu::init(const String &tile_group)
 
 	set_name("LayerMenuTileType_" + tile_group);
 
-	// Hide this element, it's only shown when player select parent
-	hide();
-	set_pos(get_pos() + Point2i(-20, -96));
-
 	const TileGroup &tg_def = ObjectDefMgr::get_singleton()->
 		get_tilegroup(std::string(tile_group.utf8()));
 	if (tg_def.id == 0) {
@@ -74,7 +40,7 @@ void LayerTileMenu::init(const String &tile_group)
 		return;
 	}
 
-	ObjectSelectorButton *tb = nullptr;
+	uint16_t tile_id = 0;
 	for (const auto &tile_def: ObjectDefMgr::get_singleton()->get_tiledefs()) {
 		if (!tile_def.second->is_in_group(tg_def.id)
 			|| tile_def.second->flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
@@ -82,19 +48,12 @@ void LayerTileMenu::init(const String &tile_group)
 		}
 
 		ObjectSelectorButton::set_tile_to_init(tile_def.second->id);
-		ObjectSelectorButton *tmp = memnew(ObjectSelectorButton);
-		if (tb) {
-			tb->add_child(tmp);
-			tmp->set_margin(MARGIN_LEFT, 48 + 20);
-		}
-		else {
-			add_child(tmp);
-			tmp->set_margin(MARGIN_TOP, 20);
-			tmp->set_margin(MARGIN_LEFT, 20);
-		}
-
-		tb = tmp;
+		ObjectSelectorButton *tb = memnew(ObjectSelectorButton);
+		add_child(tb);
+		tb->set_margin(MARGIN_TOP, 20);
+		tb->set_margin(MARGIN_LEFT, 20 + (48 + 20) * tile_id);
 		tb->init();
+		tile_id++;
 	}
 }
 
