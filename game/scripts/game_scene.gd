@@ -45,7 +45,7 @@ func _ready():
 	#Activate scroll console
 	get_node("MainMenuLayer/Console/RichTextLabel").set_scroll_follow(true)
 	
-	
+	get_node("GameSession/GameMap/Hud").initialize()
 
 func _process(delta):
 	game_session._process(delta)
@@ -186,9 +186,3 @@ func _on_ConsoleAnim_finished():
 		if console.is_visible():
 			console.hide()
 
-func _on_HireMenuButton_pressed():
-	var hire_menu = get_node("GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton/HireMenu")
-	if hire_menu.is_hidden():
-		hire_menu.show()
-	else:
-		hire_menu.hide()

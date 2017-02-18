@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=1]
+[gd_scene load_steps=24 format=1]
 
 [ext_resource path="res://scripts/game_scene.gd" type="Script" id=1]
 [ext_resource path="res://tiles/game-tileset.tres" type="TileSet" id=2]
@@ -8,15 +8,25 @@
 [ext_resource path="res://fonts/cabin.fnt" type="BitmapFont" id=6]
 [ext_resource path="res://icons/icon_hire.png" type="Texture" id=7]
 [ext_resource path="res://icons/alternates/icon_hire_hover.png" type="Texture" id=8]
-[ext_resource path="res://sounds/pop-6.wav" type="Sample" id=9]
-[ext_resource path="res://fonts/teen-bold-italic.fnt" type="BitmapFont" id=10]
-[ext_resource path="res://fonts/teen-italic.fnt" type="BitmapFont" id=11]
-[ext_resource path="res://fonts/teen-bold.fnt" type="BitmapFont" id=12]
-[ext_resource path="res://fonts/teen.fnt" type="BitmapFont" id=13]
+[ext_resource path="res://icons/icon_menu_tiletype_ground.png" type="Texture" id=9]
+[ext_resource path="res://icons/alternates/icon_menu_tiletype_ground_hover.png" type="Texture" id=10]
+[ext_resource path="res://icons/icon_menu_tiletype_floor.png" type="Texture" id=11]
+[ext_resource path="res://icons/alternates/icon_menu_tiletype_floor_hover.png" type="Texture" id=12]
+[ext_resource path="res://icons/icon_menu_tiletype_wall.png" type="Texture" id=13]
+[ext_resource path="res://icons/alternates/icon_menu_tiletype_wall_hover.png" type="Texture" id=14]
+[ext_resource path="res://sounds/pop-6.wav" type="Sample" id=15]
+[ext_resource path="res://fonts/teen-bold-italic.fnt" type="BitmapFont" id=16]
+[ext_resource path="res://fonts/teen-italic.fnt" type="BitmapFont" id=17]
+[ext_resource path="res://fonts/teen-bold.fnt" type="BitmapFont" id=18]
+[ext_resource path="res://fonts/teen.fnt" type="BitmapFont" id=19]
+
+[sub_resource type="GDScript" id=4]
+
+script/source = "extends Hud\n\nvar menus = {\n\thire = null,\n\tground = null,\n\tfloor_ = null,\n\twall = null,\n\tobjects = null,\n}\n\nfunc initialize():\n\t# Menu init\n\tmenus.hire = get_node(\"ControlPane_Bottom/HireMenuButton/HireMenu\")\n\tmenus.ground = get_node(\"ControlPane_Bottom/HireMenuButton/GroundMenuButton/GroundMenu\")\n\tmenus.floor_ = get_node(\"ControlPane_Bottom/HireMenuButton/FloorMenuButton/FloorMenu\")\n\tmenus.wall = get_node(\"ControlPane_Bottom/HireMenuButton/WallMenuButton/WallMenu\")\n\tmenus.objects = get_node(\"ControlPane_Bottom/HireMenuButton/ObjectMenuButton/ObjectMenu\")\n\nfunc switch_menu(menu_obj):\n\tif menu_obj == null:\n\t\treturn\n\t\n\tfor m in menus:\n\t\tif m == null:\n\t\t\tcontinue\n\t\t\t\n\t\tif menus[m] == menu_obj:\n\t\t\tif menus[m].is_hidden():\n\t\t\t\tmenus[m].show()\n\t\t\telse:\n\t\t\t\tmenus[m].hide()\n\t\telse:\n\t\t\tif not menus[m].is_hidden():\n\t\t\t\tmenus[m].hide()\n\t\t\t\t\nfunc _on_HireMenuButton_pressed():\n\tswitch_menu(menus.hire)\n\nfunc _on_GroundMenuButton_pressed():\n\tswitch_menu(menus.ground)\n\nfunc _on_FloorMenuButton_pressed():\n\tswitch_menu(menus.floor_)\n\nfunc _on_ObjectMenuButton_pressed():\n\tswitch_menu(menus.objects)\n\n\nfunc _on_WallMenuButton_pressed():\n\tswitch_menu(menus.wall)\n"
 
 [sub_resource type="SampleLibrary" id=1]
 
-samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 9 ) }
+samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 15 ) }
 
 [sub_resource type="Animation" id=2]
 
@@ -152,6 +162,7 @@ layer = 20
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
+script/script = SubResource( 4 )
 
 [node name="ControlPane" type="Container" parent="GameSession/GameMap/Hud"]
 
@@ -476,6 +487,130 @@ textures/hover = ExtResource( 8 )
 params/scale = Vector2( 0.1875, 0.1875 )
 
 [node name="HireMenu" type="Panel" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton"]
+
+visibility/visible = false
+visibility/self_opacity = 0.4
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = -300.0
+margin/right = 200.0
+margin/bottom = -10.0
+
+[node name="GroundMenuButton" type="TextureButton" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton"]
+
+visibility/behind_parent = true
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 80.0
+margin/top = 1.0
+margin/right = 256.0
+margin/bottom = 257.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 9 )
+textures/hover = ExtResource( 10 )
+params/scale = Vector2( 0.1875, 0.1875 )
+
+[node name="GroundMenu" type="Panel" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton/GroundMenuButton"]
+
+visibility/visible = false
+visibility/self_opacity = 0.4
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = -300.0
+margin/right = 200.0
+margin/bottom = -10.0
+
+[node name="FloorMenuButton" type="TextureButton" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton"]
+
+visibility/behind_parent = true
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 160.0
+margin/top = 1.0
+margin/right = 256.0
+margin/bottom = 257.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 11 )
+textures/hover = ExtResource( 12 )
+params/scale = Vector2( 0.1875, 0.1875 )
+
+[node name="FloorMenu" type="Panel" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton/FloorMenuButton"]
+
+visibility/visible = false
+visibility/self_opacity = 0.4
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = -300.0
+margin/right = 200.0
+margin/bottom = -10.0
+
+[node name="WallMenuButton" type="TextureButton" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton"]
+
+visibility/behind_parent = true
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 240.0
+margin/top = 0.0
+margin/right = 288.0
+margin/bottom = 257.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 13 )
+textures/hover = ExtResource( 14 )
+params/scale = Vector2( 0.1875, 0.1875 )
+
+[node name="WallMenu" type="Panel" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton/WallMenuButton"]
+
+visibility/visible = false
+visibility/self_opacity = 0.4
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = -300.0
+margin/right = 200.0
+margin/bottom = -10.0
+
+[node name="ObjectMenuButton" type="TextureButton" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton"]
+
+visibility/behind_parent = true
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 320.0
+margin/top = 0.0
+margin/right = 288.0
+margin/bottom = 257.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 13 )
+textures/hover = ExtResource( 14 )
+params/scale = Vector2( 0.1875, 0.1875 )
+
+[node name="ObjectMenu" type="Panel" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton/ObjectMenuButton"]
 
 visibility/visible = false
 visibility/self_opacity = 0.4
@@ -929,10 +1064,10 @@ margin/left = 100.0
 margin/top = 10.0
 margin/right = 100.0
 margin/bottom = 40.0
-custom_fonts/bold_italics_font = ExtResource( 10 )
-custom_fonts/italics_font = ExtResource( 11 )
-custom_fonts/bold_font = ExtResource( 12 )
-custom_fonts/normal_font = ExtResource( 13 )
+custom_fonts/bold_italics_font = ExtResource( 16 )
+custom_fonts/italics_font = ExtResource( 17 )
+custom_fonts/bold_font = ExtResource( 18 )
+custom_fonts/normal_font = ExtResource( 19 )
 bbcode/enabled = true
 bbcode/bbcode = ""
 visible_characters = -1
@@ -1003,9 +1138,15 @@ autoplay = ""
 
 [connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane/Clock/ClockSpeed1/ClockSpeed5" to="." method="_on_ClockSpeed5_pressed"]
 
-[connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton" to="." method="_on_HireMenuButton_pressed"]
+[connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton" to="GameSession/GameMap/Hud" method="_on_HireMenuButton_pressed"]
 
-[connection signal="toggled" from="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton" to="." method="_on_HireMenuButton_toggled"]
+[connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton/GroundMenuButton" to="GameSession/GameMap/Hud" method="_on_GroundMenuButton_pressed"]
+
+[connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton/FloorMenuButton" to="GameSession/GameMap/Hud" method="_on_FloorMenuButton_pressed"]
+
+[connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton/WallMenuButton" to="GameSession/GameMap/Hud" method="_on_WallMenuButton_pressed"]
+
+[connection signal="pressed" from="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton/ObjectMenuButton" to="GameSession/GameMap/Hud" method="_on_ObjectMenuButton_pressed"]
 
 [connection signal="pressed" from="GameSession/GameMap/Hud/AchievementPopup/APButton" to="." method="_on_APButton_pressed"]
 
