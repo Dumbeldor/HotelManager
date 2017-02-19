@@ -18,12 +18,12 @@
 #include <scene/gui/texture_button.h>
 #include <cassert>
 
-class ObjectSelectorButton: public TextureButton
+class TileSelectorButton: public TextureButton
 {
-	OBJ_TYPE(ObjectSelectorButton, TextureButton)
+	OBJ_TYPE(TileSelectorButton, TextureButton)
 
 public:
-	ObjectSelectorButton();
+	TileSelectorButton();
 	void init();
 
 	uint32_t get_map_tile() const { return m_tile_id; }
@@ -43,7 +43,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	static ObjectSelectorButton *s_selected;
+	static TileSelectorButton *s_selected;
 
 	static uint32_t s_tile_to_init;
 	const uint32_t m_tile_id;

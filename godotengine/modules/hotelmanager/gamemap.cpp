@@ -26,11 +26,10 @@
 #include <queue>
 #include "gamemap.h"
 #include "mapcontrol.h"
-#include "objectselectorbutton.h"
+#include "hud/tileselectorbutton.h"
 #include "objectdefmgr.h"
 #include "gamesession.h"
 #include "mapgen.h"
-#include "savegame.h"
 #include "log.h"
 
 #define GROUNDMAP_NODE String("GroundMap")
@@ -251,8 +250,8 @@ void GameMap::_canvas_draw()
 	// If mouse is over a node
 	if (m_mouse_over) {
 		// We have an object selected and current tile is valid
-		if (ObjectSelectorButton::get_selected_tile_id() != TILE_NONE) {
-			uint32_t selected_tile_id = ObjectSelectorButton::get_selected_tile_id();
+		if (TileSelectorButton::get_selected_tile_id() != TILE_NONE) {
+			uint32_t selected_tile_id = TileSelectorButton::get_selected_tile_id();
 			const GameTileDef &tiledef =
 				ObjectDefMgr::get_singleton()->get_tiledef(selected_tile_id);
 
@@ -346,7 +345,7 @@ void GameMap::_canvas_draw()
 			selection_infos.selection_in_progress = m_selection_in_progress;
 			selection_infos.cost = cost;
 			selection_infos.tile_hovering =
-				(ObjectSelectorButton::get_selected_tile_id() != tile_id);
+				(TileSelectorButton::get_selected_tile_id() != tile_id);
 
 			m_control->draw_selection(selection_infos);
 		}
@@ -464,7 +463,7 @@ void GameMap::init_selection()
  */
 void GameMap::place_tiles_in_selected_area()
 {
-	uint32_t s_tile = ObjectSelectorButton::get_selected_tile_id();
+	uint32_t s_tile = TileSelectorButton::get_selected_tile_id();
 	const GameTileDef &tile_def = ObjectDefMgr::get_singleton()->get_tiledef(s_tile);
 	// Ignore none tiles & tile unavailable to players
 	if (s_tile == TILE_NONE || tile_def.flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {

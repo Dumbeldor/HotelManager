@@ -18,14 +18,14 @@
 #include <scene/gui/panel.h>
 #include <iostream>
 #include "gui_tabs.h"
-#include "objectselectorbutton.h"
+#include "hud/tileselectorbutton.h"
 #include "objectdefmgr.h"
 #include "log.h"
 
 LayerTileMenu::LayerTileMenu()
 {
-	// Init ObjectSelectorButton when init this menu element, should be good
-	ObjectSelectorButton::init_selector();
+	// Init TileSelectorButton when init this menu element, should be good
+	TileSelectorButton::init_selector();
 }
 
 void LayerTileMenu::init(const String &tile_group)
@@ -47,8 +47,8 @@ void LayerTileMenu::init(const String &tile_group)
 			continue;
 		}
 
-		ObjectSelectorButton::set_tile_to_init(tile_def.second->id);
-		ObjectSelectorButton *tb = memnew(ObjectSelectorButton);
+		TileSelectorButton::set_tile_to_init(tile_def.second->id);
+		TileSelectorButton *tb = memnew(TileSelectorButton);
 		add_child(tb);
 		tb->init();
 	}
@@ -69,7 +69,7 @@ void LayerTileMenu::update_child_pos()
 	float margin_top = LAYER_TILE_MARGIN;
 	float margin_left = LAYER_TILE_MARGIN;
 	for (int32_t i = 0; i < child_count; i++) {
-		ObjectSelectorButton *osb = get_child(i)->cast_to<ObjectSelectorButton>();
+		TileSelectorButton *osb = get_child(i)->cast_to<TileSelectorButton>();
 		if (!osb) {
 			continue;
 		}
