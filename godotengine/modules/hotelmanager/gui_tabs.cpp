@@ -15,6 +15,7 @@
 
 #include "tiles.h"
 #include <math/math_2d.h>
+#include <scene/gui/panel.h>
 #include <iostream>
 #include "gui_tabs.h"
 #include "objectselectorbutton.h"
@@ -40,7 +41,6 @@ void LayerTileMenu::init(const String &tile_group)
 		return;
 	}
 
-	uint16_t tile_id = 0;
 	for (const auto &tile_def: ObjectDefMgr::get_singleton()->get_tiledefs()) {
 		if (!tile_def.second->is_in_group(tg_def.id)
 			|| tile_def.second->flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
@@ -50,10 +50,38 @@ void LayerTileMenu::init(const String &tile_group)
 		ObjectSelectorButton::set_tile_to_init(tile_def.second->id);
 		ObjectSelectorButton *tb = memnew(ObjectSelectorButton);
 		add_child(tb);
-		tb->set_margin(MARGIN_TOP, 20);
-		tb->set_margin(MARGIN_LEFT, 20 + (48 + 20) * tile_id);
 		tb->init();
-		tile_id++;
+	}
+
+	update_child_pos();
+}
+
+#define LAYER_TILE_MARGIN 20
+void LayerTileMenu::update_child_pos()
+{
+	int32_t child_count = get_child_count();
+	int32_t osb_id = 0;
+
+	Panel *p = get_parent()->cast_to<Panel>();
+	assert(p);
+
+	float panel_width = p->get_size().width;
+	float margin_top = LAYER_TILE_MARGIN;
+	float margin_left = LAYER_TILE_MARGIN;
+	for (int32_t i = 0; i < child_count; i++) {
+		ObjectSelectorButton *osb = get_child(i)->cast_to<ObjectSelectorButton>();
+		if (!osb) {
+			continue;
+		}
+
+		osb->set_margin(MARGIN_TOP, margin_top);
+		osb->set_margin(MARGIN_LEFT, margin_left);
+		osb_id++;
+		margin_left += osb->get_size().width + LAYER_TILE_MARGIN;
+		if (margin_left >= panel_width - LAYER_TILE_MARGIN) {
+			margin_left = LAYER_TILE_MARGIN;
+			margin_top += osb->get_size().height + LAYER_TILE_MARGIN;
+		}
 	}
 }
 

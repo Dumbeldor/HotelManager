@@ -25,6 +25,7 @@ class LayerTileMenu: public Tabs
 public:
 	LayerTileMenu();
 	void init(const String &tile_group);
+	void update_child_pos();
 protected:
 	static void _bind_methods();
 };
