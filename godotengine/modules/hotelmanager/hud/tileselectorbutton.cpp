@@ -13,34 +13,32 @@
  * All rights reserved
  */
 
-#include "objectselectorbutton.h"
-#include "objectdefmgr.h"
-#include <math/math_2d.h>
+#include "tileselectorbutton.h"
+#include "../objectdefmgr.h"
 #include <scene/gui/label.h>
-#include <iostream>
 
 #define OBJECTSELECTOR_SIZE 48
 #define OBJECTSELECTOR_MASK Color(1.0, 1.0, 1.0, 0.2)
 
-ObjectSelectorButton *ObjectSelectorButton::s_selected = nullptr;
-uint32_t ObjectSelectorButton::s_tile_to_init = 0;
+TileSelectorButton *TileSelectorButton::s_selected = nullptr;
+uint32_t TileSelectorButton::s_tile_to_init = 0;
 
-ObjectSelectorButton::ObjectSelectorButton():
+TileSelectorButton::TileSelectorButton():
 	m_tile_id(s_tile_to_init)
 {
 	set_size(Size2(OBJECTSELECTOR_SIZE, OBJECTSELECTOR_SIZE));
 }
 
-void ObjectSelectorButton::_bind_methods()
+void TileSelectorButton::_bind_methods()
 {
 	ObjectTypeDB::bind_method(_MD("_change_selected_tile"),
-			&ObjectSelectorButton::_change_selected_tile);
+			&TileSelectorButton::_change_selected_tile);
 	ObjectTypeDB::bind_method(_MD("_on_draw"),
-			&ObjectSelectorButton::_on_draw);
+			&TileSelectorButton::_on_draw);
 
 }
 
-void ObjectSelectorButton::init()
+void TileSelectorButton::init()
 {
 	const GameTileDef &tile_def = ObjectDefMgr::get_singleton()->get_tiledef(m_tile_id);
 
@@ -66,10 +64,10 @@ void ObjectSelectorButton::init()
 /**
  * When player select the button it changes the selected tile
  */
-void ObjectSelectorButton::_change_selected_tile()
+void TileSelectorButton::_change_selected_tile()
 {
-	ObjectSelectorButton *prev_selected = ObjectSelectorButton::s_selected;
-	ObjectSelectorButton::s_selected = this;
+	TileSelectorButton *prev_selected = TileSelectorButton::s_selected;
+	TileSelectorButton::s_selected = this;
 
 	// Redraw previous selected tile to clear hovering, etc...
 	if (prev_selected) {
@@ -77,7 +75,7 @@ void ObjectSelectorButton::_change_selected_tile()
 	}
 }
 
-void ObjectSelectorButton::_on_draw()
+void TileSelectorButton::_on_draw()
 {
 	if (s_selected == this) {
 		static const Color col(0.2, 1.0, 0.8, 0.4);
@@ -102,7 +100,7 @@ void ObjectSelectorButton::_on_draw()
 /**
  * Init selector static attributes
  */
-void ObjectSelectorButton::init_selector()
+void TileSelectorButton::init_selector()
 {
 	s_selected = nullptr;
 	s_tile_to_init = TILE_NONE;
