@@ -20,17 +20,16 @@
 [ext_resource path="res://fonts/teen-bold.fnt" type="BitmapFont" id=18]
 [ext_resource path="res://fonts/teen.fnt" type="BitmapFont" id=19]
 
-[sub_resource type="GDScript" id=4]
+[sub_resource type="GDScript" id=1]
 
 script/source = "extends Hud\n\nvar menus = {\n\thire = null,\n\tground = null,\n\tfloor_ = null,\n\twall = null,\n\tobjects = null,\n}\n\nfunc initialize():\n\t# Menu init\n\tmenus.hire = get_node(\"ControlPane_Bottom/HireMenuButton/HireMenu\")\n\tmenus.ground = get_node(\"ControlPane_Bottom/HireMenuButton/GroundMenuButton/GroundMenu\")\n\tmenus.floor_ = get_node(\"ControlPane_Bottom/HireMenuButton/FloorMenuButton/FloorMenu\")\n\tmenus.wall = get_node(\"ControlPane_Bottom/HireMenuButton/WallMenuButton/WallMenu\")\n\tmenus.objects = get_node(\"ControlPane_Bottom/HireMenuButton/ObjectMenuButton/ObjectMenu\")\n\nfunc switch_menu(menu_obj):\n\tif menu_obj == null:\n\t\treturn\n\t\n\tfor m in menus:\n\t\tif m == null:\n\t\t\tcontinue\n\t\t\t\n\t\tif menus[m] == menu_obj:\n\t\t\tif menus[m].is_hidden():\n\t\t\t\tmenus[m].show()\n\t\t\telse:\n\t\t\t\tmenus[m].hide()\n\t\telse:\n\t\t\tif not menus[m].is_hidden():\n\t\t\t\tmenus[m].hide()\n\t\t\t\t\nfunc _on_HireMenuButton_pressed():\n\tswitch_menu(menus.hire)\n\nfunc _on_GroundMenuButton_pressed():\n\tswitch_menu(menus.ground)\n\nfunc _on_FloorMenuButton_pressed():\n\tswitch_menu(menus.floor_)\n\nfunc _on_ObjectMenuButton_pressed():\n\tswitch_menu(menus.objects)\n\n\nfunc _on_WallMenuButton_pressed():\n\tswitch_menu(menus.wall)\n"
 
-[sub_resource type="SampleLibrary" id=1]
+[sub_resource type="SampleLibrary" id=2]
 
 samples/pop-6 = { "db":0.0, "pitch":1.0, "sample":ExtResource( 15 ) }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=3]
 
-resource/name = "HideAnim"
 length = 1.0
 loop = false
 step = 0.1
@@ -40,9 +39,8 @@ tracks/0/interp = 1
 tracks/0/imported = false
 tracks/0/keys = { "times":FloatArray( 0, 0.5 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ Vector2( 1920, 522 ), Vector2( 1920, 0 ) ] }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=4]
 
-resource/name = "ShowAnim"
 length = 1.0
 loop = false
 step = 0.1
@@ -162,7 +160,7 @@ layer = 20
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
-script/script = SubResource( 4 )
+script/script = SubResource( 1 )
 
 [node name="ControlPane" type="Container" parent="GameSession/GameMap/Hud"]
 
@@ -496,7 +494,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = -300.0
-margin/right = 200.0
+margin/right = 224.0
 margin/bottom = -10.0
 
 [node name="GroundMenuButton" type="TextureButton" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton"]
@@ -527,7 +525,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = -300.0
-margin/right = 200.0
+margin/right = 224.0
 margin/bottom = -10.0
 
 [node name="FloorMenuButton" type="TextureButton" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton"]
@@ -558,7 +556,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = -300.0
-margin/right = 200.0
+margin/right = 224.0
 margin/bottom = -10.0
 
 [node name="WallMenuButton" type="TextureButton" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton"]
@@ -589,7 +587,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = -300.0
-margin/right = 200.0
+margin/right = 224.0
 margin/bottom = -10.0
 
 [node name="ObjectMenuButton" type="TextureButton" parent="GameSession/GameMap/Hud/ControlPane_Bottom/HireMenuButton"]
@@ -620,7 +618,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = -300.0
-margin/right = 200.0
+margin/right = 224.0
 margin/bottom = -10.0
 
 [node name="AchievementPopup" type="PopupPanel" parent="GameSession/GameMap/Hud"]
@@ -697,7 +695,7 @@ alignment = 0
 [node name="MapSoundPlayer" type="SamplePlayer" parent="GameSession"]
 
 config/polyphony = 1
-config/samples = SubResource( 1 )
+config/samples = SubResource( 2 )
 default/volume_db = 0.0
 default/pitch_scale = 1.0
 default/pan = 0.0
@@ -1113,8 +1111,8 @@ flat = false
 playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
-anims/HideAnim = SubResource( 2 )
-anims/ShowAnim = SubResource( 3 )
+anims/HideAnim = SubResource( 3 )
+anims/ShowAnim = SubResource( 4 )
 playback/active = true
 playback/speed = 1.0
 blend_times = [  ]
