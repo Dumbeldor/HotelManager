@@ -8,19 +8,19 @@
  *
  * Copyright:
  *
- * 2016, Loic Blot <loic.blot@unix-experience.fr>
+ * 2017, Loic Blot <loic.blot@unix-experience.fr>
  *
  * All rights reserved
  */
 
 #pragma once
 
-#include <scene/gui/texture_button.h>
+#include "selectorbutton.h"
 #include <cassert>
 
-class TileSelectorButton: public TextureButton
+class TileSelectorButton: public SelectorButton
 {
-	OBJ_TYPE(TileSelectorButton, TextureButton)
+	OBJ_TYPE(TileSelectorButton, SelectorButton)
 
 public:
 	TileSelectorButton();
@@ -28,22 +28,16 @@ public:
 
 	uint32_t get_map_tile() const { return m_tile_id; }
 
-	void _change_selected_tile();
-
 	static const uint32_t get_selected_tile_id()
 	{
-		return s_selected ? s_selected->get_map_tile() : 0;
+		TileSelectorButton *ts = s_selected->cast_to<TileSelectorButton>();
+		return ts ? ts->get_map_tile() : 0;
 	}
 
 	static void set_tile_to_init(const uint32_t t) { s_tile_to_init = t; }
-
-	void _on_draw();
 	static void init_selector();
-protected:
-	static void _bind_methods();
-
 private:
-	static TileSelectorButton *s_selected;
+	static void _bind_methods() {}
 
 	static uint32_t s_tile_to_init;
 	const uint32_t m_tile_id;
