@@ -23,7 +23,7 @@
 #include <scene/gui/rich_text_label.h>
 #include "modules/hotelmanager/log.h"
 #include "hud.h"
-#include "modules/hotelmanager/gui_tabs.h"
+#include "selectormenu.h"
 #include "clock.h"
 
 Hud::Hud(): CanvasLayer()
@@ -64,10 +64,8 @@ void Hud::create_tilemenu(const std::string &name)
 	}
 
 	assert(menu);
-	LayerTileMenu *ltm = memnew(LayerTileMenu);
-	menu->add_child(ltm);
-	ltm->init(String(name.c_str()));
-	//ltm->set_scale(Vector2(1 / menu->get_scale().x, 1 / menu->get_scale().y));
+	memnew(SelectorMenu(String(name.c_str()), menu));
+
 }
 
 /**

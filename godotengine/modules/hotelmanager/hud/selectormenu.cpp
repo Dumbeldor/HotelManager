@@ -13,23 +13,22 @@
  * All rights reserved
  */
 
-#include "tiles.h"
+#include "modules/hotelmanager/tiles.h"
 #include <math/math_2d.h>
 #include <scene/gui/panel.h>
 #include <iostream>
-#include "gui_tabs.h"
-#include "hud/selectorbutton.h"
-#include "objectdefmgr.h"
-#include "log.h"
+#include "selectormenu.h"
+#include "selectorbutton.h"
+#include "modules/hotelmanager/objectdefmgr.h"
+#include "modules/hotelmanager/log.h"
 
-LayerTileMenu::LayerTileMenu()
+SelectorMenu::SelectorMenu(const String &tile_group, Panel *menu)
 {
 	// Init TileSelectorButton when init this menu element, should be good
 	TileSelectorButton::init_selector();
-}
 
-void LayerTileMenu::init(const String &tile_group)
-{
+	menu->add_child(this);
+
 	set_name("LayerMenuTileType_" + tile_group);
 
 	const TileGroup &tg_def = ObjectDefMgr::get_singleton()->
@@ -53,7 +52,7 @@ void LayerTileMenu::init(const String &tile_group)
 }
 
 #define LAYER_TILE_MARGIN 20
-void LayerTileMenu::update_child_pos()
+void SelectorMenu::update_child_pos()
 {
 	int32_t child_count = get_child_count();
 	int32_t osb_id = 0;
@@ -79,8 +78,4 @@ void LayerTileMenu::update_child_pos()
 			margin_top += osb->get_size().height + LAYER_TILE_MARGIN;
 		}
 	}
-}
-
-void LayerTileMenu::_bind_methods()
-{
 }

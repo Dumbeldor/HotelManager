@@ -18,7 +18,7 @@
 #include <scene/main/canvas_layer.h>
 #include <modules/hotelmanager/missions.h>
 
-class LayerTileMenu;
+class SelectorMenu;
 class Clock;
 class VBoxContainer;
 class TileMenu;

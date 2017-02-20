@@ -17,15 +17,14 @@
 
 #include <scene/gui/tabs.h>
 #include <scene/gui/texture_button.h>
-#include "tiles.h"
+#include "modules/hotelmanager/tiles.h"
 
-class LayerTileMenu: public Tabs
+class SelectorMenu: public Tabs
 {
-	OBJ_TYPE(LayerTileMenu, Tabs);
+	OBJ_TYPE(SelectorMenu, Tabs);
 public:
-	LayerTileMenu();
-	void init(const String &tile_group);
+	SelectorMenu(const String &tile_group, Panel *menu );
 	void update_child_pos();
-protected:
-	static void _bind_methods();
+private:
+	SelectorMenu() {} // Private constructor, just for Godot registration
 };

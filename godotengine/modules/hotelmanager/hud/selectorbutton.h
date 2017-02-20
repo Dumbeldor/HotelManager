@@ -53,7 +53,7 @@ public:
 	}
 
 private:
-	TileSelectorButton(): SelectorButton(), m_tile_id(0) {}
+	TileSelectorButton(): SelectorButton(), m_tile_id(0) {} // Private constructor, just for Godot registration
 	const uint32_t m_tile_id;
 };
 
@@ -66,6 +66,6 @@ class NPCSelectorButton: public SelectorButton
 public:
 	NPCSelectorButton(const uint32_t obj_id);
 private:
-	NPCSelectorButton(): SelectorButton(), m_npc_id(0) {}
+	NPCSelectorButton(): SelectorButton(), m_npc_id(0) {} // Private constructor, just for Godot registration
 	const uint32_t m_npc_id;
 };
