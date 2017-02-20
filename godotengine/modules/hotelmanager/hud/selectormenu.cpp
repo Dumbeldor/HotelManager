@@ -13,23 +13,21 @@
  * All rights reserved
  */
 
-#include "tiles.h"
+#include "modules/hotelmanager/tiles.h"
 #include <math/math_2d.h>
 #include <scene/gui/panel.h>
 #include <iostream>
-#include "gui_tabs.h"
-#include "hud/tileselectorbutton.h"
-#include "objectdefmgr.h"
-#include "log.h"
+#include "selectormenu.h"
+#include "selectorbutton.h"
+#include "modules/hotelmanager/objectdefmgr.h"
+#include "modules/hotelmanager/log.h"
 
-LayerTileMenu::LayerTileMenu()
+SelectorMenu::SelectorMenu(const String &tile_group, Panel *menu)
 {
 	// Init TileSelectorButton when init this menu element, should be good
 	TileSelectorButton::init_selector();
-}
 
-void LayerTileMenu::init(const String &tile_group)
-{
+	menu->add_child(this);
 
 	set_name("LayerMenuTileType_" + tile_group);
 
@@ -47,17 +45,14 @@ void LayerTileMenu::init(const String &tile_group)
 			continue;
 		}
 
-		TileSelectorButton::set_tile_to_init(tile_def.second->id);
-		TileSelectorButton *tb = memnew(TileSelectorButton);
-		add_child(tb);
-		tb->init();
+		add_child(memnew(TileSelectorButton(tile_def.second->id)));
 	}
 
 	update_child_pos();
 }
 
 #define LAYER_TILE_MARGIN 20
-void LayerTileMenu::update_child_pos()
+void SelectorMenu::update_child_pos()
 {
 	int32_t child_count = get_child_count();
 	int32_t osb_id = 0;
@@ -83,8 +78,4 @@ void LayerTileMenu::update_child_pos()
 			margin_top += osb->get_size().height + LAYER_TILE_MARGIN;
 		}
 	}
-}
-
-void LayerTileMenu::_bind_methods()
-{
 }

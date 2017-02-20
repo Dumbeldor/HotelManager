@@ -14,11 +14,20 @@
  */
 
 #include <math/math_2d.h>
+#include "../objectdefmgr.h"
+#include "../tiles.h"
 #include "selectorbutton.h"
 
 SelectorButton *SelectorButton::s_selected = nullptr;
 
 #define OBJECTSELECTOR_MASK Color(1.0, 1.0, 1.0, 0.2)
+
+SelectorButton::SelectorButton()
+{
+	set_size(Size2(OBJECTSELECTOR_SIZE, OBJECTSELECTOR_SIZE));
+	connect("pressed", this, "_change_selected_object");
+	connect("draw", this, "_on_draw");
+}
 
 void SelectorButton::init_selector()
 {
@@ -67,4 +76,33 @@ void SelectorButton::_on_draw()
 
 		draw_colored_polygon(points, OBJECTSELECTOR_MASK);
 	}
+}
+
+/*
+ * Tile Selector
+ */
+
+TileSelectorButton::TileSelectorButton(const uint32_t tile_id):
+	SelectorButton(),
+	m_tile_id(tile_id)
+{
+	const GameTileDef &tile_def = ObjectDefMgr::get_singleton()->get_tiledef(m_tile_id);
+
+	ImageTexture *texture = memnew(ImageTexture);
+	texture->load(String("res://tiles/") + tile_def.texture_name);
+
+	// Height is multiplied height/width because some textures don't have x = y
+	texture->set_size_override(Size2(OBJECTSELECTOR_SIZE,
+		OBJECTSELECTOR_SIZE * (texture->get_size().y / texture->get_size().x)));
+	set_normal_texture(texture);
+	set_tooltip(tile_def.label);
+}
+
+/*
+ * NPC Selector
+ */
+NPCSelectorButton::NPCSelectorButton(const uint32_t obj_id):
+	SelectorButton(),
+	m_npc_id(obj_id)
+{
 }
