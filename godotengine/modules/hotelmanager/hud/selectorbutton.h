@@ -17,7 +17,8 @@
 
 #include <scene/gui/texture_button.h>
 
-#define OBJECTSELECTOR_SIZE 48
+class NPCSelectorButton;
+class TileSelectorButton;
 
 class SelectorButton: public TextureButton
 {
@@ -27,6 +28,17 @@ public:
 	SelectorButton();
 
 	static void init_selector();
+
+	static const bool is_tile_selected()
+	{
+		return s_selected ? s_selected->cast_to<TileSelectorButton>() != nullptr : false;
+	}
+
+	static const bool is_npc_selected()
+	{
+		return s_selected ? s_selected->cast_to<NPCSelectorButton>() != nullptr : false;
+	}
+
 protected:
 	void _change_selected_object();
 	void _on_draw();

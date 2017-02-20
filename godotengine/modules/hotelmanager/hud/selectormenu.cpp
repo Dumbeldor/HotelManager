@@ -29,10 +29,11 @@ SelectorMenu::SelectorMenu(const String &tile_group, Panel *menu)
 
 	menu->add_child(this);
 
-	set_name("LayerMenuTileType_" + tile_group);
+	set_name("SelectorMenu_Tile_" + tile_group);
 
 	const TileGroup &tg_def = ObjectDefMgr::get_singleton()->
 		get_tilegroup(std::string(tile_group.utf8()));
+
 	if (tg_def.id == 0) {
 		LOG_CRIT("Invalid tile_group name provided (%s), ignoring all comportment.",
 			tile_group.ascii().get_data());
