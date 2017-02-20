@@ -39,13 +39,14 @@ void Hud::init()
 	create_tilemenu("ground");
 	create_tilemenu("floor");
 	create_tilemenu("wall");
+	create_npcmenu();
 
 	m_clock = get_node(String("ControlPane/Clock"))->cast_to<Clock>();
 	assert(m_clock);
 }
 
 /**
- * Create menu with name
+ * Create menu supporting tiles with name
  *
  * @param name
  */
@@ -64,8 +65,15 @@ void Hud::create_tilemenu(const std::string &name)
 	}
 
 	assert(menu);
-	memnew(SelectorMenu(String(name.c_str()), menu));
+	memnew(TileSelectorMenu(String(name.c_str()), menu));
+}
 
+void Hud::create_npcmenu()
+{
+	Panel *menu = get_node(String("ControlPane_Bottom/HireMenuButton/HireMenu"))->cast_to<Panel>();
+	assert(menu);
+	// SelectorMenu for NPCs
+	memnew(NPCSelectorMenu(menu));
 }
 
 /**

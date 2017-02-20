@@ -22,36 +22,6 @@
 #include "modules/hotelmanager/objectdefmgr.h"
 #include "modules/hotelmanager/log.h"
 
-SelectorMenu::SelectorMenu(const String &tile_group, Panel *menu)
-{
-	// Init TileSelectorButton when init this menu element, should be good
-	TileSelectorButton::init_selector();
-
-	menu->add_child(this);
-
-	set_name("SelectorMenu_Tile_" + tile_group);
-
-	const TileGroup &tg_def = ObjectDefMgr::get_singleton()->
-		get_tilegroup(std::string(tile_group.utf8()));
-
-	if (tg_def.id == 0) {
-		LOG_CRIT("Invalid tile_group name provided (%s), ignoring all comportment.",
-			tile_group.ascii().get_data());
-		return;
-	}
-
-	for (const auto &tile_def: ObjectDefMgr::get_singleton()->get_tiledefs()) {
-		if (!tile_def.second->is_in_group(tg_def.id)
-			|| tile_def.second->flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
-			continue;
-		}
-
-		add_child(memnew(TileSelectorButton(tile_def.second->id)));
-	}
-
-	update_child_pos();
-}
-
 #define LAYER_TILE_MARGIN 20
 void SelectorMenu::update_child_pos()
 {
@@ -79,4 +49,54 @@ void SelectorMenu::update_child_pos()
 			margin_top += osb->get_size().height + LAYER_TILE_MARGIN;
 		}
 	}
+}
+
+/*
+ * Tile Selector Menu
+ */
+
+/**
+ * Create the TileSelectorMenu for specified tile_group into menu
+ * @param tile_group
+ * @param menu
+ */
+TileSelectorMenu::TileSelectorMenu(const String &tile_group, Panel *menu):
+	SelectorMenu()
+{
+	TileSelectorButton::init_selector();
+
+	menu->add_child(this);
+
+	set_name("SelectorMenu_Tile_" + tile_group);
+
+	const TileGroup &tg_def = ObjectDefMgr::get_singleton()->
+		get_tilegroup(std::string(tile_group.utf8()));
+
+	if (tg_def.id == 0) {
+		LOG_CRIT("Invalid tile_group name provided (%s), ignoring all comportment.",
+			tile_group.ascii().get_data());
+		return;
+	}
+
+	for (const auto &tile_def: ObjectDefMgr::get_singleton()->get_tiledefs()) {
+		if (!tile_def.second->is_in_group(tg_def.id)
+			|| tile_def.second->flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
+			continue;
+		}
+
+		add_child(memnew(TileSelectorButton(tile_def.second->id)));
+	}
+
+	update_child_pos();
+}
+
+/*
+ * NPC Selector Menu
+ */
+
+NPCSelectorMenu::NPCSelectorMenu(Panel *menu):
+	SelectorMenu()
+{
+	menu->add_child(this);
+	update_child_pos();
 }

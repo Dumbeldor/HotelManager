@@ -100,17 +100,17 @@ void ObjectDefMgr::load_roomdefs()
  */
 void ObjectDefMgr::load_characterdefs()
 {
-	m_tilegroups.clear();
+	m_characterdefs.clear();
 	GameDataReader reader("character", CHARACTERDEF_CSV_COLS);
 	while (reader.is_good()) {
 		CharacterDef *character = new CharacterDef();
-		uint16_t sex, role;
-		reader >> character->id >> character->name >> sex >> role;
+		uint16_t role;
+		reader >> character->id >> character->name >> character->sex_chance >> role;
 
-		if (sex >= SEX_MAX) {
-			LOG_CRIT("Invalid sex %d for ID %d, ignoring.", sex, character->id);
-			delete character;
-			continue;
+		if (character->sex_chance >= 100.0f || character->sex_chance < 0.0f) {
+			LOG_CRIT("Invalid sex_chance %f for ID %d, setting to 50%%.",
+				character->sex_chance, character->id);
+			character->sex_chance = 50.0f;
 		}
 
 		if (role >= CHARACTER_ROLE_MAX) {
@@ -119,7 +119,6 @@ void ObjectDefMgr::load_characterdefs()
 			continue;
 		}
 
-		character->sex = (CharacterSex) sex;
 		character->role = (CharacterRole) role;
 
 		if (m_characterdefs.find(character->id) != m_characterdefs.end()) {

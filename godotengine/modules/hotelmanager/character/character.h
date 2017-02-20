@@ -52,7 +52,7 @@ struct CharacterDef
 	uint16_t id = 0;
 	std::string name = "";
 	CharacterRole role = CHARACTER_ROLE_NONE;
-	CharacterSex sex = MALE;
+	float sex_chance = 50.0f;
 };
 static const uint8_t CHARACTERDEF_CSV_COLS = 4;
 
