@@ -42,6 +42,8 @@ protected:
 	void _on_draw();
 private:
 	void create_tilemenu(const std::string &name);
+	void create_npcmenu();
+
 	Clock *m_clock = nullptr;
 	VBoxContainer *m_mission_container = nullptr;
 	std::unordered_map<std::string, TileMenu *> m_tile_menus = {};

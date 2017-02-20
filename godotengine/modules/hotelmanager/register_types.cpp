@@ -37,9 +37,10 @@ void register_hotelmanager_types()
 	ObjectTypeDB::register_type<CharacterRoomMaid>();
 	ObjectTypeDB::register_type<Clock>();
 	ObjectTypeDB::register_type<GameMap>();
-	ObjectTypeDB::register_type<SelectorMenu>();
-	ObjectTypeDB::register_type<TileSelectorButton>();
 	ObjectTypeDB::register_type<NPCSelectorButton>();
+	ObjectTypeDB::register_type<NPCSelectorMenu>();
+	ObjectTypeDB::register_type<TileSelectorMenu>();
+	ObjectTypeDB::register_type<TileSelectorButton>();
 	ObjectTypeDB::register_type<Hud>();
 	ObjectTypeDB::register_type<MapControl>();
 	ObjectTypeDB::register_type<Console>();

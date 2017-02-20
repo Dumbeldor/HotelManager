@@ -19,12 +19,35 @@
 #include <scene/gui/texture_button.h>
 #include "modules/hotelmanager/tiles.h"
 
+/*
+ * Generic Selector menu interface
+ */
 class SelectorMenu: public Tabs
 {
 	OBJ_TYPE(SelectorMenu, Tabs);
 public:
-	SelectorMenu(const String &tile_group, Panel *menu );
 	void update_child_pos();
+protected:
+	SelectorMenu(): Tabs() {} // Protected constructor, just for Godot registration
+};
+
+/*
+ * Tile selector menu
+ */
+class TileSelectorMenu: public SelectorMenu
+{
+	OBJ_TYPE(TileSelectorMenu, SelectorMenu);
+public:
+	TileSelectorMenu(const String &tile_group, Panel *menu);
 private:
-	SelectorMenu() {} // Private constructor, just for Godot registration
+	TileSelectorMenu() {} // Private constructor, just for Godot registration
+};
+
+class NPCSelectorMenu: public SelectorMenu
+{
+OBJ_TYPE(NPCSelectorMenu, SelectorMenu);
+public:
+	NPCSelectorMenu(Panel *menu);
+private:
+	NPCSelectorMenu() {} // Private constructor, just for Godot registration
 };

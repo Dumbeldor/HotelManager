@@ -104,6 +104,17 @@ GameDataReader &GameDataReader::operator>>(uint32_t &out)
 }
 
 template<>
+GameDataReader &GameDataReader::operator>>(float &out)
+{
+	if (!m_is_good) {
+		return *this;
+	}
+	out = (uint32_t) m_csv_line.get(m_current_col).to_float();
+	next();
+	return *this;
+}
+
+template<>
 GameDataReader &GameDataReader::operator>>(std::vector<uint32_t> &out)
 {
 	if (!m_is_good) {
