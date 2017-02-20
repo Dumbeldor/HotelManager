@@ -22,7 +22,7 @@
 #include "character/characterroommaid.h"
 #include "gamemap.h"
 #include "gui_tabs.h"
-#include "hud/tileselectorbutton.h"
+#include "hud/selectorbutton.h"
 #include "hud/hud.h"
 #include "mapcontrol.h"
 #include "console.h"
@@ -38,8 +38,8 @@ void register_hotelmanager_types()
 	ObjectTypeDB::register_type<Clock>();
 	ObjectTypeDB::register_type<GameMap>();
 	ObjectTypeDB::register_type<LayerTileMenu>();
-	ObjectTypeDB::register_type<SelectorButton>();
 	ObjectTypeDB::register_type<TileSelectorButton>();
+	ObjectTypeDB::register_type<NPCSelectorButton>();
 	ObjectTypeDB::register_type<Hud>();
 	ObjectTypeDB::register_type<MapControl>();
 	ObjectTypeDB::register_type<Console>();

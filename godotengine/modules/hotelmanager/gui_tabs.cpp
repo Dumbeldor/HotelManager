@@ -18,7 +18,7 @@
 #include <scene/gui/panel.h>
 #include <iostream>
 #include "gui_tabs.h"
-#include "hud/tileselectorbutton.h"
+#include "hud/selectorbutton.h"
 #include "objectdefmgr.h"
 #include "log.h"
 
@@ -30,7 +30,6 @@ LayerTileMenu::LayerTileMenu()
 
 void LayerTileMenu::init(const String &tile_group)
 {
-
 	set_name("LayerMenuTileType_" + tile_group);
 
 	const TileGroup &tg_def = ObjectDefMgr::get_singleton()->
@@ -47,10 +46,7 @@ void LayerTileMenu::init(const String &tile_group)
 			continue;
 		}
 
-		TileSelectorButton::set_tile_to_init(tile_def.second->id);
-		TileSelectorButton *tb = memnew(TileSelectorButton);
-		add_child(tb);
-		tb->init();
+		add_child(memnew(TileSelectorButton(tile_def.second->id)));
 	}
 
 	update_child_pos();

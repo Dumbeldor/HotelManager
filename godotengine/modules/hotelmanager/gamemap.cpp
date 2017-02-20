@@ -26,7 +26,7 @@
 #include <queue>
 #include "gamemap.h"
 #include "mapcontrol.h"
-#include "hud/tileselectorbutton.h"
+#include "hud/selectorbutton.h"
 #include "objectdefmgr.h"
 #include "gamesession.h"
 #include "mapgen.h"
