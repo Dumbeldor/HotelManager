@@ -250,7 +250,8 @@ void GameMap::_canvas_draw()
 	// If mouse is over a node
 	if (m_mouse_over) {
 		// We have an object selected and current tile is valid
-		if (TileSelectorButton::get_selected_tile_id() != TILE_NONE) {
+		if (SelectorButton::is_tile_selected() &&
+			TileSelectorButton::get_selected_tile_id() != TILE_NONE) {
 			uint32_t selected_tile_id = TileSelectorButton::get_selected_tile_id();
 			const GameTileDef &tiledef =
 				ObjectDefMgr::get_singleton()->get_tiledef(selected_tile_id);
@@ -393,10 +394,17 @@ void GameMap::_on_input_event(const InputEvent &p_event)
 			}
 			else if (mb.button_index == BUTTON_LEFT) {
 				if (p_event.is_action_pressed("ui_mouseclick_left")) {
-					init_selection();
+					if (SelectorButton::is_tile_selected()) {
+						init_zone_selection();
+					}
 				}
 				else if (p_event.is_action_released("ui_mouseclick_left")) {
-					place_tiles_in_selected_area();
+					if (SelectorButton::is_tile_selected()) {
+						place_tiles_in_selected_area();
+					}
+					else if (SelectorButton::is_npc_selected()) {
+
+					}
 				}
 			}
 		}
@@ -452,7 +460,7 @@ void GameMap::move_camera(Vector2 movement)
 	m_camera->global_translate(movement);
 }
 
-void GameMap::init_selection()
+void GameMap::init_zone_selection()
 {
 	m_selection_in_progress = true;
 	m_selection_init_pos = m_ground_map->world_to_map(get_local_mouse_pos());

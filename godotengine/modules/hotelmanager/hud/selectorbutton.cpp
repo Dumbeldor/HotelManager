@@ -15,12 +15,12 @@
 
 #include <math/math_2d.h>
 #include "../objectdefmgr.h"
-#include "../tiles.h"
 #include "selectorbutton.h"
 
 SelectorButton *SelectorButton::s_selected = nullptr;
 
 #define OBJECTSELECTOR_MASK Color(1.0, 1.0, 1.0, 0.2)
+#define OBJECTSELECTOR_SIZE 48
 
 SelectorButton::SelectorButton()
 {

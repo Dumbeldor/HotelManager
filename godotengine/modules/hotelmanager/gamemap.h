@@ -61,7 +61,7 @@ private:
 	TileMap *get_tilemap(const GameTileDef &tiledef);
 
 	// Selection & Placement
-	void init_selection();
+	void init_zone_selection();
 	void place_tiles_in_selected_area();
 	void reset_selection()
 	{
