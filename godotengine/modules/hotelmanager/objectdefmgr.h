@@ -30,7 +30,7 @@ struct RoomDef
 	uint8_t max_size = 1;
 };
 static const uint8_t ROOMDEF_CSV_COLS = 4;
-typedef std::unordered_map<uint32_t, GameTileDef *> TileDefMap;
+typedef std::unordered_map<uint32_t, TileDef *> TileDefMap;
 
 class ObjectDefMgr
 {
@@ -45,8 +45,8 @@ public:
 	 * @param tile_id
 	 * @return const reference of the tiledef
 	 */
-	const GameTileDef &get_tiledef(uint32_t t) const;
-	const std::unordered_map<uint32_t, GameTileDef *>& get_tiledefs() const
+	const TileDef &get_tiledef(uint32_t t) const;
+	const std::unordered_map<uint32_t, TileDef *>& get_tiledefs() const
 	{
 		return m_game_tiledefs;
 	}

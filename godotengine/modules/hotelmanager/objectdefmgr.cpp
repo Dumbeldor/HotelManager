@@ -160,7 +160,7 @@ void ObjectDefMgr::load_tiledefs()
 	m_game_tiledefs.clear();
 	GameDataReader reader("tiles", TILEDEF_CSV_COLS);
 	while (reader.is_good()) {
-		GameTileDef *tiledef = new GameTileDef();
+		TileDef *tiledef = new TileDef();
 		uint32_t tile_id;
 
 		reader >> tile_id;
@@ -234,13 +234,13 @@ void ObjectDefMgr::load_achievements()
 		uint32_t achievement_type;
 		reader >> achievement->unique_id >> achievement_type;
 
-		if (achievement_type == ACHIEVEMENT_TYPE_NONE
-			|| achievement_type >= ACHIEVEMENT_TYPE_MAX) {
+		if (achievement_type == Achievement::Type::NONE
+			|| achievement_type >= Achievement::Type::MAX) {
 			LOG_WARN("Invalid achievement type %d, ignoring.", achievement_type);
 			delete achievement;
 			continue;
 		}
-		achievement->type = (AchievementType) achievement_type;
+		achievement->type = (Achievement::Type) achievement_type;
 
 		reader >> achievement->title >> achievement->objective >> achievement->description >>
 			achievement->icon >> achievement->group_id;
@@ -252,7 +252,7 @@ void ObjectDefMgr::load_achievements()
 		}
 
 		m_achievements.insert(
-			std::pair<AchievementType, Achievement *>(achievement->type, achievement));
+			std::pair<Achievement::Type, Achievement *>(achievement->type, achievement));
 	}
 }
 
@@ -266,13 +266,13 @@ void ObjectDefMgr::load_mission_objectives()
 		reader >> mission_objective->id >> mission_objective->title >> type >>
 			mission_objective->count;
 
-		if (type >= MISSION_OBJECTIVE_TYPE_MAX) {
+		if (type >= MissionObjective::Type::MAX) {
 			LOG_WARN("Invalid missionobjective type %d, ignoring.", type);
 			delete mission_objective;
 			continue;
 		}
 
-		mission_objective->type = (MissionObjectiveType) type;
+		mission_objective->type = (MissionObjective::Type) type;
 
 		if (m_mission_objectives.find(mission_objective->id) != m_mission_objectives.end()) {
 			LOG_WARN("MissionObjective %d was already registered, overriding it",
@@ -332,7 +332,7 @@ void ObjectDefMgr::load_names()
  * @param t tiledef_id
  * @return GameTileDef for tiledef_id
  */
-const GameTileDef &ObjectDefMgr::get_tiledef(uint32_t t) const
+const TileDef &ObjectDefMgr::get_tiledef(uint32_t t) const
 {
 	const auto &td = m_game_tiledefs.find(t);
 	if (td == m_game_tiledefs.end()) {
