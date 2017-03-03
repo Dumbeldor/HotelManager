@@ -18,16 +18,6 @@
 #include <cstdint>
 #include <unordered_map>
 
-
-enum AchievementType
-{
-	ACHIEVEMENT_TYPE_NONE = 0,
-	ACHIEVEMENT_TYPE_MONEY_NUMBER,
-	ACHIEVEMENT_TYPE_CLIENT_NUMBER,
-	ACHIEVEMENT_TYPE_DAY_NUMBER,
-	ACHIEVEMENT_TYPE_MAX,
-};
-
 struct AchievementGroup
 {
 	uint32_t id = 0;
@@ -39,9 +29,18 @@ typedef std::unordered_map<uint32_t, AchievementGroup *> AchievementGroupList;
 
 struct Achievement
 {
+	enum Type: uint8_t
+	{
+		NONE = 0,
+		MONEY_NUMBER,
+		CLIENT_NUMBER,
+		DAY_NUMBER,
+		MAX,
+	};
+
 	Achievement() {}
 	uint32_t unique_id = 0;
-	AchievementType type = ACHIEVEMENT_TYPE_NONE;
+	Achievement::Type type = Achievement::Type::NONE;
 	uint32_t objective = 0;
 	uint32_t group_id = 0;
 	std::string title = "";
@@ -57,5 +56,5 @@ struct AchievementProgress
 };
 
 static const uint8_t ACHIEVEMENTS_CSV_COLS = 7;
-typedef std::unordered_multimap<AchievementType, Achievement *> AchievementList;
+typedef std::unordered_multimap<Achievement::Type, Achievement *> AchievementList;
 typedef std::unordered_map<uint32_t, AchievementProgress> AchievementProgressMap;
