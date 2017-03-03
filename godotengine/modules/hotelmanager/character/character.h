@@ -73,9 +73,9 @@ public:
 	void set_role(const CharacterRole role) { m_character_role = role; }
 	void set_role__api(const uint8_t role) { m_character_role = (CharacterRole) role; }
 
-	virtual const ActorObjectType get_ao_type() const
+	virtual const ActorObject::Type get_ao_type() const
 	{
-		return ACTOROBJECT_TYPE_CHARACTER;
+		return ActorObject::TYPE_CHARACTER;
 	}
 
 	virtual Point2 get_ao_position() const

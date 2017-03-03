@@ -16,7 +16,7 @@
 #include <algorithm>
 #include "tiles.h"
 
-bool GameTileDef::is_in_group(const uint32_t gid) const
+bool TileDef::is_in_group(const uint32_t gid) const
 {
 	return (std::find(groups.begin(), groups.end(), gid) != groups.end());
 }

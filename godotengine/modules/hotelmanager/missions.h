@@ -21,19 +21,19 @@
 #include <unordered_map>
 #include <memory>
 
-enum MissionObjectiveType: uint8_t
-{
-	MISSION_OBJECTIVE_TYPE_NONE,
-	MISSION_OBJECTIVE_TYPE_HIRE,
-	MISSION_OBJECTIVE_TYPE_MAX,
-};
-
 struct MissionObjective
 {
+	enum Type: uint8_t
+	{
+		NONE,
+		HIRE,
+		MAX,
+	};
+
 	MissionObjective() {}
 	uint32_t id = 0;
 	std::string title = "";
-	MissionObjectiveType type = MISSION_OBJECTIVE_TYPE_NONE;
+	MissionObjective::Type type = MissionObjective::Type::NONE;
 	uint32_t count = 0;
 };
 

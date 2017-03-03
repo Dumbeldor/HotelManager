@@ -19,20 +19,20 @@
 #include <memory>
 #include <math/math_2d.h>
 
-enum ActorObjectType: uint8_t
-{
-	ACTOROBJECT_TYPE_CHARACTER = 1,
-};
-
 class ActorObject
 {
 public:
+	enum Type: uint8_t
+	{
+		TYPE_CHARACTER = 1,
+	};
+
 	ActorObject();
 	virtual ~ActorObject();
 
 	void set_id(const uint32_t id);
 
-	virtual const ActorObjectType get_ao_type() const = 0;
+	virtual const ActorObject::Type get_ao_type() const = 0;
 	virtual Point2 get_ao_position() const = 0;
 protected:
 	uint32_t m_id = 0;

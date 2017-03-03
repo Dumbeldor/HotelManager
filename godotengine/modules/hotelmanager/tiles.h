@@ -49,7 +49,7 @@ enum TileFlags: int16_t
 	TILE_FLAG_MAX = 0x08,
 };
 
-struct GameTileDef
+struct TileDef
 {
 public:
 	uint32_t id;

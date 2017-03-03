@@ -86,7 +86,7 @@ TileSelectorButton::TileSelectorButton(const uint32_t tile_id):
 	SelectorButton(),
 	m_tile_id(tile_id)
 {
-	const GameTileDef &tile_def = ObjectDefMgr::get_singleton()->get_tiledef(m_tile_id);
+	const TileDef &tile_def = ObjectDefMgr::get_singleton()->get_tiledef(m_tile_id);
 
 	ImageTexture *texture = memnew(ImageTexture);
 	texture->load(String("res://tiles/") + tile_def.texture_name);

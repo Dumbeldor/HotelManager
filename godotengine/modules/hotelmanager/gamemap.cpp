@@ -222,7 +222,7 @@ void GameMap::on_process(float delta)
 	}
 }
 
-TileMap* GameMap::get_tilemap(const GameTileDef &tiledef)
+TileMap* GameMap::get_tilemap(const TileDef &tiledef)
 {
 	const TileGroup &tg_ground = ObjectDefMgr::get_singleton()->get_tilegroup("ground");
 	const TileGroup &tg_floor = ObjectDefMgr::get_singleton()->get_tilegroup("floor");
@@ -253,7 +253,7 @@ void GameMap::_canvas_draw()
 		if (SelectorButton::is_tile_selected() &&
 			TileSelectorButton::get_selected_tile_id() != TILE_NONE) {
 			uint32_t selected_tile_id = TileSelectorButton::get_selected_tile_id();
-			const GameTileDef &tiledef =
+			const TileDef &tiledef =
 				ObjectDefMgr::get_singleton()->get_tiledef(selected_tile_id);
 
 			TileMap *selected_tilemap = get_tilemap(tiledef);
@@ -472,7 +472,7 @@ void GameMap::init_zone_selection()
 void GameMap::place_tiles_in_selected_area()
 {
 	uint32_t s_tile = TileSelectorButton::get_selected_tile_id();
-	const GameTileDef &tile_def = ObjectDefMgr::get_singleton()->get_tiledef(s_tile);
+	const TileDef &tile_def = ObjectDefMgr::get_singleton()->get_tiledef(s_tile);
 	// Ignore none tiles & tile unavailable to players
 	if (s_tile == TILE_NONE || tile_def.flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
 		reset_selection();
@@ -499,7 +499,7 @@ void GameMap::place_tiles_in_selected_area()
 		return;
 	}
 
-	const GameTileDef &tiledef = ObjectDefMgr::get_singleton()->get_tiledef(s_tile);
+	const TileDef &tiledef = ObjectDefMgr::get_singleton()->get_tiledef(s_tile);
 
 	if (cur_pos == m_selection_init_pos) {
 		if (!m_game_session->has_money(tiledef.cost)) {
@@ -576,7 +576,7 @@ void GameMap::place_tiles_in_selected_area()
  * @param pos2
  * @return
  */
-int32_t GameMap::get_area_cost(const GameTileDef &tiledef, const Vector2 &pos1, const Vector2 &pos2)
+int32_t GameMap::get_area_cost(const TileDef &tiledef, const Vector2 &pos1, const Vector2 &pos2)
 {
 	return (int32_t) (tiledef.cost * ABS(pos2.x - pos1.x + 1) * ABS(pos2.y - pos1.y + 1));
 }
