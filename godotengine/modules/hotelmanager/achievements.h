@@ -19,7 +19,7 @@
 #include <unordered_map>
 
 
-enum AchievementType
+enum AchievementType: uint8_t
 {
 	ACHIEVEMENT_TYPE_NONE = 0,
 	ACHIEVEMENT_TYPE_MONEY_NUMBER,

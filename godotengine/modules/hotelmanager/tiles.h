@@ -32,7 +32,7 @@ static constexpr uint16_t GAME_TILE_SIZE = 512;
 static constexpr uint16_t TILE_NONE = 0;
 static constexpr uint32_t TILE_MAX = UINT32_MAX;
 
-enum TileType
+enum TileType: uint8_t
 {
 	TILE_TYPE_GENERIC = 1,
 	TILE_TYPE_GROUND = 2,
@@ -40,7 +40,7 @@ enum TileType
 	TILE_TYPE_MAX,
 };
 
-enum TileFlags
+enum TileFlags: int16_t
 {
 	TILE_FLAG_NONE = 0x00,
 	TILE_FLAG_UNAVAILABLE_FOR_PLAYERS = 0x01,

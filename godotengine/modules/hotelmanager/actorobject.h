@@ -19,7 +19,7 @@
 #include <memory>
 #include <math/math_2d.h>
 
-enum ActorObjectType
+enum ActorObjectType: uint8_t
 {
 	ACTOROBJECT_TYPE_CHARACTER = 1,
 };

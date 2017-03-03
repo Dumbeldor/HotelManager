@@ -31,7 +31,7 @@ struct ChatCommand
 	const std::string help;
 };
 
-enum ChatCommandSearchResult
+enum ChatCommandSearchResult: uint8_t
 {
 	CHAT_COMMAND_OK,					// Found accessible command by command string
 	CHAT_COMMAND_UNKNOWN,				// First level command not found

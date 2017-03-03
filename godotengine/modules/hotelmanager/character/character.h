@@ -20,14 +20,14 @@
 #include <scene/2d/physics_body_2d.h>
 #include "modules/hotelmanager/actorobject.h"
 
-enum CharacterSex
+enum CharacterSex: uint8_t
 {
 	MALE = 1,
 	FEMALE = 2,
 	SEX_MAX,
 };
 
-enum CharacterRole
+enum CharacterRole: uint8_t
 {
 	CHARACTER_ROLE_NONE,
 	CHARACTER_ROLE_CLIENT,
