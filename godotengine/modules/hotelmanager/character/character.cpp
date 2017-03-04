@@ -20,6 +20,10 @@ Character::Character(CharacterRole role):
 	RigidBody2D(), ActorObject(),
 	m_character_role(role)
 {
+	// Ignore this part in editor
+	if (!ObjectDefMgr::get_singleton()) {
+		return;
+	}
 	m_sex = ObjectDefMgr::get_singleton()->get_random_sex();
 	if (m_sex == MALE) {
 		m_character_name = ObjectDefMgr::get_singleton()->get_random_male_name();
