@@ -23,6 +23,7 @@
 
 class Camera2D;
 class CanvasModulate;
+class Character;
 class GameSession;
 class MapControl;
 class SamplePlayer;
@@ -45,6 +46,8 @@ public:
 	TileMap *get_floor_map() const { return m_floor_map; };
 	Camera2D *get_camera() const { return m_camera; };
 	void apply_daynight_cycle(const double &time);
+
+	void add_character(Character *c);
 protected:
 	static void _bind_methods();
 	void _canvas_draw();

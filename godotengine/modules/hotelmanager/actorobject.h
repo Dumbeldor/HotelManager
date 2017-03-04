@@ -34,6 +34,8 @@ public:
 
 	virtual const ActorObject::Type get_ao_type() const = 0;
 	virtual Point2 get_ao_position() const = 0;
+
+	virtual void step(const double &dtime) = 0;
 protected:
 	uint32_t m_id = 0;
 };

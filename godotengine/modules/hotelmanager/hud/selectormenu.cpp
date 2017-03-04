@@ -35,7 +35,7 @@ void SelectorMenu::update_child_pos()
 	float margin_top = LAYER_TILE_MARGIN;
 	float margin_left = LAYER_TILE_MARGIN;
 	for (int32_t i = 0; i < child_count; i++) {
-		TileSelectorButton *osb = get_child(i)->cast_to<TileSelectorButton>();
+		SelectorButton *osb = get_child(i)->cast_to<SelectorButton>();
 		if (!osb) {
 			continue;
 		}
@@ -98,5 +98,11 @@ NPCSelectorMenu::NPCSelectorMenu(Panel *menu):
 	SelectorMenu()
 {
 	menu->add_child(this);
+	set_name("SelectorMenu_NPC");
+
+	for (const auto &cdef: ObjectDefMgr::get_singleton()->get_characterdefs()) {
+		add_child(memnew(NPCSelectorButton(*cdef.second)));
+	}
+
 	update_child_pos();
 }

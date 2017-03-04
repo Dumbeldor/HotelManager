@@ -56,3 +56,10 @@ void ObjectMgr::unregister_ao(const uint32_t id)
 		m_actor_objects.erase(itr);
 	}
 }
+
+void ObjectMgr::step(const double &dtime)
+{
+	for (auto &obj: m_actor_objects) {
+		obj.second->step(dtime);
+	}
+}

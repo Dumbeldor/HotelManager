@@ -8,11 +8,12 @@
  *
  * Copyright:
  *
- * 2016, Loic Blot <loic.blot@unix-experience.fr>
+ * 2016-2017, Loic Blot <loic.blot@unix-experience.fr>
  *
  * All rights reserved
  */
 
+#include <iostream>
 #include "character.h"
 #include "../objectdefmgr.h"
 
@@ -41,4 +42,9 @@ void Character::_bind_methods()
 {
 	ObjectTypeDB::bind_method("set_sex",&Character::set_sex__api);
 	ObjectTypeDB::bind_method("set_role",&Character::set_role__api);
+}
+
+void Character::step(const double &dtime)
+{
+	// @TODO
 }

@@ -16,6 +16,7 @@
 #pragma once
 
 #include <scene/gui/texture_button.h>
+#include "../character/character.h"
 
 class NPCSelectorButton;
 class TileSelectorButton;
@@ -76,8 +77,15 @@ class NPCSelectorButton: public SelectorButton
 {
 	OBJ_TYPE(NPCSelectorButton, SelectorButton)
 public:
-	NPCSelectorButton(const uint32_t obj_id);
+	NPCSelectorButton(const CharacterDef &cdef);
+
+	const CharacterRole get_npc_role() const { return m_npc_role; }
+	static const CharacterRole get_selected_character_role()
+	{
+		NPCSelectorButton *ns = s_selected->cast_to<NPCSelectorButton>();
+		return ns ? ns->get_npc_role() : CHARACTER_ROLE_NONE;
+	}
 private:
-	NPCSelectorButton(): SelectorButton(), m_npc_id(0) {} // Private constructor, just for Godot registration
-	const uint32_t m_npc_id;
+	NPCSelectorButton(): SelectorButton(), m_npc_role(CHARACTER_ROLE_NONE) {} // Private constructor, just for Godot registration
+	const CharacterRole m_npc_role;
 };

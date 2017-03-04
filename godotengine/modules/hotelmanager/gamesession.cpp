@@ -23,6 +23,9 @@
 #include "gameconfig.h"
 #include "objectmgr.h"
 #include "notificationmgr.h"
+#include <algorithm>
+#include <scene/resources/packed_scene.h>
+#include "character/characterceo.h"
 
 #define MONEY_LIMIT 1000000000000
 
@@ -114,13 +117,13 @@ void GameSession::init(const String &savename)
  * This loop handle:
  * - Game time
  *
- * @param delta
+ * @param dtime
  */
-void GameSession::_process(float delta)
+void GameSession::_process(float dtime)
 {
 	// Auto save
 	if (GameConfig::get_singleton()->get_auto_save()) {
-		m_autosave_timer -= delta;
+		m_autosave_timer -= dtime;
 		if (m_autosave_timer <= 0.0f) {
 			m_autosave_timer = GameConfig::get_singleton()->get_interval_save();
 			char buf[16];
@@ -131,7 +134,7 @@ void GameSession::_process(float delta)
 	}
 
 	// Delta using game_speed
-	float game_delta = delta * m_game_speed;
+	float game_delta = dtime * m_game_speed;
 	{
 		uint32_t old_day = get_current_day();
 
@@ -147,10 +150,13 @@ void GameSession::_process(float delta)
 	}
 
 	// Map processing
-	m_map->on_process(delta);
+	m_map->on_process(dtime);
 
-	//Notifications
-	m_notification_mgr->_process(delta);
+	// Notifications
+	m_notification_mgr->_process(dtime);
+
+	// ActorObjects
+	ObjectMgr::get_singleton()->step(dtime);
 }
 
 /**
@@ -299,4 +305,44 @@ void GameSession::start_mission(const uint32_t mission_id)
 void GameSession::remove_notification(const uint16_t id)
 {
 	m_notification_mgr->remove_notification(id);
+}
+
+/**
+ * Hire a character & remove money from player
+ *
+ * @param role
+ * @return character object pointer
+ */
+Character* GameSession::hire_character(CharacterRole role)
+{
+	const CharacterDef &cdef = ObjectDefMgr::get_singleton()->get_characterdef_by_role(role);
+	if (cdef.id == 0) {
+		return nullptr;
+	}
+
+	if (m_money < cdef.cost) {
+		return nullptr;
+	}
+
+	Character *character = nullptr;
+	switch (role) {
+		// Add more roles here when available
+		case CharacterRole::CHARACTER_ROLE_CEO: {
+			Ref<Resource> res = ResourceLoader::load(cdef.scene);
+			Ref<PackedScene> ps = res;
+			character = ps->instance()->cast_to<Character>();
+			break;
+		}
+		default:
+			return nullptr;
+	}
+
+	if (!character) {
+		return nullptr;
+	}
+
+	remove_money(cdef.cost);
+	m_map->add_character(character);
+
+	return character;
 }
