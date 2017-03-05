@@ -22,7 +22,7 @@
 #include "log.h"
 #include "gameconfig.h"
 #include "objectmgr.h"
-#include <unistd.h>
+#include "notificationmgr.h"
 
 #define MONEY_LIMIT 1000000000000
 
@@ -35,6 +35,8 @@ GameSession::~GameSession()
 	if (ObjectMgr::get_singleton()) {
 		delete ObjectMgr::get_singleton();
 	}
+
+	m_notification_mgr = nullptr;
 }
 
 void GameSession::_bind_methods()
@@ -55,6 +57,10 @@ void GameSession::_bind_methods()
 
 	// m_current_day
 	ObjectTypeDB::bind_method("get_current_day",&GameSession::get_current_day);
+
+	//Notification
+	ObjectTypeDB::bind_method("add_notification",&GameSession::add_notification);
+	ObjectTypeDB::bind_method("remove_notification",&GameSession::remove_notification);
 }
 
 /**
@@ -98,6 +104,9 @@ void GameSession::init(const String &savename)
 
 	//Auto save
 	m_autosave_timer = GameConfig::get_singleton()->get_interval_save();
+
+	// Notification
+	m_notification_mgr = get_node(String("GameMap/Hud/NotificationMgr"))->cast_to<NotificationMgr>();
 }
 
 /**
@@ -139,6 +148,9 @@ void GameSession::_process(float delta)
 
 	// Map processing
 	m_map->on_process(delta);
+
+	//Notifications
+	m_notification_mgr->_process(delta);
 }
 
 /**
@@ -272,4 +284,19 @@ void GameSession::start_mission(const uint32_t mission_id)
 	}
 
 	m_hud->add_mission(mission);
+}
+
+/**
+ * Add notification to Hud
+ *
+ * @param Title, Text
+ */
+ void GameSession::add_notification(const String &title, const String &text)
+{
+	m_notification_mgr->add_notification(title, text);
+}
+
+void GameSession::remove_notification(const uint16_t id)
+{
+	m_notification_mgr->remove_notification(id);
 }

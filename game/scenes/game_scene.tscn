@@ -175,6 +175,7 @@ margin/bottom = 1080.0
 
 [node name="MapControl" type="MapControl" parent="GameSession/GameMap/Hud/ControlPane"]
 
+editor/display_folded = true
 anchor/right = 1
 anchor/bottom = 1
 rect/min_size = Vector2( 1920, 1080 )
@@ -623,6 +624,7 @@ margin/bottom = -10.0
 
 [node name="AchievementPopup" type="PopupPanel" parent="GameSession/GameMap/Hud"]
 
+editor/display_folded = true
 visibility/visible = false
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -692,6 +694,8 @@ margin/right = 0.0
 margin/bottom = 0.0
 alignment = 0
 
+[node name="NotificationMgr" type="NotificationMgr" parent="GameSession/GameMap/Hud"]
+
 [node name="MapSoundPlayer" type="SamplePlayer" parent="GameSession"]
 
 config/polyphony = 1
@@ -719,7 +723,6 @@ scale = Vector2( 1, 1 )
 
 [node name="GameMainMenu" type="Panel" parent="MainMenuLayer"]
 
-editor/display_folded = true
 visibility/visible = false
 visibility/opacity = 0.9
 material/use_parent = true

@@ -46,6 +46,8 @@ func _ready():
 	get_node("MainMenuLayer/Console/RichTextLabel").set_scroll_follow(true)
 	
 	get_node("GameSession/GameMap/Hud").initialize()
+	
+	game_session.add_notification("Good Game", "Welcome in Hotel Manager !")
 
 func _process(delta):
 	game_session._process(delta)

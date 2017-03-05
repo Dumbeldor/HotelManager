@@ -39,6 +39,12 @@ ChatCommand *ChatHandler::getCommandTable()
 		COMMANDHANDLERFINISHER,
 	};
 
+	static ChatCommand notifCommandTable[] =
+	{
+		{ "add", true, &ChatHandler::handle_command_add_notif, nullptr, "Usage: /notif add title description"},
+		COMMANDHANDLERFINISHER,
+	};
+
 	static ChatCommand globalCommandTable[] =
 	{
 		{ "money", true, nullptr, moneyCommandTable, "Available subcommands: add|remove"},
@@ -46,6 +52,7 @@ ChatCommand *ChatHandler::getCommandTable()
 		{ "list", true, &ChatHandler::handle_command_list, nullptr, ""},
 		{ "help", true, &ChatHandler::handle_command_help, nullptr, ""},
 		{ "remove_line", true, &ChatHandler::handle_command_remove_line, nullptr, "Usage: /remove_line <number>"},
+		{ "notif", true, nullptr, notifCommandTable, "Notification subcommands: add|remove"},
 		COMMANDHANDLERFINISHER,
 	};
 
@@ -317,4 +324,32 @@ bool ChatHandler::handle_command_remove_line(const std::string &args, GameSessio
 	bool res = m_console->get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->remove_line(std::atoi(args.c_str()));
 	(res) ? msg = "Line " + std::to_string(std::atoi(args.c_str())) + " has been deleted" : msg = "The line number does not exist.";
 	return res;
+}
+
+bool ChatHandler::handle_command_add_notif(const std::string &args, GameSession *game_session, std::string &msg)
+{
+	if (args.empty()) {
+		msg = "/notif add 'Title' 'Description'";
+		return false;
+	}
+
+	std::vector<std::string> args_notif;
+	std::string arg = args;
+	size_t pos = 0;
+	uint8_t i = 0;
+	pos = arg.find(" ");
+	while (pos != std::string::npos) {
+		args_notif.push_back(arg.substr(0, pos));
+		arg.erase(0, pos + 1);
+		i++;
+		if (i >= 2) {
+			msg = "/notif add 'Title' 'Description'";
+			return false;
+		}
+		pos = arg.find(" ");
+	}
+
+	game_session->add_notification(String(args_notif[0].c_str()), String(arg.c_str()));
+	msg = "The notification has been added";
+	return true;
 }

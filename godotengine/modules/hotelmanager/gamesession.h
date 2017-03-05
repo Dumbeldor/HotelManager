@@ -23,6 +23,7 @@
 
 class GameMap;
 class Hud;
+class NotificationMgr;
 
 class GameSession: public Node
 {
@@ -53,6 +54,9 @@ public:
 
 	double get_game_time() const { return m_game_time; };
 	void set_game_time(const double &game_time) { m_game_time= game_time; }
+
+	void add_notification(const String &title, const String &text);
+	void remove_notification(const uint16_t id);
 
 protected:
 	static void _bind_methods();
@@ -85,4 +89,5 @@ private:
 	Hud *m_hud = nullptr;
 	AchievementProgressMap m_achievements = {};
 	MissionProgressMap m_mission_progress = {};
+	NotificationMgr *m_notification_mgr = nullptr;
 };

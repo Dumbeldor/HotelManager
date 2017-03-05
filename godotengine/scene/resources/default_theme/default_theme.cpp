@@ -220,6 +220,7 @@ void fill_default_theme(Ref<Theme>& t,const Ref<Font> & default_font,const Ref<F
 
 	t->set_stylebox("panel","Panel", make_stylebox( panel_bg_png,0,0,0,0) );
 	t->set_stylebox("panel","Console", make_stylebox( panel_bg_png,0,0,0,0));
+	t->set_stylebox("panel", "Notification", make_stylebox( panel_bg_png,0,0,0,0));
 
 
 
