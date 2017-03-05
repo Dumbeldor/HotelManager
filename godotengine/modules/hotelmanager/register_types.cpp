@@ -28,6 +28,8 @@
 #include "console.h"
 #include "hud/clock.h"
 #include "gameconfig.h"
+#include "notification.h"
+#include "notificationmgr.h"
 
 void register_hotelmanager_types()
 {
@@ -46,6 +48,8 @@ void register_hotelmanager_types()
 	ObjectTypeDB::register_type<Console>();
 	ObjectTypeDB::register_type<HMButton>();
 	ObjectTypeDB::register_type<GameConfig>();
+	ObjectTypeDB::register_type<Notification>();
+	ObjectTypeDB::register_type<NotificationMgr>();
 }
 
 void unregister_hotelmanager_types()
