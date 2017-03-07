@@ -14,13 +14,13 @@
  */
 
 #include "savegame.h"
+#include "scene/2d/sprite.h"
+#include <core/io/base64.h>
+#include <ctime>
+#include <iostream>
 #include <os/dir_access.h>
 #include <os/file_access.h>
-#include "scene/2d/sprite.h"
-#include <ctime>
 #include <scene/main/node.h>
-#include <core/io/base64.h>
-#include <iostream>
 
 #define SAVE_VERSION 1
 
@@ -42,7 +42,8 @@ void SaveGame::save(const GameSession *game_session, const GameMap *game_map)
 		ERR_FAIL_COND((errDir != OK && errDir != ERR_ALREADY_EXISTS));
 	}
 
-	FileAccess *file = FileAccess::open("user://save/" + m_name + ".save", FileAccess::WRITE, &err);
+	FileAccess *file =
+	    FileAccess::open("user://save/" + m_name + ".save", FileAccess::WRITE, &err);
 	ERR_FAIL_COND(err != OK || file == NULL);
 
 	Dictionary savedict;
@@ -64,7 +65,8 @@ void SaveGame::save(const GameSession *game_session, const GameMap *game_map)
 bool SaveGame::load(GameSession *game_session, GameMap *game_map)
 {
 	Error err;
-	FileAccess *file = FileAccess::open("user://save/" + m_name + ".save", FileAccess::READ, &err);
+	FileAccess *file =
+	    FileAccess::open("user://save/" + m_name + ".save", FileAccess::READ, &err);
 
 	if (err != OK || file == NULL) {
 		return false;
@@ -80,15 +82,14 @@ bool SaveGame::load(GameSession *game_session, GameMap *game_map)
 	if (!(data.has("version") && (int) data["version"] == SAVE_VERSION)) {
 		return false;
 	}
-	if (!(data.has("money") && data.has("map") && data.has("timestamp")
-		&& data.has("game_time") && data.has("game_speed"))) {
+	if (!(data.has("money") && data.has("map") && data.has("timestamp") &&
+	      data.has("game_time") && data.has("game_speed"))) {
 		return false;
 	}
 
 	game_session->set_money((int64_t) data["money"]);
 	game_session->set_game_time((double) data["game_time"]);
 	game_session->set_game_speed((uint8_t) data["game_speed"]);
-
 
 	return game_map->init(game_session, data["map"]);
 }

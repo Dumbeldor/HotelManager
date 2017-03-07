@@ -15,16 +15,16 @@
 
 #pragma once
 
-#define LOG_WARN(fmt, ...) \
-{ \
-    char buf[10240] = {}; \
-    sprintf(buf, fmt, __VA_ARGS__); \
-    WARN_PRINT(buf); \
-}
+#define LOG_WARN(fmt, ...)                                                                         \
+	{                                                                                          \
+		char buf[10240] = {};                                                              \
+		sprintf(buf, fmt, __VA_ARGS__);                                                    \
+		WARN_PRINT(buf);                                                                   \
+	}
 
-#define LOG_CRIT(fmt, ...) \
-{ \
-    char buf[10240] = {}; \
-    sprintf(buf, fmt, __VA_ARGS__); \
-    ERR_PRINT(buf); \
-}
+#define LOG_CRIT(fmt, ...)                                                                         \
+	{                                                                                          \
+		char buf[10240] = {};                                                              \
+		sprintf(buf, fmt, __VA_ARGS__);                                                    \
+		ERR_PRINT(buf);                                                                    \
+	}

@@ -15,4 +15,3 @@
  */
 
 #include "characterceo.h"
-

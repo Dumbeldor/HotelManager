@@ -15,12 +15,13 @@
 
 #pragma once
 
-#include <scene/gui/panel.h>
 #include <ctime>
+#include <scene/gui/panel.h>
 
-class Notification: public Panel
+class Notification : public Panel
 {
 	OBJ_TYPE(Notification, Panel);
+
 public:
 	Notification();
 	~Notification();
@@ -39,7 +40,4 @@ private:
 protected:
 	static void _bind_methods();
 	void _on_animation_finished();
-
 };
-
-

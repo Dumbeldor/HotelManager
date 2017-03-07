@@ -15,27 +15,25 @@
 
 #include "notification.h"
 #include "notificationmgr.h"
-#include <scene/gui/label.h>
 #include <math/math_2d.h>
 #include <modules/hotelmanager/hud/hud.h>
 #include <scene/animation/animation_player.h>
+#include <scene/gui/label.h>
 
-Notification::Notification()
-{
-}
+Notification::Notification() {}
 
-Notification::~Notification()
-{
-}
+Notification::~Notification() {}
 
 void Notification::_bind_methods()
 {
-	ObjectTypeDB::bind_method(_MD("_on_animation_finished"), &Notification::_on_animation_finished);
+	ObjectTypeDB::bind_method(_MD("_on_animation_finished"),
+				  &Notification::_on_animation_finished);
 }
 
 void Notification::_on_animation_finished()
 {
-	if (get_node(String("Animation"))->cast_to<AnimationPlayer>()->get_current_animation() == String("Hide")) {
+	if (get_node(String("Animation"))->cast_to<AnimationPlayer>()->get_current_animation() ==
+	    String("Hide")) {
 		get_parent()->cast_to<NotificationMgr>()->reorganize(m_nb);
 		queue_delete();
 	}
@@ -46,7 +44,7 @@ void Notification::init(const String &title, const String &desc, const uint16_t 
 	set_title(title);
 	set_description(desc);
 	init_pos(nb);
-	m_expired_time  = 20.0f;
+	m_expired_time = 20.0f;
 }
 
 void Notification::init_pos(const uint16_t nb)
@@ -62,10 +60,7 @@ void Notification::set_title(const String &title)
 	label->set_text(title);
 }
 
-void Notification::set_icon(const String &icon)
-{
-
-}
+void Notification::set_icon(const String &icon) {}
 
 void Notification::set_description(const String &desc)
 {

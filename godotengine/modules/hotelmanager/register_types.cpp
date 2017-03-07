@@ -14,22 +14,22 @@
  */
 
 #include "register_types.h"
-#include "object_type_db.h"
-#include "hotelmanagerproject.h"
 #include "base_overrided_components.h"
-#include "gamesession.h"
 #include "character/characterceo.h"
 #include "character/characterroommaid.h"
-#include "gamemap.h"
-#include "modules/hotelmanager/hud/selectormenu.h"
-#include "hud/selectorbutton.h"
-#include "hud/hud.h"
-#include "mapcontrol.h"
 #include "console.h"
-#include "hud/clock.h"
 #include "gameconfig.h"
+#include "gamemap.h"
+#include "gamesession.h"
+#include "hotelmanagerproject.h"
+#include "hud/clock.h"
+#include "hud/hud.h"
+#include "hud/selectorbutton.h"
+#include "mapcontrol.h"
+#include "modules/hotelmanager/hud/selectormenu.h"
 #include "notification.h"
 #include "notificationmgr.h"
+#include "object_type_db.h"
 
 void register_hotelmanager_types()
 {
@@ -52,7 +52,4 @@ void register_hotelmanager_types()
 	ObjectTypeDB::register_type<NotificationMgr>();
 }
 
-void unregister_hotelmanager_types()
-{
-
-}
+void unregister_hotelmanager_types() {}

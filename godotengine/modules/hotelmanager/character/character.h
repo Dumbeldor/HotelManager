@@ -15,19 +15,19 @@
 
 #pragma once
 
+#include "modules/hotelmanager/actorobject.h"
+#include <scene/2d/physics_body_2d.h>
 #include <scene/main/node.h>
 #include <string>
-#include <scene/2d/physics_body_2d.h>
-#include "modules/hotelmanager/actorobject.h"
 
-enum CharacterSex: uint8_t
+enum CharacterSex : uint8_t
 {
 	MALE = 1,
 	FEMALE = 2,
 	SEX_MAX,
 };
 
-enum CharacterRole: uint8_t
+enum CharacterRole : uint8_t
 {
 	CHARACTER_ROLE_NONE = 0,
 	CHARACTER_ROLE_CLIENT = 1,
@@ -60,11 +60,12 @@ struct CharacterDef
 };
 static const uint8_t CHARACTERDEF_CSV_COLS = 8;
 
-class Character: public RigidBody2D, public ActorObject
+class Character : public RigidBody2D, public ActorObject
 {
 	OBJ_TYPE(Character, RigidBody2D);
+
 public:
-	Character(): RigidBody2D(), ActorObject() {}
+	Character() : RigidBody2D(), ActorObject() {}
 	Character(CharacterRole role);
 
 	virtual ~Character();
@@ -77,15 +78,9 @@ public:
 	void set_role(const CharacterRole role) { m_character_role = role; }
 	void set_role__api(const uint8_t role) { m_character_role = (CharacterRole) role; }
 
-	virtual const ActorObject::Type get_ao_type() const
-	{
-		return ActorObject::TYPE_CHARACTER;
-	}
+	virtual const ActorObject::Type get_ao_type() const { return ActorObject::TYPE_CHARACTER; }
 
-	virtual Point2 get_ao_position() const
-	{
-		return get_pos();
-	}
+	virtual Point2 get_ao_position() const { return get_pos(); }
 
 	virtual void step(const double &dtime);
 

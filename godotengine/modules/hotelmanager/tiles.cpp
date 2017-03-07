@@ -13,8 +13,8 @@
  * All rights reserved
  */
 
-#include <algorithm>
 #include "tiles.h"
+#include <algorithm>
 
 bool TileDef::is_in_group(const uint32_t gid) const
 {

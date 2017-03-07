@@ -13,19 +13,19 @@
  * All rights reserved
  */
 
-#include <scene/gui/tab_container.h>
 #include "gamesession.h"
-#include "gamemap.h"
-#include "objectdefmgr.h"
-#include "modules/hotelmanager/hud/hud.h"
-#include "savegame.h"
-#include "log.h"
-#include "gameconfig.h"
-#include "objectmgr.h"
-#include "notificationmgr.h"
-#include <algorithm>
-#include <scene/resources/packed_scene.h>
 #include "character/characterceo.h"
+#include "gameconfig.h"
+#include "gamemap.h"
+#include "log.h"
+#include "modules/hotelmanager/hud/hud.h"
+#include "notificationmgr.h"
+#include "objectdefmgr.h"
+#include "objectmgr.h"
+#include "savegame.h"
+#include <algorithm>
+#include <scene/gui/tab_container.h>
+#include <scene/resources/packed_scene.h>
 
 #define MONEY_LIMIT 1000000000000
 
@@ -46,24 +46,24 @@ void GameSession::_bind_methods()
 {
 	ObjectTypeDB::bind_method("init", &GameSession::init);
 	ObjectTypeDB::bind_method("save", &GameSession::save);
-	ObjectTypeDB::bind_method(_MD("_process"),&GameSession::_process);
+	ObjectTypeDB::bind_method(_MD("_process"), &GameSession::_process);
 
 	// m_money
-	ObjectTypeDB::bind_method("get_money",&GameSession::get_money);
-	ObjectTypeDB::bind_method("set_money",&GameSession::set_money);
-	ObjectTypeDB::bind_method("add_money",&GameSession::add_money);
-	ObjectTypeDB::bind_method("remove_money",&GameSession::remove_money);
+	ObjectTypeDB::bind_method("get_money", &GameSession::get_money);
+	ObjectTypeDB::bind_method("set_money", &GameSession::set_money);
+	ObjectTypeDB::bind_method("add_money", &GameSession::add_money);
+	ObjectTypeDB::bind_method("remove_money", &GameSession::remove_money);
 
 	// m_game_speed
-	ObjectTypeDB::bind_method("get_game_speed",&GameSession::get_game_speed);
-	ObjectTypeDB::bind_method("set_game_speed",&GameSession::set_game_speed__api);
+	ObjectTypeDB::bind_method("get_game_speed", &GameSession::get_game_speed);
+	ObjectTypeDB::bind_method("set_game_speed", &GameSession::set_game_speed__api);
 
 	// m_current_day
-	ObjectTypeDB::bind_method("get_current_day",&GameSession::get_current_day);
+	ObjectTypeDB::bind_method("get_current_day", &GameSession::get_current_day);
 
-	//Notification
-	ObjectTypeDB::bind_method("add_notification",&GameSession::add_notification);
-	ObjectTypeDB::bind_method("remove_notification",&GameSession::remove_notification);
+	// Notification
+	ObjectTypeDB::bind_method("add_notification", &GameSession::add_notification);
+	ObjectTypeDB::bind_method("remove_notification", &GameSession::remove_notification);
 }
 
 /**
@@ -94,8 +94,7 @@ void GameSession::init(const String &savename)
 	if (!savename.empty()) {
 		save.load(this, m_map);
 		// TODO: deserialize other args for this session
-	}
-	else {
+	} else {
 		Dictionary fake_map;
 		m_map->init(this, fake_map);
 	}
@@ -105,11 +104,12 @@ void GameSession::init(const String &savename)
 		start_mission(1);
 	}
 
-	//Auto save
+	// Auto save
 	m_autosave_timer = GameConfig::get_singleton()->get_interval_save();
 
 	// Notification
-	m_notification_mgr = get_node(String("GameMap/Hud/NotificationMgr"))->cast_to<NotificationMgr>();
+	m_notification_mgr =
+	    get_node(String("GameMap/Hud/NotificationMgr"))->cast_to<NotificationMgr>();
 }
 
 /**
@@ -178,10 +178,7 @@ void GameSession::set_money(int64_t money)
  * Save the game
  * @param name of file save
  */
-void GameSession::save(const String &name)
-{
-	SaveGame(name).save(this, m_map);
-}
+void GameSession::save(const String &name) { SaveGame(name).save(this, m_map); }
 
 /**
  * Load the game
@@ -226,8 +223,7 @@ void GameSession::remove_money(int64_t money)
 	// Limit money to add to limit
 	if (money > MONEY_LIMIT) {
 		money = MONEY_LIMIT;
-	}
-	else if (money > m_money) {
+	} else if (money > m_money) {
 		money = m_money;
 	}
 
@@ -254,37 +250,40 @@ void GameSession::start_mission(const uint32_t mission_id)
 	if (mission_progress == m_mission_progress.end()) {
 		m_mission_progress[mission_id] = MissionProgressPtr(new MissionProgress());
 		current_progress = m_mission_progress[mission_id];
-	}
-	else {
+	} else {
 		current_progress = mission_progress->second;
 	}
 
 	if (current_progress->state != MISSION_STATE_NOT_STARTED) {
 		LOG_WARN("start_mission: trying to start already started or finished mission %d, "
-			"not starting.",
-			mission_id);
+			 "not starting.",
+			 mission_id);
 		return;
 	}
 
 	// Verify if parent missions are finished
-	for (const auto &parent: mission.parents) {
+	for (const auto &parent : mission.parents) {
 		const auto &parent_progress = m_mission_progress.find(parent);
 		if (parent_progress == m_mission_progress.end()) {
-			LOG_CRIT("start_mission: unable to start mission %d, mission %d requirement "
-				"not accomplished", mission.id, parent);
+			LOG_CRIT(
+			    "start_mission: unable to start mission %d, mission %d requirement "
+			    "not accomplished",
+			    mission.id, parent);
 			return;
 		}
 
 		if (parent_progress->second->state != MISSION_STATE_DONE) {
-			LOG_CRIT("start_mission: unable to start mission %d, mission %d requirement "
-				"not finished", mission.id, parent);
+			LOG_CRIT(
+			    "start_mission: unable to start mission %d, mission %d requirement "
+			    "not finished",
+			    mission.id, parent);
 			return;
 		}
 	}
 
 	// Mark mission as in progress & populate objectives
 	current_progress->state = MISSION_STATE_IN_PROGRESS;
-	for (const auto &mo: mission.objectives) {
+	for (const auto &mo : mission.objectives) {
 		current_progress->objectives_progress[mo->id] = MissionObjectiveProgress();
 		current_progress->objectives_progress[mo->id].id = mo->id;
 	}
@@ -297,7 +296,7 @@ void GameSession::start_mission(const uint32_t mission_id)
  *
  * @param Title, Text
  */
- void GameSession::add_notification(const String &title, const String &text)
+void GameSession::add_notification(const String &title, const String &text)
 {
 	m_notification_mgr->add_notification(title, text);
 }
@@ -313,7 +312,7 @@ void GameSession::remove_notification(const uint16_t id)
  * @param role
  * @return character object pointer
  */
-Character* GameSession::hire_character(CharacterRole role)
+Character *GameSession::hire_character(CharacterRole role)
 {
 	const CharacterDef &cdef = ObjectDefMgr::get_singleton()->get_characterdef_by_role(role);
 	if (cdef.id == 0) {

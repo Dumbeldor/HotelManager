@@ -17,15 +17,17 @@
 
 #include <scene/2d/sprite.h>
 
-class Clock: public Sprite
+class Clock : public Sprite
 {
 	OBJ_TYPE(Clock, Sprite);
+
 public:
-	Clock(): Sprite() {}
+	Clock() : Sprite() {}
 	~Clock() {}
 
 	void set(const double &time);
 	String to_string() const;
+
 private:
 	double m_time = 0.0f;
 };

@@ -13,9 +13,9 @@
  * All rights reserved
  */
 
+#include "objectmgr.h"
 #include <cassert>
 #include <iostream>
-#include "objectmgr.h"
 
 ObjectMgr *ObjectMgr::s_singleton = nullptr;
 
@@ -25,12 +25,9 @@ ObjectMgr::ObjectMgr()
 	ObjectMgr::s_singleton = this;
 }
 
-ObjectMgr::~ObjectMgr()
-{
-	ObjectMgr::s_singleton = nullptr;
-}
+ObjectMgr::~ObjectMgr() { ObjectMgr::s_singleton = nullptr; }
 
-const uint32_t& ObjectMgr::next_id()
+const uint32_t &ObjectMgr::next_id()
 {
 	// Search next available ID
 	m_next_id++;
@@ -59,7 +56,7 @@ void ObjectMgr::unregister_ao(const uint32_t id)
 
 void ObjectMgr::step(const double &dtime)
 {
-	for (auto &obj: m_actor_objects) {
+	for (auto &obj : m_actor_objects) {
 		obj.second->step(dtime);
 	}
 }

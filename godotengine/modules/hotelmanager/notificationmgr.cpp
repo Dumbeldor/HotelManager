@@ -13,19 +13,15 @@
  * All rights reserved
  */
 
+#include "notificationmgr.h"
+#include "notification.h"
 #include <io/resource_loader.h>
 #include <modules/hotelmanager/hud/hud.h>
 #include <scene/animation/animation_player.h>
-#include "notificationmgr.h"
-#include "notification.h"
 
-NotificationMgr::NotificationMgr()
-{
-}
+NotificationMgr::NotificationMgr() {}
 
-NotificationMgr::~NotificationMgr()
-{
-}
+NotificationMgr::~NotificationMgr() {}
 
 void NotificationMgr::add_notification(const String &title, const String &text)
 {
@@ -51,7 +47,10 @@ void NotificationMgr::_process(const float &delta)
 		Notification *notif = get_child(i)->cast_to<Notification>();
 		assert(notif);
 		notif->_process(delta);
-		if (notif->is_expired() && !notif->get_node(String("Animation"))->cast_to<AnimationPlayer>()->is_playing()) {
+		if (notif->is_expired() &&
+		    !notif->get_node(String("Animation"))
+			 ->cast_to<AnimationPlayer>()
+			 ->is_playing()) {
 			remove_notification(i);
 		}
 	}

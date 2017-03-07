@@ -13,14 +13,14 @@
  * All rights reserved
  */
 
+#include "selectormenu.h"
+#include "modules/hotelmanager/log.h"
+#include "modules/hotelmanager/objectdefmgr.h"
 #include "modules/hotelmanager/tiles.h"
+#include "selectorbutton.h"
+#include <iostream>
 #include <math/math_2d.h>
 #include <scene/gui/panel.h>
-#include <iostream>
-#include "selectormenu.h"
-#include "selectorbutton.h"
-#include "modules/hotelmanager/objectdefmgr.h"
-#include "modules/hotelmanager/log.h"
 
 #define LAYER_TILE_MARGIN 20
 void SelectorMenu::update_child_pos()
@@ -60,8 +60,7 @@ void SelectorMenu::update_child_pos()
  * @param tile_group
  * @param menu
  */
-TileSelectorMenu::TileSelectorMenu(const String &tile_group, Panel *menu):
-	SelectorMenu()
+TileSelectorMenu::TileSelectorMenu(const String &tile_group, Panel *menu) : SelectorMenu()
 {
 	TileSelectorButton::init_selector();
 
@@ -69,18 +68,18 @@ TileSelectorMenu::TileSelectorMenu(const String &tile_group, Panel *menu):
 
 	set_name("SelectorMenu_Tile_" + tile_group);
 
-	const TileGroup &tg_def = ObjectDefMgr::get_singleton()->
-		get_tilegroup(std::string(tile_group.utf8()));
+	const TileGroup &tg_def =
+	    ObjectDefMgr::get_singleton()->get_tilegroup(std::string(tile_group.utf8()));
 
 	if (tg_def.id == 0) {
 		LOG_CRIT("Invalid tile_group name provided (%s), ignoring all comportment.",
-			tile_group.ascii().get_data());
+			 tile_group.ascii().get_data());
 		return;
 	}
 
-	for (const auto &tile_def: ObjectDefMgr::get_singleton()->get_tiledefs()) {
-		if (!tile_def.second->is_in_group(tg_def.id)
-			|| tile_def.second->flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
+	for (const auto &tile_def : ObjectDefMgr::get_singleton()->get_tiledefs()) {
+		if (!tile_def.second->is_in_group(tg_def.id) ||
+		    tile_def.second->flags & TILE_FLAG_UNAVAILABLE_FOR_PLAYERS) {
 			continue;
 		}
 
@@ -94,13 +93,12 @@ TileSelectorMenu::TileSelectorMenu(const String &tile_group, Panel *menu):
  * NPC Selector Menu
  */
 
-NPCSelectorMenu::NPCSelectorMenu(Panel *menu):
-	SelectorMenu()
+NPCSelectorMenu::NPCSelectorMenu(Panel *menu) : SelectorMenu()
 {
 	menu->add_child(this);
 	set_name("SelectorMenu_NPC");
 
-	for (const auto &cdef: ObjectDefMgr::get_singleton()->get_characterdefs()) {
+	for (const auto &cdef : ObjectDefMgr::get_singleton()->get_characterdefs()) {
 		add_child(memnew(NPCSelectorButton(*cdef.second)));
 	}
 

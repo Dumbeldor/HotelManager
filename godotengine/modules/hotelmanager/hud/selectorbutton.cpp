@@ -13,9 +13,9 @@
  * All rights reserved
  */
 
-#include <math/math_2d.h>
-#include "../objectdefmgr.h"
 #include "selectorbutton.h"
+#include "../objectdefmgr.h"
+#include <math/math_2d.h>
 
 SelectorButton *SelectorButton::s_selected = nullptr;
 
@@ -29,17 +29,13 @@ SelectorButton::SelectorButton()
 	connect("draw", this, "_on_draw");
 }
 
-void SelectorButton::init_selector()
-{
-	s_selected = nullptr;
-}
+void SelectorButton::init_selector() { s_selected = nullptr; }
 
 void SelectorButton::_bind_methods()
 {
 	ObjectTypeDB::bind_method(_MD("_change_selected_object"),
-		&SelectorButton::_change_selected_object);
-	ObjectTypeDB::bind_method(_MD("_on_draw"),
-		&SelectorButton::_on_draw);
+				  &SelectorButton::_change_selected_object);
+	ObjectTypeDB::bind_method(_MD("_on_draw"), &SelectorButton::_on_draw);
 }
 
 /**
@@ -62,11 +58,13 @@ void SelectorButton::_on_draw()
 		static const Color col(0.2, 1.0, 0.8, 0.4);
 		const Size2 size = get_size();
 		const Vector2 endpoints[4] = {
-			get_pos() + Vector2(-2 - get_margin(MARGIN_LEFT), -2 - get_margin(MARGIN_TOP)),
-			get_pos() + Vector2(size.x + 2 - get_margin(MARGIN_LEFT), -2 -get_margin(MARGIN_TOP)),
-			get_pos() + Vector2(size.x + 2 - get_margin(MARGIN_LEFT), size.y + 2 - get_margin(MARGIN_TOP)),
-			get_pos() + Vector2(-2 - get_margin(MARGIN_LEFT), size.y + 2 - get_margin(MARGIN_TOP))
-		};
+		    get_pos() + Vector2(-2 - get_margin(MARGIN_LEFT), -2 - get_margin(MARGIN_TOP)),
+		    get_pos() +
+			Vector2(size.x + 2 - get_margin(MARGIN_LEFT), -2 - get_margin(MARGIN_TOP)),
+		    get_pos() + Vector2(size.x + 2 - get_margin(MARGIN_LEFT),
+					size.y + 2 - get_margin(MARGIN_TOP)),
+		    get_pos() +
+			Vector2(-2 - get_margin(MARGIN_LEFT), size.y + 2 - get_margin(MARGIN_TOP))};
 
 		Vector<Vector2> points;
 		for (uint8_t i = 0; i < 4; i++) {
@@ -82,9 +80,8 @@ void SelectorButton::_on_draw()
  * Tile Selector
  */
 
-TileSelectorButton::TileSelectorButton(const uint32_t tile_id):
-	SelectorButton(),
-	m_tile_id(tile_id)
+TileSelectorButton::TileSelectorButton(const uint32_t tile_id)
+    : SelectorButton(), m_tile_id(tile_id)
 {
 	const TileDef &tile_def = ObjectDefMgr::get_singleton()->get_tiledef(m_tile_id);
 
@@ -92,8 +89,9 @@ TileSelectorButton::TileSelectorButton(const uint32_t tile_id):
 	texture->load(String("res://tiles/") + tile_def.texture_name);
 
 	// Height is multiplied height/width because some textures don't have x = y
-	texture->set_size_override(Size2(OBJECTSELECTOR_SIZE,
-		OBJECTSELECTOR_SIZE * (texture->get_size().y / texture->get_size().x)));
+	texture->set_size_override(
+	    Size2(OBJECTSELECTOR_SIZE,
+		  OBJECTSELECTOR_SIZE * (texture->get_size().y / texture->get_size().x)));
 	set_normal_texture(texture);
 	set_tooltip(tile_def.label);
 }
@@ -101,17 +99,17 @@ TileSelectorButton::TileSelectorButton(const uint32_t tile_id):
 /*
  * NPC Selector
  */
-NPCSelectorButton::NPCSelectorButton(const CharacterDef &cdef):
-	SelectorButton(),
-	m_npc_role(cdef.role)
+NPCSelectorButton::NPCSelectorButton(const CharacterDef &cdef)
+    : SelectorButton(), m_npc_role(cdef.role)
 {
 	// @TODO set texture from definition
 	ImageTexture *texture = memnew(ImageTexture);
 	texture->load(String("res://icons/") + cdef.icon);
 
 	// Height is multiplied height/width because some textures don't have x = y
-	texture->set_size_override(Size2(OBJECTSELECTOR_SIZE,
-		OBJECTSELECTOR_SIZE * (texture->get_size().y / texture->get_size().x)));
+	texture->set_size_override(
+	    Size2(OBJECTSELECTOR_SIZE,
+		  OBJECTSELECTOR_SIZE * (texture->get_size().y / texture->get_size().x)));
 
 	set_normal_texture(texture);
 	set_tooltip(cdef.tooltip);

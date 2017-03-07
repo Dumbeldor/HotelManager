@@ -18,11 +18,12 @@
 
 #include "character.h"
 
-class CharacterCEO: public Character
+class CharacterCEO : public Character
 {
 	OBJ_TYPE(CharacterCEO, Character);
+
 public:
-	CharacterCEO(): Character(CHARACTER_ROLE_CEO) {}
+	CharacterCEO() : Character(CHARACTER_ROLE_CEO) {}
 protected:
 	static void _bind_methods() {}
 };

@@ -15,15 +15,16 @@
 
 #pragma once
 
-#include <scene/gui/panel.h>
 #include <iostream>
+#include <scene/gui/panel.h>
 
 class RichTextLabel;
 class ChatHandler;
 
-class Console: public Panel
+class Console : public Panel
 {
 	OBJ_TYPE(Console, Panel);
+
 public:
 	Console();
 	~Console();

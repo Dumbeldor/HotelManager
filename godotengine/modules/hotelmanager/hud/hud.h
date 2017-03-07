@@ -15,17 +15,18 @@
 
 #pragma once
 
-#include <scene/main/canvas_layer.h>
 #include <modules/hotelmanager/missions.h>
+#include <scene/main/canvas_layer.h>
 
 class SelectorMenu;
 class Clock;
 class VBoxContainer;
 class TileMenu;
 
-class Hud: public CanvasLayer
+class Hud : public CanvasLayer
 {
 	OBJ_TYPE(Hud, CanvasLayer);
+
 public:
 	Hud();
 	~Hud() {}
@@ -37,9 +38,11 @@ public:
 	void modify_clock(const double &time);
 
 	void add_mission(const Mission &mission);
+
 protected:
 	static void _bind_methods();
 	void _on_draw();
+
 private:
 	void create_tilemenu(const std::string &name);
 	void create_npcmenu();

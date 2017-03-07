@@ -15,26 +15,17 @@
 
 #include "console.h"
 #include "chathandler.h"
-#include <scene/gui/rich_text_label.h>
-#include "scene/main/viewport.h"
 #include "gamesession.h"
+#include "scene/main/viewport.h"
+#include <scene/gui/rich_text_label.h>
 
 static constexpr uint16_t MAX_HISTORY = 100;
 
-Console::Console() : Panel()
-{
-	m_chat_handler = new ChatHandler(this);
-}
+Console::Console() : Panel() { m_chat_handler = new ChatHandler(this); }
 
-Console::~Console()
-{
-	delete m_chat_handler;
-}
+Console::~Console() { delete m_chat_handler; }
 
-void Console::_bind_methods()
-{
-	ObjectTypeDB::bind_method("send_command", &Console::send_command);
-}
+void Console::_bind_methods() { ObjectTypeDB::bind_method("send_command", &Console::send_command); }
 
 /**
  * Add text at the end
@@ -42,11 +33,12 @@ void Console::_bind_methods()
  */
 void Console::add_text(const std::string &text)
 {
-	RichTextLabel *rich_text_label = get_node(String("RichTextLabel"))->cast_to<RichTextLabel>();
+	RichTextLabel *rich_text_label =
+	    get_node(String("RichTextLabel"))->cast_to<RichTextLabel>();
 	rich_text_label->add_text(String(text.c_str()) + "\n");
 	if (rich_text_label->get_line_count() > MAX_HISTORY) {
 		uint16_t nb = rich_text_label->get_line_count() - MAX_HISTORY;
-		for (uint16_t i = 0; i  < nb ; i++) {
+		for (uint16_t i = 0; i < nb; i++) {
 			rich_text_label->remove_line(0);
 		}
 	}
@@ -59,7 +51,8 @@ void Console::tag_sucess(const std::string &text)
 {
 	if (text == "")
 		return;
-	RichTextLabel *rich_text_label = get_node(String("RichTextLabel"))->cast_to<RichTextLabel>();
+	RichTextLabel *rich_text_label =
+	    get_node(String("RichTextLabel"))->cast_to<RichTextLabel>();
 	rich_text_label->append_bbcode("[color=#33C73A]" + String(text.c_str()) + "[/color]\n");
 }
 
@@ -71,7 +64,8 @@ void Console::add_error(const std::string &text)
 {
 	if (text == "")
 		return;
-	RichTextLabel *rich_text_label = get_node(String("RichTextLabel"))->cast_to<RichTextLabel>();
+	RichTextLabel *rich_text_label =
+	    get_node(String("RichTextLabel"))->cast_to<RichTextLabel>();
 	rich_text_label->append_bbcode("[color=red]Error : " + String(text.c_str()) + "[/color]\n");
 }
 
@@ -83,6 +77,9 @@ void Console::send_command(const String &command)
 {
 	add_text(std::string(command.ascii().get_data()));
 	std::string msg = "";
-	bool res = m_chat_handler->handle_command(std::string(command.ascii().get_data()), get_tree()->get_root()->get_node(String("Root/GameSession"))->cast_to<GameSession>(), msg);
+	bool res = m_chat_handler->handle_command(
+	    std::string(command.ascii().get_data()),
+	    get_tree()->get_root()->get_node(String("Root/GameSession"))->cast_to<GameSession>(),
+	    msg);
 	(res) ? tag_sucess(msg) : add_error(msg);
 }

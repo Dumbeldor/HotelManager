@@ -13,8 +13,8 @@
  * All rights reserved
  */
 
-#include <cassert>
 #include "gameconfig.h"
+#include <cassert>
 
 GameConfig *GameConfig::singleton = nullptr;
 
@@ -25,15 +25,9 @@ GameConfig::GameConfig()
 	singleton = this;
 }
 
-GameConfig::~GameConfig()
-{
-	singleton = nullptr;
-}
+GameConfig::~GameConfig() { singleton = nullptr; }
 
-GameConfig* GameConfig::get_singleton()
-{
-	return singleton;
-}
+GameConfig *GameConfig::get_singleton() { return singleton; }
 
 void GameConfig::_bind_methods()
 {

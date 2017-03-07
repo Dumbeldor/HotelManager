@@ -15,14 +15,14 @@
 
 #pragma once
 
-#include <cstdint>
 #include "tiles.h"
+#include <cstdint>
 
 class PerlinNoise
 {
 public:
-	PerlinNoise(const double &persistence, const double &frequency,
-		const double &amplitude, int32_t _octaves, int32_t seed);
+	PerlinNoise(const double &persistence, const double &frequency, const double &amplitude,
+		    int32_t _octaves, int32_t seed);
 
 	double get_height(const double &x, const double &y) const
 	{
@@ -49,6 +49,7 @@ public:
 	~MapGen();
 
 	uint32_t get_tile_for_pos(int32_t x, int32_t y);
+
 private:
 	PerlinNoise *m_perlin_noise;
 };

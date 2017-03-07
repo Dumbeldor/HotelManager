@@ -15,18 +15,17 @@
 
 #include "hotelmanagerproject.h"
 
-HotelManagerProject::HotelManagerProject():
-	m_version("0.0.5"), m_release("alpha"), m_project_name("HotelManager")
+HotelManagerProject::HotelManagerProject()
+    : m_version("0.0.5"), m_release("alpha"), m_project_name("HotelManager")
 {
-
 }
 
 void HotelManagerProject::_bind_methods()
 {
-	ObjectTypeDB::bind_method("get_full_version",&HotelManagerProject::get_full_version);
-	ObjectTypeDB::bind_method("get_version",&HotelManagerProject::get_version);
-	ObjectTypeDB::bind_method("get_release",&HotelManagerProject::get_release);
-	ObjectTypeDB::bind_method("get_project_name",&HotelManagerProject::get_project_name);
+	ObjectTypeDB::bind_method("get_full_version", &HotelManagerProject::get_full_version);
+	ObjectTypeDB::bind_method("get_version", &HotelManagerProject::get_version);
+	ObjectTypeDB::bind_method("get_release", &HotelManagerProject::get_release);
+	ObjectTypeDB::bind_method("get_project_name", &HotelManagerProject::get_project_name);
 }
 
 /**
@@ -34,7 +33,4 @@ void HotelManagerProject::_bind_methods()
  *
  * @return m_version + " " + m_release
  */
-String HotelManagerProject::get_full_version() const
-{
-	return m_version + " " + m_release;
-}
+String HotelManagerProject::get_full_version() const { return m_version + " " + m_release; }

@@ -16,8 +16,8 @@
 #include "gamedatareader.h"
 #include "log.h"
 #include <core/os/file_access.h>
-#include <string>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #define GAMEDATA_PATH String("res://gamedata/")
@@ -26,8 +26,8 @@ GameDataReader::GameDataReader(const String &resourcename, const uint16_t col_nu
 {
 	m_col_number = col_number;
 	Error err;
-	m_file = FileAccess::open(GAMEDATA_PATH + resourcename + String(".csv"),
-		FileAccess::READ, &err);
+	m_file =
+	    FileAccess::open(GAMEDATA_PATH + resourcename + String(".csv"), FileAccess::READ, &err);
 	if (err != OK || m_file == NULL) {
 		LOG_CRIT("No %s game data, ignoring.", resourcename.ascii().get_data());
 		m_is_good = false;
@@ -53,10 +53,9 @@ void GameDataReader::nextr()
 	m_csv_line = m_file->get_csv_line();
 	if (m_csv_line.size() < 2) {
 		m_is_good = false;
-	}
-	else if (m_csv_line.size() != m_col_number) {
+	} else if (m_csv_line.size() != m_col_number) {
 		LOG_CRIT("invalid CSV line (found %d cols, expected %d), ignoring.",
-			m_csv_line.size(), m_col_number);
+			 m_csv_line.size(), m_col_number);
 		nextr();
 	}
 }
@@ -70,8 +69,7 @@ void GameDataReader::next()
 	}
 }
 
-template<>
-GameDataReader &GameDataReader::operator>>(uint8_t &out)
+template <> GameDataReader &GameDataReader::operator>>(uint8_t &out)
 {
 	if (!m_is_good) {
 		return *this;
@@ -81,8 +79,7 @@ GameDataReader &GameDataReader::operator>>(uint8_t &out)
 	return *this;
 }
 
-template<>
-GameDataReader &GameDataReader::operator>>(uint16_t &out)
+template <> GameDataReader &GameDataReader::operator>>(uint16_t &out)
 {
 	if (!m_is_good) {
 		return *this;
@@ -92,8 +89,7 @@ GameDataReader &GameDataReader::operator>>(uint16_t &out)
 	return *this;
 }
 
-template<>
-GameDataReader &GameDataReader::operator>>(uint32_t &out)
+template <> GameDataReader &GameDataReader::operator>>(uint32_t &out)
 {
 	if (!m_is_good) {
 		return *this;
@@ -103,8 +99,7 @@ GameDataReader &GameDataReader::operator>>(uint32_t &out)
 	return *this;
 }
 
-template<>
-GameDataReader &GameDataReader::operator>>(float &out)
+template <> GameDataReader &GameDataReader::operator>>(float &out)
 {
 	if (!m_is_good) {
 		return *this;
@@ -114,8 +109,7 @@ GameDataReader &GameDataReader::operator>>(float &out)
 	return *this;
 }
 
-template<>
-GameDataReader &GameDataReader::operator>>(std::vector<uint32_t> &out)
+template <> GameDataReader &GameDataReader::operator>>(std::vector<uint32_t> &out)
 {
 	if (!m_is_good) {
 		return *this;
@@ -132,8 +126,7 @@ GameDataReader &GameDataReader::operator>>(std::vector<uint32_t> &out)
 	return *this;
 }
 
-template<>
-GameDataReader &GameDataReader::operator>>(Vector<uint32_t> &out)
+template <> GameDataReader &GameDataReader::operator>>(Vector<uint32_t> &out)
 {
 	if (!m_is_good) {
 		return *this;
@@ -150,8 +143,7 @@ GameDataReader &GameDataReader::operator>>(Vector<uint32_t> &out)
 	return *this;
 }
 
-template<>
-GameDataReader &GameDataReader::operator>>(int32_t &out)
+template <> GameDataReader &GameDataReader::operator>>(int32_t &out)
 {
 	if (!m_is_good) {
 		return *this;
@@ -161,8 +153,7 @@ GameDataReader &GameDataReader::operator>>(int32_t &out)
 	return *this;
 }
 
-template<>
-GameDataReader &GameDataReader::operator>>(std::string &out)
+template <> GameDataReader &GameDataReader::operator>>(std::string &out)
 {
 	if (!m_is_good) {
 		return *this;
@@ -172,8 +163,7 @@ GameDataReader &GameDataReader::operator>>(std::string &out)
 	return *this;
 }
 
-template<>
-GameDataReader &GameDataReader::operator>>(String &out)
+template <> GameDataReader &GameDataReader::operator>>(String &out)
 {
 	if (!m_is_good) {
 		return *this;
@@ -183,8 +173,7 @@ GameDataReader &GameDataReader::operator>>(String &out)
 	return *this;
 }
 
-template<>
-GameDataReader &GameDataReader::operator>>(Vector<String> &out)
+template <> GameDataReader &GameDataReader::operator>>(Vector<String> &out)
 {
 	if (!m_is_good) {
 		return *this;

@@ -29,7 +29,7 @@ typedef std::unordered_map<uint32_t, AchievementGroup *> AchievementGroupList;
 
 struct Achievement
 {
-	enum Type: uint8_t
+	enum Type : uint8_t
 	{
 		NONE = 0,
 		MONEY_NUMBER,

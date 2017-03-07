@@ -15,8 +15,8 @@
  */
 
 #include "objectdefmgr.h"
-#include "log.h"
 #include "gamedatareader.h"
+#include "log.h"
 #include <sstream>
 
 ObjectDefMgr *ObjectDefMgr::s_singleton = nullptr;
@@ -42,35 +42,35 @@ ObjectDefMgr::ObjectDefMgr()
 ObjectDefMgr::~ObjectDefMgr()
 {
 	ObjectDefMgr::s_singleton = nullptr;
-	for (auto &achievement: m_achievements) {
+	for (auto &achievement : m_achievements) {
 		delete achievement.second;
 	}
 
-	for (auto &ag: m_achievement_groups) {
+	for (auto &ag : m_achievement_groups) {
 		delete ag.second;
 	}
 
-	for (auto &room: m_roomdefs) {
+	for (auto &room : m_roomdefs) {
 		delete room.second;
 	}
 
-	for (auto &cdef: m_characterdefs) {
+	for (auto &cdef : m_characterdefs) {
 		delete cdef.second;
 	}
 
-	for (auto &tdef: m_game_tiledefs) {
+	for (auto &tdef : m_game_tiledefs) {
 		delete tdef.second;
 	}
 
-	for (auto &tg: m_tilegroups) {
+	for (auto &tg : m_tilegroups) {
 		delete tg.second;
 	}
 
-	for (auto &m: m_missions) {
+	for (auto &m : m_missions) {
 		delete m.second;
 	}
 
-	for (auto &mo: m_mission_objectives) {
+	for (auto &mo : m_mission_objectives) {
 		delete mo.second;
 	}
 }
@@ -105,12 +105,12 @@ void ObjectDefMgr::load_characterdefs()
 	while (reader.is_good()) {
 		CharacterDef *character = new CharacterDef();
 		uint16_t role;
-		reader >> character->id >> character->name >> character->sex_chance >> role
-			>> character->cost >> character->tooltip >> character->icon >> character->scene;
+		reader >> character->id >> character->name >> character->sex_chance >> role >>
+		    character->cost >> character->tooltip >> character->icon >> character->scene;
 
 		if (character->sex_chance >= 100.0f || character->sex_chance < 0.0f) {
 			LOG_CRIT("Invalid sex_chance %f for ID %d, setting to 50%%.",
-				character->sex_chance, character->id);
+				 character->sex_chance, character->id);
 			character->sex_chance = 50.0f;
 		}
 
@@ -178,15 +178,16 @@ void ObjectDefMgr::load_tiledefs()
 		for (uint32_t i = 0; i < groups.size(); i++) {
 			uint32_t group_id = groups[i];
 			if (m_tilegroups.find(group_id) == m_tilegroups.end()) {
-				LOG_WARN("Invalid group id %d for tile %d, ignoring.", group_id, tiledef->id);
+				LOG_WARN("Invalid group id %d for tile %d, ignoring.", group_id,
+					 tiledef->id);
 				continue;
 			}
 			tiledef->groups.push_back(group_id);
 		}
 
 		int32_t tile_flags;
-		reader >> tiledef->name >> tiledef->texture_name >> tiledef->label >> tile_flags
-			>> tiledef->cost;
+		reader >> tiledef->name >> tiledef->texture_name >> tiledef->label >> tile_flags >>
+		    tiledef->cost;
 
 		if (tile_flags >= TILE_FLAG_MAX) {
 			LOG_CRIT("ID %d invalid tile flags (%d), ignoring", tile_id, tile_flags);
@@ -216,7 +217,8 @@ void ObjectDefMgr::load_achievement_groups()
 		AchievementGroup *ag = new AchievementGroup();
 		reader >> ag->id >> ag->title;
 		if (m_achievement_groups.find(ag->id) != m_achievement_groups.end()) {
-			LOG_WARN("AchievementGroup %d was already registered, overriding it", ag->id);
+			LOG_WARN("AchievementGroup %d was already registered, overriding it",
+				 ag->id);
 			delete m_achievement_groups[ag->id];
 		}
 		m_achievement_groups[ag->id] = ag;
@@ -236,25 +238,26 @@ void ObjectDefMgr::load_achievements()
 		uint32_t achievement_type;
 		reader >> achievement->unique_id >> achievement_type;
 
-		if (achievement_type == Achievement::Type::NONE
-			|| achievement_type >= Achievement::Type::MAX) {
+		if (achievement_type == Achievement::Type::NONE ||
+		    achievement_type >= Achievement::Type::MAX) {
 			LOG_WARN("Invalid achievement type %d, ignoring.", achievement_type);
 			delete achievement;
 			continue;
 		}
 		achievement->type = (Achievement::Type) achievement_type;
 
-		reader >> achievement->title >> achievement->objective >> achievement->description >>
-			achievement->icon >> achievement->group_id;
+		reader >> achievement->title >> achievement->objective >>
+		    achievement->description >> achievement->icon >> achievement->group_id;
 
-		if (m_achievement_groups.find(achievement->group_id) == m_achievement_groups.end()) {
+		if (m_achievement_groups.find(achievement->group_id) ==
+		    m_achievement_groups.end()) {
 			LOG_WARN("Achievement %s has invalid group id %d, resetting to 0",
-				achievement->title.c_str(), achievement->group_id);
+				 achievement->title.c_str(), achievement->group_id);
 			achievement->group_id = 0;
 		}
 
 		m_achievements.insert(
-			std::pair<Achievement::Type, Achievement *>(achievement->type, achievement));
+		    std::pair<Achievement::Type, Achievement *>(achievement->type, achievement));
 	}
 }
 
@@ -266,7 +269,7 @@ void ObjectDefMgr::load_mission_objectives()
 		MissionObjective *mission_objective = new MissionObjective();
 		uint16_t type;
 		reader >> mission_objective->id >> mission_objective->title >> type >>
-			mission_objective->count;
+		    mission_objective->count;
 
 		if (type >= MissionObjective::Type::MAX) {
 			LOG_WARN("Invalid missionobjective type %d, ignoring.", type);
@@ -276,9 +279,10 @@ void ObjectDefMgr::load_mission_objectives()
 
 		mission_objective->type = (MissionObjective::Type) type;
 
-		if (m_mission_objectives.find(mission_objective->id) != m_mission_objectives.end()) {
+		if (m_mission_objectives.find(mission_objective->id) !=
+		    m_mission_objectives.end()) {
 			LOG_WARN("MissionObjective %d was already registered, overriding it",
-				mission_objective->id);
+				 mission_objective->id);
 			delete m_achievement_groups[mission_objective->id];
 		}
 
@@ -294,14 +298,15 @@ void ObjectDefMgr::load_missions()
 		Mission *mission = new Mission();
 
 		std::vector<uint32_t> objectives = {};
-		reader >> mission->id >> mission->title >> mission->description >> mission->parents >>
-			objectives;
+		reader >> mission->id >> mission->title >> mission->description >>
+		    mission->parents >> objectives;
 
-		for (const auto &o: objectives) {
+		for (const auto &o : objectives) {
 			const auto &mo = m_mission_objectives.find(o);
 			if (mo == m_mission_objectives.end()) {
-				LOG_WARN("MissionObjective %d doesn't exists. It will not be added to mission %d",
-					o, mission->id);
+				LOG_WARN("MissionObjective %d doesn't exists. It will not be added "
+					 "to mission %d",
+					 o, mission->id);
 				continue;
 			}
 
@@ -345,7 +350,7 @@ const TileDef &ObjectDefMgr::get_tiledef(uint32_t t) const
 }
 
 static const TileGroup null_tilegroup = {};
-const TileGroup& ObjectDefMgr::get_tilegroup(const uint32_t gid) const
+const TileGroup &ObjectDefMgr::get_tilegroup(const uint32_t gid) const
 {
 	const auto &tg = m_tilegroups.find(gid);
 	if (tg == m_tilegroups.end()) {
@@ -354,7 +359,7 @@ const TileGroup& ObjectDefMgr::get_tilegroup(const uint32_t gid) const
 	return *tg->second;
 }
 
-const TileGroup& ObjectDefMgr::get_tilegroup(const std::string &g) const
+const TileGroup &ObjectDefMgr::get_tilegroup(const std::string &g) const
 {
 	const auto &tg = m_tilegroups_per_name.find(g);
 	if (tg == m_tilegroups_per_name.end()) {
@@ -363,7 +368,7 @@ const TileGroup& ObjectDefMgr::get_tilegroup(const std::string &g) const
 	return *tg->second;
 }
 
-const Mission& ObjectDefMgr::get_mission(const uint32_t id) const
+const Mission &ObjectDefMgr::get_mission(const uint32_t id) const
 {
 	const auto &m = m_missions.find(id);
 	if (m == m_missions.end()) {
@@ -374,7 +379,7 @@ const Mission& ObjectDefMgr::get_mission(const uint32_t id) const
 }
 
 static const CharacterDef null_def = {};
-const CharacterDef& ObjectDefMgr::get_characterdef(const uint16_t id) const
+const CharacterDef &ObjectDefMgr::get_characterdef(const uint16_t id) const
 {
 	const auto &m = m_characterdefs.find(id);
 	if (m == m_characterdefs.end()) {
@@ -383,7 +388,7 @@ const CharacterDef& ObjectDefMgr::get_characterdef(const uint16_t id) const
 	return *m->second;
 }
 
-const CharacterDef& ObjectDefMgr::get_characterdef_by_role(const CharacterRole id) const
+const CharacterDef &ObjectDefMgr::get_characterdef_by_role(const CharacterRole id) const
 {
 	const auto &m = m_characterdefs_per_role.find(id);
 	if (m == m_characterdefs_per_role.end()) {
@@ -392,7 +397,6 @@ const CharacterDef& ObjectDefMgr::get_characterdef_by_role(const CharacterRole i
 	}
 	return *m->second;
 }
-
 
 String ObjectDefMgr::get_random_female_name()
 {

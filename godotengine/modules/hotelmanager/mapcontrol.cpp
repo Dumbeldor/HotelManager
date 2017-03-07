@@ -15,16 +15,14 @@
 
 #include "mapcontrol.h"
 #include "gamemap.h"
-#include <scene/gui/label.h>
 #include <iostream>
+#include <scene/gui/label.h>
 
 #define LABEL_COST_NODE String("SelectorCost")
 #define LABEL_WIDTH_NODE String("SelectorWidth")
 #define LABEL_HEIGHT_NODE String("SelectorHeight")
 
-MapControl::MapControl()
-{
-}
+MapControl::MapControl() {}
 
 /**
  * Init MapControl UI element
@@ -66,46 +64,43 @@ void MapControl::draw_selection(const MapSelectionInfos &si)
 	// Dimension lines
 	if (si.selection_in_progress) {
 		if (si.area_height > 1) {
-			draw_height_line(si.endpoints[0], si.endpoints[2],
-				si.selection_color);
+			draw_height_line(si.endpoints[0], si.endpoints[2], si.selection_color);
 
 			m_label_height->set_text(String::num(si.area_height) + " m");
 			m_label_height->set_pos(
-				Point2i((int) si.endpoints[1].x + 25,
-					(int) (si.endpoints[1].y + si.endpoints[3].y -
-						m_label_height->get_size().y) / 2));
+			    Point2i((int) si.endpoints[1].x + 25,
+				    (int) (si.endpoints[1].y + si.endpoints[3].y -
+					   m_label_height->get_size().y) /
+					2));
 			m_label_height->add_color_override("font_color", si.selection_color);
 			m_label_height->show();
-		}
-		else {
+		} else {
 			m_label_height->hide();
 		}
 
 		if (si.area_width > 1) {
-			draw_width_line(si.endpoints[0], si.endpoints[2],
-				si.selection_color);
+			draw_width_line(si.endpoints[0], si.endpoints[2], si.selection_color);
 
 			m_label_width->set_text(String::num(si.area_width) + " m");
 			m_label_width->set_pos(
-				Point2i((int) (si.endpoints[0].x + si.endpoints[1].x -
-						m_label_width->get_size().x) / 2,
-					(int) si.endpoints[2].y + 25));
+			    Point2i((int) (si.endpoints[0].x + si.endpoints[1].x -
+					   m_label_width->get_size().x) /
+					2,
+				    (int) si.endpoints[2].y + 25));
 			m_label_width->add_color_override("font_color", si.selection_color);
 			m_label_width->show();
-		}
-		else {
+		} else {
 			m_label_width->hide();
 		}
 
 		if (si.cost) {
 			m_label_cost->set_text(String::num(si.cost) + " $");
-			m_label_cost->set_pos((si.endpoints[0] + si.endpoints[2] -
-				m_label_cost->get_size()) / 2);
+			m_label_cost->set_pos(
+			    (si.endpoints[0] + si.endpoints[2] - m_label_cost->get_size()) / 2);
 			m_label_cost->add_color_override("font_color", si.selection_color);
 			m_label_cost->show();
 		}
-	}
-	else {
+	} else {
 		m_label_cost->hide();
 		m_label_height->hide();
 		m_label_width->hide();
@@ -128,15 +123,15 @@ void MapControl::draw_selection(const MapSelectionInfos &si)
  * @param end_point
  */
 void MapControl::draw_height_line(const Vector2 start_point, const Vector2 end_point,
-	const Color &color)
+				  const Color &color)
 {
 	// Draw height line
-	draw_line(Vector2(end_point.x + 15, start_point.y),
-		Vector2(end_point.x + 15, end_point.y), color, 2);
-	draw_line(Vector2(end_point.x + 7, start_point.y),
-		Vector2(end_point.x + 23, start_point.y), color, 2);
-	draw_line(Vector2(end_point.x + 7, end_point.y),
-		Vector2(end_point.x + 23, end_point.y), color, 2);
+	draw_line(Vector2(end_point.x + 15, start_point.y), Vector2(end_point.x + 15, end_point.y),
+		  color, 2);
+	draw_line(Vector2(end_point.x + 7, start_point.y), Vector2(end_point.x + 23, start_point.y),
+		  color, 2);
+	draw_line(Vector2(end_point.x + 7, end_point.y), Vector2(end_point.x + 23, end_point.y),
+		  color, 2);
 }
 
 /**
@@ -146,14 +141,14 @@ void MapControl::draw_height_line(const Vector2 start_point, const Vector2 end_p
  * @param color
  */
 void MapControl::draw_width_line(const Vector2 start_point, const Vector2 end_point,
-	const Color &color)
+				 const Color &color)
 {
-	draw_line(Vector2(start_point.x, end_point.y + 15),
-		Vector2(end_point.x, end_point.y + 15), color, 2);
-	draw_line(Vector2(start_point.x, end_point.y + 7),
-		Vector2(start_point.x, end_point.y + 23), color, 2);
-	draw_line(Vector2(end_point.x, end_point.y + 7),
-		Vector2(end_point.x, end_point.y + 23), color, 2);
+	draw_line(Vector2(start_point.x, end_point.y + 15), Vector2(end_point.x, end_point.y + 15),
+		  color, 2);
+	draw_line(Vector2(start_point.x, end_point.y + 7), Vector2(start_point.x, end_point.y + 23),
+		  color, 2);
+	draw_line(Vector2(end_point.x, end_point.y + 7), Vector2(end_point.x, end_point.y + 23),
+		  color, 2);
 }
 
 /**

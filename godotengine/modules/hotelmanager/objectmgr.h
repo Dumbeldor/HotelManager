@@ -15,9 +15,9 @@
 
 #pragma once
 
+#include "actorobject.h"
 #include <cstdint>
 #include <unordered_map>
-#include "actorobject.h"
 
 class ObjectMgr
 {
@@ -31,6 +31,7 @@ public:
 	static ObjectMgr *get_singleton() { return s_singleton; }
 
 	void step(const double &dtime);
+
 private:
 	const uint32_t &next_id();
 

@@ -14,12 +14,13 @@
  */
 
 #pragma once
-#include <io/config_file.h>
 #include <atomic>
+#include <io/config_file.h>
 
-class GameConfig: public ConfigFile
+class GameConfig : public ConfigFile
 {
 	OBJ_TYPE(GameConfig, ConfigFile);
+
 public:
 	GameConfig();
 	~GameConfig();
@@ -37,6 +38,4 @@ private:
 	static GameConfig *singleton;
 	std::atomic_bool m_auto_save;
 	std::atomic<float> m_interval_save;
-
 };
-
