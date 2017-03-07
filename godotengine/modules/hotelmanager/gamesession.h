@@ -15,25 +15,23 @@
 
 #pragma once
 
-#include <scene/main/node.h>
-#include <cmath>
-#include <unordered_set>
-#include "character/character.h"
 #include "achievements.h"
+#include "character/character.h"
 #include "missions.h"
+#include <cmath>
+#include <scene/main/node.h>
+#include <unordered_set>
 
 class GameMap;
 class Hud;
 class NotificationMgr;
 
-class GameSession: public Node
+class GameSession : public Node
 {
 	OBJ_TYPE(GameSession, Node);
+
 public:
-	GameSession()
-	{
-		m_achievements.clear();
-	}
+	GameSession() { m_achievements.clear(); }
 	~GameSession();
 
 	/**
@@ -49,7 +47,6 @@ public:
 	void remove_money(int64_t money);
 	void add_money(int64_t money);
 
-
 	uint8_t get_game_speed() const { return m_game_speed; };
 	void set_game_speed(const uint8_t speed) { m_game_speed = speed; }
 
@@ -60,6 +57,7 @@ public:
 	void remove_notification(const uint16_t id);
 
 	Character *hire_character(CharacterRole role);
+
 protected:
 	static void _bind_methods();
 
@@ -79,6 +77,7 @@ protected:
 	{
 		return (uint32_t) std::floor(m_game_time / 60 / 24) + 1;
 	}
+
 private:
 	void start_mission(const uint32_t mission_id);
 

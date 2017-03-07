@@ -16,16 +16,17 @@
 #pragma once
 
 #include <cstdint>
-#include <scene/resources/packed_scene.h>
 #include <reference.h>
 #include <scene/main/node.h>
+#include <scene/resources/packed_scene.h>
 #include <vector>
 
 class Notification;
 
-class NotificationMgr: public Node
+class NotificationMgr : public Node
 {
 	OBJ_TYPE(NotificationMgr, Node);
+
 public:
 	NotificationMgr();
 	~NotificationMgr();
@@ -33,5 +34,4 @@ public:
 	void remove_notification(const uint16_t id);
 	void _process(const float &delta);
 	void reorganize(uint8_t nb);
-
 };

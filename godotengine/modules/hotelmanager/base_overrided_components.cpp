@@ -15,9 +15,7 @@
 
 #include "base_overrided_components.h"
 
-HMButton::HMButton(const String &p_text): Button(p_text)
-{
-}
+HMButton::HMButton(const String &p_text) : Button(p_text) {}
 
 void HMButton::pressed()
 {

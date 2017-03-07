@@ -17,12 +17,12 @@
 
 #include <scene/gui/button.h>
 
-class HMButton: public Button
+class HMButton : public Button
 {
 	OBJ_TYPE(HMButton, Button)
 
 public:
-	HMButton(const String& p_text=String());
+	HMButton(const String &p_text = String());
 	~HMButton() {}
 protected:
 	virtual void pressed();

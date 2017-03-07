@@ -13,27 +13,25 @@
  * All rights reserved
  */
 
-#include <scene/gui/label.h>
-#include <iostream>
-#include <scene/2d/node_2d.h>
-#include <scene/gui/panel.h>
-#include <scene/gui/texture_button.h>
-#include <scene/gui/box_container.h>
-#include <math/math_2d.h>
-#include <scene/gui/rich_text_label.h>
-#include "modules/hotelmanager/log.h"
 #include "hud.h"
-#include "selectormenu.h"
 #include "clock.h"
+#include "modules/hotelmanager/log.h"
+#include "selectormenu.h"
+#include <iostream>
+#include <math/math_2d.h>
+#include <scene/2d/node_2d.h>
+#include <scene/gui/box_container.h>
+#include <scene/gui/label.h>
+#include <scene/gui/panel.h>
+#include <scene/gui/rich_text_label.h>
+#include <scene/gui/texture_button.h>
 
-Hud::Hud(): CanvasLayer()
-{
-
-}
+Hud::Hud() : CanvasLayer() {}
 
 void Hud::init()
 {
-	m_mission_container = get_node(String("ControlPane/MissionPanel/MissionContainer"))->cast_to<VBoxContainer>();
+	m_mission_container =
+	    get_node(String("ControlPane/MissionPanel/MissionContainer"))->cast_to<VBoxContainer>();
 	assert(m_mission_container);
 
 	create_tilemenu("ground");
@@ -55,13 +53,16 @@ void Hud::create_tilemenu(const std::string &name)
 	Panel *menu = nullptr;
 
 	if (name == "ground") {
-		menu = get_node(String("ControlPane_Bottom/HireMenuButton/GroundMenuButton/GroundMenu"))->cast_to<Panel>();
-	}
-	else if (name == "floor") {
-		menu = get_node(String("ControlPane_Bottom/HireMenuButton/FloorMenuButton/FloorMenu"))->cast_to<Panel>();
-	}
-	else if (name == "wall") {
-		menu = get_node(String("ControlPane_Bottom/HireMenuButton/WallMenuButton/WallMenu"))->cast_to<Panel>();
+		menu = get_node(
+			   String("ControlPane_Bottom/HireMenuButton/GroundMenuButton/GroundMenu"))
+			   ->cast_to<Panel>();
+	} else if (name == "floor") {
+		menu =
+		    get_node(String("ControlPane_Bottom/HireMenuButton/FloorMenuButton/FloorMenu"))
+			->cast_to<Panel>();
+	} else if (name == "wall") {
+		menu = get_node(String("ControlPane_Bottom/HireMenuButton/WallMenuButton/WallMenu"))
+			   ->cast_to<Panel>();
 	}
 
 	assert(menu);
@@ -70,7 +71,8 @@ void Hud::create_tilemenu(const std::string &name)
 
 void Hud::create_npcmenu()
 {
-	Panel *menu = get_node(String("ControlPane_Bottom/HireMenuButton/HireMenu"))->cast_to<Panel>();
+	Panel *menu =
+	    get_node(String("ControlPane_Bottom/HireMenuButton/HireMenu"))->cast_to<Panel>();
 	assert(menu);
 	// SelectorMenu for NPCs
 	memnew(NPCSelectorMenu(menu));
@@ -79,18 +81,12 @@ void Hud::create_npcmenu()
 /**
  * Bind methods for script
  */
-void Hud::_bind_methods()
-{
-	ObjectTypeDB::bind_method(_MD("_on_draw"), &Hud::_on_draw);
-}
+void Hud::_bind_methods() { ObjectTypeDB::bind_method(_MD("_on_draw"), &Hud::_on_draw); }
 
 /**
  * Hud draw event
  */
-void Hud::_on_draw()
-{
-
-}
+void Hud::_on_draw() {}
 
 /**
  * Change money label in the player's HUD
@@ -100,8 +96,7 @@ void Hud::_on_draw()
  */
 void Hud::set_money_label(const int64_t &money)
 {
-	Label *money_label = get_node(String("ControlPane/DayLabel/MoneyLabel"))->
-		cast_to<Label>();
+	Label *money_label = get_node(String("ControlPane/DayLabel/MoneyLabel"))->cast_to<Label>();
 	assert(money_label);
 	money_label->set_text(String::num_int64(money) + " $");
 }
@@ -153,7 +148,8 @@ void Hud::add_mission(const Mission &mission)
 
 	RichTextLabel *mission_desc = memnew(RichTextLabel);
 	mission_desc->set_use_bbcode(true);
-	mission_desc->set_bbcode(String("[i]") + String(mission.description.c_str()) + String("[/i]"));
+	mission_desc->set_bbcode(String("[i]") + String(mission.description.c_str()) +
+				 String("[/i]"));
 	mission_desc->set_name("mission_" + String::num(mission.id) + "_desc");
 	mission_desc->set_custom_minimum_size(Size2(200, 15));
 	m_mission_container->add_child(mission_desc);
@@ -161,7 +157,7 @@ void Hud::add_mission(const Mission &mission)
 	VBoxContainer *objectives_container = memnew(VBoxContainer);
 	m_mission_container->add_child(objectives_container);
 
-	for (const auto &o: mission.objectives) {
+	for (const auto &o : mission.objectives) {
 		Label *objective = memnew(Label);
 		objective->set_text(String("- ") + o->title.c_str());
 		objective->set_name("mission_obj_" + String::num(o->id));

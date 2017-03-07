@@ -17,7 +17,7 @@
 
 #include "reference.h"
 
-class HotelManagerProject: public Reference
+class HotelManagerProject : public Reference
 {
 	OBJ_TYPE(HotelManagerProject, Reference);
 

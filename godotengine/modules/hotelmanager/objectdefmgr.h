@@ -14,13 +14,13 @@
  * All rights reserved
  */
 #pragma once
-#include <unordered_map>
-#include <core/os/file_access.h>
-#include <random>
 #include "achievements.h"
+#include "missions.h"
 #include "modules/hotelmanager/character/character.h"
 #include "tiles.h"
-#include "missions.h"
+#include <core/os/file_access.h>
+#include <random>
+#include <unordered_map>
 
 struct RoomDef
 {
@@ -46,12 +46,12 @@ public:
 	 * @return const reference of the tiledef
 	 */
 	const TileDef &get_tiledef(uint32_t t) const;
-	const std::unordered_map<uint32_t, TileDef *>& get_tiledefs() const
+	const std::unordered_map<uint32_t, TileDef *> &get_tiledefs() const
 	{
 		return m_game_tiledefs;
 	}
 
-	const std::unordered_map<CharacterRole, CharacterDef *>& get_characterdefs() const
+	const std::unordered_map<CharacterRole, CharacterDef *> &get_characterdefs() const
 	{
 		return m_characterdefs_per_role;
 	};
@@ -65,6 +65,7 @@ public:
 	CharacterSex get_random_sex();
 	String get_random_male_name();
 	String get_random_female_name();
+
 private:
 	void load_roomdefs();
 	void load_characterdefs();

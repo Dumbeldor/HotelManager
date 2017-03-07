@@ -28,9 +28,10 @@ public:
 
 	const bool is_good() const { return m_is_good; }
 
-	template<typename T> GameDataReader &operator>>(T &out);
+	template <typename T> GameDataReader &operator>>(T &out);
 	void next();
 	void nextr();
+
 private:
 	uint16_t m_col_number = 1;
 	uint16_t m_current_col = 0;

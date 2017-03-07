@@ -13,13 +13,11 @@
  * All rights reserved
  */
 
-#include <iostream>
 #include "character.h"
 #include "../objectdefmgr.h"
+#include <iostream>
 
-Character::Character(CharacterRole role):
-	RigidBody2D(), ActorObject(),
-	m_character_role(role)
+Character::Character(CharacterRole role) : RigidBody2D(), ActorObject(), m_character_role(role)
 {
 	// Ignore this part in editor
 	if (!ObjectDefMgr::get_singleton()) {
@@ -28,20 +26,17 @@ Character::Character(CharacterRole role):
 	m_sex = ObjectDefMgr::get_singleton()->get_random_sex();
 	if (m_sex == MALE) {
 		m_character_name = ObjectDefMgr::get_singleton()->get_random_male_name();
-	}
-	else if (m_sex == FEMALE){
+	} else if (m_sex == FEMALE) {
 		m_character_name = ObjectDefMgr::get_singleton()->get_random_female_name();
 	}
 }
 
-Character::~Character()
-{
-}
+Character::~Character() {}
 
 void Character::_bind_methods()
 {
-	ObjectTypeDB::bind_method("set_sex",&Character::set_sex__api);
-	ObjectTypeDB::bind_method("set_role",&Character::set_role__api);
+	ObjectTypeDB::bind_method("set_sex", &Character::set_sex__api);
+	ObjectTypeDB::bind_method("set_role", &Character::set_role__api);
 }
 
 void Character::step(const double &dtime)

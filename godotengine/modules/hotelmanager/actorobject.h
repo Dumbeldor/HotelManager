@@ -16,13 +16,13 @@
 #pragma once
 
 #include <cstdint>
-#include <memory>
 #include <math/math_2d.h>
+#include <memory>
 
 class ActorObject
 {
 public:
-	enum Type: uint8_t
+	enum Type : uint8_t
 	{
 		TYPE_CHARACTER = 1,
 	};
@@ -36,6 +36,7 @@ public:
 	virtual Point2 get_ao_position() const = 0;
 
 	virtual void step(const double &dtime) = 0;
+
 protected:
 	uint32_t m_id = 0;
 };

@@ -31,11 +31,13 @@ class SaveGame;
 
 static constexpr uint16_t WORLD_LIMIT_X = 180;
 static const Vector2 BASE_RESOLUTION(1920, 1080);
-static const uint16_t WORLD_LIMIT_Y = (uint16_t) floor(WORLD_LIMIT_X * BASE_RESOLUTION.y / BASE_RESOLUTION.x);
+static const uint16_t WORLD_LIMIT_Y =
+    (uint16_t) floor(WORLD_LIMIT_X * BASE_RESOLUTION.y / BASE_RESOLUTION.x);
 
-class GameMap: public VBoxContainer
+class GameMap : public VBoxContainer
 {
 	OBJ_TYPE(GameMap, VBoxContainer);
+
 public:
 	GameMap();
 
@@ -48,18 +50,20 @@ public:
 	void apply_daynight_cycle(const double &time);
 
 	void add_character(Character *c);
+
 protected:
 	static void _bind_methods();
 	void _canvas_draw();
 	void _canvas_mouse_enter();
 	void _canvas_mouse_exit();
 	void _on_input_event(const InputEvent &p_event);
+
 private:
 	void generate_map_borders();
 	void generate_map();
 
 	static int32_t get_area_cost(const TileDef &tiledef, const Vector2 &pos1,
-		const Vector2 &pos2);
+				     const Vector2 &pos2);
 	static bool is_out_of_bounds(const Vector2 &pos);
 	TileMap *get_tilemap(const TileDef &tiledef);
 

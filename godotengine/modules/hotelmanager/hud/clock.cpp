@@ -13,9 +13,9 @@
  * All rights reserved
  */
 
+#include "clock.h"
 #include <cmath>
 #include <iostream>
-#include "clock.h"
 
 #define CLOCK_MIN_SPRITE String("ClockMin")
 #define CLOCK_HOUR_SPRITE String("ClockHour")
@@ -28,7 +28,7 @@ void Clock::set(const double &time)
 	Sprite *hourclock = get_node(CLOCK_HOUR_SPRITE)->cast_to<Sprite>();
 	assert(hourclock);
 
-	minclock->set_rotd(360.0f - ((uint64_t) (m_time * 60) % 3600) / 10.0f);
+	minclock->set_rotd(360.0f - ((uint64_t)(m_time * 60) % 3600) / 10.0f);
 	hourclock->set_rotd(360.0f - (((uint64_t) m_time % 720) / 2.0f));
 }
 

@@ -15,13 +15,13 @@
 
 #pragma once
 
-#include <scene/gui/texture_button.h>
 #include "../character/character.h"
+#include <scene/gui/texture_button.h>
 
 class NPCSelectorButton;
 class TileSelectorButton;
 
-class SelectorButton: public TextureButton
+class SelectorButton : public TextureButton
 {
 	OBJ_TYPE(SelectorButton, TextureButton)
 
@@ -51,7 +51,7 @@ protected:
 /*
  * Tile Selector
  */
-class TileSelectorButton: public SelectorButton
+class TileSelectorButton : public SelectorButton
 {
 	OBJ_TYPE(TileSelectorButton, SelectorButton)
 public:
@@ -66,14 +66,15 @@ public:
 	}
 
 private:
-	TileSelectorButton(): SelectorButton(), m_tile_id(0) {} // Private constructor, just for Godot registration
+	TileSelectorButton() : SelectorButton(), m_tile_id(0) {} // Private constructor, just for
+								 // Godot registration
 	const uint32_t m_tile_id;
 };
 
 /*
  * NPC Selector
  */
-class NPCSelectorButton: public SelectorButton
+class NPCSelectorButton : public SelectorButton
 {
 	OBJ_TYPE(NPCSelectorButton, SelectorButton)
 public:
@@ -85,7 +86,11 @@ public:
 		NPCSelectorButton *ns = s_selected->cast_to<NPCSelectorButton>();
 		return ns ? ns->get_npc_role() : CHARACTER_ROLE_NONE;
 	}
+
 private:
-	NPCSelectorButton(): SelectorButton(), m_npc_role(CHARACTER_ROLE_NONE) {} // Private constructor, just for Godot registration
+	NPCSelectorButton() : SelectorButton(), m_npc_role(CHARACTER_ROLE_NONE) {} // Private
+										   // constructor,
+										   // just for Godot
+										   // registration
 	const CharacterRole m_npc_role;
 };

@@ -17,11 +17,12 @@
 
 #include "character.h"
 
-class CharacterClient: public Character
+class CharacterClient : public Character
 {
 	OBJ_TYPE(CharacterClient, Character);
+
 public:
-	CharacterClient(): Character(CHARACTER_ROLE_CLIENT) {}
+	CharacterClient() : Character(CHARACTER_ROLE_CLIENT) {}
 protected:
 	static void _bind_methods() {}
 };

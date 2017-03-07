@@ -15,39 +15,45 @@
 
 #pragma once
 
+#include "modules/hotelmanager/tiles.h"
 #include <scene/gui/tabs.h>
 #include <scene/gui/texture_button.h>
-#include "modules/hotelmanager/tiles.h"
 
 /*
  * Generic Selector menu interface
  */
-class SelectorMenu: public Tabs
+class SelectorMenu : public Tabs
 {
 	OBJ_TYPE(SelectorMenu, Tabs);
+
 public:
 	void update_child_pos();
+
 protected:
-	SelectorMenu(): Tabs() {} // Protected constructor, just for Godot registration
+	SelectorMenu() : Tabs() {} // Protected constructor, just for Godot registration
 };
 
 /*
  * Tile selector menu
  */
-class TileSelectorMenu: public SelectorMenu
+class TileSelectorMenu : public SelectorMenu
 {
 	OBJ_TYPE(TileSelectorMenu, SelectorMenu);
+
 public:
 	TileSelectorMenu(const String &tile_group, Panel *menu);
+
 private:
 	TileSelectorMenu() {} // Private constructor, just for Godot registration
 };
 
-class NPCSelectorMenu: public SelectorMenu
+class NPCSelectorMenu : public SelectorMenu
 {
-OBJ_TYPE(NPCSelectorMenu, SelectorMenu);
+	OBJ_TYPE(NPCSelectorMenu, SelectorMenu);
+
 public:
 	NPCSelectorMenu(Panel *menu);
+
 private:
 	NPCSelectorMenu() {} // Private constructor, just for Godot registration
 };

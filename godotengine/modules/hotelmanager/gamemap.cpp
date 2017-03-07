@@ -13,24 +13,24 @@
  * All rights reserved
  */
 
-#include <scene/main/canvas_layer.h>
-#include <scene/main/viewport.h>
-#include <iostream>
-#include <vector>
+#include "gamemap.h"
+#include "gamesession.h"
+#include "hud/selectorbutton.h"
+#include "log.h"
+#include "mapcontrol.h"
+#include "mapgen.h"
+#include "objectdefmgr.h"
 #include <io/base64.h>
+#include <iostream>
 #include <os/input.h>
-#include <scene/2d/camera_2d.h>
-#include <scene/audio/sample_player.h>
-#include <scene/2d/canvas_modulate.h>
 #include <os/os.h>
 #include <queue>
-#include "gamemap.h"
-#include "mapcontrol.h"
-#include "hud/selectorbutton.h"
-#include "objectdefmgr.h"
-#include "gamesession.h"
-#include "mapgen.h"
-#include "log.h"
+#include <scene/2d/camera_2d.h>
+#include <scene/2d/canvas_modulate.h>
+#include <scene/audio/sample_player.h>
+#include <scene/main/canvas_layer.h>
+#include <scene/main/viewport.h>
+#include <vector>
 
 #define GROUNDMAP_NODE String("GroundMap")
 #define FLOORMAP_NODE String("GroundMap/FloorMap")
@@ -50,17 +50,14 @@
 static constexpr float ZOOMOUT_LIMIT = 10;
 static constexpr float ZOOMIN_LIMIT = 0.65;
 
-GameMap::GameMap()
-{
-	set_process(true);
-}
+GameMap::GameMap() { set_process(true); }
 
 void GameMap::_bind_methods()
 {
-	ObjectTypeDB::bind_method(_MD("_canvas_draw"),&GameMap::_canvas_draw);
-	ObjectTypeDB::bind_method(_MD("_canvas_mouse_enter"),&GameMap::_canvas_mouse_enter);
-	ObjectTypeDB::bind_method(_MD("_canvas_mouse_exit"),&GameMap::_canvas_mouse_exit);
-	ObjectTypeDB::bind_method(_MD("_on_input_event"),&GameMap::_on_input_event);
+	ObjectTypeDB::bind_method(_MD("_canvas_draw"), &GameMap::_canvas_draw);
+	ObjectTypeDB::bind_method(_MD("_canvas_mouse_enter"), &GameMap::_canvas_mouse_enter);
+	ObjectTypeDB::bind_method(_MD("_canvas_mouse_exit"), &GameMap::_canvas_mouse_exit);
+	ObjectTypeDB::bind_method(_MD("_on_input_event"), &GameMap::_on_input_event);
 }
 
 /**
@@ -78,9 +75,8 @@ bool GameMap::init(GameSession *game_session, const Dictionary &map)
 	m_camera = get_node(CAMERA_NODE)->cast_to<Camera2D>();
 	m_control = get_node(MAPCONTROL_NODE)->cast_to<MapControl>();
 	m_canvas_modulate = get_node(CANVAS_MODULATE_NODE)->cast_to<CanvasModulate>();
-	assert(m_sound_player &&
-		m_ground_map && m_floor_map && m_object_map &&
-		m_camera && m_control && m_canvas_modulate);
+	assert(m_sound_player && m_ground_map && m_floor_map && m_object_map && m_camera &&
+	       m_control && m_canvas_modulate);
 
 	m_control->init(this);
 
@@ -93,7 +89,7 @@ bool GameMap::init(GameSession *game_session, const Dictionary &map)
 
 	m_ground_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE / 2));
 	m_floor_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE / 2));
-	m_object_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE / 2 ));
+	m_object_map->set_cell_size(Size2(GAME_TILE_SIZE, GAME_TILE_SIZE / 2));
 
 	generate_map_borders();
 
@@ -107,28 +103,29 @@ bool GameMap::init(GameSession *game_session, const Dictionary &map)
 	}
 
 	const Dictionary &camera = map["camera"];
-	if (!(camera.has("pos_x") && camera.has("pos_y") && camera.has("zoom_x") && camera.has("zoom_y"))) {
+	if (!(camera.has("pos_x") && camera.has("pos_y") && camera.has("zoom_x") &&
+	      camera.has("zoom_y"))) {
 		return false;
 	}
 
 	/*
 	 * Load Map
 	 */
-	const String &ground = (const String&) map["ground"];
+	const String &ground = (const String &) map["ground"];
 	uint32_t strlen_ground = (uint32_t) ground.length();
 	DVector<char> buf_ground;
 	buf_ground.resize(strlen_ground / 4 * 3 + 1 + 1);
 	DVector<char>::Write w_ground = buf_ground.write();
 
-	base64_decode(&w_ground[0], (char*)(ground.utf8().get_data()), strlen_ground);
+	base64_decode(&w_ground[0], (char *) (ground.utf8().get_data()), strlen_ground);
 
-	const String &floor = (const String&) map["floor"];
+	const String &floor = (const String &) map["floor"];
 	uint32_t strlen_floor = (uint32_t) floor.length();
 	DVector<char> buf_floor;
 	buf_floor.resize(strlen_floor / 4 * 3 + 1 + 1);
 	DVector<char>::Write w_floor = buf_floor.write();
 
-	base64_decode(&w_floor[0], (char*)(floor.utf8().get_data()), strlen_floor);
+	base64_decode(&w_floor[0], (char *) (floor.utf8().get_data()), strlen_floor);
 
 	int32_t i = 0;
 	for (int32_t x = -WORLD_LIMIT_X; x <= WORLD_LIMIT_X; x++) {
@@ -193,25 +190,25 @@ void GameMap::on_process(float delta)
 		bool should_move_camera = false;
 		Vector2 camera_movement(0, 0);
 		if (mouse_pos.y < screen_size.height * 0.04f ||
-			Input::get_singleton()->is_action_pressed("ui_up")) {
+		    Input::get_singleton()->is_action_pressed("ui_up")) {
 			should_move_camera = true;
 			camera_movement.y -= 10;
 		}
 
 		if (mouse_pos.y > screen_size.height * 0.96f ||
-			Input::get_singleton()->is_action_pressed("ui_down")) {
+		    Input::get_singleton()->is_action_pressed("ui_down")) {
 			should_move_camera = true;
 			camera_movement.y += 10;
 		}
 
 		if (mouse_pos.x < screen_size.width * 0.03f ||
-			Input::get_singleton()->is_action_pressed("ui_left")) {
+		    Input::get_singleton()->is_action_pressed("ui_left")) {
 			should_move_camera = true;
 			camera_movement.x -= 10;
 		}
 
 		if (mouse_pos.x > screen_size.width * 0.97f ||
-			Input::get_singleton()->is_action_pressed("ui_right")) {
+		    Input::get_singleton()->is_action_pressed("ui_right")) {
 			should_move_camera = true;
 			camera_movement.x += 10;
 		}
@@ -222,7 +219,7 @@ void GameMap::on_process(float delta)
 	}
 }
 
-TileMap* GameMap::get_tilemap(const TileDef &tiledef)
+TileMap *GameMap::get_tilemap(const TileDef &tiledef)
 {
 	const TileGroup &tg_ground = ObjectDefMgr::get_singleton()->get_tilegroup("ground");
 	const TileGroup &tg_floor = ObjectDefMgr::get_singleton()->get_tilegroup("floor");
@@ -234,11 +231,9 @@ TileMap* GameMap::get_tilemap(const TileDef &tiledef)
 
 	if (tiledef.is_in_group(tg_ground.id)) {
 		return m_ground_map;
-	}
-	else if (tiledef.is_in_group(tg_floor.id)) {
+	} else if (tiledef.is_in_group(tg_floor.id)) {
 		return m_floor_map;
-	}
-	else if (tiledef.is_in_group(tg_wall.id)) {
+	} else if (tiledef.is_in_group(tg_wall.id)) {
 		return m_object_map;
 	}
 
@@ -251,52 +246,61 @@ void GameMap::_canvas_draw()
 	if (m_mouse_over) {
 		// We have an object selected and current tile is valid
 		if (SelectorButton::is_tile_selected() &&
-			TileSelectorButton::get_selected_tile_id() != TILE_NONE) {
+		    TileSelectorButton::get_selected_tile_id() != TILE_NONE) {
 			uint32_t selected_tile_id = TileSelectorButton::get_selected_tile_id();
 			const TileDef &tiledef =
-				ObjectDefMgr::get_singleton()->get_tiledef(selected_tile_id);
+			    ObjectDefMgr::get_singleton()->get_tiledef(selected_tile_id);
 
 			TileMap *selected_tilemap = get_tilemap(tiledef);
 			if (!selected_tilemap) {
-				LOG_CRIT("Selected tile (id %d) is not in any interesting group, ignoring.",
-					tiledef.id);
+				LOG_CRIT("Selected tile (id %d) is not in any interesting group, "
+					 "ignoring.",
+					 tiledef.id);
 				return;
 			}
 
 			Matrix32 cell_xf = selected_tilemap->get_cell_transform();
-			Matrix32 xform = selected_tilemap->get_global_transform() * m_camera->get_canvas_transform();
+			Matrix32 xform = selected_tilemap->get_global_transform() *
+					 m_camera->get_canvas_transform();
 
 			Vector2 endpoints[4];
 			Vector2 start_tile = Vector2(MIN(m_over_tile.x, m_selection_init_pos.x),
-					MIN(m_over_tile.y, m_selection_init_pos.y)),
-			end_tile = Vector2(MAX(m_over_tile.x, m_selection_init_pos.x),
-					MAX(m_over_tile.y, m_selection_init_pos.y));
+						     MIN(m_over_tile.y, m_selection_init_pos.y)),
+				end_tile = Vector2(MAX(m_over_tile.x, m_selection_init_pos.x),
+						   MAX(m_over_tile.y, m_selection_init_pos.y));
 
 			if (m_selection_in_progress) {
 				// If a selection is in progress, points define area rectangle
 				endpoints[0] = selected_tilemap->map_to_world(start_tile, true);
-				endpoints[1] = selected_tilemap->map_to_world(Vector2(
-					MAX(m_over_tile.x, m_selection_init_pos.x),
-					MIN(m_over_tile.y, m_selection_init_pos.y)) + Point2(1, 0), true);
-				endpoints[2] = selected_tilemap->map_to_world(end_tile + Point2(1, 1), true);
-				endpoints[3] = selected_tilemap->map_to_world(Vector2(
-					MIN(m_over_tile.x, m_selection_init_pos.x),
-					MAX(m_over_tile.y, m_selection_init_pos.y)) + Point2(0, 1), true);
-			}
-			else {
+				endpoints[1] = selected_tilemap->map_to_world(
+				    Vector2(MAX(m_over_tile.x, m_selection_init_pos.x),
+					    MIN(m_over_tile.y, m_selection_init_pos.y)) +
+					Point2(1, 0),
+				    true);
+				endpoints[2] =
+				    selected_tilemap->map_to_world(end_tile + Point2(1, 1), true);
+				endpoints[3] = selected_tilemap->map_to_world(
+				    Vector2(MIN(m_over_tile.x, m_selection_init_pos.x),
+					    MAX(m_over_tile.y, m_selection_init_pos.y)) +
+					Point2(0, 1),
+				    true);
+			} else {
 				endpoints[0] = selected_tilemap->map_to_world(m_over_tile, true);
-				endpoints[1] = selected_tilemap->map_to_world((m_over_tile + Point2(1, 0)), true);
-				endpoints[2] = selected_tilemap->map_to_world((m_over_tile + Point2(1, 1)), true);
-				endpoints[3] = selected_tilemap->map_to_world((m_over_tile + Point2(0, 1)), true);
+				endpoints[1] = selected_tilemap->map_to_world(
+				    (m_over_tile + Point2(1, 0)), true);
+				endpoints[2] = selected_tilemap->map_to_world(
+				    (m_over_tile + Point2(1, 1)), true);
+				endpoints[3] = selected_tilemap->map_to_world(
+				    (m_over_tile + Point2(0, 1)), true);
 			}
 
 			for (uint8_t i = 0; i < 4; i++) {
-				if (selected_tilemap->get_half_offset() == TileMap::HALF_OFFSET_X
-					&& ABS(m_over_tile.y) & 1) {
+				if (selected_tilemap->get_half_offset() == TileMap::HALF_OFFSET_X &&
+				    ABS(m_over_tile.y) & 1) {
 					endpoints[i] += cell_xf[0] * 0.5;
 				}
-				if (selected_tilemap->get_half_offset() == TileMap::HALF_OFFSET_Y
-					&& ABS(m_over_tile.x) & 1) {
+				if (selected_tilemap->get_half_offset() == TileMap::HALF_OFFSET_Y &&
+				    ABS(m_over_tile.x) & 1) {
 					endpoints[i] += cell_xf[1] * 0.5;
 				}
 				endpoints[i] = xform.xform(endpoints[i]);
@@ -307,8 +311,7 @@ void GameMap::_canvas_draw()
 			Color border_color;
 			if (tile_id != TileMap::INVALID_CELL && tile_id != selected_tile_id) {
 				border_color = SELECTOR_BORDER_NEWTILE;
-			}
-			else {
+			} else {
 				border_color = SELECTOR_BORDER_OLDTILE;
 			}
 
@@ -324,7 +327,8 @@ void GameMap::_canvas_draw()
 					for (float y = start_tile.y; y <= end_tile.y; y++) {
 						Vector2 tile_pos(x, y);
 						// If tile is identical, reduce cost
-						if (selected_tilemap->get_cellv(tile_pos) == selected_tile_id) {
+						if (selected_tilemap->get_cellv(tile_pos) ==
+						    selected_tile_id) {
 							cost -= tiledef.cost;
 						}
 					}
@@ -332,7 +336,7 @@ void GameMap::_canvas_draw()
 			}
 
 			if (is_out_of_bounds(start_tile) || is_out_of_bounds(end_tile) ||
-				!m_game_session->has_money(cost)) {
+			    !m_game_session->has_money(cost)) {
 				selection_color = SELECTOR_RECT_COLOR_INVALID;
 				border_color = SELECTOR_BORDER_INVALID;
 			}
@@ -346,7 +350,7 @@ void GameMap::_canvas_draw()
 			selection_infos.selection_in_progress = m_selection_in_progress;
 			selection_infos.cost = cost;
 			selection_infos.tile_hovering =
-				(TileSelectorButton::get_selected_tile_id() != tile_id);
+			    (TileSelectorButton::get_selected_tile_id() != tile_id);
 
 			m_control->draw_selection(selection_infos);
 		}
@@ -371,50 +375,49 @@ void GameMap::_canvas_mouse_exit()
  */
 void GameMap::_on_input_event(const InputEvent &p_event)
 {
-	if (!m_ground_map || !m_ground_map->get_tileset().is_valid() || !m_ground_map->is_visible()) {
+	if (!m_ground_map || !m_ground_map->get_tileset().is_valid() ||
+	    !m_ground_map->is_visible()) {
 		return;
 	}
 
-	switch(p_event.type) {
+	switch (p_event.type) {
 		case InputEvent::MOUSE_MOTION: {
 			Vector2 new_over_tile = m_ground_map->world_to_map(get_local_mouse_pos());
 			if (new_over_tile != m_over_tile) {
 				m_over_tile = new_over_tile;
 				m_control->update();
 			}
-		}
-		break;
+		} break;
 		case InputEvent::MOUSE_BUTTON: {
 			const InputEventMouseButton &mb = p_event.mouse_button;
 			if (p_event.is_action("ui_zoomin")) {
 				zoom_camera(0.9);
-			}
-			else if (p_event.is_action("ui_zoomout")) {
+			} else if (p_event.is_action("ui_zoomout")) {
 				zoom_camera(1.11);
-			}
-			else if (mb.button_index == BUTTON_LEFT) {
+			} else if (mb.button_index == BUTTON_LEFT) {
 				if (p_event.is_action_pressed("ui_mouseclick_left")) {
 					if (SelectorButton::is_tile_selected()) {
 						init_zone_selection();
 					}
-				}
-				else if (p_event.is_action_released("ui_mouseclick_left")) {
+				} else if (p_event.is_action_released("ui_mouseclick_left")) {
 					if (SelectorButton::is_tile_selected()) {
 						place_tiles_in_selected_area();
-					}
-					else if (SelectorButton::is_npc_selected()) {
-						CharacterRole role = NPCSelectorButton::get_selected_character_role();
+					} else if (SelectorButton::is_npc_selected()) {
+						CharacterRole role = NPCSelectorButton::
+						    get_selected_character_role();
 						if (role == CHARACTER_ROLE_NONE) {
-							LOG_CRIT("Selector try to place bad npc role %d", (int) role);
+							LOG_CRIT(
+							    "Selector try to place bad npc role %d",
+							    (int) role);
 							return;
 						}
 						m_game_session->hire_character(role);
- 					}
+					}
 				}
 			}
-		}
-		break;
-		default: break;
+		} break;
+		default:
+			break;
 	}
 }
 
@@ -425,8 +428,8 @@ void GameMap::_on_input_event(const InputEvent &p_event)
 void GameMap::zoom_camera(const float multiplier)
 {
 	Vector2 new_zoom = m_camera->get_zoom() * multiplier;
-	if (new_zoom.x > ZOOMOUT_LIMIT || new_zoom.y >= ZOOMOUT_LIMIT
-		|| new_zoom.x < ZOOMIN_LIMIT || new_zoom.y < ZOOMIN_LIMIT) {
+	if (new_zoom.x > ZOOMOUT_LIMIT || new_zoom.y >= ZOOMOUT_LIMIT ||
+	    new_zoom.x < ZOOMIN_LIMIT || new_zoom.y < ZOOMIN_LIMIT) {
 		return;
 	}
 
@@ -448,12 +451,14 @@ void GameMap::move_camera(Vector2 movement)
 	// Limit camera movement to borders
 	// @ TODO take account the zoom value because when zooming we are not in map borders
 	if ((ABS(m_camera->get_pos().x + movement.x) + BASE_RESOLUTION.x / 2) *
-		(1 + m_camera->get_zoom().x / 10) > (WORLD_LIMIT_X - 1) * GAME_TILE_SIZE) {
+		(1 + m_camera->get_zoom().x / 10) >
+	    (WORLD_LIMIT_X - 1) * GAME_TILE_SIZE) {
 		movement.x = 0;
 	}
 
 	if ((ABS(m_camera->get_pos().y + movement.y) + BASE_RESOLUTION.y / 2) *
-		(1 + m_camera->get_zoom().y / 10) > (WORLD_LIMIT_Y - 1) * GAME_TILE_SIZE) {
+		(1 + m_camera->get_zoom().y / 10) >
+	    (WORLD_LIMIT_Y - 1) * GAME_TILE_SIZE) {
 		movement.y = 0;
 	}
 
@@ -517,16 +522,11 @@ void GameMap::place_tiles_in_selected_area()
 			m_sound_player->play(SOUND_POP6);
 			m_game_session->remove_money(tiledef.cost);
 		}
-	}
-	else {
-		Vector2 start_tile = Vector2(
-			MIN(cur_pos.x, m_selection_init_pos.x),
-			MIN(cur_pos.y, m_selection_init_pos.y)
-		),
-		end_tile = Vector2(
-			MAX(cur_pos.x, m_selection_init_pos.x),
-			MAX(cur_pos.y, m_selection_init_pos.y)
-		);
+	} else {
+		Vector2 start_tile = Vector2(MIN(cur_pos.x, m_selection_init_pos.x),
+					     MIN(cur_pos.y, m_selection_init_pos.y)),
+			end_tile = Vector2(MAX(cur_pos.x, m_selection_init_pos.x),
+					   MAX(cur_pos.y, m_selection_init_pos.y));
 
 		// Don't place anything if start or end is out of bounds
 		if (is_out_of_bounds(start_tile) || is_out_of_bounds(end_tile)) {
@@ -583,7 +583,7 @@ void GameMap::place_tiles_in_selected_area()
  */
 int32_t GameMap::get_area_cost(const TileDef &tiledef, const Vector2 &pos1, const Vector2 &pos2)
 {
-	return (int32_t) (tiledef.cost * ABS(pos2.x - pos1.x + 1) * ABS(pos2.y - pos1.y + 1));
+	return (int32_t)(tiledef.cost * ABS(pos2.x - pos1.x + 1) * ABS(pos2.y - pos1.y + 1));
 }
 
 /**
@@ -593,8 +593,8 @@ int32_t GameMap::get_area_cost(const TileDef &tiledef, const Vector2 &pos1, cons
  */
 bool GameMap::is_out_of_bounds(const Vector2 &pos)
 {
-	return (pos.x > WORLD_LIMIT_X || pos.x < -WORLD_LIMIT_X ||
-		pos.y > WORLD_LIMIT_Y || pos.y < -WORLD_LIMIT_Y);
+	return (pos.x > WORLD_LIMIT_X || pos.x < -WORLD_LIMIT_X || pos.y > WORLD_LIMIT_Y ||
+		pos.y < -WORLD_LIMIT_Y);
 }
 
 void GameMap::serialize(Dictionary &result) const
@@ -627,7 +627,7 @@ void GameMap::serialize(Dictionary &result) const
 
 	DVector<char>::Write w_ground = ground_map.write();
 	DVector<char>::Write w64_ground = b64buff_ground.write();
-	int strlen_ground = base64_encode((&w64_ground[0]), (&w_ground[0]), (uint32_t )WORLD_LIMIT);
+	int strlen_ground = base64_encode((&w64_ground[0]), (&w_ground[0]), (uint32_t) WORLD_LIMIT);
 	w64_ground[strlen_ground] = 0;
 
 	DVector<char>::Write w_floor = floor_map.write();
@@ -667,8 +667,7 @@ void GameMap::apply_daynight_cycle(const double &time)
 
 	if (hour_num <= night_end || hour_num >= night_start) {
 		m_canvas_modulate->set_color(Color(0.30f, 0.32f, 0.46f));
-	}
-	else if (hour_num >= 18) {
+	} else if (hour_num >= 18) {
 		const float multiplier = ((hour_num - 18) * 60.0f + min_num) / 240.0f;
 
 		Color daynightmask;
@@ -676,8 +675,7 @@ void GameMap::apply_daynight_cycle(const double &time)
 		daynightmask.g = 1.0f - multiplier * 0.65f;
 		daynightmask.b = 1.0f - multiplier * 0.48f;
 		m_canvas_modulate->set_color(daynightmask);
-	}
-	else if (hour_num < 8) {
+	} else if (hour_num < 8) {
 		const float multiplier = ((hour_num - night_end) * 60.0f + min_num) / 240.0f;
 
 		Color daynightmask;
@@ -685,8 +683,7 @@ void GameMap::apply_daynight_cycle(const double &time)
 		daynightmask.g = 0.32f + multiplier * (1.0f - 0.35f);
 		daynightmask.b = 0.46f + multiplier * (1.0f - 0.52f);
 		m_canvas_modulate->set_color(daynightmask);
-	}
-	else {
+	} else {
 		m_canvas_modulate->set_color(Color(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 }

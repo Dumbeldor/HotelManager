@@ -14,11 +14,11 @@
  */
 
 #include "chathandler.h"
-#include "gamesession.h"
 #include "console.h"
+#include "gamesession.h"
 #include <scene/gui/rich_text_label.h>
 
-static const ChatCommand COMMANDHANDLERFINISHER = { nullptr, false, nullptr, nullptr, ""};
+static const ChatCommand COMMANDHANDLERFINISHER = {nullptr, false, nullptr, nullptr, ""};
 
 /**
  *
@@ -26,34 +26,35 @@ static const ChatCommand COMMANDHANDLERFINISHER = { nullptr, false, nullptr, nul
  */
 ChatCommand *ChatHandler::getCommandTable()
 {
-	static ChatCommand moneyCommandTable[] =
-	{
-		{ "add", true, &ChatHandler::handle_command_money_add, nullptr, "Usage: /money add <count>" },
-		{ "remove", true, &ChatHandler::handle_command_money_remove, nullptr, "Usage: /money remove <count>"},
-		COMMANDHANDLERFINISHER,
+	static ChatCommand moneyCommandTable[] = {
+	    {"add", true, &ChatHandler::handle_command_money_add, nullptr,
+	     "Usage: /money add <count>"},
+	    {"remove", true, &ChatHandler::handle_command_money_remove, nullptr,
+	     "Usage: /money remove <count>"},
+	    COMMANDHANDLERFINISHER,
 	};
 
-	static ChatCommand timeCommandTable[] =
-	{
-		{ "speed", true, &ChatHandler::handle_command_time_speed, nullptr, "Usage: /time speed <multiplier>. multiplier value is between 0 and 100"},
-		COMMANDHANDLERFINISHER,
+	static ChatCommand timeCommandTable[] = {
+	    {"speed", true, &ChatHandler::handle_command_time_speed, nullptr,
+	     "Usage: /time speed <multiplier>. multiplier value is between 0 and 100"},
+	    COMMANDHANDLERFINISHER,
 	};
 
-	static ChatCommand notifCommandTable[] =
-	{
-		{ "add", true, &ChatHandler::handle_command_add_notif, nullptr, "Usage: /notif add title description"},
-		COMMANDHANDLERFINISHER,
+	static ChatCommand notifCommandTable[] = {
+	    {"add", true, &ChatHandler::handle_command_add_notif, nullptr,
+	     "Usage: /notif add title description"},
+	    COMMANDHANDLERFINISHER,
 	};
 
-	static ChatCommand globalCommandTable[] =
-	{
-		{ "money", true, nullptr, moneyCommandTable, "Available subcommands: add|remove"},
-		{ "time", true, nullptr, timeCommandTable, "Available subcommands: speed"},
-		{ "list", true, &ChatHandler::handle_command_list, nullptr, ""},
-		{ "help", true, &ChatHandler::handle_command_help, nullptr, ""},
-		{ "remove_line", true, &ChatHandler::handle_command_remove_line, nullptr, "Usage: /remove_line <number>"},
-		{ "notif", true, nullptr, notifCommandTable, "Notification subcommands: add|remove"},
-		COMMANDHANDLERFINISHER,
+	static ChatCommand globalCommandTable[] = {
+	    {"money", true, nullptr, moneyCommandTable, "Available subcommands: add|remove"},
+	    {"time", true, nullptr, timeCommandTable, "Available subcommands: speed"},
+	    {"list", true, &ChatHandler::handle_command_list, nullptr, ""},
+	    {"help", true, &ChatHandler::handle_command_help, nullptr, ""},
+	    {"remove_line", true, &ChatHandler::handle_command_remove_line, nullptr,
+	     "Usage: /remove_line <number>"},
+	    {"notif", true, nullptr, notifCommandTable, "Notification subcommands: add|remove"},
+	    COMMANDHANDLERFINISHER,
 	};
 
 	return globalCommandTable;
@@ -66,7 +67,8 @@ ChatCommand *ChatHandler::getCommandTable()
  * @return true if command was found and false if not found
  *
  */
-bool ChatHandler::handle_command(const std::string &text, GameSession *game_session, std::string &msg)
+bool ChatHandler::handle_command(const std::string &text, GameSession *game_session,
+				 std::string &msg)
 {
 	// No slash or not 2 chars, it's not a command
 	if (text.length() < 2 || text[0] != '/') {
@@ -76,9 +78,10 @@ bool ChatHandler::handle_command(const std::string &text, GameSession *game_sess
 	ChatCommand *command = nullptr;
 	ChatCommand *parentCommand = nullptr;
 
-	const char* ctext = &(text.c_str())[1];
+	const char *ctext = &(text.c_str())[1];
 
-	ChatCommandSearchResult res = find_command(getCommandTable(), ctext, command, &parentCommand);
+	ChatCommandSearchResult res =
+	    find_command(getCommandTable(), ctext, command, &parentCommand);
 	switch (res) {
 		case CHAT_COMMAND_OK:
 			return (this->*(command->Handler))(ctext, game_session, msg);
@@ -101,8 +104,9 @@ bool ChatHandler::handle_command(const std::string &text, GameSession *game_sess
  *
  * Search the command recursively into tables and associated handlers
  */
-ChatCommandSearchResult ChatHandler::find_command(ChatCommand *table, const char *&text, ChatCommand *&command,
-												  ChatCommand **parentCommand)
+ChatCommandSearchResult ChatHandler::find_command(ChatCommand *table, const char *&text,
+						  ChatCommand *&command,
+						  ChatCommand **parentCommand)
 {
 	std::string cmd = "";
 	// Skip whitespaces
@@ -111,29 +115,34 @@ ChatCommandSearchResult ChatHandler::find_command(ChatCommand *table, const char
 		++text;
 	}
 
-	while (*text == ' ') { ++text; }
+	while (*text == ' ') {
+		++text;
+	}
 
-	//Search first level command in table
+	// Search first level command in table
 	for (int32_t i = 0; table[i].name != nullptr; ++i) {
 		// If it's not the searched command, skip
 		size_t len = strlen(table[i].name);
-		if (strncmp(table[i].name, cmd.c_str(), len+1) != 0) {
+		if (strncmp(table[i].name, cmd.c_str(), len + 1) != 0) {
 			continue;
 		}
 
-		//If there is a child command
+		// If there is a child command
 		if (table[i].childCommand != nullptr) {
-			const char* stext = text;
-			ChatCommand* parentSubCommand = nullptr;
-			ChatCommandSearchResult res = find_command(table[i].childCommand, text, command, &parentSubCommand);
+			const char *stext = text;
+			ChatCommand *parentSubCommand = nullptr;
+			ChatCommandSearchResult res =
+			    find_command(table[i].childCommand, text, command, &parentSubCommand);
 
 			// Lookup child command
 			switch (res) {
 				case CHAT_COMMAND_OK:
-					// if subcommand success search not return parent command, then
+					// if subcommand success search not return parent command,
+					// then
 					// this parent command is owner of child commands
 					if (parentCommand) {
-						*parentCommand = parentSubCommand ? parentSubCommand : &table[i];
+						*parentCommand =
+						    parentSubCommand ? parentSubCommand : &table[i];
 					}
 
 					// name == "" is special case: restore original command text
@@ -141,20 +150,27 @@ ChatCommandSearchResult ChatHandler::find_command(ChatCommand *table, const char
 					if (strlen(command->name) == 0 && !parentSubCommand) {
 						text = stext;
 					}
-					 return CHAT_COMMAND_OK;
+					return CHAT_COMMAND_OK;
 				case CHAT_COMMAND_UNKNOWN:
-					// Command not found directly in child command list, return child command list owner
+					// Command not found directly in child command list, return
+					// child command list owner
 					command = &table[i];
 					if (parentCommand)
-						*parentCommand = nullptr;	// We don't know parent of table list at this point
+						*parentCommand = nullptr; // We don't know parent of
+									  // table list at this
+									  // point
 
-					text = stext; 					// Restore text to stated just after parse found parent command
+					text = stext; // Restore text to stated just after parse
+						      // found parent command
 					return CHAT_COMMAND_UNKNOWN_SUBCOMMAND;
 				case CHAT_COMMAND_UNKNOWN_SUBCOMMAND:
 				default:
-					// Some deep subcommand not found, if this second level subcommand then parentCommand can ben nullptr, use know value for it
+					// Some deep subcommand not found, if this second level
+					// subcommand then parentCommand can ben nullptr, use know
+					// value for it
 					if (parentCommand)
-						*parentCommand = parentSubCommand ? parentSubCommand : &table[i];
+						*parentCommand =
+						    parentSubCommand ? parentSubCommand : &table[i];
 					return res;
 			}
 		}
@@ -191,9 +207,10 @@ ChatCommandSearchResult ChatHandler::find_command(ChatCommand *table, const char
  * @param msg
  * @return
  */
-bool ChatHandler::handle_command_list(const std::string &args, GameSession *game_session, std::string &msg)
+bool ChatHandler::handle_command_list(const std::string &args, GameSession *game_session,
+				      std::string &msg)
 {
-	ChatCommand* cmds = getCommandTable();
+	ChatCommand *cmds = getCommandTable();
 	msg += "Command list : \n";
 	for (int32_t i = 0; cmds[i].name != nullptr; i++) {
 		msg += std::string(cmds[i].name) + "\n";
@@ -208,7 +225,8 @@ bool ChatHandler::handle_command_list(const std::string &args, GameSession *game
  * @param msg
  * @return
  */
-bool ChatHandler::handle_command_help(const std::string &args, GameSession *game_session, std::string &msg)
+bool ChatHandler::handle_command_help(const std::string &args, GameSession *game_session,
+				      std::string &msg)
 {
 	if (args.empty()) {
 		msg = "/help <command> to get the help of the command\n";
@@ -217,10 +235,11 @@ bool ChatHandler::handle_command_help(const std::string &args, GameSession *game
 
 	ChatCommand *command = nullptr;
 	ChatCommand *parentCommand = nullptr;
-	const char* ctext = args.c_str();
+	const char *ctext = args.c_str();
 	msg = args;
 
-	ChatCommandSearchResult res = find_command(getCommandTable(), ctext, command, &parentCommand);
+	ChatCommandSearchResult res =
+	    find_command(getCommandTable(), ctext, command, &parentCommand);
 	switch (res) {
 		case CHAT_COMMAND_OK:
 			msg = command->help;
@@ -247,7 +266,8 @@ bool ChatHandler::handle_command_help(const std::string &args, GameSession *game
  * @param msg
  * @return
  */
-bool ChatHandler::handle_command_money_add(const std::string &args, GameSession *game_session, std::string &msg)
+bool ChatHandler::handle_command_money_add(const std::string &args, GameSession *game_session,
+					   std::string &msg)
 {
 	int nb = std::atoi(args.c_str());
 	if (nb == 0) {
@@ -255,7 +275,8 @@ bool ChatHandler::handle_command_money_add(const std::string &args, GameSession 
 		return false;
 	}
 	game_session->add_money(nb);
-	msg = "Adding " + args + " money. Your new money is now " + std::to_string(game_session->get_money());
+	msg = "Adding " + args + " money. Your new money is now " +
+	      std::to_string(game_session->get_money());
 	return true;
 }
 
@@ -266,7 +287,8 @@ bool ChatHandler::handle_command_money_add(const std::string &args, GameSession 
  * @param msg
  * @return
  */
-bool ChatHandler::handle_command_money_remove(const std::string &args, GameSession *game_session, std::string &msg)
+bool ChatHandler::handle_command_money_remove(const std::string &args, GameSession *game_session,
+					      std::string &msg)
 {
 	int nb = std::atoi(args.c_str());
 	if (nb == 0) {
@@ -274,7 +296,8 @@ bool ChatHandler::handle_command_money_remove(const std::string &args, GameSessi
 		return false;
 	}
 	game_session->remove_money(nb);
-	msg = "Remove " + args + " money. Your new solde is " + std::to_string(game_session->get_money());
+	msg = "Remove " + args + " money. Your new solde is " +
+	      std::to_string(game_session->get_money());
 	return true;
 }
 
@@ -285,7 +308,8 @@ bool ChatHandler::handle_command_money_remove(const std::string &args, GameSessi
  * @param msg
  * @return
  */
-bool ChatHandler::handle_command_time_speed(const std::string &args, GameSession *game_session, std::string &msg)
+bool ChatHandler::handle_command_time_speed(const std::string &args, GameSession *game_session,
+					    std::string &msg)
 {
 	if (args.empty()) {
 		msg = "Time speed : " + std::to_string(game_session->get_game_speed()) + ".\n";
@@ -297,8 +321,7 @@ bool ChatHandler::handle_command_time_speed(const std::string &args, GameSession
 	if (speed == 0) {
 		msg = "Pause mode.";
 		return true;
-	}
-	else if (speed < 0 || speed > 100) {
+	} else if (speed < 0 || speed > 100) {
 		msg = "Argument should be a number between 0 and 100.";
 		return false;
 	}
@@ -314,19 +337,24 @@ bool ChatHandler::handle_command_time_speed(const std::string &args, GameSession
  * @param msg
  * @return
  */
-bool ChatHandler::handle_command_remove_line(const std::string &args, GameSession *game_session, std::string &msg)
+bool ChatHandler::handle_command_remove_line(const std::string &args, GameSession *game_session,
+					     std::string &msg)
 {
 	if (args.empty()) {
 		msg = "/remove_line <nb>.";
 		return true;
 	}
 
-	bool res = m_console->get_node(String("RichTextLabel"))->cast_to<RichTextLabel>()->remove_line(std::atoi(args.c_str()));
-	(res) ? msg = "Line " + std::to_string(std::atoi(args.c_str())) + " has been deleted" : msg = "The line number does not exist.";
+	bool res = m_console->get_node(String("RichTextLabel"))
+		       ->cast_to<RichTextLabel>()
+		       ->remove_line(std::atoi(args.c_str()));
+	(res) ? msg = "Line " + std::to_string(std::atoi(args.c_str())) + " has been deleted"
+	      : msg = "The line number does not exist.";
 	return res;
 }
 
-bool ChatHandler::handle_command_add_notif(const std::string &args, GameSession *game_session, std::string &msg)
+bool ChatHandler::handle_command_add_notif(const std::string &args, GameSession *game_session,
+					   std::string &msg)
 {
 	if (args.empty()) {
 		msg = "/notif add 'Title' 'Description'";

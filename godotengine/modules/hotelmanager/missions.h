@@ -16,14 +16,14 @@
 #pragma once
 
 #include <cstdint>
-#include <vector>
+#include <memory>
 #include <string>
 #include <unordered_map>
-#include <memory>
+#include <vector>
 
 struct MissionObjective
 {
-	enum Type: uint8_t
+	enum Type : uint8_t
 	{
 		NONE,
 		HIRE,
@@ -60,7 +60,7 @@ struct MissionObjectiveProgress
 
 typedef std::unordered_map<uint32_t, MissionObjectiveProgress> MissionObjectiveProgressMap;
 
-enum MissionState: uint8_t
+enum MissionState : uint8_t
 {
 	MISSION_STATE_NOT_STARTED,
 	MISSION_STATE_IN_PROGRESS,
@@ -77,4 +77,3 @@ struct MissionProgress
 
 typedef std::shared_ptr<MissionProgress> MissionProgressPtr;
 typedef std::unordered_map<uint32_t, MissionProgressPtr> MissionProgressMap;
-
