@@ -51,9 +51,16 @@ public:
 		return m_game_tiledefs;
 	}
 
+	const std::unordered_map<CharacterRole, CharacterDef *>& get_characterdefs() const
+	{
+		return m_characterdefs_per_role;
+	};
+
 	const TileGroup &get_tilegroup(const uint32_t gid) const;
 	const TileGroup &get_tilegroup(const std::string &g) const;
 	const Mission &get_mission(const uint32_t id) const;
+	const CharacterDef &get_characterdef(const uint16_t id) const;
+	const CharacterDef &get_characterdef_by_role(const CharacterRole id) const;
 
 	CharacterSex get_random_sex();
 	String get_random_male_name();
@@ -74,6 +81,7 @@ private:
 
 	std::unordered_map<uint16_t, RoomDef *> m_roomdefs = {};
 	std::unordered_map<uint16_t, CharacterDef *> m_characterdefs = {};
+	std::unordered_map<CharacterRole, CharacterDef *> m_characterdefs_per_role = {};
 	TileDefMap m_game_tiledefs = {};
 	std::unordered_map<uint32_t, TileGroup *> m_tilegroups = {};
 	std::unordered_map<std::string, TileGroup *> m_tilegroups_per_name = {};

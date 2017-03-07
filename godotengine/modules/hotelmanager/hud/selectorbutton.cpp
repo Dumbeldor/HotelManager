@@ -101,8 +101,18 @@ TileSelectorButton::TileSelectorButton(const uint32_t tile_id):
 /*
  * NPC Selector
  */
-NPCSelectorButton::NPCSelectorButton(const uint32_t obj_id):
+NPCSelectorButton::NPCSelectorButton(const CharacterDef &cdef):
 	SelectorButton(),
-	m_npc_id(obj_id)
+	m_npc_role(cdef.role)
 {
+	// @TODO set texture from definition
+	ImageTexture *texture = memnew(ImageTexture);
+	texture->load(String("res://icons/") + cdef.icon);
+
+	// Height is multiplied height/width because some textures don't have x = y
+	texture->set_size_override(Size2(OBJECTSELECTOR_SIZE,
+		OBJECTSELECTOR_SIZE * (texture->get_size().y / texture->get_size().x)));
+
+	set_normal_texture(texture);
+	set_tooltip(cdef.tooltip);
 }

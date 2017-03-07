@@ -29,21 +29,21 @@ enum CharacterSex: uint8_t
 
 enum CharacterRole: uint8_t
 {
-	CHARACTER_ROLE_NONE,
-	CHARACTER_ROLE_CLIENT,
-	CHARACTER_ROLE_CEO,
-	CHARACTER_ROLE_ROOM_MADE,
-	CHARACTER_ROLE_MAINTENANCE_TECH,
-	CHARACTER_ROLE_COOK,
-	CHARACTER_ROLE_BARTENDER,
+	CHARACTER_ROLE_NONE = 0,
+	CHARACTER_ROLE_CLIENT = 1,
+	CHARACTER_ROLE_CEO = 2,
+	CHARACTER_ROLE_ROOM_MADE = 3,
+	CHARACTER_ROLE_MAINTENANCE_TECH = 4,
+	CHARACTER_ROLE_COOK = 5,
+	CHARACTER_ROLE_BARTENDER = 6,
 	// GROOM ?
-	CHARACTER_ROLE_GARDENER,
-	CHARACTER_ROLE_WAITER,
-	CHARACTER_ROLE_VALET,
-	CHARACTER_ROLE_RECEPTIONIST,
-	CHARACTER_ROLE_WATCHMAN,
+	CHARACTER_ROLE_GARDENER = 7,
+	CHARACTER_ROLE_WAITER = 8,
+	CHARACTER_ROLE_VALET = 9,
+	CHARACTER_ROLE_RECEPTIONIST = 10,
+	CHARACTER_ROLE_WATCHMAN = 11,
 	// More ?
-	CHARACTER_ROLE_MAX,
+	CHARACTER_ROLE_MAX = 12,
 };
 
 struct CharacterDef
@@ -51,10 +51,14 @@ struct CharacterDef
 	CharacterDef() {}
 	uint16_t id = 0;
 	std::string name = "";
+	String tooltip = "";
+	String icon = "";
+	String scene = "";
 	CharacterRole role = CHARACTER_ROLE_NONE;
 	float sex_chance = 50.0f;
+	uint32_t cost = 0;
 };
-static const uint8_t CHARACTERDEF_CSV_COLS = 4;
+static const uint8_t CHARACTERDEF_CSV_COLS = 8;
 
 class Character: public RigidBody2D, public ActorObject
 {
@@ -82,6 +86,8 @@ public:
 	{
 		return get_pos();
 	}
+
+	virtual void step(const double &dtime);
 
 protected:
 	static void _bind_methods();

@@ -105,7 +105,8 @@ void ObjectDefMgr::load_characterdefs()
 	while (reader.is_good()) {
 		CharacterDef *character = new CharacterDef();
 		uint16_t role;
-		reader >> character->id >> character->name >> character->sex_chance >> role;
+		reader >> character->id >> character->name >> character->sex_chance >> role
+			>> character->cost >> character->tooltip >> character->icon >> character->scene;
 
 		if (character->sex_chance >= 100.0f || character->sex_chance < 0.0f) {
 			LOG_CRIT("Invalid sex_chance %f for ID %d, setting to 50%%.",
@@ -127,6 +128,7 @@ void ObjectDefMgr::load_characterdefs()
 		}
 
 		m_characterdefs[character->id] = character;
+		m_characterdefs_per_role[character->role] = character;
 	}
 }
 
@@ -370,6 +372,27 @@ const Mission& ObjectDefMgr::get_mission(const uint32_t id) const
 	}
 	return *m->second;
 }
+
+static const CharacterDef null_def = {};
+const CharacterDef& ObjectDefMgr::get_characterdef(const uint16_t id) const
+{
+	const auto &m = m_characterdefs.find(id);
+	if (m == m_characterdefs.end()) {
+		return null_def;
+	}
+	return *m->second;
+}
+
+const CharacterDef& ObjectDefMgr::get_characterdef_by_role(const CharacterRole id) const
+{
+	const auto &m = m_characterdefs_per_role.find(id);
+	if (m == m_characterdefs_per_role.end()) {
+		static const CharacterDef null_def = {};
+		return null_def;
+	}
+	return *m->second;
+}
+
 
 String ObjectDefMgr::get_random_female_name()
 {

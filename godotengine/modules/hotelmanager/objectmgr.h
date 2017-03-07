@@ -29,6 +29,8 @@ public:
 	void unregister_ao(const uint32_t id);
 
 	static ObjectMgr *get_singleton() { return s_singleton; }
+
+	void step(const double &dtime);
 private:
 	const uint32_t &next_id();
 

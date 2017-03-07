@@ -18,6 +18,7 @@
 #include <scene/main/node.h>
 #include <cmath>
 #include <unordered_set>
+#include "character/character.h"
 #include "achievements.h"
 #include "missions.h"
 
@@ -53,16 +54,17 @@ public:
 	void set_game_speed(const uint8_t speed) { m_game_speed = speed; }
 
 	double get_game_time() const { return m_game_time; };
-	void set_game_time(const double &game_time) { m_game_time= game_time; }
+	void set_game_time(const double &game_time) { m_game_time = game_time; }
 
 	void add_notification(const String &title, const String &text);
 	void remove_notification(const uint16_t id);
 
+	Character *hire_character(CharacterRole role);
 protected:
 	static void _bind_methods();
 
 	void init(const String &savename = "");
-	void _process(float delta);
+	void _process(float dtime);
 	void save(const String &name);
 	void load(const String &name);
 

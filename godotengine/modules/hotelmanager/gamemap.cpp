@@ -403,8 +403,13 @@ void GameMap::_on_input_event(const InputEvent &p_event)
 						place_tiles_in_selected_area();
 					}
 					else if (SelectorButton::is_npc_selected()) {
-
-					}
+						CharacterRole role = NPCSelectorButton::get_selected_character_role();
+						if (role == CHARACTER_ROLE_NONE) {
+							LOG_CRIT("Selector try to place bad npc role %d", (int) role);
+							return;
+						}
+						m_game_session->hire_character(role);
+ 					}
 				}
 			}
 		}
@@ -684,5 +689,10 @@ void GameMap::apply_daynight_cycle(const double &time)
 	else {
 		m_canvas_modulate->set_color(Color(1.0f, 1.0f, 1.0f, 1.0f));
 	}
+}
 
+void GameMap::add_character(Character *c)
+{
+	c->set_pos(get_global_mouse_pos());
+	m_object_map->add_child(c);
 }

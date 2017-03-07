@@ -44,18 +44,13 @@ func _ready():
 	set_process(true)
 	#Activate scroll console
 	get_node("MainMenuLayer/Console/RichTextLabel").set_scroll_follow(true)
-	
+
 	get_node("GameSession/GameMap/Hud").initialize()
 	
 	game_session.add_notification("Good Game", "Welcome in Hotel Manager !")
 
 func _process(delta):
 	game_session._process(delta)
-	
-	var ceo = preload("res://scenes/characters/ceo.tscn")
-	var c_ceo = ceo.instance()
-	c_ceo.set_pos(get_global_pos()+Vector2(randf()*6-3,randf()*6-3))
-	get_node("GameSession/GameMap/GroundMap/FloorMap/ObjectMap").add_child(c_ceo)
 
 ##
 ## Button handlers
@@ -65,7 +60,7 @@ func goto_main_menu():
 	get_node("/root/global").set_save("")
 	get_tree().change_scene("res://scenes/main_menu.tscn")
 	get_tree().set_pause(false)
-	
+
 func _on_LeaveGameButton_released():
 	goto_main_menu()
 
