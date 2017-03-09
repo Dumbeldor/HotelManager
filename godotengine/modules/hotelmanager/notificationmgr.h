@@ -31,7 +31,7 @@ public:
 	NotificationMgr();
 	~NotificationMgr();
 	void add_notification(const String &title, const String &text);
-	void remove_notification(const uint16_t id);
+	bool remove_notification(const uint16_t id);
 	void _process(const float &delta);
 	void reorganize(uint8_t nb);
 };

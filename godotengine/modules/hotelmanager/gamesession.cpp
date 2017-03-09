@@ -301,9 +301,9 @@ void GameSession::add_notification(const String &title, const String &text)
 	m_notification_mgr->add_notification(title, text);
 }
 
-void GameSession::remove_notification(const uint16_t id)
+bool GameSession::remove_notification(const uint16_t id)
 {
-	m_notification_mgr->remove_notification(id);
+	return m_notification_mgr->remove_notification(id);
 }
 
 /**

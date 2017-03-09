@@ -43,6 +43,8 @@ ChatCommand *ChatHandler::getCommandTable()
 	static ChatCommand notifCommandTable[] = {
 	    {"add", true, &ChatHandler::handle_command_add_notif, nullptr,
 	     "Usage: /notif add title description"},
+	    {"remove", true, &ChatHandler::handle_command_remove_notif, nullptr,
+		 "Use: /notif remove nb"},
 	    COMMANDHANDLERFINISHER,
 	};
 
@@ -381,3 +383,20 @@ bool ChatHandler::handle_command_add_notif(const std::string &args, GameSession 
 	msg = "The notification has been added";
 	return true;
 }
+
+bool ChatHandler::handle_command_remove_notif(const std::string &args, GameSession *game_session,
+						std::string &msg)
+{
+    if (args.empty()) {
+	msg = "/notif remove nb";
+	return false;
+    }
+
+    uint8_t nb = (uint8_t) std::atoi(args.c_str());
+
+    bool res = game_session->remove_notification(nb);
+	(res) ? msg = "The notification has been removed" : msg = "The notification not existe";
+    return res;
+}
+
+

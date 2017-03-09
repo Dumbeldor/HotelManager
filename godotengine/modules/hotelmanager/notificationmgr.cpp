@@ -33,12 +33,17 @@ void NotificationMgr::add_notification(const String &title, const String &text)
 	add_child(notif);
 }
 
-void NotificationMgr::remove_notification(const uint16_t id)
+bool NotificationMgr::remove_notification(const uint16_t id)
 {
-	Notification *notif = get_child(id)->cast_to<Notification>();
+	Node *node = get_child(id);
+	if (!node) {
+		return false;
+	}
 
+	Notification *notif = node->cast_to<Notification>();
 	assert(notif);
 	notif->get_node(String("Animation"))->cast_to<AnimationPlayer>()->play(String("Hide"));
+	return true;
 }
 
 void NotificationMgr::_process(const float &delta)
