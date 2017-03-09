@@ -378,6 +378,16 @@ const Mission &ObjectDefMgr::get_mission(const uint32_t id) const
 	return *m->second;
 }
 
+const MissionObjective &ObjectDefMgr::get_mission_objective(const uint32_t id) const
+{
+	const auto &m = m_mission_objectives.find(id);
+	if (m == m_mission_objectives.end()) {
+		static const MissionObjective null_mission = {};
+		return null_mission;
+	}
+	return *m->second;
+}
+
 static const CharacterDef null_def = {};
 const CharacterDef &ObjectDefMgr::get_characterdef(const uint16_t id) const
 {

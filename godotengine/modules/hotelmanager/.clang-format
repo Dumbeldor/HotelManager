@@ -1,0 +1,24 @@
+BasedOnStyle: LLVM
+IndentWidth: 8
+BreakBeforeBraces: Linux
+AllowShortIfStatementsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: true
+IndentCaseLabels: false
+DerivePointerAlignment: false
+PointerAlignment: Right
+SpaceBeforeAssignmentOperators: true
+AccessModifierOffset: -8
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ColumnLimit: 100
+SpaceBeforeAssignmentOperators: true
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterStruct: true
+  AfterEnum: true
+  AfterFunction: true
+  BeforeElse: false
+SpaceAfterCStyleCast: true
+IndentCaseLabels: true
+UseTab: Always
+AlignTrailingComments: true
