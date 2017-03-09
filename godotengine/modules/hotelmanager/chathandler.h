@@ -72,6 +72,7 @@ public:
 					std::string &msg);
 	bool handle_command_add_notif(const std::string &args, GameSession *game_session,
 				      std::string &msg);
+	bool handle_command_remove_notif(const std::string &args, GameSession *game_session, std::string &msg);
 
 private:
 	ChatCommandSearchResult find_command(ChatCommand *table, const char *&text,
