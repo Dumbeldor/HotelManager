@@ -17,6 +17,7 @@
 #include "clock.h"
 #include "modules/hotelmanager/log.h"
 #include "selectormenu.h"
+#include "missionhudcontainer.h"
 #include <iostream>
 #include <math/math_2d.h>
 #include <scene/2d/node_2d.h>
@@ -31,7 +32,8 @@ Hud::Hud() : CanvasLayer() {}
 void Hud::init()
 {
 	m_mission_container =
-	    get_node(String("ControlPane/MissionPanel/MissionContainer"))->cast_to<VBoxContainer>();
+	    get_node(String("ControlPane/MissionPanel/MissionContainer"))
+			->cast_to<MissionHudContainer>();
 	assert(m_mission_container);
 
 	create_tilemenu("ground");
@@ -139,41 +141,11 @@ void Hud::modify_clock(const double &time)
 void Hud::add_mission(const Mission &mission)
 {
 	m_mission_container->get_parent()->cast_to<Panel>()->show();
-	RichTextLabel *mission_title = memnew(RichTextLabel);
-	mission_title->set_use_bbcode(true);
-	mission_title->set_bbcode(String("[b]") + String(mission.title.c_str()) + String("[/b]"));
-	mission_title->set_name("mission_" + String::num(mission.id));
-	mission_title->set_custom_minimum_size(Size2(200, 15));
-	m_mission_container->add_child(mission_title);
-
-	RichTextLabel *mission_desc = memnew(RichTextLabel);
-	mission_desc->set_use_bbcode(true);
-	mission_desc->set_bbcode(String("[i]") + String(mission.description.c_str()) +
-				 String("[/i]"));
-	mission_desc->set_name("mission_" + String::num(mission.id) + "_desc");
-	mission_desc->set_custom_minimum_size(Size2(200, 15));
-	m_mission_container->add_child(mission_desc);
-
-	VBoxContainer *objectives_container = memnew(VBoxContainer);
-	m_mission_container->add_child(objectives_container);
-
-	for (const auto &o : mission.objectives) {
-		Label *objective = memnew(Label);
-		objective->set_text(String("- ") + o->title.c_str() +
-			" (0/" + String::num(o->count) + ")");
-		objective->set_name("mission_obj_" + String::num(o->id));
-		objectives_container->set_margin(MARGIN_LEFT, 20);
-		objectives_container->add_child(objective);
-	}
+	MissionHudContainer *mc = memnew(MissionHudContainer(mission));
+	m_mission_container->add_child(mc);
 }
 
 void Hud::update_mission_objective(const MissionObjective &objective_def, const uint32_t count)
 {
-	Node *node = m_mission_container->find_node("mission_obj_" + String::num(objective_def.id),
-		true, false);
-	assert(node);
-	Label *objective_label = node->cast_to<Label>();
-	assert(objective_label);
-	objective_label->set_text(String("- ") + objective_def.title.c_str() +
-		" (" + String::num(count) + "/" + String::num(objective_def.count) + ")");
+	m_mission_container->update_mission_objective(objective_def, count);
 }
