@@ -25,10 +25,11 @@
 #include "hud/clock.h"
 #include "hud/hud.h"
 #include "hud/selectorbutton.h"
+#include "hud/selectormenu.h"
 #include "mapcontrol.h"
-#include "modules/hotelmanager/hud/selectormenu.h"
 #include "notification.h"
 #include "notificationmgr.h"
+#include "hud/missionhudcontainer.h"
 #include "object_type_db.h"
 
 void register_hotelmanager_types()
@@ -50,6 +51,7 @@ void register_hotelmanager_types()
 	ObjectTypeDB::register_type<GameConfig>();
 	ObjectTypeDB::register_type<Notification>();
 	ObjectTypeDB::register_type<NotificationMgr>();
+	ObjectTypeDB::register_type<MissionHudContainer>();
 }
 
 void unregister_hotelmanager_types() {}

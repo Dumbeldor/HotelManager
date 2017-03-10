@@ -20,7 +20,7 @@
 
 class SelectorMenu;
 class Clock;
-class VBoxContainer;
+class MissionHudContainer;
 class TileMenu;
 
 class Hud : public CanvasLayer
@@ -49,6 +49,6 @@ private:
 	void create_npcmenu();
 
 	Clock *m_clock = nullptr;
-	VBoxContainer *m_mission_container = nullptr;
+	MissionHudContainer *m_mission_container = nullptr;
 	std::unordered_map<std::string, TileMenu *> m_tile_menus = {};
 };
