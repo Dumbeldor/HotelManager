@@ -38,6 +38,7 @@ public:
 	void modify_clock(const double &time);
 
 	void add_mission(const Mission &mission);
+	void update_mission_objective(const MissionObjective &objective_def, const uint32_t count);
 
 protected:
 	static void _bind_methods();

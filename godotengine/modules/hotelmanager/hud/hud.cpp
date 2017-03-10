@@ -159,9 +159,21 @@ void Hud::add_mission(const Mission &mission)
 
 	for (const auto &o : mission.objectives) {
 		Label *objective = memnew(Label);
-		objective->set_text(String("- ") + o->title.c_str());
+		objective->set_text(String("- ") + o->title.c_str() +
+			" (0/" + String::num(o->count) + ")");
 		objective->set_name("mission_obj_" + String::num(o->id));
 		objectives_container->set_margin(MARGIN_LEFT, 20);
 		objectives_container->add_child(objective);
 	}
+}
+
+void Hud::update_mission_objective(const MissionObjective &objective_def, const uint32_t count)
+{
+	Node *node = m_mission_container->find_node("mission_obj_" + String::num(objective_def.id),
+		true, false);
+	assert(node);
+	Label *objective_label = node->cast_to<Label>();
+	assert(objective_label);
+	objective_label->set_text(String("- ") + objective_def.title.c_str() +
+		" (" + String::num(count) + "/" + String::num(objective_def.count) + ")");
 }
