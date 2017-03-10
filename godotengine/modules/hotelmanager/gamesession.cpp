@@ -392,7 +392,7 @@ void GameSession::on_hire_character(const CharacterDef &cdef)
 				objectives_done++;
 			}
 
-			// @TODO update mission objective on HUD
+			m_hud->update_mission_objective(modef, mo.second.progress);
 		}
 
 		if (objectives_done == mp.second->objectives_progress.size()) {
