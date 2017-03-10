@@ -59,6 +59,7 @@ public:
 	const TileGroup &get_tilegroup(const uint32_t gid) const;
 	const TileGroup &get_tilegroup(const std::string &g) const;
 	const Mission &get_mission(const uint32_t id) const;
+	const MissionObjective &get_mission_objective(const uint32_t id) const;
 	const CharacterDef &get_characterdef(const uint16_t id) const;
 	const CharacterDef &get_characterdef_by_role(const CharacterRole id) const;
 

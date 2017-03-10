@@ -343,5 +343,63 @@ Character *GameSession::hire_character(CharacterRole role)
 	remove_money(cdef.cost);
 	m_map->add_character(character);
 
+	// Callback when hire a character
+	on_hire_character(cdef);
 	return character;
+}
+
+/**
+ * Event callback when hire a character
+ * @param cdef
+ */
+void GameSession::on_hire_character(const CharacterDef &cdef)
+{
+	// Search current missions requiring hiring update
+	for (const auto &mp: m_mission_progress) {
+		// Ignore not in progress missions
+		if (mp.second->state != MissionState::MISSION_STATE_IN_PROGRESS) {
+			continue;
+		}
+
+		uint16_t objectives_done = 0;
+
+		for (auto &mo: mp.second->objectives_progress) {
+			const MissionObjective &modef =
+				ObjectDefMgr::get_singleton()->get_mission_objective(mo.second.id);
+			// Wrong objective, ignore
+			if (modef.id == 0) {
+				objectives_done++;
+				continue;
+			}
+
+			// Objective already done, ignore & mark as done to counter
+			if (mo.second.done) {
+				objectives_done++;
+				continue;
+			}
+
+			// Ignore non hire type here
+			if (modef.type != MissionObjective::Type::HIRE) {
+				continue;
+			}
+
+			// Update progress
+			mo.second.progress++;
+
+			// Objective accomplished, update state & counter
+			if (mo.second.progress >= modef.count) {
+				mo.second.done = true;
+				objectives_done++;
+			}
+
+			// @TODO update mission objective on HUD
+		}
+
+		if (objectives_done == mp.second->objectives_progress.size()) {
+			mp.second->state = MissionState::MISSION_STATE_DONE;
+
+			// @TODO update mission on HUD
+			// @TODO launch new next mission
+		}
+	}
 }

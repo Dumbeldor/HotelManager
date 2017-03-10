@@ -81,6 +81,9 @@ protected:
 private:
 	void start_mission(const uint32_t mission_id);
 
+	// events
+	void on_hire_character(const CharacterDef &cdef);
+
 	int64_t m_money = 2000;
 	uint8_t m_game_speed = 1;
 	double m_game_time = 0;

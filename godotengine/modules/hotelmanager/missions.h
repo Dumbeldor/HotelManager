@@ -56,6 +56,7 @@ struct MissionObjectiveProgress
 {
 	uint32_t id = 0;
 	uint32_t progress = 0;
+	bool done = false;
 };
 
 typedef std::unordered_map<uint32_t, MissionObjectiveProgress> MissionObjectiveProgressMap;

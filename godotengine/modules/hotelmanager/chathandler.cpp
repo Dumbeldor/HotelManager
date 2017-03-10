@@ -399,4 +399,3 @@ bool ChatHandler::handle_command_remove_notif(const std::string &args, GameSessi
     return res;
 }
 
-

@@ -29,6 +29,9 @@ Character::Character(CharacterRole role) : RigidBody2D(), ActorObject(), m_chara
 	} else if (m_sex == FEMALE) {
 		m_character_name = ObjectDefMgr::get_singleton()->get_random_female_name();
 	}
+
+	set_gravity_scale(0.0f);
+	set_mode(Mode::MODE_CHARACTER);
 }
 
 Character::~Character() {}
