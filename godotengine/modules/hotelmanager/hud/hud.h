@@ -22,6 +22,8 @@ class SelectorMenu;
 class Clock;
 class MissionHudContainer;
 class TileMenu;
+class SamplePlayer;
+class CanvasItem;
 
 class Hud : public CanvasLayer
 {
@@ -39,7 +41,10 @@ public:
 
 	void add_mission(const Mission &mission);
 	void update_mission_objective(const MissionObjective &objective_def, const uint32_t count);
+	void terminate_mission(const uint32_t id);
 
+	void step(float dtime);
+	void add_pending_deletion(CanvasItem *n) { m_pending_nodes_for_deletion.push_back(n); }
 protected:
 	static void _bind_methods();
 	void _on_draw();
@@ -49,6 +54,8 @@ private:
 	void create_npcmenu();
 
 	Clock *m_clock = nullptr;
+	SamplePlayer *m_sound_player = nullptr;
 	MissionHudContainer *m_mission_container = nullptr;
-	std::unordered_map<std::string, TileMenu *> m_tile_menus = {};
+	std::vector<CanvasItem *> m_pending_nodes_for_deletion = {};
+	float m_pending_removal_timer = 0.0f;
 };

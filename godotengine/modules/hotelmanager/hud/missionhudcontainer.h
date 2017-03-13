@@ -20,6 +20,7 @@
 class RichTextLabel;
 struct Mission;
 struct MissionObjective;
+class Hud;
 
 class MissionHudContainer : public VBoxContainer
 {
@@ -28,7 +29,10 @@ public:
 	MissionHudContainer(const Mission &mission);
 	~MissionHudContainer() {}
 
+	void set_hud(Hud *hud);
+
 	void update_mission_objective(const MissionObjective &objective_def, const uint32_t count);
+	void terminate_mission(const uint32_t id);
 protected:
 
 	static void _bind_methods() {};
@@ -36,4 +40,5 @@ protected:
 private:
 	RichTextLabel *m_mission_title = nullptr;
 	RichTextLabel *m_mission_desc = nullptr;
+	Hud *m_hud = nullptr;
 };

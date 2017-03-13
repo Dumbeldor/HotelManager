@@ -17,7 +17,9 @@
 #include <scene/gui/label.h>
 #include <scene/gui/rich_text_label.h>
 #include <math/math_2d.h>
+#include <iostream>
 #include "../missions.h"
+#include "hud.h"
 
 MissionHudContainer::MissionHudContainer(const Mission &mission): VBoxContainer()
 {
@@ -38,6 +40,7 @@ MissionHudContainer::MissionHudContainer(const Mission &mission): VBoxContainer(
 	add_child(m_mission_desc);
 
 	VBoxContainer *objectives_container = memnew(VBoxContainer);
+	objectives_container->set_name("mission_" + String::num(mission.id) + "_objectives");
 	add_child(objectives_container);
 
 	for (const auto &o : mission.objectives) {
@@ -50,6 +53,12 @@ MissionHudContainer::MissionHudContainer(const Mission &mission): VBoxContainer(
 	}
 }
 
+void MissionHudContainer::set_hud(Hud *hud)
+{
+	assert(!m_hud);
+	m_hud = hud;
+}
+
 void MissionHudContainer::update_mission_objective(const MissionObjective &objective_def,
 	const uint32_t count)
 {
@@ -60,4 +69,26 @@ void MissionHudContainer::update_mission_objective(const MissionObjective &objec
 	assert(objective_label);
 	objective_label->set_text(String("- ") + objective_def.title.c_str() +
 		" (" + String::num(count) + "/" + String::num(objective_def.count) + ")");
+}
+
+/**
+ * Mark mission nodes in mission panel for removal (fade out)
+ * @param id
+ */
+void MissionHudContainer::terminate_mission(const uint32_t id)
+{
+	Node *node = find_node("mission_" + String::num(id), true, false);
+	if (CanvasItem *i = node->cast_to<CanvasItem>()) {
+		m_hud->add_pending_deletion(i);
+	}
+
+	node = find_node("mission_" + String::num(id) + "_desc", true, false);
+	if (CanvasItem *i = node->cast_to<CanvasItem>()) {
+		m_hud->add_pending_deletion(i);
+	}
+
+	node = find_node("mission_" + String::num(id) + "_objectives", true, false);
+	if (CanvasItem *i = node->cast_to<CanvasItem>()) {
+		m_hud->add_pending_deletion(i);
+	}
 }

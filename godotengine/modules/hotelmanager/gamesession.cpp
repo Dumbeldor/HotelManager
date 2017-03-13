@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <scene/gui/tab_container.h>
 #include <scene/resources/packed_scene.h>
+#include <iostream>
 
 #define MONEY_LIMIT 1000000000000
 
@@ -154,6 +155,9 @@ void GameSession::_process(float dtime)
 
 	// Notifications
 	m_notification_mgr->_process(dtime);
+
+	// HUD
+	m_hud->step(dtime);
 
 	// ActorObjects
 	ObjectMgr::get_singleton()->step(dtime);
@@ -397,7 +401,7 @@ void GameSession::on_hire_character(const CharacterDef &cdef)
 
 		if (objectives_done == mp.second->objectives_progress.size()) {
 			mp.second->state = MissionState::MISSION_STATE_DONE;
-
+			m_hud->terminate_mission(mp.first);
 			// @TODO update mission on HUD
 			// @TODO launch new next mission
 		}

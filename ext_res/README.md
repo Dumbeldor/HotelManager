@@ -12,9 +12,11 @@
 # Sound resources
 * Danse Morialta.mp3 => mainmenu.ogg: http://incompetech.com/music/royalty-free/mp3-royaltyfree/Danse%20Morialta.mp3
 * Gymnopedie No 1 to 3: http://incompetech.com/music/royalty-free/index.html?collection=8 (CC By Attribution 3.0 License)
+* pin_dropping-Brian_Rocca-2084700791.mp => ping-tiny.wav: http://soundbible.com/1992-Pin-Dropping.html
+* notification.wav => https://www.freesound.org/people/original_sound/sounds/366104/
+* missionsuccess.wav => https://www.freesound.org/people/fins/sounds/171671/
 
 # Font resources
 
 * Teen Font: http://www.1001fonts.com/teen-font.html
-
 
