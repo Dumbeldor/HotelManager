@@ -18,6 +18,7 @@
 #include "gamedatareader.h"
 #include "log.h"
 #include <sstream>
+#include <algorithm>
 
 ObjectDefMgr *ObjectDefMgr::s_singleton = nullptr;
 
@@ -271,6 +272,8 @@ void ObjectDefMgr::load_mission_objectives()
 		reader >> mission_objective->id >> mission_objective->title >> type >>
 		    mission_objective->count;
 
+		// @ TODO missing object id
+
 		if (type >= MissionObjective::Type::MAX) {
 			LOG_WARN("Invalid missionobjective type %d, ignoring.", type);
 			delete mission_objective;
@@ -376,6 +379,17 @@ const Mission &ObjectDefMgr::get_mission(const uint32_t id) const
 		return null_mission;
 	}
 	return *m->second;
+}
+
+void ObjectDefMgr::get_missions_by_parent(const uint32_t parent_id,
+	std::vector<uint32_t> &res) const
+{
+	for (const auto &m: m_missions) {
+		if (std::find(m.second->parents.begin(), m.second->parents.end(), parent_id) !=
+			m.second->parents.end()) {
+			res.push_back(m.first);
+		}
+	}
 }
 
 const MissionObjective &ObjectDefMgr::get_mission_objective(const uint32_t id) const
