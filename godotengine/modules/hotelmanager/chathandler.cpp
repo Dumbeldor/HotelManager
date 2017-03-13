@@ -42,7 +42,7 @@ ChatCommand *ChatHandler::getCommandTable()
 
 	static ChatCommand notifCommandTable[] = {
 	    {"add", true, &ChatHandler::handle_command_add_notif, nullptr,
-	     "Usage: /notif add title description"},
+	     "Usage: /notif add title description IconPath"},
 	    {"remove", true, &ChatHandler::handle_command_remove_notif, nullptr,
 		 "Use: /notif remove nb"},
 	    COMMANDHANDLERFINISHER,
@@ -359,7 +359,7 @@ bool ChatHandler::handle_command_add_notif(const std::string &args, GameSession 
 					   std::string &msg)
 {
 	if (args.empty()) {
-		msg = "/notif add 'Title' 'Description'";
+		msg = "/notif add 'Title' 'Description' 'IconPath'";
 		return false;
 	}
 
@@ -372,14 +372,16 @@ bool ChatHandler::handle_command_add_notif(const std::string &args, GameSession 
 		args_notif.push_back(arg.substr(0, pos));
 		arg.erase(0, pos + 1);
 		i++;
-		if (i >= 2) {
-			msg = "/notif add 'Title' 'Description'";
+		if (i >= 3) {
+			msg = "/notif add 'Title' 'Description' 'IconPath'";
 			return false;
 		}
 		pos = arg.find(" ");
 	}
 
-	game_session->add_notification(String(args_notif[0].c_str()), String(arg.c_str()));
+	if (args_notif.size() < 2 || arg.length() == 0)
+		return false;
+	game_session->add_notification(String(args_notif[0].c_str()), String(args_notif[1].c_str()), String(arg.c_str()));
 	msg = "The notification has been added";
 	return true;
 }

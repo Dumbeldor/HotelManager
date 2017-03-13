@@ -19,6 +19,7 @@
 #include <modules/hotelmanager/hud/hud.h>
 #include <scene/animation/animation_player.h>
 #include <scene/gui/label.h>
+#include <scene/2d/sprite.h>
 
 Notification::Notification() {}
 
@@ -28,6 +29,8 @@ void Notification::_bind_methods()
 {
 	ObjectTypeDB::bind_method(_MD("_on_animation_finished"),
 				  &Notification::_on_animation_finished);
+	ObjectTypeDB::bind_method(_MD("_on_closebutton_released"),
+				  &Notification::_on_closebutton_released);
 }
 
 void Notification::_on_animation_finished()
@@ -39,10 +42,11 @@ void Notification::_on_animation_finished()
 	}
 }
 
-void Notification::init(const String &title, const String &desc, const uint16_t nb)
+void Notification::init(const String &title, const String &desc, const uint16_t nb, const String &icon)
 {
 	set_title(title);
 	set_description(desc);
+	set_icon(icon);
 	init_pos(nb);
 	m_expired_time = 20.0f;
 }
@@ -50,7 +54,7 @@ void Notification::init(const String &title, const String &desc, const uint16_t 
 void Notification::init_pos(const uint16_t nb)
 {
 	m_nb = nb;
-	set_pos(Vector2(get_pos().x, get_pos().y + (80 * (nb - 1))));
+	set_pos(Vector2(get_pos().x, -(95 * (nb - 1))));
 }
 
 void Notification::set_title(const String &title)
@@ -60,11 +64,23 @@ void Notification::set_title(const String &title)
 	label->set_text(title);
 }
 
-void Notification::set_icon(const String &icon) {}
+void Notification::set_icon(const String &icon)
+{
+	Sprite *sprite = get_node(String("Icon"))->cast_to<Sprite>();
+	assert(sprite);
+	Ref<Resource> res = ResourceLoader::load(icon);
+	Texture *text = res->cast_to<Texture>();
+	sprite->set_texture(text);
+}
 
 void Notification::set_description(const String &desc)
 {
 	Label *label = get_node(String("Icon/DescriptionLabel"))->cast_to<Label>();
 	assert(label);
 	label->set_text(desc);
+}
+
+void Notification::_on_closebutton_released()
+{
+	get_node(String("Animation"))->cast_to<AnimationPlayer>()->play(String("Hide"));
 }

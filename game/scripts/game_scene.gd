@@ -47,7 +47,7 @@ func _ready():
 
 	get_node("GameSession/GameMap/Hud").initialize()
 	
-	game_session.add_notification("Good Game", "Welcome in Hotel Manager !")
+	game_session.add_notification("Good Game", "Welcome in Hotel Manager !", "res://icons/notification.png")
 
 func _process(delta):
 	game_session._process(delta)

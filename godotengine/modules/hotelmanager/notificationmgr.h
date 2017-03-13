@@ -17,20 +17,20 @@
 
 #include <cstdint>
 #include <reference.h>
-#include <scene/main/node.h>
 #include <scene/resources/packed_scene.h>
 #include <vector>
+#include <scene/gui/panel.h>
 
 class Notification;
 
-class NotificationMgr : public Node
+class NotificationMgr : public Panel
 {
-	OBJ_TYPE(NotificationMgr, Node);
+	OBJ_TYPE(NotificationMgr, Panel);
 
 public:
 	NotificationMgr();
 	~NotificationMgr();
-	void add_notification(const String &title, const String &text);
+	void add_notification(const String &title, const String &text, const String &icon);
 	bool remove_notification(const uint16_t id);
 	void _process(const float &delta);
 	void reorganize(uint8_t nb);

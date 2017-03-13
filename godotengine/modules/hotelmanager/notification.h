@@ -25,7 +25,7 @@ class Notification : public Panel
 public:
 	Notification();
 	~Notification();
-	void init(const String &title, const String &desc, const uint16_t nb);
+	void init(const String &title, const String &desc, const uint16_t nb, const String &icon);
 	void init_pos(const uint16_t nb);
 	void set_title(const String &title);
 	void set_icon(const String &icon);
@@ -40,4 +40,5 @@ private:
 protected:
 	static void _bind_methods();
 	void _on_animation_finished();
+	void _on_closebutton_released();
 };
