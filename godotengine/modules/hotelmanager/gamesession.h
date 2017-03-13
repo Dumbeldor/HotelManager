@@ -53,7 +53,7 @@ public:
 	double get_game_time() const { return m_game_time; };
 	void set_game_time(const double &game_time) { m_game_time = game_time; }
 
-	void add_notification(const String &title, const String &text);
+	void add_notification(const String &title, const String &text, const String &icon);
 	bool remove_notification(const uint16_t id);
 
 	Character *hire_character(CharacterRole role);

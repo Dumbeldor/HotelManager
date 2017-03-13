@@ -18,18 +18,23 @@
 #include <io/resource_loader.h>
 #include <modules/hotelmanager/hud/hud.h>
 #include <scene/animation/animation_player.h>
+#include <iostream>
 
 NotificationMgr::NotificationMgr() {}
 
 NotificationMgr::~NotificationMgr() {}
 
-void NotificationMgr::add_notification(const String &title, const String &text)
+void NotificationMgr::add_notification(const String &title, const String &text, const String &icon)
 {
 	Ref<Resource> res = ResourceLoader::load("res://scenes/Notification.tscn");
 	Ref<PackedScene> ps = res;
 	Notification *notif = ps->instance()->cast_to<Notification>();
 
-	notif->init(title, text, get_child_count() + 1);
+	if (get_child_count() > 4) {
+		remove_notification(0);
+	}
+
+	notif->init(title, text, get_child_count() + 1, icon);
 	add_child(notif);
 }
 
@@ -65,7 +70,7 @@ void NotificationMgr::reorganize(uint8_t nb)
 {
 	if (get_child_count() > nb) {
 		for (uint8_t i = nb; i < get_child_count(); i++) {
-			get_child(i)->cast_to<Notification>()->init_pos(0);
+			get_child(i)->cast_to<Notification>()->init_pos(i);
 		}
 	}
 }

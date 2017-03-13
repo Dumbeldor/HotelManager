@@ -109,7 +109,7 @@ void GameSession::init(const String &savename)
 
 	// Notification
 	m_notification_mgr =
-	    get_node(String("GameMap/Hud/NotificationMgr"))->cast_to<NotificationMgr>();
+	    get_node(String("GameMap/Hud/ControlPane_Bottom/NotificationMgr"))->cast_to<NotificationMgr>();
 }
 
 /**
@@ -296,9 +296,9 @@ void GameSession::start_mission(const uint32_t mission_id)
  *
  * @param Title, Text
  */
-void GameSession::add_notification(const String &title, const String &text)
+void GameSession::add_notification(const String &title, const String &text, const String &icon)
 {
-	m_notification_mgr->add_notification(title, text);
+	m_notification_mgr->add_notification(title, text, icon);
 }
 
 bool GameSession::remove_notification(const uint16_t id)
