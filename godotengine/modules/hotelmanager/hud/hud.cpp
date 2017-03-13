@@ -26,6 +26,11 @@
 #include <scene/gui/panel.h>
 #include <scene/gui/rich_text_label.h>
 #include <scene/gui/texture_button.h>
+#include <scene/audio/sample_player.h>
+#include <queue>
+#include <algorithm>
+
+#define SOUND_PLAYER_NODE String("MapSoundPlayer")
 
 Hud::Hud() : CanvasLayer() {}
 
@@ -35,6 +40,10 @@ void Hud::init()
 	    get_node(String("ControlPane/MissionPanel/MissionContainer"))
 			->cast_to<MissionHudContainer>();
 	assert(m_mission_container);
+	m_mission_container->set_hud(this);
+
+	m_sound_player = get_parent()->
+		get_parent()->get_node(SOUND_PLAYER_NODE)->cast_to<SamplePlayer>();
 
 	create_tilemenu("ground");
 	create_tilemenu("floor");
@@ -90,6 +99,37 @@ void Hud::_bind_methods() { ObjectTypeDB::bind_method(_MD("_on_draw"), &Hud::_on
  */
 void Hud::_on_draw() {}
 
+/**
+ * Hud event loop
+ * @param dtime
+ */
+void Hud::step(float dtime)
+{
+	if (!m_pending_nodes_for_deletion.empty()) {
+		m_pending_removal_timer -= dtime;
+		if (m_pending_removal_timer <= 0.0f) {
+			m_pending_removal_timer = 0.05f;
+			std::queue<CanvasItem *> removal_queue;
+			for (auto &n: m_pending_nodes_for_deletion) {
+				n->set_opacity(n->get_opacity() - 0.1f);
+				if (n->get_opacity() <= 0.0f) {
+					removal_queue.push(n);
+				}
+			}
+
+			while (!removal_queue.empty()) {
+				CanvasItem *n = removal_queue.front();
+				removal_queue.pop();
+				m_pending_nodes_for_deletion.erase(
+					std::remove(m_pending_nodes_for_deletion.begin(),
+						m_pending_nodes_for_deletion.end(), n),
+					m_pending_nodes_for_deletion.end());
+
+				n->get_parent()->remove_child(n);
+			}
+		}
+	}
+}
 /**
  * Change money label in the player's HUD
  * \attention This function triggers an assert if the HUD element doesn't exists
@@ -148,4 +188,10 @@ void Hud::add_mission(const Mission &mission)
 void Hud::update_mission_objective(const MissionObjective &objective_def, const uint32_t count)
 {
 	m_mission_container->update_mission_objective(objective_def, count);
+}
+
+void Hud::terminate_mission(const uint32_t id)
+{
+	m_sound_player->play("missionsuccess");
+	m_mission_container->terminate_mission(id);
 }
