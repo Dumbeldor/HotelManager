@@ -20,3 +20,5 @@
 
 * Teen Font: http://www.1001fonts.com/teen-font.html
 
+# Notifications resources
+* https://freeiconshop.com/icon/notification-icon-outline/
