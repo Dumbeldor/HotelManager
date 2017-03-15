@@ -45,6 +45,8 @@ public:
 
 	void step(float dtime);
 	void add_pending_deletion(CanvasItem *n) { m_pending_nodes_for_deletion.push_back(n); }
+	void add_user_error(const String &msg);
+
 protected:
 	static void _bind_methods();
 	void _on_draw();

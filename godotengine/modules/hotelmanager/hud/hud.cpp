@@ -15,6 +15,7 @@
 
 #include "hud.h"
 #include "clock.h"
+#include "modules/hotelmanager/console.h"
 #include "modules/hotelmanager/log.h"
 #include "selectormenu.h"
 #include "missionhudcontainer.h"
@@ -28,6 +29,7 @@
 #include <scene/gui/texture_button.h>
 #include <scene/audio/sample_player.h>
 #include <queue>
+#include "scene/main/viewport.h"
 #include <algorithm>
 
 #define SOUND_PLAYER_NODE String("MapSoundPlayer")
@@ -194,4 +196,11 @@ void Hud::terminate_mission(const uint32_t id)
 {
 	m_sound_player->play("missionsuccess");
 	m_mission_container->terminate_mission(id);
+}
+
+void Hud::add_user_error(const String &msg)
+{
+    Console *console = get_tree()->get_root()->get_node(String("Root/MainMenuLayer/Console"))->cast_to<Console>();
+    assert(console);
+    console->add_error(std::string(msg.utf8().get_data()));
 }
