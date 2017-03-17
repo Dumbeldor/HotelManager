@@ -27,6 +27,7 @@ struct MissionObjective
 	{
 		NONE,
 		HIRE,
+		PLACE_TILE,
 		MAX,
 	};
 

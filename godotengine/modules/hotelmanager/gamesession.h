@@ -82,10 +82,12 @@ protected:
 	}
 
 private:
+	void start_mission(const Mission &mission);
 	void start_mission(const uint32_t mission_id);
 
 	// events
 	void on_hire_character(const CharacterDef &cdef);
+	void update_mission_progress(const MissionObjective::Type t, const uint32_t obj_id);
 
 	int64_t m_money = 2000;
 	uint8_t m_game_speed = 1;

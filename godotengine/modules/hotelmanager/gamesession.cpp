@@ -259,24 +259,32 @@ void GameSession::remove_money(int64_t money)
 void GameSession::start_mission(const uint32_t mission_id)
 {
 	const Mission &mission = ObjectDefMgr::get_singleton()->get_mission(mission_id);
+	start_mission(mission);
+}
+
+/**
+ * State mission with the given definition
+ * @param mission
+ */
+void GameSession::start_mission(const Mission &mission)
+{
 	if (mission.id == 0) {
-		LOG_CRIT("start_mission: mission id %d not found, not starting.", mission_id);
+		ERR_PRINT("start_mission: mission not found, not starting.");
 		return;
 	}
 
 	MissionProgressPtr current_progress;
-	const auto &mission_progress = m_mission_progress.find(mission_id);
+	const auto &mission_progress = m_mission_progress.find(mission.id);
 	if (mission_progress == m_mission_progress.end()) {
-		m_mission_progress[mission_id] = MissionProgressPtr(new MissionProgress());
-		current_progress = m_mission_progress[mission_id];
+		m_mission_progress[mission.id] = MissionProgressPtr(new MissionProgress());
+		current_progress = m_mission_progress[mission.id];
 	} else {
 		current_progress = mission_progress->second;
 	}
 
 	if (current_progress->state != MISSION_STATE_NOT_STARTED) {
 		LOG_WARN("start_mission: trying to start already started or finished mission %d, "
-			 "not starting.",
-			 mission_id);
+			 "not starting.", mission.id);
 		return;
 	}
 
@@ -308,6 +316,68 @@ void GameSession::start_mission(const uint32_t mission_id)
 	}
 
 	m_hud->add_mission(mission);
+}
+
+/**
+ * Update mission progress for the given objective
+ * @param t
+ */
+void GameSession::update_mission_progress(const MissionObjective::Type t, const uint32_t obj_id)
+{
+	// Search current missions requiring hiring update
+	for (const auto &mp: m_mission_progress) {
+		// Ignore not in progress missions
+		if (mp.second->state != MissionState::MISSION_STATE_IN_PROGRESS) {
+			continue;
+		}
+
+		uint16_t objectives_done = 0;
+
+		for (auto &mo: mp.second->objectives_progress) {
+			const MissionObjective &modef =
+				ObjectDefMgr::get_singleton()->get_mission_objective(mo.second.id);
+			// Wrong objective, ignore
+			if (modef.id == 0) {
+				objectives_done++;
+				continue;
+			}
+
+			// Objective already done, ignore & mark as done to counter
+			if (mo.second.done) {
+				objectives_done++;
+				continue;
+			}
+
+			// Ignore non hire type here
+			if (modef.type != t) {
+				continue;
+			}
+
+			// @ TODO check if it's the good object to update (obj_id)
+
+			// Update progress
+			mo.second.progress++;
+
+			// Objective accomplished, update state & counter
+			if (mo.second.progress >= modef.count) {
+				mo.second.done = true;
+				objectives_done++;
+			}
+
+			m_hud->update_mission_objective(modef, mo.second.progress);
+		}
+
+		if (objectives_done == mp.second->objectives_progress.size()) {
+			mp.second->state = MissionState::MISSION_STATE_DONE;
+			m_hud->terminate_mission(mp.first);
+
+			std::vector<uint32_t> child_missions = {};
+			ObjectDefMgr::get_singleton()->get_missions_by_parent(mp.first, child_missions);
+			for (const auto &cm: child_missions) {
+				start_mission(cm);
+			}
+		}
+	}
 }
 
 /**
@@ -416,52 +486,5 @@ void GameSession::remove_user_error(const uint8_t id)
  */
 void GameSession::on_hire_character(const CharacterDef &cdef)
 {
-	// Search current missions requiring hiring update
-	for (const auto &mp: m_mission_progress) {
-		// Ignore not in progress missions
-		if (mp.second->state != MissionState::MISSION_STATE_IN_PROGRESS) {
-			continue;
-		}
-
-		uint16_t objectives_done = 0;
-
-		for (auto &mo: mp.second->objectives_progress) {
-			const MissionObjective &modef =
-				ObjectDefMgr::get_singleton()->get_mission_objective(mo.second.id);
-			// Wrong objective, ignore
-			if (modef.id == 0) {
-				objectives_done++;
-				continue;
-			}
-
-			// Objective already done, ignore & mark as done to counter
-			if (mo.second.done) {
-				objectives_done++;
-				continue;
-			}
-
-			// Ignore non hire type here
-			if (modef.type != MissionObjective::Type::HIRE) {
-				continue;
-			}
-
-			// Update progress
-			mo.second.progress++;
-
-			// Objective accomplished, update state & counter
-			if (mo.second.progress >= modef.count) {
-				mo.second.done = true;
-				objectives_done++;
-			}
-
-			m_hud->update_mission_objective(modef, mo.second.progress);
-		}
-
-		if (objectives_done == mp.second->objectives_progress.size()) {
-			mp.second->state = MissionState::MISSION_STATE_DONE;
-			m_hud->terminate_mission(mp.first);
-			// @TODO update mission on HUD
-			// @TODO launch new next mission
-		}
-	}
+	update_mission_progress(MissionObjective::Type::HIRE, cdef.id);
 }
