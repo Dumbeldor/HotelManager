@@ -36,10 +36,11 @@ struct MissionObjective
 	std::string title = "";
 	MissionObjective::Type type = MissionObjective::Type::NONE;
 	uint32_t count = 0;
+	uint32_t obj_id;
 };
 
 typedef std::unordered_map<uint32_t, MissionObjective *> MissionObjectiveMap;
-#define MISSIONOBJECTIVES_CSV_COLS 4
+#define MISSIONOBJECTIVES_CSV_COLS 5
 
 struct Mission
 {
