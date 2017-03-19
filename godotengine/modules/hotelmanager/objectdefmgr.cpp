@@ -270,7 +270,7 @@ void ObjectDefMgr::load_mission_objectives()
 		MissionObjective *mission_objective = new MissionObjective();
 		uint16_t type;
 		reader >> mission_objective->id >> mission_objective->title >> type >>
-		    mission_objective->count;
+		    mission_objective->count >> mission_objective->obj_id;
 
 		// @ TODO missing object id
 
@@ -281,6 +281,31 @@ void ObjectDefMgr::load_mission_objectives()
 		}
 
 		mission_objective->type = (MissionObjective::Type) type;
+
+		switch (mission_objective->type) {
+			case MissionObjective::Type::HIRE:
+				if (get_characterdef((const uint16_t) mission_objective->obj_id).id == 0) {
+					LOG_CRIT("Mission %d has objective with obj_id %d but obj_id isn't "
+						"referenced in tiledefs, ignoring.", mission_objective->id,
+						mission_objective->obj_id);
+					delete mission_objective;
+					continue;
+				}
+				break;
+			case MissionObjective::Type::PLACE_TILE:
+				if (get_tiledef(mission_objective->obj_id).id == 0) {
+					LOG_CRIT("Mission %d has objective with obj_id %d but obj_id isn't "
+						"referenced in tiledefs, ignoring.", mission_objective->id,
+						mission_objective->obj_id);
+					delete mission_objective;
+					continue;
+				}
+				break;
+			default:
+				// Non implemented objective
+				assert(false);
+				break;
+		}
 
 		if (m_mission_objectives.find(mission_objective->id) !=
 		    m_mission_objectives.end()) {

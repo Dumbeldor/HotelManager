@@ -25,6 +25,7 @@
 class GameMap;
 class Hud;
 class NotificationMgr;
+struct TileDef;
 
 class GameSession : public Node
 {
@@ -57,6 +58,7 @@ public:
 	bool remove_notification(const uint16_t id);
 
 	Character *hire_character(CharacterRole role);
+	bool on_tile_placed(const TileDef &tiledef, uint32_t count);
 
 	void add_user_error(const String &msg);
 	void remove_user_error(const uint8_t id);
@@ -87,7 +89,8 @@ private:
 
 	// events
 	void on_hire_character(const CharacterDef &cdef);
-	void update_mission_progress(const MissionObjective::Type t, const uint32_t obj_id);
+	void update_mission_progress(const MissionObjective::Type t, const uint32_t obj_id,
+		const uint32_t obj_count = 1);
 
 	int64_t m_money = 2000;
 	uint8_t m_game_speed = 1;

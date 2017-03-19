@@ -512,15 +512,11 @@ void GameMap::place_tiles_in_selected_area()
 	const TileDef &tiledef = ObjectDefMgr::get_singleton()->get_tiledef(s_tile);
 
 	if (cur_pos == m_selection_init_pos) {
-		if (!m_game_session->has_money(tiledef.cost)) {
-			reset_selection();
-			return;
-		}
-
-		if (interact_tilemap->get_cellv(cur_pos) != s_tile) {
+		// If tile is different & session validate our placement
+		if (interact_tilemap->get_cellv(cur_pos) != s_tile &&
+			m_game_session->on_tile_placed(tiledef, 1)) {
 			interact_tilemap->set_cellv(cur_pos, s_tile);
 			m_sound_player->play(SOUND_POP6);
-			m_game_session->remove_money(tiledef.cost);
 		}
 	} else {
 		Vector2 start_tile = Vector2(MIN(cur_pos.x, m_selection_init_pos.x),
@@ -552,22 +548,17 @@ void GameMap::place_tiles_in_selected_area()
 			}
 		}
 
-		// No money, no chocolate.
-		if (!m_game_session->has_money(cost)) {
-			// m_sound_player->play(SOUND_ERROR);
-			reset_selection();
-			return;
-		}
-
-		if (!tiles_to_modify.empty()) {
-			m_sound_player->play(SOUND_POP6);
-			m_game_session->remove_money(cost);
+		// If tiles to modify & gamesession valide our placement (cost)
+		if (!tiles_to_modify.empty() &&
+			m_game_session->on_tile_placed(tiledef, (uint32_t) tiles_to_modify.size())) {
 
 			while (!tiles_to_modify.empty()) {
 				const Vector2 &pos = tiles_to_modify.front();
 				interact_tilemap->set_cellv(pos, s_tile);
 				tiles_to_modify.pop();
 			}
+
+			m_sound_player->play(SOUND_POP6);
 		}
 	}
 

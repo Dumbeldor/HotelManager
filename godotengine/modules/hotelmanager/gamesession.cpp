@@ -322,7 +322,8 @@ void GameSession::start_mission(const Mission &mission)
  * Update mission progress for the given objective
  * @param t
  */
-void GameSession::update_mission_progress(const MissionObjective::Type t, const uint32_t obj_id)
+void GameSession::update_mission_progress(const MissionObjective::Type t, const uint32_t obj_id,
+		const uint32_t obj_count)
 {
 	// Search current missions requiring hiring update
 	for (const auto &mp: m_mission_progress) {
@@ -353,13 +354,18 @@ void GameSession::update_mission_progress(const MissionObjective::Type t, const 
 				continue;
 			}
 
-			// @ TODO check if it's the good object to update (obj_id)
+			// Skip if it's not the correct object id
+			if (modef.obj_id != obj_id) {
+				continue;
+			}
 
 			// Update progress
-			mo.second.progress++;
+			mo.second.progress += obj_count;
 
 			// Objective accomplished, update state & counter
 			if (mo.second.progress >= modef.count) {
+				// Re-set it if we added more than required in previous event
+				mo.second.progress = modef.count;
 				mo.second.done = true;
 				objectives_done++;
 			}
@@ -409,6 +415,7 @@ Character *GameSession::hire_character(CharacterRole role)
 	}
 
 	if (m_money < cdef.cost) {
+		add_user_error("You don't have enough money.");
 		return nullptr;
 	}
 
@@ -487,4 +494,16 @@ void GameSession::remove_user_error(const uint8_t id)
 void GameSession::on_hire_character(const CharacterDef &cdef)
 {
 	update_mission_progress(MissionObjective::Type::HIRE, cdef.id);
+}
+
+bool GameSession::on_tile_placed(const TileDef &tiledef, uint32_t count)
+{
+	if (!has_money(tiledef.cost * count)) {
+		add_user_error("You don't have enough money.");
+		return false;
+	}
+
+	remove_money(tiledef.cost * count);
+	update_mission_progress(MissionObjective::Type::PLACE_TILE, tiledef.id, count);
+	return true;
 }
