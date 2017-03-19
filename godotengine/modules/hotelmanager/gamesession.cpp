@@ -415,6 +415,7 @@ Character *GameSession::hire_character(CharacterRole role)
 	}
 
 	if (m_money < cdef.cost) {
+		add_user_error("You don't have enough money.");
 		return nullptr;
 	}
 
@@ -498,6 +499,7 @@ void GameSession::on_hire_character(const CharacterDef &cdef)
 bool GameSession::on_tile_placed(const TileDef &tiledef, uint32_t count)
 {
 	if (!has_money(tiledef.cost * count)) {
+		add_user_error("You don't have enough money.");
 		return false;
 	}
 
