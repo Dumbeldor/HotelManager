@@ -60,9 +60,6 @@ public:
 	Character *hire_character(CharacterRole role);
 	bool on_tile_placed(const TileDef &tiledef, uint32_t count);
 
-	void add_user_error(const String &msg);
-	void remove_user_error(const uint8_t id);
-
 protected:
 	static void _bind_methods();
 
@@ -96,8 +93,6 @@ private:
 	uint8_t m_game_speed = 1;
 	double m_game_time = 0;
 	float m_autosave_timer = 300.0f;
-	uint8_t m_nb_error = 0;
-	float m_auto_remove_error = 20.0f;
 
 	GameMap *m_map = nullptr;
 	Hud *m_hud = nullptr;

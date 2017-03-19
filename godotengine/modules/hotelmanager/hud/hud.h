@@ -46,6 +46,7 @@ public:
 	void step(float dtime);
 	void add_pending_deletion(CanvasItem *n) { m_pending_nodes_for_deletion.push_back(n); }
 	void add_user_error(const String &msg);
+	void remove_user_error(const uint8_t id = 0);
 
 protected:
 	static void _bind_methods();
@@ -60,4 +61,6 @@ private:
 	MissionHudContainer *m_mission_container = nullptr;
 	std::vector<CanvasItem *> m_pending_nodes_for_deletion = {};
 	float m_pending_removal_timer = 0.0f;
+	float m_user_error_timer = 10.0f;
+	uint8_t m_user_errormsg_count = 0;
 };

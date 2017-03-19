@@ -31,7 +31,6 @@
 #include <iostream>
 
 #define MONEY_LIMIT 1000000000000
-#define ERROR_MESSAGE_GAP 20
 
 GameSession::~GameSession()
 {
@@ -68,9 +67,6 @@ void GameSession::_bind_methods()
 	// Notification
 	ObjectTypeDB::bind_method("add_notification", &GameSession::add_notification);
 	ObjectTypeDB::bind_method("remove_notification", &GameSession::remove_notification);
-
-	// Error
-	ObjectTypeDB::bind_method("add_user_error", &GameSession::add_user_error);
 }
 
 /**
@@ -137,15 +133,6 @@ void GameSession::_process(float dtime)
 			snprintf(buf, 16, "%lu", time(NULL));
 			String date = "autosave_" + (String) buf;
 			save(date);
-		}
-	}
-
-	// Remove message error
-	if (m_nb_error > 0) {
-		m_auto_remove_error -= dtime;
-		if (m_auto_remove_error <= 0.0f) {
-			m_auto_remove_error = 20.0f;
-			remove_user_error(0);
 		}
 	}
 
@@ -415,7 +402,7 @@ Character *GameSession::hire_character(CharacterRole role)
 	}
 
 	if (m_money < cdef.cost) {
-		add_user_error("You don't have enough money.");
+		m_hud->add_user_error("You don't have enough money.");
 		return nullptr;
 	}
 
@@ -444,49 +431,6 @@ Character *GameSession::hire_character(CharacterRole role)
 	return character;
 }
 
-void GameSession::add_user_error(const String &msg)
-{
-	if (m_nb_error >= 3) {
-		remove_user_error(0);
-	}
-
-	m_nb_error++;
-
-	Label *label = memnew(Label);
-	label->set_text(msg);
-	label->add_color_override("font_color", Color(1, 0, 0));
-	label->set_anchor(MARGIN_LEFT, Control::ANCHOR_CENTER);
-	m_hud->get_node(String("ErrorContainer"))->cast_to<Container>()->add_child(label);
-	label->set_margin(MARGIN_LEFT, label->get_size().width / 2);
-	label->set_pos(Point2(label->get_pos().x, label->get_pos().y + (m_nb_error * ERROR_MESSAGE_GAP)));
-
-	LOG_CRIT(msg.utf8().get_data(), "");
-
-	m_hud->add_user_error(msg);
-}
-
-void GameSession::remove_user_error(const uint8_t id)
-{
-	Container *error_container = m_hud->get_node(String("ErrorContainer"))->cast_to<Container>();
-	assert(error_container);
-	Label *label = error_container->get_child(id)->cast_to<Label>();
-	if (!label) {
-		return;
-	}
-
-	// Reinit pos
-	if (error_container->get_child_count() > id) {
-		for (uint8_t i = id; i < error_container->get_child_count(); i++) {
-			Label *l = error_container->get_child(i)->cast_to<Label>();
-			assert(l);
-			l->set_pos(Point2(l->get_pos().x, l->get_pos().y - ERROR_MESSAGE_GAP));
-		}
-	}
-
-	label->queue_delete();
-	m_nb_error--;
-}
-
 /**
  * Event callback when hire a character
  * @param cdef
@@ -499,7 +443,7 @@ void GameSession::on_hire_character(const CharacterDef &cdef)
 bool GameSession::on_tile_placed(const TileDef &tiledef, uint32_t count)
 {
 	if (!has_money(tiledef.cost * count)) {
-		add_user_error("You don't have enough money.");
+		m_hud->add_user_error("You don't have enough money.");
 		return false;
 	}
 
