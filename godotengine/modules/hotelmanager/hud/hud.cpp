@@ -33,6 +33,7 @@
 #include <algorithm>
 
 #define SOUND_PLAYER_NODE String("MapSoundPlayer")
+#define ERROR_MESSAGE_GAP 20
 
 Hud::Hud() : CanvasLayer() {}
 
@@ -131,6 +132,14 @@ void Hud::step(float dtime)
 			}
 		}
 	}
+
+	if (m_user_errormsg_count > 0) {
+		m_user_error_timer -= dtime;
+		if (m_user_error_timer <= 0.0f) {
+			m_user_error_timer = 10.0f;
+			remove_user_error(0);
+		}
+	}
 }
 /**
  * Change money label in the player's HUD
@@ -198,9 +207,56 @@ void Hud::terminate_mission(const uint32_t id)
 	m_mission_container->terminate_mission(id);
 }
 
+/**
+ * Add the specified msg as a user error
+ *
+ * @param msg
+ */
 void Hud::add_user_error(const String &msg)
 {
+	if (m_user_errormsg_count >= 3) {
+		remove_user_error();
+	}
+
+	m_user_errormsg_count++;
+
+	Label *label = memnew(Label);
+	label->set_text(msg);
+	label->add_color_override("font_color", Color(1, 0, 0));
+	label->set_anchor(MARGIN_LEFT, Control::ANCHOR_CENTER);
+	get_node(String("ErrorContainer"))->cast_to<Container>()->add_child(label);
+	label->set_margin(MARGIN_LEFT, label->get_size().width / 2);
+	label->set_pos(Point2(label->get_pos().x, label->get_pos().y + (m_user_errormsg_count * ERROR_MESSAGE_GAP)));
+
+	LOG_CRIT(msg.utf8().get_data(), "");
+
     Console *console = get_tree()->get_root()->get_node(String("Root/MainMenuLayer/Console"))->cast_to<Console>();
     assert(console);
     console->add_error(std::string(msg.utf8().get_data()));
+}
+
+/**
+ * Remove message with given id from listed errors
+ * @param id
+ */
+void Hud::remove_user_error(const uint8_t id)
+{
+	Container *error_container = get_node(String("ErrorContainer"))->cast_to<Container>();
+	assert(error_container);
+	Label *label = error_container->get_child(id)->cast_to<Label>();
+	if (!label) {
+		return;
+	}
+
+	// Reinit pos
+	if (error_container->get_child_count() > id) {
+		for (uint8_t i = id; i < error_container->get_child_count(); i++) {
+			Label *l = error_container->get_child(i)->cast_to<Label>();
+			assert(l);
+			l->set_pos(Point2(l->get_pos().x, l->get_pos().y - ERROR_MESSAGE_GAP));
+		}
+	}
+
+	add_pending_deletion(label);
+	m_user_errormsg_count--;
 }
