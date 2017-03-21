@@ -23,6 +23,7 @@
 #include "objectdefmgr.h"
 #include "objectmgr.h"
 #include "savegame.h"
+#include "stringformatter.h"
 #include <algorithm>
 #include <scene/gui/tab_container.h>
 #include <scene/resources/packed_scene.h>

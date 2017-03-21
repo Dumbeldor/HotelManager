@@ -18,6 +18,7 @@
 #include <scene/gui/rich_text_label.h>
 #include <math/math_2d.h>
 #include <iostream>
+#include <modules/hotelmanager/stringformatter.h>
 #include "../missions.h"
 #include "hud.h"
 
@@ -45,8 +46,7 @@ MissionHudContainer::MissionHudContainer(const Mission &mission): VBoxContainer(
 
 	for (const auto &o : mission.objectives) {
 		Label *objective = memnew(Label);
-		objective->set_text(String("- ") + o->title.c_str() +
-			" (0/" + String::num(o->count) + ")");
+		objective->set_text(STRFMT("- %s (0/%d)", o->title.c_str(), o->count));
 		objective->set_name("mission_obj_" + String::num(o->id));
 		objectives_container->set_margin(MARGIN_LEFT, 20);
 		objectives_container->add_child(objective);
@@ -67,8 +67,8 @@ void MissionHudContainer::update_mission_objective(const MissionObjective &objec
 	assert(node);
 	Label *objective_label = node->cast_to<Label>();
 	assert(objective_label);
-	objective_label->set_text(String("- ") + objective_def.title.c_str() +
-		" (" + String::num(count) + "/" + String::num(objective_def.count) + ")");
+	objective_label->set_text(STRFMT("- %s (%d/%d)", objective_def.title.c_str(), count,
+		objective_def.count));
 }
 
 /**
