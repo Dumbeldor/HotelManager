@@ -129,8 +129,13 @@ void Hud::step(float dtime)
 					m_pending_nodes_for_deletion.end());
 
 				Node *parent = n->get_parent();
+
+				// Now remove node
 				parent->remove_child(n);
-				if (parent->get_child_count() == 0
+
+				// If parent has no child and is a MissionHudContainer, remove it too
+				// if it's not the mission container itself
+				if (parent != m_mission_container && parent->get_child_count() == 0
 					&& parent->get_type_name() == "MissionHudContainer") {
 					parent->get_parent()->remove_child(parent);
 				}
