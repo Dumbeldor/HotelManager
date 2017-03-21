@@ -128,7 +128,12 @@ void Hud::step(float dtime)
 						m_pending_nodes_for_deletion.end(), n),
 					m_pending_nodes_for_deletion.end());
 
-				n->get_parent()->remove_child(n);
+				Node *parent = n->get_parent();
+				parent->remove_child(n);
+				if (parent->get_child_count() == 0
+					&& parent->get_type_name() == "MissionHudContainer") {
+					parent->get_parent()->remove_child(parent);
+				}
 			}
 		}
 	}
