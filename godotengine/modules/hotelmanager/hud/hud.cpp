@@ -138,6 +138,7 @@ void Hud::step(float dtime)
 				if (parent != m_mission_container && parent->get_child_count() == 0
 					&& parent->get_type_name() == "MissionHudContainer") {
 					parent->get_parent()->remove_child(parent);
+					resize_mission_panel();
 				}
 			}
 		}
@@ -204,6 +205,26 @@ void Hud::add_mission(const Mission &mission)
 	m_mission_container->get_parent()->cast_to<Panel>()->show();
 	MissionHudContainer *mc = memnew(MissionHudContainer(mission));
 	m_mission_container->add_child(mc);
+	resize_mission_panel();
+}
+
+void Hud::resize_mission_panel()
+{
+	Panel *mission_panel = get_node(String("ControlPane/MissionPanel"))->cast_to<Panel>();
+	Control *mission_title_label = mission_panel->get_node(String("MissionTitleLabel"))->
+		cast_to<Control>();
+	assert(mission_panel && mission_title_label);
+
+	// 10 * 3 is margin bottom/top of the mission panel + margin top mission container
+	float cum_height = mission_title_label->get_size().height + 10 * 3;
+	for (uint32_t i = 0; i < m_mission_container->get_child_count(); i++) {
+		Control *child = m_mission_container->get_child(i)->cast_to<Control>();
+		if (!child) {
+			continue;
+		}
+		cum_height += child->get_size().height;
+	}
+	mission_panel->set_size(Size2(mission_panel->get_size().width, cum_height));
 }
 
 void Hud::update_mission_objective(const MissionObjective &objective_def, const uint32_t count)

@@ -56,6 +56,8 @@ private:
 	void create_tilemenu(const std::string &name);
 	void create_npcmenu();
 
+	void resize_mission_panel();
+
 	Clock *m_clock = nullptr;
 	SamplePlayer *m_sound_player = nullptr;
 	MissionHudContainer *m_mission_container = nullptr;
