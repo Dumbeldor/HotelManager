@@ -88,7 +88,6 @@ color = Color( 1, 1, 1, 1 )
 
 [node name="GroundMap" type="TileMap" parent="GameSession/GameMap"]
 
-editor/display_folded = true
 z/z = 10
 mode = 1
 tile_set = ExtResource( 2 )
@@ -105,6 +104,8 @@ collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
 tile_data = IntArray(  )
+
+[node name="Navigation2D" type="Navigation2D" parent="GameSession/GameMap/GroundMap"]
 
 [node name="Camera2D" type="Camera2D" parent="GameSession/GameMap/GroundMap"]
 
@@ -163,6 +164,7 @@ tile_data = IntArray(  )
 
 [node name="Hud" type="Hud" parent="GameSession/GameMap"]
 
+editor/display_folded = true
 layer = 20
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -182,7 +184,6 @@ margin/bottom = 1080.0
 
 [node name="MapControl" type="MapControl" parent="GameSession/GameMap/Hud/ControlPane"]
 
-editor/display_folded = true
 anchor/right = 1
 anchor/bottom = 1
 rect/min_size = Vector2( 1920, 1080 )

@@ -93,6 +93,12 @@ void GameSession::init(const String &savename)
 	m_map = $("GameMap")->cast_to<GameMap>();
 	assert(m_map);
 
+	{
+		Navigation2D *nav2d = $("GameMap/GroundMap/Navigation2D")->cast_to<Navigation2D>();
+		assert(nav2d);
+		Character::set_nav2d_node(nav2d);
+	}
+
 	// Map should be inited quickly
 	SaveGame save(savename);
 	if (!savename.empty()) {

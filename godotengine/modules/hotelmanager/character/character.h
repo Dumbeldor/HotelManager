@@ -60,6 +60,8 @@ struct CharacterDef
 };
 static const uint8_t CHARACTERDEF_CSV_COLS = 8;
 
+class Navigation2D;
+
 class Character : public RigidBody2D, public ActorObject
 {
 	OBJ_TYPE(Character, RigidBody2D);
@@ -67,8 +69,14 @@ class Character : public RigidBody2D, public ActorObject
 public:
 	Character() : RigidBody2D(), ActorObject() {}
 	Character(CharacterRole role);
-
 	virtual ~Character();
+
+	enum ActionWanted
+	{
+		CAW_NOTHING,
+		CAW_GOTO_POINT,
+		CAW_WAIT_AROUND_POINT,
+	};
 
 	CharacterSex get_sex() const { return m_sex; }
 	void set_sex(const CharacterSex sex) { m_sex = sex; }
@@ -77,6 +85,8 @@ public:
 	CharacterRole get_role() const { return m_character_role; }
 	void set_role(const CharacterRole role) { m_character_role = role; }
 	void set_role__api(const uint8_t role) { m_character_role = (CharacterRole) role; }
+
+	static void set_nav2d_node(Navigation2D *n2d) { m_navigator = n2d; }
 
 	virtual const ActorObject::Type get_ao_type() const { return ActorObject::TYPE_CHARACTER; }
 
@@ -89,7 +99,14 @@ protected:
 	CharacterRole m_character_role = CHARACTER_ROLE_NONE;
 
 private:
-	String m_character_name = "";
+	void action_move_to_tile();
 
 	CharacterSex m_sex = MALE;
+	String m_character_name = "";
+
+	ActionWanted m_action_wanted = CAW_NOTHING;
+	Vector2 m_action_pos = Vector2(0,0);
+	float m_speed = 1.0f;
+
+	static Navigation2D *m_navigator;
 };
