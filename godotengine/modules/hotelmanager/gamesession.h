@@ -29,6 +29,7 @@ struct TileDef;
 
 class GameSession : public Node
 {
+	friend class SaveGame;
 	OBJ_TYPE(GameSession, Node);
 
 public:
@@ -83,6 +84,11 @@ protected:
 private:
 	void start_mission(const Mission &mission);
 	void start_mission(const uint32_t mission_id);
+	const MissionProgressMap &get_mission_progress() const { return m_mission_progress; }
+	void set_mission_progress(const MissionProgressMap &misssion_progress)
+	{
+		m_mission_progress = misssion_progress;
+	}
 
 	// events
 	void on_hire_character(const CharacterDef &cdef);
