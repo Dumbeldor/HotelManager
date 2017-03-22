@@ -82,7 +82,7 @@ void GameSession::init(const String &savename)
 	new ObjectMgr();
 
 	// Init hud
-	m_hud = get_node(String("GameMap/Hud"))->cast_to<Hud>();
+	m_hud = $("GameMap/Hud")->cast_to<Hud>();
 	assert(m_hud);
 
 	m_hud->init();
@@ -90,7 +90,7 @@ void GameSession::init(const String &savename)
 	m_hud->set_day_label(get_current_day());
 	m_hud->modify_clock(m_game_time);
 
-	m_map = get_node(String("GameMap"))->cast_to<GameMap>();
+	m_map = $("GameMap")->cast_to<GameMap>();
 	assert(m_map);
 
 	// Map should be inited quickly
@@ -113,7 +113,7 @@ void GameSession::init(const String &savename)
 
 	// Notification
 	m_notification_mgr =
-	    get_node(String("GameMap/Hud/ControlPane_Bottom/NotificationMgr"))->cast_to<NotificationMgr>();
+	    $("GameMap/Hud/ControlPane_Bottom/NotificationMgr")->cast_to<NotificationMgr>();
 }
 
 /**

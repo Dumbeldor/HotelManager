@@ -35,7 +35,7 @@ void Notification::_bind_methods()
 
 void Notification::_on_animation_finished()
 {
-	if (get_node(String("Animation"))->cast_to<AnimationPlayer>()->get_current_animation() ==
+	if ($("Animation")->cast_to<AnimationPlayer>()->get_current_animation() ==
 	    String("Hide")) {
 		get_parent()->cast_to<NotificationMgr>()->reorganize(m_nb);
 		queue_delete();
@@ -59,14 +59,14 @@ void Notification::init_pos(const uint16_t nb)
 
 void Notification::set_title(const String &title)
 {
-	Label *label = get_node(String("Icon/TitleLabel"))->cast_to<Label>();
+	Label *label = $("Icon/TitleLabel")->cast_to<Label>();
 	assert(label);
 	label->set_text(title);
 }
 
 void Notification::set_icon(const String &icon)
 {
-	Sprite *sprite = get_node(String("Icon"))->cast_to<Sprite>();
+	Sprite *sprite = $("Icon")->cast_to<Sprite>();
 	assert(sprite);
 	Ref<Resource> res = ResourceLoader::load(icon);
 	Texture *text = res->cast_to<Texture>();
@@ -75,12 +75,12 @@ void Notification::set_icon(const String &icon)
 
 void Notification::set_description(const String &desc)
 {
-	Label *label = get_node(String("Icon/DescriptionLabel"))->cast_to<Label>();
+	Label *label = $("Icon/DescriptionLabel")->cast_to<Label>();
 	assert(label);
 	label->set_text(desc);
 }
 
 void Notification::_on_closebutton_released()
 {
-	get_node(String("Animation"))->cast_to<AnimationPlayer>()->play(String("Hide"));
+	$("Animation")->cast_to<AnimationPlayer>()->play(String("Hide"));
 }

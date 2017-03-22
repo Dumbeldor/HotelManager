@@ -32,7 +32,7 @@
 #include "scene/main/viewport.h"
 #include <algorithm>
 
-#define SOUND_PLAYER_NODE String("MapSoundPlayer")
+#define SOUND_PLAYER_NODE "MapSoundPlayer"
 #define ERROR_MESSAGE_GAP 20
 
 Hud::Hud() : CanvasLayer() {}
@@ -40,20 +40,19 @@ Hud::Hud() : CanvasLayer() {}
 void Hud::init()
 {
 	m_mission_container =
-	    get_node(String("ControlPane/MissionPanel/MissionContainer"))
-			->cast_to<MissionHudContainer>();
+	    $("ControlPane/MissionPanel/MissionContainer")->cast_to<MissionHudContainer>();
 	assert(m_mission_container);
 	m_mission_container->set_hud(this);
 
 	m_sound_player = get_parent()->
-		get_parent()->get_node(SOUND_PLAYER_NODE)->cast_to<SamplePlayer>();
+		get_parent()->$(SOUND_PLAYER_NODE)->cast_to<SamplePlayer>();
 
 	create_tilemenu("ground");
 	create_tilemenu("floor");
 	create_tilemenu("wall");
 	create_npcmenu();
 
-	m_clock = get_node(String("ControlPane/Clock"))->cast_to<Clock>();
+	m_clock = $("ControlPane/Clock")->cast_to<Clock>();
 	assert(m_clock);
 }
 
@@ -67,15 +66,14 @@ void Hud::create_tilemenu(const std::string &name)
 	Panel *menu = nullptr;
 
 	if (name == "ground") {
-		menu = get_node(
-			   String("ControlPane_Bottom/HireMenuButton/GroundMenuButton/GroundMenu"))
+		menu = $("ControlPane_Bottom/HireMenuButton/GroundMenuButton/GroundMenu")
 			   ->cast_to<Panel>();
 	} else if (name == "floor") {
 		menu =
-		    get_node(String("ControlPane_Bottom/HireMenuButton/FloorMenuButton/FloorMenu"))
+		    $("ControlPane_Bottom/HireMenuButton/FloorMenuButton/FloorMenu")
 			->cast_to<Panel>();
 	} else if (name == "wall") {
-		menu = get_node(String("ControlPane_Bottom/HireMenuButton/WallMenuButton/WallMenu"))
+		menu = $("ControlPane_Bottom/HireMenuButton/WallMenuButton/WallMenu")
 			   ->cast_to<Panel>();
 	}
 
@@ -85,8 +83,7 @@ void Hud::create_tilemenu(const std::string &name)
 
 void Hud::create_npcmenu()
 {
-	Panel *menu =
-	    get_node(String("ControlPane_Bottom/HireMenuButton/HireMenu"))->cast_to<Panel>();
+	Panel *menu = $("ControlPane_Bottom/HireMenuButton/HireMenu")->cast_to<Panel>();
 	assert(menu);
 	// SelectorMenu for NPCs
 	memnew(NPCSelectorMenu(menu));
@@ -160,7 +157,7 @@ void Hud::step(float dtime)
  */
 void Hud::set_money_label(const int64_t &money)
 {
-	Label *money_label = get_node(String("ControlPane/DayLabel/MoneyLabel"))->cast_to<Label>();
+	Label *money_label = $("ControlPane/DayLabel/MoneyLabel")->cast_to<Label>();
 	assert(money_label);
 	money_label->set_text(String::num_int64(money) + " $");
 }
@@ -173,7 +170,7 @@ void Hud::set_money_label(const int64_t &money)
  */
 void Hud::set_day_label(const uint32_t day)
 {
-	Label *day_label = get_node(String("ControlPane/DayLabel"))->cast_to<Label>();
+	Label *day_label = $("ControlPane/DayLabel")->cast_to<Label>();
 	assert(day_label);
 	day_label->set_text("Day: " + String::num_int64(day));
 }
@@ -189,7 +186,7 @@ void Hud::modify_clock(const double &time)
 	assert(m_clock);
 	m_clock->set(time);
 
-	Label *clock_label = get_node(String("ControlPane/ClockLabel"))->cast_to<Label>();
+	Label *clock_label = $("ControlPane/ClockLabel")->cast_to<Label>();
 	assert(clock_label);
 
 	clock_label->set_text(m_clock->to_string());
@@ -210,9 +207,8 @@ void Hud::add_mission(const Mission &mission)
 
 void Hud::resize_mission_panel()
 {
-	Panel *mission_panel = get_node(String("ControlPane/MissionPanel"))->cast_to<Panel>();
-	Control *mission_title_label = mission_panel->get_node(String("MissionTitleLabel"))->
-		cast_to<Control>();
+	Panel *mission_panel = $("ControlPane/MissionPanel")->cast_to<Panel>();
+	Control *mission_title_label = mission_panel->$("MissionTitleLabel")->cast_to<Control>();
 	assert(mission_panel && mission_title_label);
 
 	// 10 * 3 is margin bottom/top of the mission panel + margin top mission container
@@ -255,13 +251,13 @@ void Hud::add_user_error(const String &msg)
 	label->set_text(msg);
 	label->add_color_override("font_color", Color(1, 0, 0));
 	label->set_anchor(MARGIN_LEFT, Control::ANCHOR_CENTER);
-	get_node(String("ErrorContainer"))->cast_to<Container>()->add_child(label);
+	$("ErrorContainer")->cast_to<Container>()->add_child(label);
 	label->set_margin(MARGIN_LEFT, label->get_size().width / 2);
 	label->set_pos(Point2(label->get_pos().x, label->get_pos().y + (m_user_errormsg_count * ERROR_MESSAGE_GAP)));
 
 	LOG_CRIT(msg.utf8().get_data(), "");
 
-    Console *console = get_tree()->get_root()->get_node(String("Root/MainMenuLayer/Console"))->cast_to<Console>();
+    Console *console = get_tree()->get_root()->$("Root/MainMenuLayer/Console")->cast_to<Console>();
     assert(console);
     console->add_error(std::string(msg.utf8().get_data()));
 }
@@ -272,7 +268,7 @@ void Hud::add_user_error(const String &msg)
  */
 void Hud::remove_user_error(const uint8_t id)
 {
-	Container *error_container = get_node(String("ErrorContainer"))->cast_to<Container>();
+	Container *error_container = $("ErrorContainer")->cast_to<Container>();
 	assert(error_container);
 	Label *label = error_container->get_child(id)->cast_to<Label>();
 	if (!label) {

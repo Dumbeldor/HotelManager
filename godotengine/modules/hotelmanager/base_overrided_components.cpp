@@ -20,5 +20,5 @@ HMButton::HMButton(const String &p_text) : Button(p_text) {}
 void HMButton::pressed()
 {
 	Button::pressed();
-	get_node(String("/root/MusicPlayer"))->call("button_click");
+	$("/root/MusicPlayer")->call("button_click");
 }

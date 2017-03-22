@@ -955,6 +955,11 @@ Node *Node::get_node(const NodePath& p_path) const {
 	return node;
 }
 
+Node* Node::$(const char *p_path) const
+{
+	return get_node(String(p_path));
+}
+
 bool Node::has_node(const NodePath& p_path) const {
 
 	return _get_node(p_path)!=NULL;

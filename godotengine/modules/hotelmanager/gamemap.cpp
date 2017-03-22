@@ -32,13 +32,13 @@
 #include <scene/main/viewport.h>
 #include <vector>
 
-#define GROUNDMAP_NODE String("GroundMap")
-#define FLOORMAP_NODE String("GroundMap/FloorMap")
-#define OBJECTMAP_NODE String("GroundMap/FloorMap/ObjectMap")
-#define CAMERA_NODE String("GroundMap/Camera2D")
-#define MAPCONTROL_NODE String("Hud/ControlPane/MapControl")
-#define SOUND_PLAYER_NODE String("MapSoundPlayer")
-#define CANVAS_MODULATE_NODE String("DayNightMapMask")
+#define GROUNDMAP_NODE "GroundMap"
+#define FLOORMAP_NODE "GroundMap/FloorMap"
+#define OBJECTMAP_NODE "GroundMap/FloorMap/ObjectMap"
+#define CAMERA_NODE "GroundMap/Camera2D"
+#define MAPCONTROL_NODE "Hud/ControlPane/MapControl"
+#define SOUND_PLAYER_NODE "MapSoundPlayer"
+#define CANVAS_MODULATE_NODE "DayNightMapMask"
 #define SOUND_POP6 String("pop-6")
 
 #define SELECTOR_BORDER_NEWTILE Color(0.2, 1.0, 0.8, 0.9)
@@ -68,13 +68,13 @@ void GameMap::_bind_methods()
 bool GameMap::init(GameSession *game_session, const Dictionary &map)
 {
 	m_game_session = game_session;
-	m_sound_player = get_parent()->get_node(SOUND_PLAYER_NODE)->cast_to<SamplePlayer>();
-	m_ground_map = get_node(GROUNDMAP_NODE)->cast_to<TileMap>();
-	m_floor_map = get_node(FLOORMAP_NODE)->cast_to<TileMap>();
-	m_object_map = get_node(OBJECTMAP_NODE)->cast_to<TileMap>();
-	m_camera = get_node(CAMERA_NODE)->cast_to<Camera2D>();
-	m_control = get_node(MAPCONTROL_NODE)->cast_to<MapControl>();
-	m_canvas_modulate = get_node(CANVAS_MODULATE_NODE)->cast_to<CanvasModulate>();
+	m_sound_player = get_parent()->$(SOUND_PLAYER_NODE)->cast_to<SamplePlayer>();
+	m_ground_map = $(GROUNDMAP_NODE)->cast_to<TileMap>();
+	m_floor_map = $(FLOORMAP_NODE)->cast_to<TileMap>();
+	m_object_map = $(OBJECTMAP_NODE)->cast_to<TileMap>();
+	m_camera = $(CAMERA_NODE)->cast_to<Camera2D>();
+	m_control = $(MAPCONTROL_NODE)->cast_to<MapControl>();
+	m_canvas_modulate = $(CANVAS_MODULATE_NODE)->cast_to<CanvasModulate>();
 	assert(m_sound_player && m_ground_map && m_floor_map && m_object_map && m_camera &&
 	       m_control && m_canvas_modulate);
 

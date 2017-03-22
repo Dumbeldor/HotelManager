@@ -15,12 +15,11 @@
 
 #include "mapcontrol.h"
 #include "gamemap.h"
-#include <iostream>
 #include <scene/gui/label.h>
 
-#define LABEL_COST_NODE String("SelectorCost")
-#define LABEL_WIDTH_NODE String("SelectorWidth")
-#define LABEL_HEIGHT_NODE String("SelectorHeight")
+#define LABEL_COST_NODE "SelectorCost"
+#define LABEL_WIDTH_NODE "SelectorWidth"
+#define LABEL_HEIGHT_NODE "SelectorHeight"
 
 MapControl::MapControl() {}
 
@@ -43,9 +42,9 @@ void MapControl::init(GameMap *map)
 		connect("mouse_exit", map, "_canvas_mouse_exit");
 	}
 
-	m_label_cost = get_node(LABEL_COST_NODE)->cast_to<Label>();
-	m_label_width = get_node(LABEL_WIDTH_NODE)->cast_to<Label>();
-	m_label_height = get_node(LABEL_HEIGHT_NODE)->cast_to<Label>();
+	m_label_cost = $(LABEL_COST_NODE)->cast_to<Label>();
+	m_label_width = $(LABEL_WIDTH_NODE)->cast_to<Label>();
+	m_label_height = $(LABEL_HEIGHT_NODE)->cast_to<Label>();
 	assert(m_label_cost && m_label_height && m_label_width);
 }
 

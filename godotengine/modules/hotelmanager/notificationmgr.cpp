@@ -47,7 +47,7 @@ bool NotificationMgr::remove_notification(const uint16_t id)
 
 	Notification *notif = node->cast_to<Notification>();
 	assert(notif);
-	notif->get_node(String("Animation"))->cast_to<AnimationPlayer>()->play(String("Hide"));
+	notif->$("Animation")->cast_to<AnimationPlayer>()->play(String("Hide"));
 	return true;
 }
 
@@ -58,8 +58,7 @@ void NotificationMgr::_process(const float &delta)
 		assert(notif);
 		notif->_process(delta);
 		if (notif->is_expired() &&
-		    !notif->get_node(String("Animation"))
-			 ->cast_to<AnimationPlayer>()
+		    !notif->$("Animation")->cast_to<AnimationPlayer>()
 			 ->is_playing()) {
 			remove_notification(i);
 		}

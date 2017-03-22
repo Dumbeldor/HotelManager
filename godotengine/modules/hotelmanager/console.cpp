@@ -34,7 +34,7 @@ void Console::_bind_methods() { ObjectTypeDB::bind_method("send_command", &Conso
 void Console::add_text(const std::string &text)
 {
 	RichTextLabel *rich_text_label =
-	    get_node(String("RichTextLabel"))->cast_to<RichTextLabel>();
+	    $("RichTextLabel")->cast_to<RichTextLabel>();
 	rich_text_label->add_text(String(text.c_str()) + "\n");
 	if (rich_text_label->get_line_count() > MAX_HISTORY) {
 		uint16_t nb = rich_text_label->get_line_count() - MAX_HISTORY;
@@ -51,8 +51,7 @@ void Console::tag_sucess(const std::string &text)
 {
 	if (text == "")
 		return;
-	RichTextLabel *rich_text_label =
-	    get_node(String("RichTextLabel"))->cast_to<RichTextLabel>();
+	RichTextLabel *rich_text_label = $("RichTextLabel")->cast_to<RichTextLabel>();
 	rich_text_label->append_bbcode("[color=#33C73A]" + String(text.c_str()) + "[/color]\n");
 }
 
@@ -64,8 +63,7 @@ void Console::add_error(const std::string &text)
 {
 	if (text == "")
 		return;
-	RichTextLabel *rich_text_label =
-	    get_node(String("RichTextLabel"))->cast_to<RichTextLabel>();
+	RichTextLabel *rich_text_label = $("RichTextLabel")->cast_to<RichTextLabel>();
 	rich_text_label->append_bbcode("[color=red]Error : " + String(text.c_str()) + "[/color]\n");
 }
 
@@ -79,7 +77,6 @@ void Console::send_command(const String &command)
 	std::string msg = "";
 	bool res = m_chat_handler->handle_command(
 	    std::string(command.ascii().get_data()),
-	    get_tree()->get_root()->get_node(String("Root/GameSession"))->cast_to<GameSession>(),
-	    msg);
+	    get_tree()->get_root()->$("Root/GameSession")->cast_to<GameSession>(), msg);
 	(res) ? tag_sucess(msg) : add_error(msg);
 }

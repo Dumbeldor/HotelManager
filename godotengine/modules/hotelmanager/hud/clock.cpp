@@ -17,15 +17,15 @@
 #include <cmath>
 #include <iostream>
 
-#define CLOCK_MIN_SPRITE String("ClockMin")
-#define CLOCK_HOUR_SPRITE String("ClockHour")
+#define CLOCK_MIN_SPRITE "ClockMin"
+#define CLOCK_HOUR_SPRITE "ClockHour"
 
 void Clock::set(const double &time)
 {
 	m_time = time;
-	Sprite *minclock = get_node(CLOCK_MIN_SPRITE)->cast_to<Sprite>();
+	Sprite *minclock = $(CLOCK_MIN_SPRITE)->cast_to<Sprite>();
 	assert(minclock);
-	Sprite *hourclock = get_node(CLOCK_HOUR_SPRITE)->cast_to<Sprite>();
+	Sprite *hourclock = $(CLOCK_HOUR_SPRITE)->cast_to<Sprite>();
 	assert(hourclock);
 
 	minclock->set_rotd(360.0f - ((uint64_t)(m_time * 60) % 3600) / 10.0f);
