@@ -20,6 +20,7 @@
 #include <scene/animation/animation_player.h>
 #include <scene/gui/label.h>
 #include <scene/2d/sprite.h>
+#include <iostream>
 
 Notification::Notification() {}
 
@@ -31,6 +32,7 @@ void Notification::_bind_methods()
 				  &Notification::_on_animation_finished);
 	ObjectTypeDB::bind_method(_MD("_on_closebutton_released"),
 				  &Notification::_on_closebutton_released);
+	ObjectTypeDB::bind_method(_MD("_on_input_event"), &Notification::_on_input_event);
 }
 
 void Notification::_on_animation_finished()
@@ -42,12 +44,15 @@ void Notification::_on_animation_finished()
 	}
 }
 
-void Notification::init(const String &title, const String &desc, const uint16_t nb, const String &icon)
+void Notification::init(const String &title, const String &desc, const uint16_t nb, const String &icon,
+		NotificationCallback callback, const uint32_t &callback_id)
 {
 	set_title(title);
 	set_description(desc);
 	set_icon(icon);
 	init_pos(nb);
+	m_callback = callback;
+	m_callback_id = callback_id;
 	m_expired_time = 20.0f;
 }
 
@@ -83,4 +88,18 @@ void Notification::set_description(const String &desc)
 void Notification::_on_closebutton_released()
 {
 	$("Animation")->cast_to<AnimationPlayer>()->play(String("Hide"));
+}
+
+void Notification::_on_input_event(const InputEvent &e)
+{
+	if (e.type == InputEvent::MOUSE_BUTTON) {
+		if (e.mouse_button.button_index == BUTTON_LEFT) {
+			AnimationPlayer *anim = $("Animation")->cast_to<AnimationPlayer>();
+			assert(anim);
+			if (m_callback && !anim->is_playing()) {
+				m_callback(m_callback_id);
+				anim->play(String("Hide"));
+			}
+		}
+	}
 }

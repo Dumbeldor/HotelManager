@@ -17,6 +17,9 @@
 
 #include <ctime>
 #include <scene/gui/panel.h>
+#include <functional>
+
+typedef std::function<void(int)> NotificationCallback;
 
 class Notification : public Panel
 {
@@ -25,17 +28,22 @@ class Notification : public Panel
 public:
 	Notification();
 	~Notification();
-	void init(const String &title, const String &desc, const uint16_t nb, const String &icon);
+	void init(const String &title, const String &desc, const uint16_t nb, const String &icon,
+		NotificationCallback callback = nullptr, const uint32_t &callback_id = 0);
 	void init_pos(const uint16_t nb);
 	void set_title(const String &title);
 	void set_icon(const String &icon);
 	void set_description(const String &desc);
 	void _process(const float &time) { m_expired_time -= time; }
 	bool is_expired() { return m_expired_time <= 0; }
+	void _on_input_event(const InputEvent &e);
+	void set_notification_callback_objid(uint32_t callback_id) { m_callback_id = callback_id; }
 
 private:
 	float m_expired_time = 20.0f;
 	uint8_t m_nb = 0;
+	uint32_t m_callback_id = 0;
+	NotificationCallback m_callback = nullptr;
 
 protected:
 	static void _bind_methods();

@@ -103,6 +103,8 @@ enabled_focus_mode = 2
 shortcut = null
 textures/normal = ExtResource( 2 )
 
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+
 [connection signal="finished" from="Animation" to="." method="_on_animation_finished"]
 
 [connection signal="released" from="CloseButton" to="." method="_on_closebutton_released"]

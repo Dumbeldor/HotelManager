@@ -17,11 +17,11 @@
 
 #include <cstdint>
 #include <reference.h>
+#include "notification.h"
 #include <scene/resources/packed_scene.h>
 #include <vector>
 #include <scene/gui/panel.h>
-
-class Notification;
+#include <functional>
 
 class NotificationMgr : public Panel
 {
@@ -30,7 +30,8 @@ class NotificationMgr : public Panel
 public:
 	NotificationMgr();
 	~NotificationMgr();
-	void add_notification(const String &title, const String &text, const String &icon);
+	void add_notification(const String &title, const String &text, const String &icon,
+		NotificationCallback callback = nullptr, const uint32_t &callback_id = 0);
 	bool remove_notification(const uint16_t id);
 	void _process(const float &delta);
 	void reorganize(uint8_t nb);

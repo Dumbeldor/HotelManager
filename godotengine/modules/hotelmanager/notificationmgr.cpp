@@ -14,7 +14,6 @@
  */
 
 #include "notificationmgr.h"
-#include "notification.h"
 #include <io/resource_loader.h>
 #include <modules/hotelmanager/hud/hud.h>
 #include <scene/animation/animation_player.h>
@@ -24,7 +23,12 @@ NotificationMgr::NotificationMgr() {}
 
 NotificationMgr::~NotificationMgr() {}
 
-void NotificationMgr::add_notification(const String &title, const String &text, const String &icon)
+/**
+ * Add notification
+ * @param title, text, icon, callback (function call when click on the notification), id passed as parameter of the callback
+ */
+void NotificationMgr::add_notification(const String &title, const String &text, const String &icon,
+		NotificationCallback callback, const uint32_t &callback_id)
 {
 	Ref<Resource> res = ResourceLoader::load("res://scenes/Notification.tscn");
 	Ref<PackedScene> ps = res;
@@ -34,7 +38,7 @@ void NotificationMgr::add_notification(const String &title, const String &text, 
 		remove_notification(0);
 	}
 
-	notif->init(title, text, get_child_count() + 1, icon);
+	notif->init(title, text, get_child_count() + 1, icon, callback, callback_id);
 	add_child(notif);
 }
 
