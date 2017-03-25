@@ -56,12 +56,16 @@ typedef std::unordered_map<uint32_t, Mission *> MissionMap;
 
 struct MissionObjectiveProgress
 {
+	MissionObjectiveProgress(uint32_t _id): id(_id) {}
 	uint32_t id = 0;
 	uint32_t progress = 0;
 	bool done = false;
+private:
+	MissionObjectiveProgress() = delete;
 };
 
-typedef std::unordered_map<uint32_t, MissionObjectiveProgress> MissionObjectiveProgressMap;
+typedef std::shared_ptr<MissionObjectiveProgress> MissionObjectiveProgressPtr;
+typedef std::unordered_map<uint32_t, MissionObjectiveProgressPtr> MissionObjectiveProgressMap;
 
 enum MissionState : uint8_t
 {
@@ -73,9 +77,12 @@ enum MissionState : uint8_t
 
 struct MissionProgress
 {
+	MissionProgress(uint32_t _id): id(_id) {}
 	uint32_t id = 0;
 	MissionState state = MISSION_STATE_NOT_STARTED;
 	MissionObjectiveProgressMap objectives_progress = {};
+private:
+	MissionProgress() = delete;
 };
 
 typedef std::shared_ptr<MissionProgress> MissionProgressPtr;

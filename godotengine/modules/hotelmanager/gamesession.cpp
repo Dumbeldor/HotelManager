@@ -264,7 +264,7 @@ void GameSession::start_mission(const Mission &mission)
 	MissionProgressPtr current_progress;
 	const auto &mission_progress = m_mission_progress.find(mission.id);
 	if (mission_progress == m_mission_progress.end()) {
-		m_mission_progress[mission.id] = MissionProgressPtr(new MissionProgress());
+		m_mission_progress[mission.id] = MissionProgressPtr(new MissionProgress(mission.id));
 		current_progress = m_mission_progress[mission.id];
 	} else {
 		current_progress = mission_progress->second;
@@ -299,8 +299,8 @@ void GameSession::start_mission(const Mission &mission)
 	// Mark mission as in progress & populate objectives
 	current_progress->state = MISSION_STATE_IN_PROGRESS;
 	for (const auto &mo : mission.objectives) {
-		current_progress->objectives_progress[mo->id] = MissionObjectiveProgress();
-		current_progress->objectives_progress[mo->id].id = mo->id;
+		current_progress->objectives_progress[mo->id] =
+			std::make_shared<MissionObjectiveProgress>(mo->id);
 	}
 
 	m_hud->add_mission(mission);
@@ -324,7 +324,7 @@ void GameSession::update_mission_progress(const MissionObjective::Type t, const 
 
 		for (auto &mo: mp.second->objectives_progress) {
 			const MissionObjective &modef =
-				ObjectDefMgr::get_singleton()->get_mission_objective(mo.second.id);
+				ObjectDefMgr::get_singleton()->get_mission_objective(mo.second->id);
 			// Wrong objective, ignore
 			if (modef.id == 0) {
 				objectives_done++;
@@ -332,7 +332,7 @@ void GameSession::update_mission_progress(const MissionObjective::Type t, const 
 			}
 
 			// Objective already done, ignore & mark as done to counter
-			if (mo.second.done) {
+			if (mo.second->done) {
 				objectives_done++;
 				continue;
 			}
@@ -348,17 +348,17 @@ void GameSession::update_mission_progress(const MissionObjective::Type t, const 
 			}
 
 			// Update progress
-			mo.second.progress += obj_count;
+			mo.second->progress += obj_count;
 
 			// Objective accomplished, update state & counter
-			if (mo.second.progress >= modef.count) {
+			if (mo.second->progress >= modef.count) {
 				// Re-set it if we added more than required in previous event
-				mo.second.progress = modef.count;
-				mo.second.done = true;
+				mo.second->progress = modef.count;
+				mo.second->done = true;
 				objectives_done++;
 			}
 
-			m_hud->update_mission_objective(modef, mo.second.progress);
+			m_hud->update_mission_objective(modef, mo.second->progress);
 		}
 
 		if (objectives_done == mp.second->objectives_progress.size()) {

@@ -69,9 +69,9 @@ void SaveGame::save(const GameSession *game_session, const GameMap *game_map)
 		uint32_t nb_objectives_progress = 0;
 		for (const auto &op : mi.second->objectives_progress) {
 			Dictionary ob;
-			ob["id"] = op.second.id;
-			ob["progress"] = op.second.progress;
-			ob["done"] = op.second.done;
+			ob["id"] = op.second->id;
+			ob["progress"] = op.second->progress;
+			ob["done"] = op.second->done;
 			objectives_progress[mi.first] = ob;
 			nb_objectives_progress++;
 		}
@@ -124,20 +124,19 @@ bool SaveGame::load(GameSession *game_session, GameMap *game_map)
 	missions.get_key_list(&keys);
 
 	for (List<Variant>::Element *E=keys.front(); E; E=E->next()) {
-		MissionProgress *mission_progress = new MissionProgress();
 		const Dictionary &mission = missions[String(E->get())];
-		mission_progress->id = (uint32_t) mission["id"];
+		MissionProgress *mission_progress = new MissionProgress((uint32_t) mission["id"]);
 		mission_progress->state = (MissionState) (uint8_t) mission["state"];
 		MissionObjectiveProgressMap mission_objective_progress_map;
 		const Dictionary &objectives_progress = mission["objectives_progress"];
 		List<Variant> keys_objectives;
 		objectives_progress.get_key_list(&keys_objectives);
 		for (List<Variant>::Element *K=keys.front(); K; K=K->next()) {
-			MissionObjectiveProgress mission_objective_progress;
 			const Dictionary &ob = objectives_progress[String(K->get())];
-			mission_objective_progress.id = (uint32_t) ob["id"];
-			mission_objective_progress.done = (bool) ob["done"];
-			mission_objective_progress.progress = (uint32_t) ob["progress"];
+			MissionObjectiveProgressPtr mission_objective_progress =
+				std::make_shared<MissionObjectiveProgress>((uint32_t) ob["id"]);
+			mission_objective_progress->done = (bool) ob["done"];
+			mission_objective_progress->progress = (uint32_t) ob["progress"];
 			mission_objective_progress_map[(uint32_t) K->get()] = mission_objective_progress;
 		}
 		mission_progress->objectives_progress = mission_objective_progress_map;
