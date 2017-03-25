@@ -84,11 +84,17 @@ protected:
 private:
 	void start_mission(const Mission &mission);
 	void start_mission(const uint32_t mission_id);
+	void load_mission(const uint32_t mission_id);
+	void load_mission_objective_progress(const MissionObjective &modef,
+		const uint32_t progress) const;
 	const MissionProgressMap &get_mission_progress() const { return m_mission_progress; }
 	void set_mission_progress(const MissionProgressMap &misssion_progress)
 	{
 		m_mission_progress = misssion_progress;
 	}
+
+	// No mission & no mission progress recorded, it's a new game
+	const bool is_new_game() const { return m_mission_progress.empty(); }
 
 	// events
 	void on_hire_character(const CharacterDef &cdef);

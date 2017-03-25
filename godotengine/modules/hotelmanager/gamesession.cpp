@@ -97,14 +97,12 @@ void GameSession::init(const String &savename)
 	SaveGame save(savename);
 	if (!savename.empty()) {
 		save.load(this, m_map);
-		// TODO: deserialize other args for this session
 	} else {
 		Dictionary fake_map;
 		m_map->init(this, fake_map);
 	}
 
-	// No mission & no mission progress recorded, it's a new game
-	if (m_mission_progress.empty()) {
+	if (is_new_game()) {
 		start_mission(1);
 	}
 
@@ -304,6 +302,22 @@ void GameSession::start_mission(const Mission &mission)
 	}
 
 	m_hud->add_mission(mission);
+}
+
+void GameSession::load_mission(const uint32_t mission_id)
+{
+	const Mission &mission = ObjectDefMgr::get_singleton()->get_mission(mission_id);
+	if (mission.id == 0) {
+		LOG_WARN("Unable to load mission %d, no definition found.", mission_id)
+		return;
+	}
+	m_hud->add_mission(mission);
+}
+
+void GameSession::load_mission_objective_progress(const MissionObjective &modef,
+	const uint32_t progress) const
+{
+	m_hud->update_mission_objective(modef, progress);
 }
 
 /**

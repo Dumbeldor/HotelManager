@@ -27,7 +27,7 @@ For Linux platform:
 
 ```
 cd godotengine
-scons platform=x11 tools=yes target=debug openssl=yes colored=yes pulseaudio=no use_llvm=yes
+scons platform=x11 tools=yes target=debug openssl=yes colored=yes pulseaudio=no use_llvm=yes builtin_openssl=yes
 ```
 
 ## Regen tiles alternates

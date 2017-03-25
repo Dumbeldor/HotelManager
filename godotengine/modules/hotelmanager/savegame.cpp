@@ -15,6 +15,8 @@
 
 #include "savegame.h"
 #include "scene/2d/sprite.h"
+#include "objectdefmgr.h"
+#include "log.h"
 #include <core/io/base64.h>
 #include <ctime>
 #include <iostream>
@@ -120,33 +122,53 @@ bool SaveGame::load(GameSession *game_session, GameMap *game_map)
 	MissionProgressMap mission_progress_map;
 	Dictionary missions = data["missions"];
 
-	List<Variant> keys;
-	missions.get_key_list(&keys);
+	List<Variant> mission_keys;
+	missions.get_key_list(&mission_keys);
 
-	for (List<Variant>::Element *E=keys.front(); E; E=E->next()) {
+	for (List<Variant>::Element *E=mission_keys.front(); E; E=E->next()) {
 		const Dictionary &mission = missions[String(E->get())];
 		MissionProgress *mission_progress = new MissionProgress((uint32_t) mission["id"]);
 		mission_progress->state = (MissionState) (uint8_t) mission["state"];
-		MissionObjectiveProgressMap mission_objective_progress_map;
 		const Dictionary &objectives_progress = mission["objectives_progress"];
-		List<Variant> keys_objectives;
-		objectives_progress.get_key_list(&keys_objectives);
-		for (List<Variant>::Element *K=keys.front(); K; K=K->next()) {
+		List<Variant> mission_objectives_keys;
+		objectives_progress.get_key_list(&mission_objectives_keys);
+
+		for (List<Variant>::Element *K=mission_objectives_keys.front(); K; K=K->next()) {
 			const Dictionary &ob = objectives_progress[String(K->get())];
 			MissionObjectiveProgressPtr mission_objective_progress =
 				std::make_shared<MissionObjectiveProgress>((uint32_t) ob["id"]);
+			std::cout << "Mission " << mission_progress->id << " objective " << mission_objective_progress->id <<
+				" variant " << String(K->get()).ascii().get_data() << std::endl;
+
 			mission_objective_progress->done = (bool) ob["done"];
 			mission_objective_progress->progress = (uint32_t) ob["progress"];
-			mission_objective_progress_map[(uint32_t) K->get()] = mission_objective_progress;
+			mission_progress->objectives_progress[(uint32_t) K->get()] = mission_objective_progress;
 		}
-		mission_progress->objectives_progress = mission_objective_progress_map;
 
-		MissionProgressPtr mission_progress_ptr(mission_progress);
-		mission_progress_map[(uint32_t) E->get()] = mission_progress_ptr;
-		game_session->start_mission((uint32_t) E->get());
+		// Register into map
+		mission_progress_map[(uint32_t) E->get()] = MissionProgressPtr(mission_progress);
 	}
 
 	game_session->set_mission_progress(mission_progress_map);
+
+	for (const auto &m: mission_progress_map) {
+		if (m.second->state != MISSION_STATE_IN_PROGRESS) {
+			continue;
+		}
+
+		game_session->load_mission(m.first);
+
+		for (const auto &mo: m.second->objectives_progress) {
+			const MissionObjective &modef =
+				ObjectDefMgr::get_singleton()->get_mission_objective(mo.first);
+			if (modef.id == 0) {
+				LOG_WARN("Unable to retrieve mission objective definition (ID: %d)", mo.first);
+				continue;
+			}
+
+			game_session->load_mission_objective_progress(modef, mo.second->progress);
+		}
+	}
 
 	//mission_progress_map.
 	return game_map->init(game_session, data["map"]);
