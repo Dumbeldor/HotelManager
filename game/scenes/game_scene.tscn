@@ -237,69 +237,6 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="DayLabel" type="Label" parent="GameSession/GameMap/Hud/ControlPane"]
-
-anchor/left = 3
-anchor/right = 3
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-margin/left = 64.0
-margin/top = 20.0
-margin/right = -10.0
-margin/bottom = 34.0
-text = "[DayLabelText]"
-align = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="DayPanel" type="Panel" parent="GameSession/GameMap/Hud/ControlPane/DayLabel"]
-
-visibility/behind_parent = true
-anchor/right = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -30.0
-margin/top = -13.0
-margin/right = -30.0
-margin/bottom = 27.0
-
-[node name="MoneyLabel" type="Label" parent="GameSession/GameMap/Hud/ControlPane/DayLabel"]
-
-anchor/left = 3
-anchor/right = 3
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-margin/left = -119.5
-margin/top = 0.0
-margin/right = -231.5
-margin/bottom = 0.0
-text = "[MoneyLabelText]"
-align = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="MoneyPanel" type="Panel" parent="GameSession/GameMap/Hud/ControlPane/DayLabel/MoneyLabel"]
-
-visibility/behind_parent = true
-material/use_parent = true
-anchor/right = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -20.0
-margin/top = -13.0
-margin/right = -20.0
-margin/bottom = 27.0
-
 [node name="ClockLabel" type="Label" parent="GameSession/GameMap/Hud/ControlPane"]
 
 anchor/right = 1
@@ -419,6 +356,7 @@ flat = false
 
 [node name="MissionPanel" type="Panel" parent="GameSession/GameMap/Hud/ControlPane"]
 
+editor/display_folded = true
 visibility/visible = false
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -460,6 +398,82 @@ margin/top = 30.0
 margin/right = 10.0
 margin/bottom = 10.0
 alignment = 0
+
+[node name="LabelTop" type="Container" parent="GameSession/GameMap/Hud/ControlPane"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 170.0
+margin/top = 10.0
+margin/right = -170.0
+margin/bottom = 73.0
+
+[node name="DayPanel" type="Panel" parent="GameSession/GameMap/Hud/ControlPane/LabelTop"]
+
+visibility/behind_parent = true
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 7.0
+margin/right = 153.0
+margin/bottom = 47.0
+
+[node name="DayLabel" type="Label" parent="GameSession/GameMap/Hud/ControlPane/LabelTop/DayPanel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 46.0
+margin/top = 13.0
+margin/right = -46.0
+margin/bottom = 27.0
+text = "[DayLabelText]"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="MoneyPanel" type="Panel" parent="GameSession/GameMap/Hud/ControlPane/LabelTop"]
+
+visibility/behind_parent = true
+material/use_parent = true
+anchor/left = 1
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 153.0
+margin/top = 7.0
+margin/right = 0.0
+margin/bottom = 47.0
+
+[node name="MoneyLabel" type="Label" parent="GameSession/GameMap/Hud/ControlPane/LabelTop/MoneyPanel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 56.0
+margin/top = 13.0
+margin/right = -56.0
+margin/bottom = 27.0
+text = "[MoneyLabelText]"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 [node name="ControlPane_Bottom" type="Container" parent="GameSession/GameMap/Hud"]
 

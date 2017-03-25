@@ -157,7 +157,7 @@ void Hud::step(float dtime)
  */
 void Hud::set_money_label(const int64_t &money)
 {
-	Label *money_label = $("ControlPane/DayLabel/MoneyLabel")->cast_to<Label>();
+	Label *money_label = $("ControlPane/LabelTop/MoneyPanel/MoneyLabel")->cast_to<Label>();
 	assert(money_label);
 	money_label->set_text(String::num_int64(money) + " $");
 }
@@ -170,7 +170,7 @@ void Hud::set_money_label(const int64_t &money)
  */
 void Hud::set_day_label(const uint32_t day)
 {
-	Label *day_label = $("ControlPane/DayLabel")->cast_to<Label>();
+	Label *day_label = $("ControlPane/LabelTop/DayPanel/DayLabel")->cast_to<Label>();
 	assert(day_label);
 	day_label->set_text("Day: " + String::num_int64(day));
 }
