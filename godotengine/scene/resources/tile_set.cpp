@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#include <math/math_2d.h>
 #include "tile_set.h"
 
 bool TileSet::_set(const StringName& p_name, const Variant& p_value) {

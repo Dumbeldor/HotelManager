@@ -26,6 +26,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+#include <math/math_2d.h>
 #include "tile_map.h"
 #include "io/marshalls.h"
 #include "servers/physics_2d_server.h"
@@ -222,7 +223,7 @@ void TileMap::_fix_cell_transform(Matrix32& xform,const Cell& p_cell, const Vect
 
 	Size2 s=p_sc;
 	Vector2 offset = p_offset;
-	
+
 	if (tile_origin==TILE_ORIGIN_BOTTOM_LEFT)
 		offset.y+=cell_size.y;
 
@@ -421,11 +422,11 @@ void TileMap::_update_dirty_quadrants() {
 
 			if (tile_origin==TILE_ORIGIN_TOP_LEFT) {
 				rect.pos+=tile_ofs;
-				
+
 			} else if (tile_origin==TILE_ORIGIN_BOTTOM_LEFT) {
-								
+
 				rect.pos+=tile_ofs;
-				
+
 				if(c.transpose)
 				{
 					if(c.flip_h)
@@ -438,7 +439,7 @@ void TileMap::_update_dirty_quadrants() {
 					else
 						rect.pos.y+=cell_size.y;
 				}
-				
+
 			} else if (tile_origin==TILE_ORIGIN_CENTER) {
 				rect.pos+=tcenter;
 
@@ -499,7 +500,6 @@ void TileMap::_update_dirty_quadrants() {
 					Matrix32 xform;
 					xform.set_origin(offset.floor()+q.pos);
 					_fix_cell_transform(xform,c,npoly_ofs+center_ofs,s);
-
 
 					int pid = navigation->navpoly_create(navpoly,nav_rel * xform);
 
@@ -614,7 +614,7 @@ Map<TileMap::PosKey,TileMap::Quadrant>::Element *TileMap::_create_quadrant(const
 		q.pos+=cell_size/2;
 	else if (tile_origin==TILE_ORIGIN_BOTTOM_LEFT)
 		q.pos.y+=cell_size.y;
-	
+
 
 	xform.set_origin( q.pos );
 //	q.canvas_item = VisualServer::get_singleton()->canvas_item_create();

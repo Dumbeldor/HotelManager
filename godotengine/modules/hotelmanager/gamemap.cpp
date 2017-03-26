@@ -32,10 +32,10 @@
 #include <scene/main/viewport.h>
 #include <vector>
 
-#define GROUNDMAP_NODE "GroundMap"
-#define FLOORMAP_NODE "GroundMap/FloorMap"
-#define OBJECTMAP_NODE "GroundMap/FloorMap/ObjectMap"
-#define CAMERA_NODE "GroundMap/Camera2D"
+#define GROUNDMAP_NODE "Navigation2D/GroundMap"
+#define FLOORMAP_NODE "Navigation2D/GroundMap/FloorMap"
+#define OBJECTMAP_NODE "Navigation2D/GroundMap/FloorMap/ObjectMap"
+#define CAMERA_NODE "Navigation2D/GroundMap/Camera2D"
 #define MAPCONTROL_NODE "Hud/ControlPane/MapControl"
 #define SOUND_PLAYER_NODE "MapSoundPlayer"
 #define CANVAS_MODULATE_NODE "DayNightMapMask"
@@ -50,7 +50,7 @@
 static constexpr float ZOOMOUT_LIMIT = 10;
 static constexpr float ZOOMIN_LIMIT = 0.65;
 
-GameMap::GameMap() { set_process(true); }
+GameMap::GameMap(): VBoxContainer() { set_process(true); }
 
 void GameMap::_bind_methods()
 {

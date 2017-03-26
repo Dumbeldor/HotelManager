@@ -8,7 +8,7 @@
  *
  * Copyright:
  *
- * 2016, Loic Blot <loic.blot@unix-experience.fr>
+ * 2016-2017, Loic Blot <loic.blot@unix-experience.fr>
  *
  * All rights reserved
  */
@@ -33,26 +33,32 @@
 #include <algorithm>
 
 #define SOUND_PLAYER_NODE "MapSoundPlayer"
+#define NODE_MISSION_CONTAINER "ControlPane/MissionPanel/MissionContainer"
+#define NODE_CLOCK "ControlPane/Clock"
+#define NODE_GROUND_MENU "ControlPane_Bottom/HireMenuButton/GroundMenuButton/GroundMenu"
+#define NODE_FLOOR_MENU "ControlPane_Bottom/HireMenuButton/FloorMenuButton/FloorMenu"
+#define NODE_WALL_MENU "ControlPane_Bottom/HireMenuButton/WallMenuButton/WallMenu"
+#define NODE_HIRE_MENU "ControlPane_Bottom/HireMenuButton/HireMenu"
+#define NODE_MONEY_LABEL "ControlPane/LabelTop/MoneyPanel/MoneyLabel"
+#define NODE_DAY_LABEL "ControlPane/LabelTop/DayPanel/DayLabel"
 #define ERROR_MESSAGE_GAP 20
 
 Hud::Hud() : CanvasLayer() {}
 
 void Hud::init()
 {
-	m_mission_container =
-	    $("ControlPane/MissionPanel/MissionContainer")->cast_to<MissionHudContainer>();
+	m_mission_container = $(NODE_MISSION_CONTAINER)->cast_to<MissionHudContainer>();
 	assert(m_mission_container);
 	m_mission_container->set_hud(this);
 
-	m_sound_player = get_parent()->
-		get_parent()->$(SOUND_PLAYER_NODE)->cast_to<SamplePlayer>();
+	m_sound_player = get_parent()->get_parent()->$(SOUND_PLAYER_NODE)->cast_to<SamplePlayer>();
 
 	create_tilemenu("ground");
 	create_tilemenu("floor");
 	create_tilemenu("wall");
 	create_npcmenu();
 
-	m_clock = $("ControlPane/Clock")->cast_to<Clock>();
+	m_clock = $(NODE_CLOCK)->cast_to<Clock>();
 	assert(m_clock);
 }
 
@@ -66,15 +72,11 @@ void Hud::create_tilemenu(const std::string &name)
 	Panel *menu = nullptr;
 
 	if (name == "ground") {
-		menu = $("ControlPane_Bottom/HireMenuButton/GroundMenuButton/GroundMenu")
-			   ->cast_to<Panel>();
+		menu = $(NODE_GROUND_MENU)->cast_to<Panel>();
 	} else if (name == "floor") {
-		menu =
-		    $("ControlPane_Bottom/HireMenuButton/FloorMenuButton/FloorMenu")
-			->cast_to<Panel>();
+		menu = $(NODE_FLOOR_MENU)->cast_to<Panel>();
 	} else if (name == "wall") {
-		menu = $("ControlPane_Bottom/HireMenuButton/WallMenuButton/WallMenu")
-			   ->cast_to<Panel>();
+		menu = $(NODE_WALL_MENU)->cast_to<Panel>();
 	}
 
 	assert(menu);
@@ -83,7 +85,7 @@ void Hud::create_tilemenu(const std::string &name)
 
 void Hud::create_npcmenu()
 {
-	Panel *menu = $("ControlPane_Bottom/HireMenuButton/HireMenu")->cast_to<Panel>();
+	Panel *menu = $(NODE_HIRE_MENU)->cast_to<Panel>();
 	assert(menu);
 	// SelectorMenu for NPCs
 	memnew(NPCSelectorMenu(menu));
@@ -166,7 +168,7 @@ void Hud::step(float dtime)
  */
 void Hud::set_money_label(const int64_t &money)
 {
-	Label *money_label = $("ControlPane/LabelTop/MoneyPanel/MoneyLabel")->cast_to<Label>();
+	Label *money_label = $(NODE_MONEY_LABEL)->cast_to<Label>();
 	assert(money_label);
 	money_label->set_text(String::num_int64(money) + " $");
 }
@@ -179,7 +181,7 @@ void Hud::set_money_label(const int64_t &money)
  */
 void Hud::set_day_label(const uint32_t day)
 {
-	Label *day_label = $("ControlPane/LabelTop/DayPanel/DayLabel")->cast_to<Label>();
+	Label *day_label = $(NODE_DAY_LABEL)->cast_to<Label>();
 	assert(day_label);
 	day_label->set_text("Day: " + String::num_int64(day));
 }

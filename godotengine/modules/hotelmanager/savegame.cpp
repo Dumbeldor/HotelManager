@@ -137,8 +137,6 @@ bool SaveGame::load(GameSession *game_session, GameMap *game_map)
 			const Dictionary &ob = objectives_progress[String(K->get())];
 			MissionObjectiveProgressPtr mission_objective_progress =
 				std::make_shared<MissionObjectiveProgress>((uint32_t) ob["id"]);
-			std::cout << "Mission " << mission_progress->id << " objective " << mission_objective_progress->id <<
-				" variant " << String(K->get()).ascii().get_data() << std::endl;
 
 			mission_objective_progress->done = (bool) ob["done"];
 			mission_objective_progress->progress = (uint32_t) ob["progress"];

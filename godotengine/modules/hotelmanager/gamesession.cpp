@@ -32,6 +32,10 @@
 #include <iostream>
 
 #define MONEY_LIMIT 1000000000000
+#define NODE_NAV2D "GameMap/Navigation2D"
+#define NODE_HUD "GameMap/Hud"
+#define NODE_MAP "GameMap"
+#define NODE_NOTIFMGR "GameMap/Hud/ControlPane_Bottom/NotificationMgr"
 
 GameSession::~GameSession()
 {
@@ -82,7 +86,7 @@ void GameSession::init(const String &savename)
 	new ObjectMgr();
 
 	// Init hud
-	m_hud = $("GameMap/Hud")->cast_to<Hud>();
+	m_hud = $(NODE_HUD)->cast_to<Hud>();
 	assert(m_hud);
 
 	m_hud->init();
@@ -90,11 +94,11 @@ void GameSession::init(const String &savename)
 	m_hud->set_day_label(get_current_day());
 	m_hud->modify_clock(m_game_time);
 
-	m_map = $("GameMap")->cast_to<GameMap>();
+	m_map = $(NODE_MAP)->cast_to<GameMap>();
 	assert(m_map);
 
 	{
-		Navigation2D *nav2d = $("GameMap/GroundMap/Navigation2D")->cast_to<Navigation2D>();
+		Navigation2D *nav2d = $(NODE_NAV2D)->cast_to<Navigation2D>();
 		assert(nav2d);
 		Character::set_nav2d_node(nav2d);
 	}
@@ -117,7 +121,7 @@ void GameSession::init(const String &savename)
 
 	// Notification
 	m_notification_mgr =
-	    $("GameMap/Hud/ControlPane_Bottom/NotificationMgr")->cast_to<NotificationMgr>();
+	    $(NODE_NOTIFMGR)->cast_to<NotificationMgr>();
 }
 
 /**

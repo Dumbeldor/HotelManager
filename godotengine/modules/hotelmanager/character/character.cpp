@@ -35,6 +35,7 @@ Character::Character(CharacterRole role) : RigidBody2D(), ActorObject(), m_chara
 
 	set_gravity_scale(0.0f);
 	set_mode(Mode::MODE_CHARACTER);
+	set_fixed_process(true);
 }
 
 Character::~Character() {}
@@ -62,20 +63,24 @@ void Character::step(const double &dtime)
 	};
 }
 
-static constexpr float eps = 1.5f;
+static constexpr float distance_per_move = 1.5f;
 void Character::action_move_to_tile()
 {
 	assert(Character::m_navigator);
-	Vector<Vector2> points = m_navigator->get_simple_path(get_global_pos(), m_action_pos, false);
+	m_speed = 100.0f;
+	Vector<Vector2> points = m_navigator->get_simple_path(get_global_pos(), get_global_mouse_pos(), false);
 	if (points.size() > 0) {
-		std::cout << m_character_name.c_str() << " wants to move" << std::endl;
-		Point2 distance = (points[0] - get_global_pos()).normalized();
+		Point2 distance = (points[0] - get_global_pos());
 		Vector2 direction = distance.normalized();
-		if (distance.length() > eps || points.size() > 2) {
+
+		std::cout << m_character_name.ascii().get_data() << " wants to move. Distance: " << distance.length() << " points " << points.size() << std::endl;
+		if (distance.length() > distance_per_move && points.size() >= 2) {
+			std::cout << m_character_name.ascii().get_data() << " move" << std::endl;
 			set_linear_velocity(direction * m_speed);
 		}
 		else {
 			set_linear_velocity(Vector2(0, 0));
 		}
+		update();
 	}
 }

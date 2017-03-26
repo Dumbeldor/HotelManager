@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=16 format=1]
+[gd_resource type="TileSet" load_steps=17 format=1]
 
 [ext_resource path="res://tiles/tile_empty.png" type="Texture" id=1]
 [ext_resource path="res://tiles/tile_grass.png" type="Texture" id=2]
@@ -13,10 +13,11 @@
 [ext_resource path="res://tiles/tile_mosaic.png" type="Texture" id=11]
 [ext_resource path="res://tiles/tile_parquet.png" type="Texture" id=12]
 
-[sub_resource type="ConvexPolygonShape2D" id=1]
+[sub_resource type="NavigationPolygon" id=1]
 
-custom_solver_bias = 0.0
-points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
+vertices = Vector2Array( 32.4022, -32.1009, 32.7104, 32.4075, -32.1774, 32.1307, -32.153, -31.9476 )
+polygons = [ IntArray( 0, 1, 2, 3 ) ]
+outlines = [ Vector2Array( -32.153, -31.9476, -32.1774, 32.1307, 32.7104, 32.4075, 32.4022, -32.1009 ) ]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 
@@ -24,6 +25,11 @@ custom_solver_bias = 0.0
 points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
 
 [sub_resource type="ConvexPolygonShape2D" id=3]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
+
+[sub_resource type="ConvexPolygonShape2D" id=4]
 
 custom_solver_bias = 0.0
 points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
@@ -44,6 +50,7 @@ points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
 1/region = Rect2( 0, 0, 512, 512 )
 1/occluder_offset = Vector2( 256, 256 )
 1/navigation_offset = Vector2( 256, 256 )
+1/navigation = SubResource( 1 )
 1/shape_offset = Vector2( 0, 0 )
 1/shapes = [  ]
 2/name = "Stone"
@@ -52,6 +59,7 @@ points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
 2/region = Rect2( 0, 0, 512, 512 )
 2/occluder_offset = Vector2( 256, 256 )
 2/navigation_offset = Vector2( 256, 256 )
+2/navigation = SubResource( 1 )
 2/shape_offset = Vector2( 0, 0 )
 2/shapes = [  ]
 3/name = "Forest"
@@ -124,6 +132,7 @@ points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
 11/region = Rect2( 0, 0, 512, 512 )
 11/occluder_offset = Vector2( 256, 256 )
 11/navigation_offset = Vector2( 256, 256 )
+11/navigation = SubResource( 1 )
 11/shape_offset = Vector2( 0, 0 )
 11/shapes = [  ]
 12/name = "ConcreteWall"
@@ -133,7 +142,7 @@ points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
 12/occluder_offset = Vector2( 24, 24 )
 12/navigation_offset = Vector2( 24, 24 )
 12/shape_offset = Vector2( 24, 24 )
-12/shapes = [ SubResource( 1 ) ]
+12/shapes = [ SubResource( 2 ) ]
 13/name = "BrickWall"
 13/texture = ExtResource( 4 )
 13/tex_offset = Vector2( 0, 0 )
@@ -141,7 +150,7 @@ points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
 13/occluder_offset = Vector2( 24, 24 )
 13/navigation_offset = Vector2( 24, 24 )
 13/shape_offset = Vector2( 24, 24 )
-13/shapes = [ SubResource( 2 ) ]
+13/shapes = [ SubResource( 3 ) ]
 14/name = "SimpleDoor"
 14/texture = ExtResource( 4 )
 14/tex_offset = Vector2( 0, 0 )
@@ -149,5 +158,5 @@ points = Vector2Array( -24, -24, 24, -24, 24, 24, -24, 24 )
 14/occluder_offset = Vector2( 24, 24 )
 14/navigation_offset = Vector2( 24, 24 )
 14/shape_offset = Vector2( 24, 24 )
-14/shapes = [ SubResource( 3 ) ]
+14/shapes = [ SubResource( 4 ) ]
 

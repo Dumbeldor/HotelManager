@@ -20,6 +20,7 @@
 #include <scene/gui/rich_text_label.h>
 
 static constexpr uint16_t MAX_HISTORY = 100;
+#define NODE_CONSOLE_TEXT "RichTextLabel"
 
 Console::Console() : Panel() { m_chat_handler = new ChatHandler(this); }
 
@@ -34,7 +35,7 @@ void Console::_bind_methods() { ObjectTypeDB::bind_method("send_command", &Conso
 void Console::add_text(const std::string &text)
 {
 	RichTextLabel *rich_text_label =
-	    $("RichTextLabel")->cast_to<RichTextLabel>();
+	    $(NODE_CONSOLE_TEXT)->cast_to<RichTextLabel>();
 	rich_text_label->add_text(String(text.c_str()) + "\n");
 	if (rich_text_label->get_line_count() > MAX_HISTORY) {
 		uint16_t nb = rich_text_label->get_line_count() - MAX_HISTORY;
@@ -51,7 +52,7 @@ void Console::tag_sucess(const std::string &text)
 {
 	if (text == "")
 		return;
-	RichTextLabel *rich_text_label = $("RichTextLabel")->cast_to<RichTextLabel>();
+	RichTextLabel *rich_text_label = $(NODE_CONSOLE_TEXT)->cast_to<RichTextLabel>();
 	rich_text_label->append_bbcode("[color=#33C73A]" + String(text.c_str()) + "[/color]\n");
 }
 
@@ -63,7 +64,7 @@ void Console::add_error(const std::string &text)
 {
 	if (text == "")
 		return;
-	RichTextLabel *rich_text_label = $("RichTextLabel")->cast_to<RichTextLabel>();
+	RichTextLabel *rich_text_label = $(NODE_CONSOLE_TEXT)->cast_to<RichTextLabel>();
 	rich_text_label->append_bbcode("[color=red]Error : " + String(text.c_str()) + "[/color]\n");
 }
 
