@@ -784,7 +784,6 @@ margin/bottom = -180.0
 
 [node name="ResumeButton" type="HMButton" parent="MainMenuLayer/GameMainMenu"]
 
-editor/display_folded = true
 anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true

@@ -80,7 +80,7 @@ func _on_PlayBackButton_released():
 	current_menu = MAINMENU.MAIN
 
 func start_game():
-	get_tree().change_scene("res://scenes/game_scene.tscn")
+	get_node("/root/global").goto_scene("res://scenes/game_scene.tscn")
 	
 func _on_OptionsButton_released():
 	get_tree().change_scene("res://scenes/options_scene.tscn")

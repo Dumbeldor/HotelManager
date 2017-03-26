@@ -58,7 +58,7 @@ func _process(delta):
 
 func goto_main_menu():
 	get_node("/root/global").set_save("")
-	get_tree().change_scene("res://scenes/main_menu.tscn")
+	get_node("/root/global").goto_scene("res://scenes/main_menu.tscn")
 	get_tree().set_pause(false)
 
 func _on_LeaveGameButton_released():
