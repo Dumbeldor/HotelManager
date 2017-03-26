@@ -37,15 +37,14 @@ max_lines_visible = -1
 [node name="ProgressBar" type="ProgressBar" parent="."]
 
 anchor/right = 1
-rect/scale = Vector2( 3, 3 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 20.0
 margin/top = 956.0
-margin/right = 1271.0
-margin/bottom = 972.0
+margin/right = 17.0
+margin/bottom = 1000.0
 range/min = 0.0
 range/max = 1.0
 range/step = 0.1
