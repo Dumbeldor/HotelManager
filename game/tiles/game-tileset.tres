@@ -15,9 +15,9 @@
 
 [sub_resource type="NavigationPolygon" id=1]
 
-vertices = Vector2Array( 32.4022, -32.1009, 32.7104, 32.4075, -32.1774, 32.1307, -32.153, -31.9476 )
+vertices = Vector2Array( 0.603779, -30.7925, 30.7925, -15.0943, 0.603779, 0.603771, -30.7924, -15.0943 )
 polygons = [ IntArray( 0, 1, 2, 3 ) ]
-outlines = [ Vector2Array( -32.153, -31.9476, -32.1774, 32.1307, 32.7104, 32.4075, 32.4022, -32.1009 ) ]
+outlines = [ Vector2Array( -30.7924, -15.0943, 0.603779, 0.603771, 30.7925, -15.0943, 0.603779, -30.7925 ) ]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 

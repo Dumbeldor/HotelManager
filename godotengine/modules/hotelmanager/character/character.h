@@ -93,7 +93,6 @@ public:
 	virtual Point2 get_ao_position() const { return get_pos(); }
 
 	virtual void step(const double &dtime);
-
 protected:
 	static void _bind_methods();
 	CharacterRole m_character_role = CHARACTER_ROLE_NONE;

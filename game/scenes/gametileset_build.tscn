@@ -15,9 +15,9 @@
 
 [sub_resource type="NavigationPolygon" id=1]
 
-vertices = Vector2Array( 32.4022, -32.1009, 32.7104, 32.4075, -32.1774, 32.1307, -32.153, -31.9476 )
+vertices = Vector2Array( 0.603779, -30.7925, 30.7925, -15.0943, 0.603779, 0.603771, -30.7924, -15.0943 )
 polygons = [ IntArray( 0, 1, 2, 3 ) ]
-outlines = [ Vector2Array( -32.153, -31.9476, -32.1774, 32.1307, 32.7104, 32.4075, 32.4022, -32.1009 ) ]
+outlines = [ Vector2Array( -30.7924, -15.0943, 0.603779, 0.603771, 30.7925, -15.0943, 0.603779, -30.7925 ) ]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 
@@ -44,8 +44,8 @@ region_rect = Rect2( 0, 0, 512, 512 )
 
 [node name="NavigationPolygonInstance3" type="NavigationPolygonInstance" parent="Grass"]
 
-transform/pos = Vector2( 2.98004, -128.616 )
-transform/scale = Vector2( 8.11549, 4.05711 )
+transform/pos = Vector2( -0.483649, 0.198624 )
+transform/scale = Vector2( 8.22373, 8.08257 )
 navpoly = SubResource( 1 )
 enabled = true
 
@@ -58,15 +58,15 @@ region_rect = Rect2( 0, 0, 512, 256 )
 
 [node name="Stone" type="Sprite" parent="."]
 
-transform/pos = Vector2( -479.407, 482.538 )
+transform/pos = Vector2( -484, 486 )
 texture = ExtResource( 3 )
 region = true
 region_rect = Rect2( 0, 0, 512, 512 )
 
 [node name="NavigationPolygonInstance2" type="NavigationPolygonInstance" parent="Stone"]
 
-transform/pos = Vector2( -1.53334, -2.34817 )
-transform/scale = Vector2( 8.02579, 8.00604 )
+transform/pos = Vector2( -0.999995, -1.00002 )
+transform/scale = Vector2( 8.28125, 8.28125 )
 navpoly = SubResource( 1 )
 enabled = true
 
@@ -126,15 +126,15 @@ region_rect = Rect2( 0, 0, 48, 48 )
 
 [node name="Sand" type="Sprite" parent="."]
 
-transform/pos = Vector2( 628.091, 525.398 )
+transform/pos = Vector2( 636, 526 )
 texture = ExtResource( 12 )
 region = true
 region_rect = Rect2( 0, 0, 512, 512 )
 
 [node name="NavigationPolygonInstance3" type="NavigationPolygonInstance" parent="Sand"]
 
-transform/pos = Vector2( -4.00769, -127.861 )
-transform/scale = Vector2( 8.11549, 4.05711 )
+transform/pos = Vector2( 0.561592, -0.999998 )
+transform/scale = Vector2( 8.33005, 8.28125 )
 navpoly = SubResource( 1 )
 enabled = true
 

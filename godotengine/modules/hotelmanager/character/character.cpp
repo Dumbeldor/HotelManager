@@ -68,6 +68,7 @@ void Character::action_move_to_tile()
 {
 	assert(Character::m_navigator);
 	m_speed = 100.0f;
+	std::cout << get_global_pos().x << "/" << get_global_pos().y << " mouse " << get_global_mouse_pos().x << " / " << get_global_mouse_pos().y  << std::endl;
 	Vector<Vector2> points = m_navigator->get_simple_path(get_global_pos(), get_global_mouse_pos(), false);
 	if (points.size() > 0) {
 		Point2 distance = (points[0] - get_global_pos());
@@ -77,10 +78,9 @@ void Character::action_move_to_tile()
 		if (distance.length() > distance_per_move && points.size() >= 2) {
 			std::cout << m_character_name.ascii().get_data() << " move" << std::endl;
 			set_linear_velocity(direction * m_speed);
+			return;
 		}
-		else {
-			set_linear_velocity(Vector2(0, 0));
-		}
-		update();
 	}
+
+	set_linear_velocity(Vector2(0, 0));
 }
