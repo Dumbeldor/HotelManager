@@ -125,7 +125,16 @@ void Hud::step(float dtime)
 						m_pending_nodes_for_deletion.end(), n),
 					m_pending_nodes_for_deletion.end());
 
+				if (!n) {
+					continue;
+				}
+
 				Node *parent = n->get_parent();
+
+				if (!parent) {
+					n->queue_delete();
+					continue;
+				}
 
 				// Now remove node
 				parent->remove_child(n);
@@ -241,8 +250,8 @@ void Hud::terminate_mission(const uint32_t id)
  */
 void Hud::add_user_error(const String &msg)
 {
-	if (m_user_errormsg_count >= 3) {
-		remove_user_error();
+	if (m_user_errormsg_count >= 4) {
+		remove_user_error(0);
 	}
 
 	m_user_errormsg_count++;
@@ -275,7 +284,13 @@ void Hud::remove_user_error(const uint8_t id)
 		return;
 	}
 
+	label->queue_delete();
+	if (m_user_errormsg_count != 0) {
+		m_user_errormsg_count--;
+    }
+
 	// Reinit pos
+	
 	if (error_container->get_child_count() > id) {
 		for (uint8_t i = id; i < error_container->get_child_count(); i++) {
 			Label *l = error_container->get_child(i)->cast_to<Label>();
@@ -284,6 +299,4 @@ void Hud::remove_user_error(const uint8_t id)
 		}
 	}
 
-	add_pending_deletion(label);
-	m_user_errormsg_count--;
 }
